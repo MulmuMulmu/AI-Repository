@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# 가상환경
+.venv/
+venv/
+env/
+
+# 환경변수 (API 키 등 시크릿)
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 모델 가중치 (용량 큰 파일)
+*.pth
+*.pt
+*.onnx
+*.pdparams
+
+# 로그
+*.log
