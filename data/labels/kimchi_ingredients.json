@@ -1,0 +1,1690 @@
+[
+  {
+    "name": "가늘게 썬 깻잎",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "가늘게 썬 파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "가리비살",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "가지",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "간 생강",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "간 쇠고기",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "간장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "갈은 후추 약간",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "갈치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "갈치젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "감",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "감자",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "갓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "갓김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "거칠게 썬 김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "건다시마",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "게살",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "견과류",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고구마",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고들빼기",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고운 고춧가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고운소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고추 삭힌 물",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고추씨",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고추씨가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고추장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고춧가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "고춧잎",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "골파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "교동전독간장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "구운 깨",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "구운 황태",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "국간장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "굵은 고춧가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "굵은 소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "굵은소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "그라노파다노치즈",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "그린올리브",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "김치 베이컨 잼",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "김치 소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "김치 슬로우",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "김치 양념",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "김치 양념(판매용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "김치 주스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "김치국물",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "까나리액젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "깨소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "깻묵",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "깻잎",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "꽃게살",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "꽃게육수",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "꿀",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "나박김치(숙성)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "낙지",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "냉동수박",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "늙은 호박",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다목적 밀가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다시마",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다시마 우린 물",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다시마 육수",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 돼지고기",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 마늘",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 부추(가니쉬용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 샐러리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 생강",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 소고기",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 양파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 적양파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진 피망",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "다진양파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "달걀 흰자",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "닭 가슴살",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "닭가슴살",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "닭육수(치킨스톡)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "당귀뿌리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "당근",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "대추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "대파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "대파(흰 부분)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "더덕",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "돼지 목심",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "돼지 창자(소세지 케이징)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "돼지고기",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "돼지고기(삼겹살)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "된장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "두반장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "두부(부침용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "두부(찌개용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "딜",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "딜(허브)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "땅콩",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "라임즙",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "라자냐 면",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "레드와인",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "레드와인식초",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "레디쉬",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "레몬",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "레몬즙",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "루셋감자",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마늘",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마늘 파우더",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마늘종",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마른 고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마른 다시마",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마른 청각",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마른 표고",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마른 홍고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마른고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마른오징어",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "마요네즈",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "막걸리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "막장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "막장용 메줏보리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "말린 오미자",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "말린 토마토",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "맑은 가자미액젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "맛술",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "매실액기스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "매실청",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "매주콩",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "맨드라미",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "머스타드",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "메밀츠유",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "메이플 시럽",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "메주",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "메줏가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "메추리알",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "멸치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "멸치액젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "멸치젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "멸치젓/갈치젓/황석어젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "명란 및 곤이",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "모시조개",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "모짜렐라",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "모짜렐라 치즈(피자용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "모짤렐라 치즈(피자용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "목이버섯",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "몰트시럽",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무 말린 것",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무(섞박지 모양)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무(양념용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무(작은 것)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무(채썬 것)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무등산 수박 마른껍질",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무절임용 소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "무청",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "묵은지",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "문어",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "물",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "물(김칫국물용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "물엿",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "묽은 찹쌀풀",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "미나리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "미역",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "밀가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "밀가루풀",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "바게트",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "바지락",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "바질 페스토",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "박",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "발효된 소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "밤",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "밤(깐 것)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "밥새우",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "방울토마토",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추 김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추(가로 3cm 길이)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추김치(묵은지)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추김치(미숙)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추김치(숙성)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배추김치(숙성, 줄기부분)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "배춧잎",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "백 후춧가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "백김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "백김치 국물",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "버터",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "베이컨",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "베이컨(1.2cm)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "베트남 고춧가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "보리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "보리밥",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "보리쌀",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "복분자 효소",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "볶은 콩가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "부추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "북어포",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "불린 보리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "불린 차조",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "브레드 롤(약간 구운)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "브로콜리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "블랙올리브(병 또는 통조림)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "비트",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "빨강 파프리카",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "뿌리배추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "사과",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "사과 식초",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "사과술",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "삭힌 고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "상추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "새우",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "새우 머리와 껍질",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "새우젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "샐러리 약간",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생강",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생강 파우더",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생강즙",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생강편",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생굴",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생막걸리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생새우",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생자리돔 젓갈",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생크림",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "생파래",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "샬롯",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "서양식 소고기 육수(비프스톡)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "석류",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "석이",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "석이버섯",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "설탕",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "설탕 또는 올리고당",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "성게",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소고기 등심(스테이크용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소고기(갈비살)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소금 약간",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소금물",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소금물에 절인 과일",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소금물에 절인 채소",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소금약간",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "소주",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "수박속말랭이",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "수삼",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "술지개미",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "슈레드치즈",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "스리라차(고추장)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "슬라이스 된 배",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "슬라이스 된 사과",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "슬라이스 된 양파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "시금치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "식빵",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "식용꽃",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "식용유",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "식초",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "신선한 체리과육",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "실고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "실파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "쌀",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "씻은 김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "아롱사태",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "아스파라거스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "아주 얇게 슬라이스 된 마늘",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "알타리무",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "애호박",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "얇게 썬 감자",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "얇게 썬 사워도우 빵",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "얇게 썬 생강",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "얇게 썬 소고기(양지살)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "얇게 썬 프로볼로네 치즈",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "양배추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "양송이",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "양송이버섯",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "양조식초",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "양파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "양파 파우더",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "어린잎채소",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "어린잎채소(또는 루꼴라, 깻잎)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "얼갈이 배추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "얼갈이배추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "엔초비",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "엠버비어",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "열무",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "엿기름가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오디(연딸기) 파우더",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오렌지 껍질",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오렌지 칩",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오렌지주스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오미자 효소액",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오이",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오이 슬라이스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오이(백오이)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오일",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오지마효소 건지",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "오징어",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "올리브 오일",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "올리브유",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "와송 효소",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "와틀씨드",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "우삼겹(슬라이스)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "우스터 소스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "월계수 잎",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "유자",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "육수",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "이태리 파슬리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "잔탄검",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "잘게 다진 김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "잘게 썬 부추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "잡젓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "잣",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "재래종 갓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "전독간장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "전복",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "전분가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "전어",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "전유(크림)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "절임 배추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "절임용 소금",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "젓갈",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "정육면체로 썬 감자",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "정육면체로 썬 고구마",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "정육면체의 중간크기로 썬 김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "정향",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "제주 당근",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "조기 육수",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "조기살",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "조리된 바닷가재 혹은 랍스터 꼬리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "조선간장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "조청",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "질소",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "집간장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "쪽파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "찬밥(혹은 밀가루 풀)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "참기름",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "참깨(가니쉬용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "참외",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "찹쌀",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "찹쌀가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "찹쌀누룽지 튀김(완성품)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "찹쌀죽",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "찹쌀풀",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "찹쌀풀(찹쌀가루 30g, 물 1.5컵)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "창란",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "채썬 당근",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "채썬 밤",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "채썬 양배추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "천일염",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "청·홍고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "청각",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "청갓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "청고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "청양고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "청주",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "초리조 소시지",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "총각 무",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "총각무",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "총각무김치(숙성)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "치아바타(빵)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "치킨 윙",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "치킨스톡",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "카레 가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "카옌 파우더",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "캔 조개",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "콜비(잭치즈) 혹은 페퍼잭 치즈(잘게 조각낸)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "콩",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "콩가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "큐링 솔트(육류 제조용 소금)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "타마린드 페퍼 또는 깻잎",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "타임",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "탄산수",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "터머릭가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "토마토",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "토마토 페이스트",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "토마토소스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "토마토페이스트",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "토스트 빵",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "톳",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "통고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "통깨",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "통북어",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파김치(숙성, 희부분)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파마산 치즈 가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파마산치즈",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파뿌리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파슬리 약간",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파인애플",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파인애플 김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파인애플김치",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파프리카",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파프리카 파우더",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "파프리카 피멘톤 고추절임",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "페페론치노",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "표고",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "표고버섯",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "풋고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "풋마늘",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "피넛버터",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "하프 앤 하프 크림",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "한국 배(간 것)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "한식간장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "한식된장",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "할라피뇨",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "해물육수",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "호박고구마",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "호박고구마(양념용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "호박잎 (쌈용)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "호이신 소스",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "홀그레인 머스터드",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "홍갓",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "홍고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "홍고추(혹은 불린 건고추)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "홍청양고추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "홍초",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "홍합",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "화이트와인",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "화이트와인(또는 맛술)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "황석어젓(액젓 끓인 것)",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "황설탕",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "황태머리",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "효소",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "후추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "후춧가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "훈연 파프리카 파우더",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "휘핑크림",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "흑 후춧가루",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "흑후추",
+    "source": "kimchi_wikim"
+  },
+  {
+    "name": "흰밥",
+    "source": "kimchi_wikim"
+  }
+]

@@ -1,0 +1,1890 @@
+[
+  {
+    "name": "[멸치장국] 국멸치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "[양념장] 다진파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "[절임간장] 진간장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "[초고추장] 고추장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "가는파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "가다랑이포",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "가래떡",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "가쓰오브시",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "가지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "간마늘",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "간수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "간장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "갈비",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "갈치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "감자",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "감자전분",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "갑오징어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "갓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "강력분",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "건포도",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "게",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "게맛살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "게살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "겨자잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "계란",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "계란노른자",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "계란흰자",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "계핏가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고구마",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고구마줄기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고기산적",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고들빼기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고등어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고사리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고사리나물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고운고춧가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고추가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고추장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "고춧가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "골뱅이",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "골뱅이통조림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "곱창",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "곶감",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "과일통조림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "광어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "구운김",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "국간장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "국수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "굴",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "굴소스",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "굵은고춧가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "굵은소금",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "근대",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "근대잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "김",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "김치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "김치잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "까나리액젓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "깐밤",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "깨",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "깨소금",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "깻잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "껍질콩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "꼴뚜기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "꽁치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "꽁치통조림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "꽃게",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "꽃상추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "꽈리고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "꿀",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "낙지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "날콩가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "냉동만두",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "냉면",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "냉이",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "녹두",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "녹말",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "녹말가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "녹차국수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "녹차분말",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "누룽지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "느타리버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다시마",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다시마국물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다시물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다진대파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다진마늘",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다진생강",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다진쇠고기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다진양파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다진청고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "다진파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "단호박",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "달걀",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "달래",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭가슴살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭고기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭다리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭발",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭봉",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭안심",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "닭육수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "당근",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "당근즙",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "당면",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "대구",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "대구살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "대추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "대파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "대하",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "더덕",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "도가니",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "도라지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "도라지나물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "도미",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "도토리묵",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "동치미국물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "동치미무",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "동태",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "동태살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "돼기고기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "돼지 볼살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "돼지갈비",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "돼지고기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "돼지고기안심",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "돼지등갈비",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "된장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "두릅",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "두부",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "드라이이스트",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "들기름",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "들깻잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "딸기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "땅콩버터",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "떡",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "떡국떡",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "라면",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "라이스페이퍼",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "레몬",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "레몬드레싱",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "레몬즙",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "마늘",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "마른고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "마른새우",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "마른오징어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "마요네즈",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "만두피",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "말린 표고버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "말린새우",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "말린표고버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "맛국물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "맛살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "맛살조개",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "맛술",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "맛조개",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "머스타드",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "머스터드",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "메기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "메밀국수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "메주",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "메주콩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "멥쌀",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "멥쌀가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "멸치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "멸치다시물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "멸치액젓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "멸치젓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "명란",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "명란젓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "모시조개",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "모짜렐라치즈",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "목이버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "무",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "무,래디쉬",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "무말랭이",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "무명실",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "무순",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "물(쇠고기육수)",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "물엿",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "미나리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "미니파프리카",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "미더덕",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "미림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "미소",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "미소된장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "미역",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "밀가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "바게트",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "바베큐소스",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "바지락",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "바질",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "박고지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "발효초",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "밤",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "밥",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "방울토마토",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "배",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "배즙",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "배추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "배추김치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "배춧잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "버터",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "베이컨",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "보리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "봄동",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "부추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "북어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "불린미역",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "불린쌀",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "붉은 고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "붉은갓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "브로콜리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "블랙올리브",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "비엔나소시지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "비트",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "빵가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "사골",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "사과",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "사우어크라우트",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "삭힌고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "산초가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "삶은 문어살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "삶은팥",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "상추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "상추잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "새송이버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "새싹채소",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "새우",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "새우살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "새우젓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "샐러드채소",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "샐러리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생강",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생강즙",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생대구",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생밤",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생새우",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생선살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생크림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "생태",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "서리태콩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "석이버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "선지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "설탕",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "소 잡뼈",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "소금",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "소꼬리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "소면",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "솔잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "송어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "송이버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쇠고기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쇠고기 육수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쇠고기(힘줄없는부위)",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쇠고기스톡",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "수삼",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "수수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "숙주",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "숙주나물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "순대",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "순두부",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "술",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "숯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "스파게티",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "시금치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "시금치나물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "시금치즙",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "시럽",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "식빵",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "식용유",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "식초",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "신김치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "실파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "싸리버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쌀",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쌀가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쌀국수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쌀뜨물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쌈다시마",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쌈장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쑥",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쑥갓",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "아구",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "아귀",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "아기된장소스",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "아몬드가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "아보카도",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "아스파라거스",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "아욱",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "안심",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "애호박",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "앤다이브",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양겨자",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양배추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양배추잎",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양상추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양송이",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양송이버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양지머리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "양파즙",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "어묵",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "얼갈이배추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "연근",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "연어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "연어알",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "열무",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "열무김치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "영양부추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "오곡곡물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "오보로",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "오이",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "오이피클",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "오징어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "오징어채",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "옥수수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "옥수수통조림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "올리브",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "올리브오일",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "와사비",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "완두콩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "완두콩통조림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "왜된장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "우거지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "우동면",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "우무",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "우묵",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "우엉",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "우유",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "유부",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "육수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "은행",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "이스트",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "인절미",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "일본된장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "잉어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "자몽",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "잔멸치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "잣",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "잣가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "장식용어묵",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "장어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "장어대리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "재첩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "저민마늘",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "적채",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "전복",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "전어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "절임무",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "정종",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "정향",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "조개살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "조갯살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "조기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "조청",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "죽순",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "중새우",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "중새우살",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "진간장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쪽파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쫄면",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "쭈꾸미",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "차조",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "찬밥",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "참기름",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "참나물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "참치",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "참치통조림",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "찹쌀",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "찹쌀가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "채소",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "채썬쇠고기",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청경채",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청국장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청동호박",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청양고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청정원국선생",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청정원순창쌈장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청정원어장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청주",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청포묵",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "청피망",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "체리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "초생강",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "초콜릿",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "총각무",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "춘권피",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "취나물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "치즈",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "치즈가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "치커리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "카레가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "칵테일새우",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "칼국수",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "칼국수면",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "컬리플라워",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "케이퍼",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "케일",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "케첩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "코다리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "콘프레이크",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "콘플레이크",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "콩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "콩가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "콩나물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "크림수프",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "크림치즈",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "토란",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "토란탕",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "토마토",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "토마토케첩",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "토마토페이스트",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "통계피",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "통깨",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "통도라지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "통마늘",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "통북어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "통파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "통후추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "튀김가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "튀김기름",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "트레비스",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파래",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파마산치즈치즈",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파스타",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파슬리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파슬리가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파인애플",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "파프리카",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "팥",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "팥삶은물",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "팽이버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "페투치네",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "포도",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "포도씨유",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "표고버섯",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "풋고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "풋마늘",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "풋배추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "프랑크소시지",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "플레인요구르트",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "피망",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "피조개",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "피클",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "해삼",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "해초",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "해파리",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "햄",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "햇살담은간장",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "호두",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "호박",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "호박씨",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "홍고추",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "홍차티백",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "홍피망",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "홍합",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "황설탕",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "후춧가루",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "훈제연어",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "흑설탕",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "흑임자",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "흰떡",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "흰살생선",
+    "source": "epis_recipe"
+  },
+  {
+    "name": "흰콩",
+    "source": "epis_recipe"
+  }
+]

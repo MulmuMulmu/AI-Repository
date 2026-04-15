@@ -1,0 +1,79 @@
+[
+  {
+    "name": "끓이기",
+    "code": "BOIL",
+    "name_en": "Boiling/Simmering",
+    "description": "물이나 육수에 재료를 넣고 끓여 조리",
+    "count": 678
+  },
+  {
+    "name": "굽기",
+    "code": "GRILL",
+    "name_en": "Grilling/Baking",
+    "description": "직화, 오븐, 팬 등으로 표면에 열을 가해 조리",
+    "count": 559
+  },
+  {
+    "name": "무치기",
+    "code": "SEASONING",
+    "name_en": "Seasoning/Mixing",
+    "description": "양념장으로 재료를 버무려 조리",
+    "count": 356
+  },
+  {
+    "name": "볶기",
+    "code": "STIRFRY",
+    "name_en": "Stir-frying",
+    "description": "소량의 기름에 센 불로 빠르게 볶아 조리",
+    "count": 244
+  },
+  {
+    "name": "절이기",
+    "code": "PICKLE",
+    "name_en": "Pickling/Fermenting",
+    "description": "소금·양념에 재료를 절여 발효·숙성",
+    "count": 164
+  },
+  {
+    "name": "찌기",
+    "code": "STEAM",
+    "name_en": "Steaming",
+    "description": "증기로 재료를 익혀 조리",
+    "count": 154
+  },
+  {
+    "name": "튀기기",
+    "code": "DEEPFRY",
+    "name_en": "Deep-frying",
+    "description": "다량의 기름에 재료를 넣어 튀겨 조리",
+    "count": 104
+  },
+  {
+    "name": "기타",
+    "code": "ETC",
+    "name_en": "Other",
+    "description": "위 분류에 해당하지 않는 조리법 (비가열, 혼합 등)",
+    "count": 104
+  },
+  {
+    "name": "조리기",
+    "code": "BRAISE",
+    "name_en": "Braising",
+    "description": "양념장을 넣고 약한 불에 졸여 조리",
+    "count": 52
+  },
+  {
+    "name": "부치기",
+    "code": "PANFRY",
+    "name_en": "Pan-frying",
+    "description": "팬에 얇게 기름을 두르고 반죽·재료를 펴서 익힘",
+    "count": 47
+  },
+  {
+    "name": "삶기",
+    "code": "BLANCH",
+    "name_en": "Blanching/Boiling",
+    "description": "끓는 물에 재료를 넣어 익히거나 데침",
+    "count": 8
+  }
+]

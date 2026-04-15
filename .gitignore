@@ -31,3 +31,6 @@ Thumbs.db
 
 # 로그
 *.log
+
+# 대용량 데이터 파일 (54MB+)
+data/labels/mfds_foods.json
