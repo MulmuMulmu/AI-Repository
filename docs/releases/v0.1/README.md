@@ -45,7 +45,7 @@
 - `FastAPI`와 CLI가 같은 OCR 서비스 계층을 공유한다.
 - 추후 Qwen 교체나 비활성화가 쉬워졌다.
 
-### 2. `/api/ocr/receipt`가 legacy 계약을 유지하면서도 더 많은 메타데이터를 반환
+### 2. 공개 API를 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개로 정리
 
 유지:
 - `ocr_texts`
@@ -53,23 +53,19 @@
 - `food_count`
 - `model`
 
-추가:
-- `vendor_name`
-- `purchased_at`
-- `totals`
-- `diagnostics`
+- 영향:
+  - API 표면이 단순해졌다.
+  - OCR 분석과 재료 예측 역할이 분리됐다.
+  - 문서와 실제 구현이 일치하게 됐다.
 
-영향:
-- 기존 연동 지점을 깨지 않으면서 디버깅/품질 판단용 정보를 백엔드가 활용할 수 있게 됐다.
-
-### 3. Qwen 사용 전략이 “항상 사용”에서 “best-effort 보조”로 변경
+### 3. Qwen 사용 전략이 “로컬 보조 모델” 중심으로 정리
 
 기존 방향:
 - Qwen이 있으면 적극 사용
 
 현재 방향:
 - 기본값은 OCR-only
-- `use_qwen=true`여도 로컬 OpenAI-compatible Qwen 환경이 준비되지 않았으면 fallback
+- 로컬 Qwen 런타임이 켜져 있을 때만 보조적으로 사용
 - `qwen_receipt_assistant.py`는 환경변수 `ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1`일 때만 동기 호출
 
 영향:
@@ -99,8 +95,8 @@
 
 핵심:
 - FastAPI 진입점에서 shared OCR backend warm-up
-- health endpoint 확장
-- parse API가 `ReceiptParseService`를 직접 사용
+- 공개 API를 두 개로 축소
+- OCR 분석 API가 `ReceiptParseService`를 직접 사용
 
 ### 데이터
 
@@ -114,12 +110,13 @@
 ### 테스트
 
 - `tests/test_ocr_api_contract.py`
-- `tests/test_ocr_health.py`
+- `tests/test_public_api_surface.py`
 - `tests/test_ocr_service_adapter.py`
 - `tests/test_receipt_quality_rules.py`
 
 핵심:
 - 기존 레포에는 없던 OCR 회귀 테스트 층이 생겼다.
+- 공개 API 표면도 테스트로 고정했다.
 
 ### 문서
 

@@ -98,7 +98,7 @@
 
 - 대상 파일:
   - `tests/test_ocr_api_contract.py`
-  - `tests/test_ocr_health.py`
+  - `tests/test_public_api_surface.py`
   - `tests/test_ocr_service_adapter.py`
   - `tests/test_receipt_quality_rules.py`
 - 작업:
@@ -124,20 +124,16 @@
   - `main.py`
   - `docs/OCR_IMPLEMENTATION.md`
 - 작업:
-  - `/api/ocr/receipt`는 `normalized_name` 우선임을 유지
+  - `/ai/ocr/analyze`는 `normalized_name` 우선임을 유지
   - `receipt_ocr.py`는 raw 품목명 우선임을 문서와 코드 주석으로 고정
   - `diagnostics`, `review_required`, `review_reasons` 활용 규칙을 백엔드와 합의한다.
 
-### 5-2. health / fallback 정책 정리
+### 5-2. fallback 정책 정리
 
 - 대상 파일:
-  - `main.py`
   - `ocr_qwen/app.py`
   - `ocr_qwen/qwen.py`
 - 작업:
-  - OCR 사용 가능 여부
-  - preprocess 사용 여부
-  - bbox contract 사용 여부
   - qwen runtime 사용 가능 여부
   - fallback 시 응답 보장 범위
 

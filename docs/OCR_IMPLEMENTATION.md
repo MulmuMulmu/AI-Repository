@@ -3,25 +3,25 @@
 ## 목적
 
 - 기준 레포의 데이터/API 구조는 유지한다.
-- `/api/ocr/receipt` 응답 계약은 유지한다.
+- 현재 공개 OCR API는 `/ai/ocr/analyze` 하나로 둔다.
 - 내부 OCR 엔진은 prototype의 `ocr_qwen` 패키지를 그대로 이식해 사용한다.
 - Qwen은 기본 비활성 상태의 보조 기능으로 둔다.
 
 ## 구현 위치
 
 - `main.py`
-  - `/api/ocr/receipt` 엔드포인트 유지
+  - 공개 API는 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개만 유지
   - prototype `ReceiptParseService`를 adapter 형태로 사용
   - 앱 startup 시 shared PaddleOCR backend warm-up
   - 응답에 `vendor_name`, `purchased_at`, `totals`, `diagnostics` 추가
-  - legacy API 계약 유지를 위해 `food_items[].product_name`은 `normalized_name` 우선, 없으면 `raw_name` fallback
+  - OCR 응답에서는 `food_items[].product_name`을 `normalized_name` 우선으로 노출
 
 - `ocr_qwen/`
   - prototype OCR 런타임 패키지
   - `preprocess.py`: 이미지 전처리
   - `services.py`: PaddleOCR backend, parse service, Qwen item refinement
   - `receipts.py`: row parser, section/totals/item assembly
-  - `qwen.py`: Noop/local/openai-compatible provider
+  - `qwen.py`: Noop/local Qwen provider 중심
   - `ingredient_dictionary.py`: generated ingredient alias lookup
 
 - `receipt_ocr.py`
@@ -32,12 +32,12 @@
 
 - `qwen_receipt_assistant.py`
   - 현재는 호환용 보조 유틸리티
-  - `ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1`일 때만 OpenAI-compatible Qwen 호출
+  - `ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1`일 때만 동기 Qwen 보조 실행
   - Qwen 실패 시 예외를 던지지 않고 fallback 유지
 
 ## 현재 응답 계약
 
-`POST /api/ocr/receipt`
+`POST /ai/ocr/analyze`
 
 - 유지 필드
   - `ocr_texts`
@@ -62,7 +62,7 @@
 ```
 
 주의:
-- `/api/ocr/receipt`는 백엔드 연계용 legacy 계약이라 정규화된 품목명을 우선 노출한다.
+- `/ai/ocr/analyze`는 정규화된 품목명을 우선 노출한다.
 - `receipt_ocr.py`의 `ReceiptOCR.analyze_receipt()`는 OCR 품질 검증용이라 원문 품목명을 우선 노출한다.
 
 ## 운영 기본값
@@ -79,9 +79,10 @@
 ## Qwen 활성화 환경변수
 
 ```env
+ENABLE_LOCAL_QWEN=1
+LOCAL_QWEN_MODEL_ID=Qwen/Qwen2.5-1.5B-Instruct
+ALLOW_MODEL_DOWNLOAD=1
 ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1
-QWEN_BASE_URL=http://<openai-compatible-server>/v1
-QWEN_API_KEY=<api-key>
 QWEN_MODEL=qwen2.5:latest
 QWEN_TIMEOUT_SECONDS=8
 QWEN_RECEIPT_MAX_TOKENS=256
@@ -98,14 +99,13 @@ QWEN_RECEIPT_MAX_TOKENS=256
 이식 작업의 회귀 방지는 아래 3개 테스트를 기준으로 한다.
 
 - `tests/test_ocr_api_contract.py`
-  - `/api/ocr/receipt` 응답 계약
+  - `/ai/ocr/analyze` 응답 계약
   - `ocr_texts`, `food_items`, `food_count`, `model` 유지
   - `vendor_name`, `purchased_at`, `totals`, `diagnostics` 포함 여부 확인
 
-- `tests/test_ocr_health.py`
-  - `/api/health` 상태 형식
-  - `paddleocr`, `preprocess`, `bbox_contract`, `qwen_llm`, `database` 상태 확인
-  - Qwen 상태 조회 실패 시에도 health 응답 유지
+- `tests/test_public_api_surface.py`
+  - `/ai/ingredient/prediction` 응답 계약
+  - 기존 `/api/...` 라우트 비노출 확인
 
 - `tests/test_ocr_service_adapter.py`
   - `ReceiptOCR` 결과를 legacy contract로 어댑트하는지 확인
@@ -118,5 +118,5 @@ QWEN_RECEIPT_MAX_TOKENS=256
 권장 실행:
 
 ```powershell
-pytest tests/test_ocr_api_contract.py tests/test_ocr_health.py tests/test_ocr_service_adapter.py -q
+pytest tests/test_ocr_api_contract.py tests/test_public_api_surface.py tests/test_ocr_service_adapter.py -q
 ```

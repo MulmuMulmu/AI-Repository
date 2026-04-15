@@ -1,5 +1,5 @@
 """
-AI FastAPI 서버 — 영수증 OCR + 재료 매칭 + 레시피 추천
+AI FastAPI 서버 — 영수증 OCR 분석 + 재료 예측
 
 실행: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 """
@@ -56,9 +56,9 @@ INGR_NAME_INDEX: Dict[str, str] = {
 # ═══════════════════════════════════════════════════════════════
 
 app = FastAPI(
-    title="레시피 추천 AI API",
+    title="영수증 OCR / 재료 예측 AI API",
     version="1.0.0",
-    description="영수증 OCR + 재료 매칭 + 레시피 추천 시스템",
+    description="영수증 OCR 분석과 재료 예측을 제공하는 AI API",
 )
 
 app.add_middleware(
@@ -355,48 +355,14 @@ def recommend_recipes(
 #  API 엔드포인트
 # ═══════════════════════════════════════════════════════════════
 
-@app.get("/api/health")
-async def health_check():
-    try:
-        from ocr_qwen.qwen import local_qwen_enabled, qwen_runtime_available
-
-        qwen_status = {
-            "runtime_available": qwen_runtime_available(),
-            "local_enabled": local_qwen_enabled(),
-        }
-    except Exception as exc:
-        qwen_status = f"unavailable ({exc})"
-
-    return ApiResponse(
-        success=True,
-        data={
-            "status": "healthy",
-            "version": "1.0.0",
-            "services": {
-                "paddleocr": "available",
-                "preprocess": "available",
-                "bbox_contract": "enabled",
-                "qwen_llm": qwen_status,
-                "database": "connected",
-            },
-            "stats": {
-                "total_recipes": len(RECIPES),
-                "total_ingredients": len(INGREDIENTS),
-                "total_recipe_ingredients": len(_recipe_ingredients_raw),
-                "total_recipe_steps": len(_recipe_steps_raw),
-            },
-        },
-    )
-
-
-@app.post("/api/ocr/receipt")
+@app.post("/ai/ocr/analyze")
 async def ocr_receipt(
     image: UploadFile = File(...),
     use_qwen: bool = Query(
         default=True,
         description=(
-            "Local OpenAI-compatible Qwen 보정 사용 여부. "
-            "true여도 Qwen 환경변수/로컬 서버가 없으면 OCR-only로 fallback하며, "
+            "로컬 Qwen 보정 사용 여부. "
+            "true여도 로컬 Qwen 런타임이 비활성화되어 있으면 OCR-only로 fallback하며, "
             "응답 계약(ocr_texts, food_items, food_count, model)은 유지됩니다."
         ),
     ),
@@ -449,7 +415,7 @@ async def ocr_receipt(
         Path(tmp_path).unlink(missing_ok=True)
 
 
-@app.post("/api/ingredients/match")
+@app.post("/ai/ingredient/prediction")
 async def match_ingredients(req: MatchRequest):
     """OCR 추출 상품명 → DB Ingredient 매칭."""
     matched = []
@@ -476,8 +442,6 @@ async def match_ingredients(req: MatchRequest):
         },
     )
 
-
-@app.post("/api/recipes/recommend")
 async def recommend(req: RecommendRequest):
     """보유 재료 기반 레시피 추천. 일부 재료만 있어도 추천 가능."""
     valid_ids = [iid for iid in req.ingredientIds if iid in INGREDIENTS]
@@ -506,8 +470,6 @@ async def recommend(req: RecommendRequest):
         },
     )
 
-
-@app.get("/api/recipes/{recipe_id}")
 async def get_recipe(recipe_id: str):
     """레시피 상세 조회 (재료 + 조리 단계)."""
     recipe = RECIPES.get(recipe_id)
@@ -557,8 +519,6 @@ async def get_recipe(recipe_id: str):
         },
     )
 
-
-@app.get("/api/ingredients/search")
 async def search_ingredients(
     q: str = Query(..., min_length=1, description="검색 키워드"),
     category: Optional[str] = Query(None, description="카테고리 필터"),

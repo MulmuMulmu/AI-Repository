@@ -2,7 +2,7 @@
 Qwen 보조 모듈.
 
 기본 동작은 즉시 rule fallback이며, 명시적으로 환경변수를 켠 경우에만
-OpenAI-compatible Qwen 서버를 동기 호출한다. 이렇게 해야 API 경로가
+Qwen 보조 경로를 동기 호출한다. 이렇게 해야 API 경로가
 로컬 CPU LLM 때문에 멈추지 않는다.
 """
 

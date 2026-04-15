@@ -10,10 +10,10 @@
 
 | 경로 | 상태 | 변경 요약 | 영향 |
 |------|------|-----------|------|
-| `README.md` | 수정 | FastAPI 서버 실행 방식, best-effort Qwen 동작, API 계약 설명을 추가 | 레포 진입 문서가 현재 구조를 반영 |
-| `docs/API_SPEC.md` | 수정 | OCR/health 동작과 best-effort Qwen, 확장된 응답 필드를 반영 | 백엔드 연동 기준 문서 갱신 |
-| `main.py` | 수정 | shared OCR backend, `ReceiptParseService` 연동, health 확장, `/api/ocr/receipt` 응답 확장 | 실제 서비스 진입점 변경 |
-| `qwen_receipt_assistant.py` | 수정 | 환경변수 기반 활성화, OpenAI-compatible Qwen 호출, 실패 시 rule fallback | Qwen 실패가 API 실패로 번지지 않음 |
+| `README.md` | 수정 | 실제 설치/실행 방식, 로컬 Qwen 설정, 고도화된 OCR 파이프라인 설명으로 재구성 | 레포 진입 문서가 현재 구조를 반영 |
+| `docs/API_SPEC.md` | 수정 | 공개 API를 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개 기준으로 재정리 | 백엔드 연동 기준 문서 갱신 |
+| `main.py` | 수정 | shared OCR backend, `ReceiptParseService` 연동, 공개 API를 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개로 정리 | 실제 서비스 진입점 변경 |
+| `qwen_receipt_assistant.py` | 수정 | 환경변수 기반 활성화, 로컬 Qwen 보조, 실패 시 rule fallback | Qwen 실패가 API 실패로 번지지 않음 |
 | `receipt_ocr.py` | 수정 | monolithic OCR 스크립트에서 호환 어댑터로 재구성 | CLI/내부 분석 도구가 새 엔진 사용 |
 | `requirements.txt` | 수정 | FastAPI, Uvicorn, multipart, pytest 등 서버/검증 의존성 추가 | API 서버와 테스트 실행 가능 |
 
@@ -27,7 +27,7 @@
 | `ocr_qwen/expiry.py` | 추가 | 유통기한 관련 보조 로직 |
 | `ocr_qwen/ingredient_dictionary.py` | 추가 | ingredient alias / master dictionary 처리 |
 | `ocr_qwen/preprocess.py` | 추가 | 이미지 전처리 |
-| `ocr_qwen/qwen.py` | 추가 | `Noop`, local/OpenAI-compatible Qwen provider |
+| `ocr_qwen/qwen.py` | 추가 | `Noop`, local Qwen provider, 보조 추론 로직 |
 | `ocr_qwen/receipts.py` | 추가 | 영수증 행 조립, 섹션 분리, 품목 파싱 핵심 |
 | `ocr_qwen/recipes.json` | 추가 | OCR/Qwen 예시/보조 데이터 |
 | `ocr_qwen/recommendations.py` | 추가 | 추천 보조 로직 |
@@ -39,8 +39,8 @@
 |------|------|------|
 | `tests/__init__.py` | 추가 | 테스트 패키지 초기화 |
 | `tests/helpers.py` | 추가 | 테스트 헬퍼 |
-| `tests/test_ocr_api_contract.py` | 추가 | `/api/ocr/receipt` legacy 계약 유지 검증 |
-| `tests/test_ocr_health.py` | 추가 | `/api/health` 형식 검증 |
+| `tests/test_ocr_api_contract.py` | 추가 | `/ai/ocr/analyze` 계약 유지 검증 |
+| `tests/test_public_api_surface.py` | 추가 | 공개 API 표면과 기존 `/api/...` 비노출 검증 |
 | `tests/test_ocr_service_adapter.py` | 추가 | `ReceiptOCR` 어댑터 검증 |
 | `tests/test_receipt_quality_rules.py` | 추가 | 파서 규칙 회귀 검증 |
 
@@ -61,6 +61,7 @@
 | `docs/OCR_TODO.md` | 추가 | 다음 작업 우선순위 |
 | `docs/plans/2026-04-16-ocr-prototype-port-plan.md` | 추가 | 초기 이식 계획 |
 | `docs/plans/2026-04-16-ocr-quality-iteration-design.md` | 추가 | 품질 고도화 설계 문서 |
+| `docs/plans/2026-04-16-api-surface-doc-refresh-plan.md` | 추가 | 공개 API 축소 및 README 재정렬 계획 |
 
 ## 신규 릴리스 문서
 

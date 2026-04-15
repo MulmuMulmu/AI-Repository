@@ -21,7 +21,7 @@ pandas>=2.0.0
 # 시각화
 matplotlib>=3.7.0
 
-# Qwen 보조(OpenAI 호환 API: DashScope, Ollama 등)
+# 선택적 Qwen 보조
 openai>=1.12.0
 python-dotenv>=1.0.0
 

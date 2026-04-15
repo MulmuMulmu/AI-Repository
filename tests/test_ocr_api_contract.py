@@ -64,14 +64,14 @@ def _make_image_bytes() -> bytes:
     return buffer.getvalue()
 
 
-def test_ocr_receipt_endpoint_preserves_legacy_contract(monkeypatch) -> None:
+def test_ocr_analyze_endpoint_preserves_legacy_contract(monkeypatch) -> None:
     monkeypatch.setattr(main, "_get_receipt_service", lambda use_qwen: StubReceiptService())
 
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             return await client.post(
-                "/api/ocr/receipt?use_qwen=true",
+                "/ai/ocr/analyze?use_qwen=true",
                 files={"image": ("receipt.png", _make_image_bytes(), "image/png")},
             )
 
