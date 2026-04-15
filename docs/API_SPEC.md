@@ -252,7 +252,11 @@ OCR에서 추출된 상품명(예: "국산콩 두부")을 DB의 `Ingredient` 테
 
 ### 4.3 보유 재료 기반 레시피 추천
 
-사용자가 보유한 재료 ID 목록을 받아, 해당 재료로 만들 수 있는 레시피를 추천합니다.
+사용자가 보유한 재료 ID 목록을 받아, **일부 재료만 보유하고 있어도** 일치율(matchRate) 기반으로 레시피를 추천합니다.
+
+> **핵심 동작**: 레시피에 필요한 재료를 전부 갖추지 않아도 추천됩니다.  
+> 예를 들어, "두부"와 "순두부" 2개만 보유해도 "김치두부솥(matchRate: 25%)", "두부된장무침(matchRate: 25%)" 등이 추천됩니다.  
+> 보유 재료와 부족한 재료를 분리하여 반환하므로, 사용자가 추가 구매할 재료를 파악할 수 있습니다.
 
 **`POST /api/recipes/recommend`**
 
@@ -266,19 +270,32 @@ OCR에서 추출된 상품명(예: "국산콩 두부")을 DB의 `Ingredient` 테
 {
   "ingredientIds": [
     "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-    "c3d4e5f6-a7b8-9012-cdef-123456789012"
+    "b2c3d4e5-f6a7-8901-bcde-f12345678901"
   ],
   "top_k": 10,
-  "category": null
+  "category": null,
+  "min_match_rate": 0.0
 }
 ```
 
 | 파라미터 | 타입 | 필수 | 설명 |
 |----------|------|------|------|
-| `ingredientIds` | UUID[] | O | 보유 재료 ID 목록 |
+| `ingredientIds` | UUID[] | O | 보유 재료 ID 목록 (일부만 있어도 가능) |
 | `top_k` | int | X (기본: 10) | 최대 추천 개수 |
 | `category` | string \| null | X | 카테고리 필터 (null이면 전체) |
+| `min_match_rate` | float | X (기본: 0.0) | 최소 일치율 필터 (0.0~1.0). 예: 0.3이면 재료 30% 이상 일치하는 레시피만 반환 |
+
+#### 추천 알고리즘
+
+```
+1. 각 레시피의 필요 재료 목록 조회
+2. 사용자 보유 재료와 교집합 계산
+   → matchRate = (보유 재료 ∩ 레시피 재료) / 레시피 전체 재료 수
+3. matchRate > 0 (보유 재료가 1개라도 포함)인 레시피 필터
+4. min_match_rate 이상인 레시피만 필터
+5. matchRate 내림차순 → 보유 재료 수 내림차순으로 정렬
+6. 상위 top_k개 반환
+```
 
 #### Response — `200 OK`
 
@@ -289,38 +306,56 @@ OCR에서 추출된 상품명(예: "국산콩 두부")을 DB의 `Ingredient` 테
     "recommendations": [
       {
         "recipeId": "0848e1e1-65b9-4302-ab8c-f6e2ee9c70e8",
-        "name": "두부깻잎전",
-        "category": "반찬",
+        "name": "김치두부솥",
+        "category": "찜류",
         "imageUrl": "",
         "matchedIngredients": [
-          {"ingredientId": "a1b2...", "ingredientName": "두부"},
-          {"ingredientId": "b2c3...", "ingredientName": "깻잎"}
+          {"ingredientId": "a1b2...", "ingredientName": "두부"}
         ],
         "missingIngredients": [
-          {"ingredientId": "d4e5...", "ingredientName": "부침가루"},
-          {"ingredientId": "e5f6...", "ingredientName": "계란"}
+          {"ingredientId": "d4e5...", "ingredientName": "신김치"},
+          {"ingredientId": "e5f6...", "ingredientName": "돼지고기"},
+          {"ingredientId": "f6a7...", "ingredientName": "청고추"}
         ],
-        "matchRate": 0.67,
-        "totalIngredientCount": 6
+        "matchRate": 0.25,
+        "totalIngredientCount": 4
       },
       {
         "recipeId": "233c9632-a481-44f1-967d-b78ce0e3a173",
-        "name": "삼겹살깻잎구이",
-        "category": "구이류",
+        "name": "두부된장무침",
+        "category": "반찬",
         "imageUrl": "",
         "matchedIngredients": [
-          {"ingredientId": "c3d4...", "ingredientName": "삼겹살"},
-          {"ingredientId": "b2c3...", "ingredientName": "깻잎"}
+          {"ingredientId": "a1b2...", "ingredientName": "두부"}
         ],
         "missingIngredients": [
-          {"ingredientId": "f6a7...", "ingredientName": "소금"}
+          {"ingredientId": "c3d4...", "ingredientName": "된장"},
+          {"ingredientId": "d4e5...", "ingredientName": "고춧가루"},
+          {"ingredientId": "e5f6...", "ingredientName": "참기름"}
         ],
-        "matchRate": 0.75,
+        "matchRate": 0.25,
         "totalIngredientCount": 4
+      },
+      {
+        "recipeId": "5b272c8f-58d5-4281-b640-9b3494e15c94",
+        "name": "김치동그랑땡",
+        "category": "반찬",
+        "imageUrl": "",
+        "matchedIngredients": [
+          {"ingredientId": "a1b2...", "ingredientName": "두부"}
+        ],
+        "missingIngredients": [
+          {"ingredientId": "f6a7...", "ingredientName": "김치"},
+          {"ingredientId": "a7b8...", "ingredientName": "돼지고기"},
+          {"ingredientId": "b8c9...", "ingredientName": "계란"},
+          {"ingredientId": "c9d0...", "ingredientName": "부침가루"}
+        ],
+        "matchRate": 0.2,
+        "totalIngredientCount": 5
       }
     ],
-    "total_count": 2,
-    "input_ingredient_count": 3
+    "total_count": 3,
+    "input_ingredient_count": 2
   }
 }
 ```
@@ -329,17 +364,26 @@ OCR에서 추출된 상품명(예: "국산콩 두부")을 DB의 `Ingredient` 테
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `recommendations` | Array | 추천 레시피 목록 (matchRate 내림차순) |
+| `recommendations` | Array | 추천 레시피 목록 (matchRate 내림차순 정렬) |
 | `recommendations[].recipeId` | UUID | 레시피 ID |
 | `recommendations[].name` | string | 레시피명 |
 | `recommendations[].category` | string | 카테고리 |
 | `recommendations[].imageUrl` | string | 이미지 URL |
-| `recommendations[].matchedIngredients` | Array | 보유 중인 재료 목록 |
-| `recommendations[].missingIngredients` | Array | 부족한 재료 목록 |
-| `recommendations[].matchRate` | float | 재료 일치율 (0~1) |
+| `recommendations[].matchedIngredients` | Array | **보유 중인 재료** 목록 |
+| `recommendations[].missingIngredients` | Array | **부족한 재료** 목록 (추가 구매 필요) |
+| `recommendations[].matchRate` | float | 재료 일치율 (0~1). 1.0이면 모든 재료 보유 |
 | `recommendations[].totalIngredientCount` | int | 레시피에 필요한 전체 재료 수 |
 | `total_count` | int | 추천된 레시피 총 개수 |
-| `input_ingredient_count` | int | 입력된 재료 수 |
+| `input_ingredient_count` | int | 입력된 보유 재료 수 |
+
+#### 사용 시나리오 예시
+
+| 시나리오 | min_match_rate | 결과 |
+|----------|---------------|------|
+| 어떤 재료든 포함되면 추천 | `0.0` (기본값) | 보유 재료 1개라도 포함된 모든 레시피 |
+| 재료 절반 이상 보유한 것만 | `0.5` | matchRate ≥ 50%인 레시피만 |
+| 거의 다 갖춘 것만 | `0.8` | matchRate ≥ 80%인 레시피만 |
+| 모든 재료 보유한 것만 | `1.0` | 재료를 100% 보유한 레시피만 |
 
 ---
 
@@ -615,16 +659,22 @@ AI 서버 및 의존 서비스(PaddleOCR, Qwen LLM)의 상태를 확인합니다
      │                 │ ⑦ 매칭된 재료 반환   │
      │                 │ <────────────────── │
      │                 │                    │
-     │                 │ ⑧ 재료 목록으로     │
+     │                 │ ⑧ 보유 재료로       │
      │                 │   레시피 추천 요청   │
+     │                 │   (일부만 있어도 OK) │
      │                 │ ──────────────────> │
      │                 │   POST /api/       │
      │                 │   recipes/recommend │
      │                 │                    │
+     │                 │   matchRate 계산    │
+     │                 │   (보유/전체 재료)   │
+     │                 │                    │
      │                 │ ⑨ 추천 레시피 반환   │
+     │                 │   + 부족 재료 포함   │
      │                 │ <────────────────── │
      │                 │                    │
      │ ⑩ 추천 레시피    │                    │
+     │   + 부족 재료    │                    │
      │   목록 표시      │                    │
      │ <────────────────                    │
      │                 │                    │
@@ -651,8 +701,8 @@ AI 서버 및 의존 서비스(PaddleOCR, Qwen LLM)의 상태를 확인합니다
 | ① ~ ③ | 영수증 촬영 → OCR + LLM 보정 | `POST /api/ocr/receipt` |
 | ④ ~ ⑤ | 추출된 상품 목록 사용자 확인/수정 | (클라이언트 처리) |
 | ⑥ ~ ⑦ | 확인된 상품명 → DB 재료 매칭 | `POST /api/ingredients/match` |
-| ⑧ ~ ⑨ | 매칭된 재료로 레시피 추천 | `POST /api/recipes/recommend` |
-| ⑩ ~ ⑪ | 추천 레시피 목록 → 사용자 선택 | (클라이언트 처리) |
+| ⑧ ~ ⑨ | 보유 재료로 레시피 추천 (일부만 있어도 matchRate 기반 추천) | `POST /api/recipes/recommend` |
+| ⑩ ~ ⑪ | 추천 레시피 + 부족 재료 목록 → 사용자 선택 | (클라이언트 처리) |
 | ⑫ ~ ⑭ | 선택한 레시피 상세 조회 | `GET /api/recipes/{recipeId}` |
 
 ---
