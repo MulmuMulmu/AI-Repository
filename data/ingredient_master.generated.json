@@ -1,0 +1,6210 @@
+[
+  {
+    "id": 1,
+    "standard_name": "마늘",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 368
+  },
+  {
+    "id": 2,
+    "standard_name": "설탕",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 360
+  },
+  {
+    "id": 3,
+    "standard_name": "대파",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 323
+  },
+  {
+    "id": 4,
+    "standard_name": "참기름",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 310
+  },
+  {
+    "id": 5,
+    "standard_name": "소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 309
+  },
+  {
+    "id": 6,
+    "standard_name": "양파",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 292
+  },
+  {
+    "id": 7,
+    "standard_name": "간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 290
+  },
+  {
+    "id": 8,
+    "standard_name": "깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 282
+  },
+  {
+    "id": 9,
+    "standard_name": "후추",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 276
+  },
+  {
+    "id": 10,
+    "standard_name": "계란",
+    "category": "egg",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 21,
+    "observed_count": 243
+  },
+  {
+    "id": 11,
+    "standard_name": "물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 241
+  },
+  {
+    "id": 12,
+    "standard_name": "고춧가루",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 187
+  },
+  {
+    "id": 13,
+    "standard_name": "올리고당",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 162
+  },
+  {
+    "id": 14,
+    "standard_name": "식용유",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 155
+  },
+  {
+    "id": 15,
+    "standard_name": "고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 154
+  },
+  {
+    "id": 16,
+    "standard_name": "맛술",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 142
+  },
+  {
+    "id": 17,
+    "standard_name": "굴소스",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 140
+  },
+  {
+    "id": 18,
+    "standard_name": "진간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 127
+  },
+  {
+    "id": 19,
+    "standard_name": "고추장",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 125
+  },
+  {
+    "id": 20,
+    "standard_name": "식초",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 102
+  },
+  {
+    "id": 21,
+    "standard_name": "버터",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 87
+  },
+  {
+    "id": 22,
+    "standard_name": "당근",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 82
+  },
+  {
+    "id": 23,
+    "standard_name": "두부",
+    "category": "tofu_bean",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 82
+  },
+  {
+    "id": 24,
+    "standard_name": "밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 76
+  },
+  {
+    "id": 25,
+    "standard_name": "감자",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 59
+  },
+  {
+    "id": 26,
+    "standard_name": "베이컨",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 54
+  },
+  {
+    "id": 27,
+    "standard_name": "마요네즈",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 53
+  },
+  {
+    "id": 28,
+    "standard_name": "국간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 52
+  },
+  {
+    "id": 29,
+    "standard_name": "우유",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 52
+  },
+  {
+    "id": 30,
+    "standard_name": "된장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 49
+  },
+  {
+    "id": 31,
+    "standard_name": "들기름",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 48
+  },
+  {
+    "id": 32,
+    "standard_name": "닭가슴살",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 47
+  },
+  {
+    "id": 33,
+    "standard_name": "올리브유",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 47
+  },
+  {
+    "id": 34,
+    "standard_name": "케첩",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 46
+  },
+  {
+    "id": 35,
+    "standard_name": "오이",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 42
+  },
+  {
+    "id": 36,
+    "standard_name": "참치액",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 41
+  },
+  {
+    "id": 37,
+    "standard_name": "물엿",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 38
+  },
+  {
+    "id": 38,
+    "standard_name": "양배추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 36
+  },
+  {
+    "id": 39,
+    "standard_name": "치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 36
+  },
+  {
+    "id": 40,
+    "standard_name": "파슬리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 36
+  },
+  {
+    "id": 41,
+    "standard_name": "파프리카",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 36
+  },
+  {
+    "id": 42,
+    "standard_name": "스팸",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 35
+  },
+  {
+    "id": 43,
+    "standard_name": "꿀",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 34
+  },
+  {
+    "id": 44,
+    "standard_name": "애호박",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 34
+  },
+  {
+    "id": 45,
+    "standard_name": "전분",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 32
+  },
+  {
+    "id": 46,
+    "standard_name": "깻잎",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 31
+  },
+  {
+    "id": 47,
+    "standard_name": "콩나물",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 31
+  },
+  {
+    "id": 48,
+    "standard_name": "매실액",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 30
+  },
+  {
+    "id": 49,
+    "standard_name": "참치",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 28
+  },
+  {
+    "id": 50,
+    "standard_name": "매실청",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 27
+  },
+  {
+    "id": 51,
+    "standard_name": "미림",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 26
+  },
+  {
+    "id": 52,
+    "standard_name": "새송이버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 26
+  },
+  {
+    "id": 53,
+    "standard_name": "박력분",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 25
+  },
+  {
+    "id": 54,
+    "standard_name": "부추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 24
+  },
+  {
+    "id": 55,
+    "standard_name": "맛살",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 23
+  },
+  {
+    "id": 56,
+    "standard_name": "밀가루",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 23
+  },
+  {
+    "id": 57,
+    "standard_name": "식빵",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 23
+  },
+  {
+    "id": 58,
+    "standard_name": "모짜렐라치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 22
+  },
+  {
+    "id": 59,
+    "standard_name": "팽이버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 22
+  },
+  {
+    "id": 60,
+    "standard_name": "들깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 21
+  },
+  {
+    "id": 61,
+    "standard_name": "시금치",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 21
+  },
+  {
+    "id": 62,
+    "standard_name": "가지",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 20
+  },
+  {
+    "id": 63,
+    "standard_name": "김",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 20
+  },
+  {
+    "id": 64,
+    "standard_name": "통마늘",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 20
+  },
+  {
+    "id": 65,
+    "standard_name": "부침가루",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 19
+  },
+  {
+    "id": 66,
+    "standard_name": "새우",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 19
+  },
+  {
+    "id": 67,
+    "standard_name": "소고기",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 19
+  },
+  {
+    "id": 68,
+    "standard_name": "참치캔",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 19
+  },
+  {
+    "id": 69,
+    "standard_name": "멸치액젓",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 18
+  },
+  {
+    "id": 70,
+    "standard_name": "청주",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 18
+  },
+  {
+    "id": 71,
+    "standard_name": "카레",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 18
+  },
+  {
+    "id": 72,
+    "standard_name": "레몬즙",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 17
+  },
+  {
+    "id": 73,
+    "standard_name": "무",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 17
+  },
+  {
+    "id": 74,
+    "standard_name": "표고버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 17
+  },
+  {
+    "id": 75,
+    "standard_name": "브로콜리",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 16
+  },
+  {
+    "id": 76,
+    "standard_name": "양조간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 16
+  },
+  {
+    "id": 77,
+    "standard_name": "올리브오일",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 16
+  },
+  {
+    "id": 78,
+    "standard_name": "피자치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 16
+  },
+  {
+    "id": 79,
+    "standard_name": "느타리버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 14
+  },
+  {
+    "id": 80,
+    "standard_name": "방울토마토",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 14
+  },
+  {
+    "id": 81,
+    "standard_name": "생강",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 14
+  },
+  {
+    "id": 82,
+    "standard_name": "순두부",
+    "category": "tofu_bean",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 14
+  },
+  {
+    "id": 83,
+    "standard_name": "어묵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 14
+  },
+  {
+    "id": 84,
+    "standard_name": "튀김가루",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 14
+  },
+  {
+    "id": 85,
+    "standard_name": "간마늘",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 13
+  },
+  {
+    "id": 86,
+    "standard_name": "만두",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 13
+  },
+  {
+    "id": 87,
+    "standard_name": "베이킹파우더",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 13
+  },
+  {
+    "id": 88,
+    "standard_name": "숙주",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 13
+  },
+  {
+    "id": 89,
+    "standard_name": "고구마",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 12
+  },
+  {
+    "id": 90,
+    "standard_name": "떡볶이떡",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 12
+  },
+  {
+    "id": 91,
+    "standard_name": "모짜렐라",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 12
+  },
+  {
+    "id": 92,
+    "standard_name": "사과",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 12
+  },
+  {
+    "id": 93,
+    "standard_name": "액젓",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 12
+  },
+  {
+    "id": 94,
+    "standard_name": "코인육수",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 12
+  },
+  {
+    "id": 95,
+    "standard_name": "알룰로스",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 11
+  },
+  {
+    "id": 96,
+    "standard_name": "토마토",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 11
+  },
+  {
+    "id": 97,
+    "standard_name": "검은깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 10
+  },
+  {
+    "id": 98,
+    "standard_name": "기름",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 10
+  },
+  {
+    "id": 99,
+    "standard_name": "김치",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 10
+  },
+  {
+    "id": 100,
+    "standard_name": "꽈리고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 10
+  },
+  {
+    "id": 101,
+    "standard_name": "빵가루",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 10
+  },
+  {
+    "id": 102,
+    "standard_name": "삼겹살",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 10
+  },
+  {
+    "id": 103,
+    "standard_name": "소면",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 10
+  },
+  {
+    "id": 104,
+    "standard_name": "참치액젓",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 10
+  },
+  {
+    "id": 105,
+    "standard_name": "청경채",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 10
+  },
+  {
+    "id": 106,
+    "standard_name": "굴",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 9
+  },
+  {
+    "id": 107,
+    "standard_name": "연겨자",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 9
+  },
+  {
+    "id": 108,
+    "standard_name": "연두부",
+    "category": "tofu_bean",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 9
+  },
+  {
+    "id": 109,
+    "standard_name": "체다치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 9
+  },
+  {
+    "id": 110,
+    "standard_name": "감자전분",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 8
+  },
+  {
+    "id": 111,
+    "standard_name": "굵은소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 8
+  },
+  {
+    "id": 112,
+    "standard_name": "당면",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 8
+  },
+  {
+    "id": 113,
+    "standard_name": "떡국떡",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 8
+  },
+  {
+    "id": 114,
+    "standard_name": "또띠아",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 8
+  },
+  {
+    "id": 115,
+    "standard_name": "맛소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 8
+  },
+  {
+    "id": 116,
+    "standard_name": "빨강파프리카",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 8
+  },
+  {
+    "id": 117,
+    "standard_name": "생크림",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 8
+  },
+  {
+    "id": 118,
+    "standard_name": "슈가파우더",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 8
+  },
+  {
+    "id": 119,
+    "standard_name": "아몬드",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 8
+  },
+  {
+    "id": 120,
+    "standard_name": "오징어",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 8
+  },
+  {
+    "id": 121,
+    "standard_name": "칵테일새우",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 8
+  },
+  {
+    "id": 122,
+    "standard_name": "노랑파프리카",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 7
+  },
+  {
+    "id": 123,
+    "standard_name": "다시마",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 7
+  },
+  {
+    "id": 124,
+    "standard_name": "닭다리살",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 7
+  },
+  {
+    "id": 125,
+    "standard_name": "대패삼겹살",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 7
+  },
+  {
+    "id": 126,
+    "standard_name": "돼지고기",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 7
+  },
+  {
+    "id": 127,
+    "standard_name": "멸치",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 7
+  },
+  {
+    "id": 128,
+    "standard_name": "멸치육수",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 7
+  },
+  {
+    "id": 129,
+    "standard_name": "모닝빵",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 7
+  },
+  {
+    "id": 130,
+    "standard_name": "비엔나소세지",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 7
+  },
+  {
+    "id": 131,
+    "standard_name": "비엔나소시지",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 7
+  },
+  {
+    "id": 132,
+    "standard_name": "상추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 7
+  },
+  {
+    "id": 133,
+    "standard_name": "생수",
+    "category": "beverage",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 7
+  },
+  {
+    "id": 134,
+    "standard_name": "쌈장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 7
+  },
+  {
+    "id": 135,
+    "standard_name": "카놀라유",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 7
+  },
+  {
+    "id": 136,
+    "standard_name": "파스타면",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 7
+  },
+  {
+    "id": 137,
+    "standard_name": "햄",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 7
+  },
+  {
+    "id": 138,
+    "standard_name": "견과류",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 6
+  },
+  {
+    "id": 139,
+    "standard_name": "공기밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 6
+  },
+  {
+    "id": 140,
+    "standard_name": "까나리액젓",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 6
+  },
+  {
+    "id": 141,
+    "standard_name": "녹말가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 6
+  },
+  {
+    "id": 142,
+    "standard_name": "단무지",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 6
+  },
+  {
+    "id": 143,
+    "standard_name": "닭봉",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 6
+  },
+  {
+    "id": 144,
+    "standard_name": "맛간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 6
+  },
+  {
+    "id": 145,
+    "standard_name": "무염버터",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 6
+  },
+  {
+    "id": 146,
+    "standard_name": "버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 6
+  },
+  {
+    "id": 147,
+    "standard_name": "새우젓",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 6
+  },
+  {
+    "id": 148,
+    "standard_name": "쌀",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 6
+  },
+  {
+    "id": 149,
+    "standard_name": "양송이버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 6
+  },
+  {
+    "id": 150,
+    "standard_name": "차돌박이",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 6
+  },
+  {
+    "id": 151,
+    "standard_name": "호두",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 6
+  },
+  {
+    "id": 152,
+    "standard_name": "황설탕",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 6
+  },
+  {
+    "id": 153,
+    "standard_name": "냉동만두",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 5
+  },
+  {
+    "id": 154,
+    "standard_name": "마늘쫑",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 155,
+    "standard_name": "메추리알",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 156,
+    "standard_name": "바질",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 157,
+    "standard_name": "소시지",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 5
+  },
+  {
+    "id": 158,
+    "standard_name": "소주",
+    "category": "beverage",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 5
+  },
+  {
+    "id": 159,
+    "standard_name": "스위트콘",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 160,
+    "standard_name": "쌀뜨물",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 5
+  },
+  {
+    "id": 161,
+    "standard_name": "아보카도",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 5
+  },
+  {
+    "id": 162,
+    "standard_name": "알배추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 163,
+    "standard_name": "양상추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 164,
+    "standard_name": "오이고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 165,
+    "standard_name": "오일",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 5
+  },
+  {
+    "id": 166,
+    "standard_name": "옥수수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 167,
+    "standard_name": "요리당",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 5
+  },
+  {
+    "id": 168,
+    "standard_name": "우삼겹",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 5
+  },
+  {
+    "id": 169,
+    "standard_name": "치킨스톡",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 5
+  },
+  {
+    "id": 170,
+    "standard_name": "캔옥수수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 5
+  },
+  {
+    "id": 171,
+    "standard_name": "통후추",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 5
+  },
+  {
+    "id": 172,
+    "standard_name": "가래떡",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 4
+  },
+  {
+    "id": 173,
+    "standard_name": "계란노른자",
+    "category": "egg",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 21,
+    "observed_count": 4
+  },
+  {
+    "id": 174,
+    "standard_name": "고추기름",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 175,
+    "standard_name": "고추참치",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 4
+  },
+  {
+    "id": 176,
+    "standard_name": "다시다",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 4
+  },
+  {
+    "id": 177,
+    "standard_name": "달걀노른자",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 178,
+    "standard_name": "딸기잼",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 4
+  },
+  {
+    "id": 179,
+    "standard_name": "떡",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 4
+  },
+  {
+    "id": 180,
+    "standard_name": "레몬",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 4
+  },
+  {
+    "id": 181,
+    "standard_name": "머스타드",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 4
+  },
+  {
+    "id": 182,
+    "standard_name": "묵은지",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 183,
+    "standard_name": "미나리",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 184,
+    "standard_name": "미역",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 185,
+    "standard_name": "배추김치",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 186,
+    "standard_name": "봄동",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 187,
+    "standard_name": "사각어묵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 4
+  },
+  {
+    "id": 188,
+    "standard_name": "새싹채소",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 189,
+    "standard_name": "아스파라거스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 190,
+    "standard_name": "연어",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 4
+  },
+  {
+    "id": 191,
+    "standard_name": "우동면",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 4
+  },
+  {
+    "id": 192,
+    "standard_name": "진미채",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 193,
+    "standard_name": "쯔유",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 4
+  },
+  {
+    "id": 194,
+    "standard_name": "차가운",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 195,
+    "standard_name": "채썬",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 196,
+    "standard_name": "칵테일",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 197,
+    "standard_name": "코코아파우더",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 198,
+    "standard_name": "토마토소스",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 4
+  },
+  {
+    "id": 199,
+    "standard_name": "토마토스파게티소스",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 4
+  },
+  {
+    "id": 200,
+    "standard_name": "포도씨유",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 4
+  },
+  {
+    "id": 201,
+    "standard_name": "풋고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 4
+  },
+  {
+    "id": 202,
+    "standard_name": "​",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 203,
+    "standard_name": "간",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 204,
+    "standard_name": "건미역",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 205,
+    "standard_name": "겨자",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 206,
+    "standard_name": "계피가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 207,
+    "standard_name": "굵은",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 208,
+    "standard_name": "김밥김",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 3
+  },
+  {
+    "id": 209,
+    "standard_name": "냉동새우",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 3
+  },
+  {
+    "id": 210,
+    "standard_name": "다진당근",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 211,
+    "standard_name": "다진청양고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 212,
+    "standard_name": "닭안심",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 213,
+    "standard_name": "대패",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 214,
+    "standard_name": "돈까스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 215,
+    "standard_name": "땅콩분태",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 216,
+    "standard_name": "땡초",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 217,
+    "standard_name": "명란",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 218,
+    "standard_name": "모차렐라치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 3
+  },
+  {
+    "id": 219,
+    "standard_name": "미니새송이버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 3
+  },
+  {
+    "id": 220,
+    "standard_name": "밀가루박력분",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 3
+  },
+  {
+    "id": 221,
+    "standard_name": "배추",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 222,
+    "standard_name": "베이킹소다",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 223,
+    "standard_name": "삶은",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 224,
+    "standard_name": "숙주나물",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 225,
+    "standard_name": "스테비아",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 226,
+    "standard_name": "스파게티소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 227,
+    "standard_name": "슬라이스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 228,
+    "standard_name": "슬라이스햄",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 3
+  },
+  {
+    "id": 229,
+    "standard_name": "신김치",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 230,
+    "standard_name": "아몬드가루",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 3
+  },
+  {
+    "id": 231,
+    "standard_name": "아몬드슬라이스",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 3
+  },
+  {
+    "id": 232,
+    "standard_name": "오레오",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 233,
+    "standard_name": "오징어채",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 3
+  },
+  {
+    "id": 234,
+    "standard_name": "옥수수전분",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 3
+  },
+  {
+    "id": 235,
+    "standard_name": "올리고",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 236,
+    "standard_name": "와사비",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 237,
+    "standard_name": "원당",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 238,
+    "standard_name": "찹쌀가루",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 3
+  },
+  {
+    "id": 239,
+    "standard_name": "치킨",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 240,
+    "standard_name": "치킨너겟",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 241,
+    "standard_name": "크림치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 3
+  },
+  {
+    "id": 242,
+    "standard_name": "통조림",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 243,
+    "standard_name": "페페론치노",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 244,
+    "standard_name": "핫케이크가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 245,
+    "standard_name": "허브솔트",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 246,
+    "standard_name": "현미밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 3
+  },
+  {
+    "id": 247,
+    "standard_name": "호박",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 3
+  },
+  {
+    "id": 248,
+    "standard_name": "가는소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 249,
+    "standard_name": "가시오이",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 250,
+    "standard_name": "갈은",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 251,
+    "standard_name": "갈은깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 252,
+    "standard_name": "건새우",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 253,
+    "standard_name": "검정깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 254,
+    "standard_name": "게맛살",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 255,
+    "standard_name": "고운소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 256,
+    "standard_name": "곤약",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 257,
+    "standard_name": "김치국물",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 258,
+    "standard_name": "깐",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 259,
+    "standard_name": "꽃소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 260,
+    "standard_name": "납작어묵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 261,
+    "standard_name": "냉이",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 262,
+    "standard_name": "노란파프리카",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 263,
+    "standard_name": "노랑",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 264,
+    "standard_name": "노른자",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 265,
+    "standard_name": "다진소고기",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 2
+  },
+  {
+    "id": 266,
+    "standard_name": "단호박",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 267,
+    "standard_name": "닭",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 268,
+    "standard_name": "닭고기",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 2
+  },
+  {
+    "id": 269,
+    "standard_name": "닭다리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 270,
+    "standard_name": "도토리묵",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 271,
+    "standard_name": "돈가스소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 272,
+    "standard_name": "동전육수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 273,
+    "standard_name": "돼지",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 274,
+    "standard_name": "돼지고기앞다리살",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 2
+  },
+  {
+    "id": 275,
+    "standard_name": "돼지목살",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 276,
+    "standard_name": "두부면",
+    "category": "tofu_bean",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 2
+  },
+  {
+    "id": 277,
+    "standard_name": "들깻가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 278,
+    "standard_name": "딸기쨈",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 2
+  },
+  {
+    "id": 279,
+    "standard_name": "땅콩버터",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 2
+  },
+  {
+    "id": 280,
+    "standard_name": "마늘종",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 281,
+    "standard_name": "마른",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 282,
+    "standard_name": "만두피",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 283,
+    "standard_name": "매운",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 284,
+    "standard_name": "매운고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 285,
+    "standard_name": "머스타드소스",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 286,
+    "standard_name": "면수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 287,
+    "standard_name": "멸치다시마육수",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 288,
+    "standard_name": "명란젓",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 289,
+    "standard_name": "목살",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 290,
+    "standard_name": "무순",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 291,
+    "standard_name": "무우",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 292,
+    "standard_name": "물만두",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 293,
+    "standard_name": "바나나",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 2
+  },
+  {
+    "id": 294,
+    "standard_name": "바닐라",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 295,
+    "standard_name": "바닐라오일",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 296,
+    "standard_name": "바닐라익스트랙",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 297,
+    "standard_name": "발사믹",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 298,
+    "standard_name": "발사믹식초",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 299,
+    "standard_name": "볶은",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 300,
+    "standard_name": "볶은참깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 301,
+    "standard_name": "부침용",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 302,
+    "standard_name": "분말",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 303,
+    "standard_name": "불고기용",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 2
+  },
+  {
+    "id": 304,
+    "standard_name": "불린",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 305,
+    "standard_name": "불린미역",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 306,
+    "standard_name": "블루베리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 307,
+    "standard_name": "비엔나",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 308,
+    "standard_name": "새우살",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 309,
+    "standard_name": "생강술",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 310,
+    "standard_name": "생강청",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 311,
+    "standard_name": "샤인머스켓",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 312,
+    "standard_name": "소고기국거리",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 2
+  },
+  {
+    "id": 313,
+    "standard_name": "소금+후추",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 314,
+    "standard_name": "손질",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 315,
+    "standard_name": "손질된",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 316,
+    "standard_name": "손질오징어",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 317,
+    "standard_name": "스리라차소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 318,
+    "standard_name": "실곤약",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 319,
+    "standard_name": "썬",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 320,
+    "standard_name": "앞다리살",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 321,
+    "standard_name": "얇게",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 322,
+    "standard_name": "양배추채",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 323,
+    "standard_name": "양송이",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 324,
+    "standard_name": "어린잎채소",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 325,
+    "standard_name": "얼갈이",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 326,
+    "standard_name": "얼음",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 327,
+    "standard_name": "연유",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 328,
+    "standard_name": "영양부추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 329,
+    "standard_name": "옥수수캔",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 330,
+    "standard_name": "옥수수콘",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 331,
+    "standard_name": "요리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 332,
+    "standard_name": "우동사리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 333,
+    "standard_name": "우엉",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 334,
+    "standard_name": "월계수잎",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 335,
+    "standard_name": "유부",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 336,
+    "standard_name": "유자청",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 337,
+    "standard_name": "육수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 338,
+    "standard_name": "자숙새우",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 339,
+    "standard_name": "잔파",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 340,
+    "standard_name": "조미김",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 341,
+    "standard_name": "찐고구마",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 342,
+    "standard_name": "참나물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 343,
+    "standard_name": "청량고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 344,
+    "standard_name": "청포묵",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 345,
+    "standard_name": "초코칩",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 346,
+    "standard_name": "캔참치",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 2
+  },
+  {
+    "id": 347,
+    "standard_name": "커피가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 348,
+    "standard_name": "코코아가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 349,
+    "standard_name": "타피오카전분",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 350,
+    "standard_name": "토마토케첩",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 2
+  },
+  {
+    "id": 351,
+    "standard_name": "통조림햄",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 2
+  },
+  {
+    "id": 352,
+    "standard_name": "튀김기름",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 2
+  },
+  {
+    "id": 353,
+    "standard_name": "파마산",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 354,
+    "standard_name": "파마산치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 2
+  },
+  {
+    "id": 355,
+    "standard_name": "페퍼론치노",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 356,
+    "standard_name": "푸실리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 357,
+    "standard_name": "프랑크",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 358,
+    "standard_name": "피망",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 359,
+    "standard_name": "핫소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 360,
+    "standard_name": "항정살",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 361,
+    "standard_name": "햇반",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 362,
+    "standard_name": "허니",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 363,
+    "standard_name": "현미유",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 364,
+    "standard_name": "홍피망",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 365,
+    "standard_name": "황태",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 366,
+    "standard_name": "황태채",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 367,
+    "standard_name": "후랑크",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 368,
+    "standard_name": "훈제오리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 2
+  },
+  {
+    "id": 369,
+    "standard_name": "2배식초",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 370,
+    "standard_name": "8인치",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 371,
+    "standard_name": "​고추가루",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 372,
+    "standard_name": "​다진",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 373,
+    "standard_name": "​식용유",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 374,
+    "standard_name": "​오이",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 375,
+    "standard_name": "가쓰오부시",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 376,
+    "standard_name": "각종자투리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 377,
+    "standard_name": "각종채소",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 378,
+    "standard_name": "간장1",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 379,
+    "standard_name": "간장1T",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 380,
+    "standard_name": "간장1t",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 381,
+    "standard_name": "간장1스푼",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 382,
+    "standard_name": "간장2",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 383,
+    "standard_name": "갈비",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 384,
+    "standard_name": "감자과자",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 385,
+    "standard_name": "건미역30g",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 386,
+    "standard_name": "건파슬리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 387,
+    "standard_name": "건표고",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 388,
+    "standard_name": "검정",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 389,
+    "standard_name": "계란4개",
+    "category": "egg",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 21,
+    "observed_count": 1
+  },
+  {
+    "id": 390,
+    "standard_name": "계란물",
+    "category": "egg",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 21,
+    "observed_count": 1
+  },
+  {
+    "id": 391,
+    "standard_name": "계란후라이",
+    "category": "egg",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 21,
+    "observed_count": 1
+  },
+  {
+    "id": 392,
+    "standard_name": "계핏가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 393,
+    "standard_name": "고운들깨가루",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 394,
+    "standard_name": "고체카레",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 395,
+    "standard_name": "고추가루0.5",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 396,
+    "standard_name": "고추장1",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 397,
+    "standard_name": "곤약면",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 398,
+    "standard_name": "골뱅이",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 399,
+    "standard_name": "골뱅이캔",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 400,
+    "standard_name": "공깃밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 401,
+    "standard_name": "과일잼",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 402,
+    "standard_name": "구멍어묵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 403,
+    "standard_name": "구운김",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 404,
+    "standard_name": "구운베이컨",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 405,
+    "standard_name": "국간장1",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 406,
+    "standard_name": "국거리소고기",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 407,
+    "standard_name": "국물용",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 408,
+    "standard_name": "굵게",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 409,
+    "standard_name": "귤",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 410,
+    "standard_name": "그릭요거트",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 411,
+    "standard_name": "기",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 412,
+    "standard_name": "기타",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 413,
+    "standard_name": "김밥용",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 414,
+    "standard_name": "김칫국물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 415,
+    "standard_name": "깐메추리알",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 416,
+    "standard_name": "꼬꼬빌",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 417,
+    "standard_name": "꼬막",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 418,
+    "standard_name": "꾸밈재료",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 419,
+    "standard_name": "꿀/물엿",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 420,
+    "standard_name": "꿀1t",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 421,
+    "standard_name": "꿀호떡",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 422,
+    "standard_name": "납작",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 423,
+    "standard_name": "납작사각어묵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 424,
+    "standard_name": "냉동바나나",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 425,
+    "standard_name": "냉동블루베리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 426,
+    "standard_name": "냉면육수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 427,
+    "standard_name": "냉장고속채소",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 428,
+    "standard_name": "네모참치",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 429,
+    "standard_name": "녹말",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 430,
+    "standard_name": "녹인버터",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 431,
+    "standard_name": "녹차가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 432,
+    "standard_name": "누텔라",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 433,
+    "standard_name": "느타리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 434,
+    "standard_name": "늘려먹는치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 435,
+    "standard_name": "다대기",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 436,
+    "standard_name": "다시마물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 437,
+    "standard_name": "다시물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 438,
+    "standard_name": "다시육수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 439,
+    "standard_name": "다진돼지고기",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 440,
+    "standard_name": "다진땅콩",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 441,
+    "standard_name": "다진마늘1스푼",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 442,
+    "standard_name": "다진마늘1티스푼",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 443,
+    "standard_name": "다진생강",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 444,
+    "standard_name": "다진홍고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 445,
+    "standard_name": "다진홍청양고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 446,
+    "standard_name": "단단한",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 447,
+    "standard_name": "달걀2개",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 448,
+    "standard_name": "달걀물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 449,
+    "standard_name": "달걀프라이",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 450,
+    "standard_name": "달래",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 451,
+    "standard_name": "닭가슴살통조림",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 452,
+    "standard_name": "닭국물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 453,
+    "standard_name": "닭날개",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 454,
+    "standard_name": "대추",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 455,
+    "standard_name": "대파흰부분",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 456,
+    "standard_name": "데쳐서",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 457,
+    "standard_name": "데칠때",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 458,
+    "standard_name": "델큐브",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 459,
+    "standard_name": "돈가스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 460,
+    "standard_name": "돌나물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 461,
+    "standard_name": "동태포",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 462,
+    "standard_name": "돼지고기다짐육",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 463,
+    "standard_name": "돼지등갈비",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 464,
+    "standard_name": "돼지등심•잡채용",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 465,
+    "standard_name": "돼지안심잡채용",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 466,
+    "standard_name": "돼지앞다리살",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 467,
+    "standard_name": "두배식초",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 468,
+    "standard_name": "두툼한",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 469,
+    "standard_name": "둥이네",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 470,
+    "standard_name": "들기름1",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 471,
+    "standard_name": "들깨가루2T",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 472,
+    "standard_name": "등갈비",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 473,
+    "standard_name": "따뜻한",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 474,
+    "standard_name": "딸기",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 475,
+    "standard_name": "땅콩",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 476,
+    "standard_name": "땅콩가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 477,
+    "standard_name": "떡볶이",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 478,
+    "standard_name": "뜨거운",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 479,
+    "standard_name": "라이스페이퍼",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 480,
+    "standard_name": "래디쉬",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 481,
+    "standard_name": "럼",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 482,
+    "standard_name": "레드와인",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 483,
+    "standard_name": "레몬쥬스",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 484,
+    "standard_name": "로메인",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 485,
+    "standard_name": "리챔",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 486,
+    "standard_name": "마늘2통",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 487,
+    "standard_name": "마일드",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 488,
+    "standard_name": "마카로니",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 489,
+    "standard_name": "만가닥버섯",
+    "category": "mushroom",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 4,
+    "observed_count": 1
+  },
+  {
+    "id": 490,
+    "standard_name": "맛살4줄",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 491,
+    "standard_name": "맛술1",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 492,
+    "standard_name": "매실",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 493,
+    "standard_name": "매실액기스",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 494,
+    "standard_name": "매실엑기스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 495,
+    "standard_name": "매실원액",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 496,
+    "standard_name": "매실청1t",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 497,
+    "standard_name": "머쉬마루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 498,
+    "standard_name": "머스터드",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 499,
+    "standard_name": "머스터드소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 500,
+    "standard_name": "면두부",
+    "category": "tofu_bean",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 501,
+    "standard_name": "멸치다마육수",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 502,
+    "standard_name": "멸치다시다육수",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 503,
+    "standard_name": "멸치다시마다신물",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 504,
+    "standard_name": "멸치다시마티백",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 505,
+    "standard_name": "멸치육수4컵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 506,
+    "standard_name": "멸치육수5컵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 507,
+    "standard_name": "모듬어묵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 508,
+    "standard_name": "모짜렐라슬라이스치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 509,
+    "standard_name": "몽쉘",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 510,
+    "standard_name": "몽쉘카카오맛",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 511,
+    "standard_name": "무130g",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 512,
+    "standard_name": "무가당코코아가루",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 513,
+    "standard_name": "무염",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 514,
+    "standard_name": "무화과",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 515,
+    "standard_name": "물120ml",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 516,
+    "standard_name": "물1큰술",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 517,
+    "standard_name": "믈",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 518,
+    "standard_name": "미니",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 519,
+    "standard_name": "미니파프리카",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 520,
+    "standard_name": "미림1/2t",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 521,
+    "standard_name": "미소된장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 522,
+    "standard_name": "미숫가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 523,
+    "standard_name": "미원",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 524,
+    "standard_name": "밀떡",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 525,
+    "standard_name": "바게트빵",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 526,
+    "standard_name": "바나나우유",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 527,
+    "standard_name": "바닐라빈",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 528,
+    "standard_name": "바닐라설탕",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 529,
+    "standard_name": "바닐라에센스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 530,
+    "standard_name": "바앤나소세지",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 531,
+    "standard_name": "바질가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 532,
+    "standard_name": "밤",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 533,
+    "standard_name": "밤고구마",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 534,
+    "standard_name": "밥새우",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 535,
+    "standard_name": "방울",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 536,
+    "standard_name": "배",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 537,
+    "standard_name": "배즙",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 538,
+    "standard_name": "배추잎",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 539,
+    "standard_name": "배춧잎",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 540,
+    "standard_name": "백설탕",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 541,
+    "standard_name": "백오이",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 542,
+    "standard_name": "버터3T",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 543,
+    "standard_name": "범일",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 544,
+    "standard_name": "범일진간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 545,
+    "standard_name": "베이비",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 546,
+    "standard_name": "베이비채소",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 547,
+    "standard_name": "베이킹",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 548,
+    "standard_name": "볶은깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 549,
+    "standard_name": "볶은소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 550,
+    "standard_name": "볶은조미김",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 551,
+    "standard_name": "볶은통깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 552,
+    "standard_name": "볶음",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 553,
+    "standard_name": "볶음탕용",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 554,
+    "standard_name": "볼어묵",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 555,
+    "standard_name": "부침유",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 556,
+    "standard_name": "북어채",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 557,
+    "standard_name": "분홍",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 558,
+    "standard_name": "분홍소시지",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 559,
+    "standard_name": "불린당면",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 560,
+    "standard_name": "붉은",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 561,
+    "standard_name": "브로컬리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 562,
+    "standard_name": "블랙페이퍼",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 563,
+    "standard_name": "블루베리잼",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 564,
+    "standard_name": "비정제",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 565,
+    "standard_name": "비타민",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 566,
+    "standard_name": "빨간파프리카",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 567,
+    "standard_name": "빨강",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 568,
+    "standard_name": "사각",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 569,
+    "standard_name": "사각햄",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 570,
+    "standard_name": "사골곰탕",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 571,
+    "standard_name": "사골국물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 572,
+    "standard_name": "사골육수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 573,
+    "standard_name": "사과식초",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 574,
+    "standard_name": "삶은계란",
+    "category": "egg",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 21,
+    "observed_count": 1
+  },
+  {
+    "id": 575,
+    "standard_name": "삶은고구마",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 576,
+    "standard_name": "삼치",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 577,
+    "standard_name": "삽겹살",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 578,
+    "standard_name": "새송이",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 579,
+    "standard_name": "새싹",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 580,
+    "standard_name": "새우가루",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 581,
+    "standard_name": "샌드위치",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 582,
+    "standard_name": "샌드위치햄",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 583,
+    "standard_name": "샐러드",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 584,
+    "standard_name": "샐러드채소",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 585,
+    "standard_name": "생",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 586,
+    "standard_name": "생강맛술",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 587,
+    "standard_name": "생강즙",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 588,
+    "standard_name": "생강파우더",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 589,
+    "standard_name": "생오리슬라이스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 590,
+    "standard_name": "샤브용",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 591,
+    "standard_name": "설탕1",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 592,
+    "standard_name": "설탕1T",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 593,
+    "standard_name": "설탕A",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 594,
+    "standard_name": "설탕B",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 595,
+    "standard_name": "섬초",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 596,
+    "standard_name": "세발나물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 597,
+    "standard_name": "소고기다짐육",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 598,
+    "standard_name": "소고기등심",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 599,
+    "standard_name": "소금•후추",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 600,
+    "standard_name": "소금빵",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 601,
+    "standard_name": "소세지",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 602,
+    "standard_name": "소이카페",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 603,
+    "standard_name": "속배추",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 604,
+    "standard_name": "송송썰은",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 605,
+    "standard_name": "술",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 606,
+    "standard_name": "슈가",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 607,
+    "standard_name": "슈가파우터",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 608,
+    "standard_name": "스윗칠리소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 609,
+    "standard_name": "스톡",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 610,
+    "standard_name": "스트링치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 611,
+    "standard_name": "스파게티",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 612,
+    "standard_name": "스파게티라면소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 613,
+    "standard_name": "스파게티면",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 614,
+    "standard_name": "스핌",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 615,
+    "standard_name": "슬라이스아몬드",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 1
+  },
+  {
+    "id": 616,
+    "standard_name": "시금치1단",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 617,
+    "standard_name": "시원한",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 618,
+    "standard_name": "시판네모유부",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 619,
+    "standard_name": "시판토마토소스",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 620,
+    "standard_name": "식물성",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 621,
+    "standard_name": "식용류",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 622,
+    "standard_name": "신",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 623,
+    "standard_name": "실파",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 624,
+    "standard_name": "쑥갓",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 625,
+    "standard_name": "아몬드파우더",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 1
+  },
+  {
+    "id": 626,
+    "standard_name": "아삭이고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 627,
+    "standard_name": "안심",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 628,
+    "standard_name": "알롤로스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 629,
+    "standard_name": "알배기배추",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 630,
+    "standard_name": "알새우",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 631,
+    "standard_name": "앙파",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 632,
+    "standard_name": "양배추잎",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 633,
+    "standard_name": "양조식초",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 634,
+    "standard_name": "어린",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 635,
+    "standard_name": "어린잎",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 636,
+    "standard_name": "어묵탕스프",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 637,
+    "standard_name": "연근",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 638,
+    "standard_name": "연와사비",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 639,
+    "standard_name": "열무",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 640,
+    "standard_name": "오이1개",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 641,
+    "standard_name": "오트밀",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 642,
+    "standard_name": "올리고당1",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 643,
+    "standard_name": "올리고당1T",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 644,
+    "standard_name": "올리고당2",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 645,
+    "standard_name": "올리고당or물엿",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 646,
+    "standard_name": "올리브오일/아보카도오일",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 647,
+    "standard_name": "완숙토마토",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 648,
+    "standard_name": "요리술",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 649,
+    "standard_name": "우리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 650,
+    "standard_name": "우무묵채",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 651,
+    "standard_name": "우스터소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 652,
+    "standard_name": "유기농흑설탕",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 653,
+    "standard_name": "육우",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 654,
+    "standard_name": "으깬",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 655,
+    "standard_name": "으깬감자",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 656,
+    "standard_name": "으깬땅콩",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 657,
+    "standard_name": "으깬통깨",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 658,
+    "standard_name": "인스턴트",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 659,
+    "standard_name": "잎채소",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 660,
+    "standard_name": "자색양파",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 661,
+    "standard_name": "자일로스설탕",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 662,
+    "standard_name": "작은오징어",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 663,
+    "standard_name": "잔멸치",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 664,
+    "standard_name": "잡곡밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 665,
+    "standard_name": "잡채용돼지고기",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 666,
+    "standard_name": "잣",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 667,
+    "standard_name": "장식용",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 668,
+    "standard_name": "저지방",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 669,
+    "standard_name": "적赤용과",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 670,
+    "standard_name": "정육된",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 671,
+    "standard_name": "제주",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 672,
+    "standard_name": "조림간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 673,
+    "standard_name": "종합",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 674,
+    "standard_name": "주황",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 675,
+    "standard_name": "주황파프리카",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 676,
+    "standard_name": "중간크기",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 677,
+    "standard_name": "중력분",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 678,
+    "standard_name": "쥐똥고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 679,
+    "standard_name": "진",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 680,
+    "standard_name": "집간장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 681,
+    "standard_name": "집된장",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 682,
+    "standard_name": "찐",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 683,
+    "standard_name": "찐감자",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 684,
+    "standard_name": "찬물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 685,
+    "standard_name": "찬밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 686,
+    "standard_name": "찰보리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 687,
+    "standard_name": "참기름1",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 688,
+    "standard_name": "참기름2",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 689,
+    "standard_name": "참기름2스푼",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 690,
+    "standard_name": "참드림쌀",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 691,
+    "standard_name": "참치쌈장",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 692,
+    "standard_name": "참치액1/2t",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 693,
+    "standard_name": "참치액1스푼",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 694,
+    "standard_name": "찹쌀",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 695,
+    "standard_name": "채소육수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 696,
+    "standard_name": "천일염",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 697,
+    "standard_name": "청&홍고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 698,
+    "standard_name": "청양",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 699,
+    "standard_name": "청양고추나꽈리고추",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 700,
+    "standard_name": "청정원오리엔탈드레싱",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 701,
+    "standard_name": "청피망",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 702,
+    "standard_name": "체더치즈",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 703,
+    "standard_name": "체리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 704,
+    "standard_name": "초고추장",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 705,
+    "standard_name": "초록",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 706,
+    "standard_name": "초장",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 707,
+    "standard_name": "초콜렛",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 708,
+    "standard_name": "초콜릿",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 709,
+    "standard_name": "취나물",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 710,
+    "standard_name": "치즈분말",
+    "category": "dairy",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 10,
+    "observed_count": 1
+  },
+  {
+    "id": 711,
+    "standard_name": "칠리소스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 712,
+    "standard_name": "카카오가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 713,
+    "standard_name": "칼국수면",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 714,
+    "standard_name": "칼라",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 715,
+    "standard_name": "캐찹",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 716,
+    "standard_name": "캐첩",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 717,
+    "standard_name": "캔",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 718,
+    "standard_name": "케일",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 719,
+    "standard_name": "케챱",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 720,
+    "standard_name": "코코아",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 721,
+    "standard_name": "콘시리얼",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 722,
+    "standard_name": "콘옥수수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 723,
+    "standard_name": "콜라",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 724,
+    "standard_name": "콩국수",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 725,
+    "standard_name": "콩밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 726,
+    "standard_name": "크래미맛살",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 727,
+    "standard_name": "크랜베리",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 728,
+    "standard_name": "크림닭가슴살",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 729,
+    "standard_name": "큰",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 730,
+    "standard_name": "큰감자",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 731,
+    "standard_name": "타임",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 732,
+    "standard_name": "토르티야",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 733,
+    "standard_name": "토마토파스타소스",
+    "category": "fruit",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 5,
+    "observed_count": 1
+  },
+  {
+    "id": 734,
+    "standard_name": "통",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 735,
+    "standard_name": "통삼겹살",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 736,
+    "standard_name": "통조림참치",
+    "category": "seafood",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 2,
+    "observed_count": 1
+  },
+  {
+    "id": 737,
+    "standard_name": "파로밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 738,
+    "standard_name": "파마산가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 739,
+    "standard_name": "파스타",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 740,
+    "standard_name": "파스타면1인분",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 741,
+    "standard_name": "파채",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 742,
+    "standard_name": "파프리카노랑",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 743,
+    "standard_name": "파프리카빨강",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 744,
+    "standard_name": "팔도비빔면",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 745,
+    "standard_name": "팩",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 746,
+    "standard_name": "편마늘",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 747,
+    "standard_name": "푸실리면",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 748,
+    "standard_name": "프랑크소세지",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 749,
+    "standard_name": "프랑크소시지",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 750,
+    "standard_name": "플레인요구르트",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 751,
+    "standard_name": "피클링",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 752,
+    "standard_name": "하루견과",
+    "category": "nut",
+    "default_storage_type": "room",
+    "shelf_life_days": 90,
+    "observed_count": 1
+  },
+  {
+    "id": 753,
+    "standard_name": "핫초코가루",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 754,
+    "standard_name": "핫케익믹스",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 755,
+    "standard_name": "해바라기씨",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 756,
+    "standard_name": "햇양파",
+    "category": "vegetable",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 757,
+    "standard_name": "허니머스타드",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 758,
+    "standard_name": "허브맛솔트",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 759,
+    "standard_name": "허브소금",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 760,
+    "standard_name": "현미떡볶이",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 761,
+    "standard_name": "현미식초",
+    "category": "sauce",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 762,
+    "standard_name": "호떡믹스",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 763,
+    "standard_name": "호밀빵",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 764,
+    "standard_name": "호박씨",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 765,
+    "standard_name": "홀그레인",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 766,
+    "standard_name": "홀그레인머스터드",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 767,
+    "standard_name": "홀그레인머타드",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 768,
+    "standard_name": "화이트",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 769,
+    "standard_name": "화이트와인",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 770,
+    "standard_name": "황태포",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 771,
+    "standard_name": "후랑크소시지",
+    "category": "meat",
+    "default_storage_type": "refrigerated",
+    "shelf_life_days": 3,
+    "observed_count": 1
+  },
+  {
+    "id": 772,
+    "standard_name": "후춧가루와",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 773,
+    "standard_name": "훈제",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 774,
+    "standard_name": "휘핑크림",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  },
+  {
+    "id": 775,
+    "standard_name": "흰쌀밥",
+    "category": "grain",
+    "default_storage_type": "room",
+    "shelf_life_days": 180,
+    "observed_count": 1
+  },
+  {
+    "id": 776,
+    "standard_name": "히말라얀",
+    "category": "other",
+    "default_storage_type": "room",
+    "shelf_life_days": 7,
+    "observed_count": 1
+  }
+]

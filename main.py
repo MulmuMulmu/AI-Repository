@@ -69,6 +69,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+_RECEIPT_BACKEND = None
+_RECEIPT_PARSER = None
+_RECEIPT_SERVICE_NOOP = None
+_RECEIPT_SERVICE_QWEN = None
+
 # ═══════════════════════════════════════════════════════════════
 #  Pydantic 스키마
 # ═══════════════════════════════════════════════════════════════
@@ -157,6 +162,128 @@ def _find_suggestions(product_name: str, top_n: int = 3) -> List[str]:
     scored.sort(key=lambda x: -x[0])
     return [name for _, name in scored[:top_n]]
 
+
+def _normalize_food_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """OCR 또는 Qwen 결과를 API 계약에 맞는 식품 항목으로 정규화한다."""
+    if not isinstance(item, dict):
+        return None
+
+    product_name = item.get("product_name") or item.get("name")
+    if not isinstance(product_name, str):
+        product_name = str(product_name or "").strip()
+    product_name = product_name.strip()
+    if not product_name:
+        return None
+
+    amount_krw = item.get("amount_krw")
+    if amount_krw is not None and amount_krw != "":
+        try:
+            amount_krw = int(str(amount_krw).replace(",", ""))
+        except (TypeError, ValueError):
+            amount_krw = None
+    else:
+        amount_krw = None
+
+    notes = item.get("notes", "")
+    if notes is None:
+        notes = ""
+
+    return {
+        "product_name": product_name,
+        "amount_krw": amount_krw,
+        "notes": str(notes).strip(),
+    }
+
+
+def _normalize_food_items(items: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    normalized: list[Dict[str, Any]] = []
+    for item in items:
+        normalized_item = _normalize_food_item(item)
+        if normalized_item is not None:
+            normalized.append(normalized_item)
+    return normalized
+
+
+def _legacy_food_items_from_parsed(parsed: Dict[str, Any]) -> list[Dict[str, Any]]:
+    legacy_items: list[Dict[str, Any]] = []
+    for item in parsed.get("items", []):
+        if not isinstance(item, dict):
+            continue
+        product_name = item.get("normalized_name") or item.get("raw_name")
+        if not product_name:
+            continue
+        amount = item.get("amount")
+        if isinstance(amount, float) and amount.is_integer():
+            amount = int(amount)
+        legacy_items.append(
+            {
+                "product_name": product_name,
+                "amount_krw": amount,
+                "notes": ", ".join(item.get("review_reason", [])),
+            }
+        )
+    return _normalize_food_items(legacy_items)
+
+
+def _legacy_model_name_from_parsed(parsed: Dict[str, Any]) -> str:
+    engine_version = str(parsed.get("engine_version") or "receipt-engine-v2")
+    diagnostics = parsed.get("diagnostics", {})
+    if isinstance(diagnostics, dict) and diagnostics.get("qwen_used"):
+        return f"{engine_version}+qwen"
+    return engine_version
+
+
+def _get_receipt_backend():
+    global _RECEIPT_BACKEND
+    if _RECEIPT_BACKEND is None:
+        from ocr_qwen.services import PaddleOcrBackend
+
+        _RECEIPT_BACKEND = PaddleOcrBackend()
+    return _RECEIPT_BACKEND
+
+
+def _get_receipt_parser():
+    global _RECEIPT_PARSER
+    if _RECEIPT_PARSER is None:
+        from ocr_qwen.receipts import ReceiptParser
+
+        _RECEIPT_PARSER = ReceiptParser()
+    return _RECEIPT_PARSER
+
+
+def _get_receipt_service(use_qwen: bool):
+    global _RECEIPT_SERVICE_NOOP, _RECEIPT_SERVICE_QWEN
+    if use_qwen:
+        if _RECEIPT_SERVICE_QWEN is None:
+            from ocr_qwen.qwen import build_default_qwen_provider
+            from ocr_qwen.services import ReceiptParseService
+
+            _RECEIPT_SERVICE_QWEN = ReceiptParseService(
+                ocr_backend=_get_receipt_backend(),
+                parser=_get_receipt_parser(),
+                qwen_provider=build_default_qwen_provider(),
+            )
+        return _RECEIPT_SERVICE_QWEN
+
+    if _RECEIPT_SERVICE_NOOP is None:
+        from ocr_qwen.qwen import NoopQwenProvider
+        from ocr_qwen.services import ReceiptParseService
+
+        _RECEIPT_SERVICE_NOOP = ReceiptParseService(
+            ocr_backend=_get_receipt_backend(),
+            parser=_get_receipt_parser(),
+            qwen_provider=NoopQwenProvider(),
+        )
+    return _RECEIPT_SERVICE_NOOP
+
+
+@app.on_event("startup")
+def _warm_up_receipt_services() -> None:
+    try:
+        _get_receipt_backend().warm_up()
+    except Exception as exc:
+        print(f"[startup] receipt ocr warm-up skipped: {exc}")
+
 # ═══════════════════════════════════════════════════════════════
 #  레시피 추천 엔진
 # ═══════════════════════════════════════════════════════════════
@@ -230,6 +357,16 @@ def recommend_recipes(
 
 @app.get("/api/health")
 async def health_check():
+    try:
+        from ocr_qwen.qwen import local_qwen_enabled, qwen_runtime_available
+
+        qwen_status = {
+            "runtime_available": qwen_runtime_available(),
+            "local_enabled": local_qwen_enabled(),
+        }
+    except Exception as exc:
+        qwen_status = f"unavailable ({exc})"
+
     return ApiResponse(
         success=True,
         data={
@@ -237,7 +374,9 @@ async def health_check():
             "version": "1.0.0",
             "services": {
                 "paddleocr": "available",
-                "qwen_llm": "available",
+                "preprocess": "available",
+                "bbox_contract": "enabled",
+                "qwen_llm": qwen_status,
                 "database": "connected",
             },
             "stats": {
@@ -253,9 +392,16 @@ async def health_check():
 @app.post("/api/ocr/receipt")
 async def ocr_receipt(
     image: UploadFile = File(...),
-    use_qwen: bool = True,
+    use_qwen: bool = Query(
+        default=True,
+        description=(
+            "Local OpenAI-compatible Qwen 보정 사용 여부. "
+            "true여도 Qwen 환경변수/로컬 서버가 없으면 OCR-only로 fallback하며, "
+            "응답 계약(ocr_texts, food_items, food_count, model)은 유지됩니다."
+        ),
+    ),
 ):
-    """영수증 이미지 → PaddleOCR + Qwen LLM 보정 → 식품명 추출."""
+    """영수증 이미지 → PaddleOCR 기반 OCR + 선택적 Qwen 보정 → 식품명 추출."""
     if image.content_type not in ("image/jpeg", "image/png", "image/jpg"):
         raise HTTPException(
             status_code=400,
@@ -269,34 +415,12 @@ async def ocr_receipt(
         tmp_path = tmp.name
 
     try:
-        from receipt_ocr import ReceiptOCR
+        service = _get_receipt_service(use_qwen=use_qwen)
+        parsed = service.parse({"receipt_image_url": tmp_path})
 
-        ocr = ReceiptOCR()
-        analysis = ocr.analyze_receipt(tmp_path)
-
-        ocr_texts = analysis.get("all_texts", [])
-        food_items = []
-        model_name = None
-
-        if use_qwen:
-            try:
-                from qwen_receipt_assistant import QwenReceiptAssistant
-
-                assistant = QwenReceiptAssistant()
-                refined = assistant.refine_analysis(analysis)
-                food_items = refined.get("items", [])
-                model_name = refined.get("model")
-            except Exception as e:
-                food_items = [
-                    {"product_name": f["name"], "amount_krw": None, "notes": ""}
-                    for f in analysis.get("food_items", [])
-                ]
-                model_name = f"fallback (Qwen error: {e})"
-        else:
-            food_items = [
-                {"product_name": f["name"], "amount_krw": None, "notes": ""}
-                for f in analysis.get("food_items", [])
-            ]
+        ocr_texts = parsed.get("ocr_texts", [])
+        food_items = _legacy_food_items_from_parsed(parsed)
+        model_name = _legacy_model_name_from_parsed(parsed)
 
         return ApiResponse(
             success=True,
@@ -305,6 +429,10 @@ async def ocr_receipt(
                 "food_items": food_items,
                 "food_count": len(food_items),
                 "model": model_name,
+                "vendor_name": parsed.get("vendor_name"),
+                "purchased_at": parsed.get("purchased_at"),
+                "totals": parsed.get("totals", {}),
+                "diagnostics": parsed.get("diagnostics", {}),
             },
         )
     except ImportError:

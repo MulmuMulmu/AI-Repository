@@ -1,6 +1,11 @@
 # PaddleOCR 영수증 식품명 인식 시스템
 # Python 3.8 ~ 3.11 권장
 
+# API 서버
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+
 # PaddlePaddle (CPU 버전, GPU 사용 시 paddlepaddle-gpu로 교체)
 paddlepaddle
 paddleocr
@@ -19,3 +24,9 @@ matplotlib>=3.7.0
 # Qwen 보조(OpenAI 호환 API: DashScope, Ollama 등)
 openai>=1.12.0
 python-dotenv>=1.0.0
+
+# 테스트
+pytest>=8.0.0
+
+# Tests
+pytest>=8.0.0

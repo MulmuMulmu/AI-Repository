@@ -35,14 +35,14 @@ Spring Boot (백엔드)
     ├─── DB (MySQL/PostgreSQL) ◀── Recipe, Ingredient, RecipeIngredient, RecipeStep
     │
     └───▶ AI FastAPI 서버
-              ├── PaddleOCR (영수증 텍스트 인식)
-              ├── Qwen LLM (OCR 오타 보정 + 상품명 정리)
+              ├── PaddleOCR (개선된 ReceiptOCR 기반 영수증 텍스트 인식)
+              ├── Qwen LLM (best-effort OCR 오타 보정 + 상품명 정리)
               └── 재료 매칭 / 레시피 추천 엔진
 ```
 
 | 담당 | Spring Boot | AI FastAPI |
 |------|------------|------------|
-| 영수증 OCR + LLM 보정 | 이미지 전달 | **PaddleOCR + Qwen 처리** |
+| 영수증 OCR + LLM 보정 | 이미지 전달 | **PaddleOCR + best-effort Qwen 처리** |
 | 재료 매칭 | 요청 전달 | **유사도 기반 매칭** |
 | 레시피 추천 | 요청 전달 | **추천 알고리즘 수행** |
 | 레시피 CRUD | **JPA/DB 직접 처리** | - |
@@ -90,7 +90,7 @@ Spring Boot (백엔드)
 
 | # | Method | Endpoint | 설명 |
 |---|--------|----------|------|
-| 1 | `POST` | `/api/ocr/receipt` | 영수증 이미지 OCR + Qwen LLM 보정 |
+| 1 | `POST` | `/api/ocr/receipt` | 영수증 이미지 OCR + best-effort Qwen 보정 |
 | 2 | `POST` | `/api/ingredients/match` | OCR 추출 상품명 → DB Ingredient 매칭 |
 | 3 | `POST` | `/api/recipes/recommend` | 보유 재료 기반 레시피 추천 |
 | 4 | `GET`  | `/api/recipes/{recipeId}` | 레시피 상세 조회 (재료 + 조리 단계) |
@@ -103,7 +103,8 @@ Spring Boot (백엔드)
 
 ### 4.1 영수증 OCR + Qwen 보정
 
-영수증 이미지를 업로드하면 PaddleOCR로 텍스트를 인식하고, Qwen LLM이 OCR 오타를 보정하여 식품 상품명 목록을 반환합니다.
+영수증 이미지를 업로드하면 개선된 `ReceiptOCR`가 텍스트를 인식하고, Qwen LLM이 OCR 오타를 보정하여 식품 상품명 목록을 반환합니다.
+`use_qwen=true`는 **best-effort** 옵션이며, 로컬 OpenAI-compatible Qwen 설정이 없으면 OCR-only 결과로 정상 응답합니다.
 
 **`POST /api/ocr/receipt`**
 
@@ -116,7 +117,7 @@ Spring Boot (백엔드)
 | 파라미터 | 타입 | 필수 | 설명 |
 |----------|------|------|------|
 | `image` | File (jpg/png) | O | 영수증 이미지 파일 |
-| `use_qwen` | boolean | X (기본: true) | Qwen LLM 보정 사용 여부 |
+| `use_qwen` | boolean | X (기본: true) | Qwen LLM 보정 시도 여부. `true`여도 로컬 Qwen이 없거나 비활성화되어 있으면 OCR-only로 fallback |
 
 #### Response — `200 OK`
 
@@ -157,15 +158,21 @@ Spring Boot (백엔드)
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `ocr_texts` | Array | PaddleOCR 원본 인식 결과 (전체 텍스트) |
+| `ocr_texts` | Array | ReceiptOCR 원본 인식 결과 (전체 텍스트) |
 | `ocr_texts[].text` | string | 인식된 텍스트 |
 | `ocr_texts[].confidence` | float | 인식 신뢰도 (0~1) |
-| `food_items` | Array | Qwen 보정 후 최종 식품 목록 |
+| `food_items` | Array | 최종 식품 목록. Qwen 성공 시 보정 결과, 실패/비활성 시 OCR-only 기반 결과 |
 | `food_items[].product_name` | string | 보정된 상품명 |
 | `food_items[].amount_krw` | int \| null | 결제 금액 (원), 불확실하면 null |
 | `food_items[].notes` | string | OCR 오타 수정 내역 등 |
 | `food_count` | int | 추출된 식품 개수 |
-| `model` | string | 사용된 LLM 모델명 |
+| `model` | string \| null | 사용된 LLM 모델명. Qwen 미사용 시 null, fallback 시 fallback 문자열 |
+
+#### 동작 규칙
+
+- `use_qwen=true`: Qwen 보정을 **시도**합니다.
+- 로컬 Qwen 환경이 없거나 에러가 나면, API는 OCR-only 결과를 유지한 채 `model`에 fallback 문자열을 넣어 응답합니다.
+- `use_qwen=false`: Qwen 호출 없이 OCR-only 결과만 반환합니다.
 
 ---
 
