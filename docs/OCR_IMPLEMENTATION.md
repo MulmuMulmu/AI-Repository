@@ -80,8 +80,8 @@
 
 ```env
 ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1
-QWEN_BASE_URL=http://localhost:11434/v1
-QWEN_API_KEY=ollama
+QWEN_BASE_URL=http://<openai-compatible-server>/v1
+QWEN_API_KEY=<api-key>
 QWEN_MODEL=qwen2.5:latest
 QWEN_TIMEOUT_SECONDS=8
 QWEN_RECEIPT_MAX_TOKENS=256
