@@ -1028,19 +1028,40 @@ async def ocr_analyze(image: UploadFile = File(...)):
         Path(tmp_path).unlink(missing_ok=True)
 
 
-@app.get("/ai/ingredient/prediction")
-async def ingredient_prediction(
-    name: str = Query(..., description="식재료명"),
-    purchase_date: str = Query(..., description="구매일 (YYYY-MM-DD)"),
-    storage: str = Query("냉장", description="보관방법 (냉장/냉동/상온)"),
-):
+class IngredientPredictionRequest(BaseModel):
+    purchaseDate: str = Field(..., description="구매일 (YYYY-MM-DD)")
+    ingredients: List[str] = Field(..., min_length=1, description="식재료명 배열")
+
+
+@app.post("/ai/ingredient/prediction")
+async def ingredient_prediction(req: IngredientPredictionRequest):
     """
     소비기한 계산 — GPT-4o-mini + 규칙 기반 fallback.
+    백엔드 연동 형식: purchaseDate + ingredients 배열 → ingredientName + expirationDate 배열
     """
-    trace_id = _gen_trace()
-    result = _expiry_calc.calculate(
-        item_name=name,
-        purchase_date=purchase_date,
-        storage_method=storage,
-    )
-    return _ok(result, trace_id)
+    try:
+        results = []
+        for name in req.ingredients:
+            calc = _expiry_calc.calculate(
+                item_name=name,
+                purchase_date=req.purchaseDate,
+                storage_method="냉장",
+            )
+            results.append({
+                "ingredientName": name,
+                "expirationDate": calc.get("expiry_date", ""),
+            })
+
+        return {
+            "success": True,
+            "result": {
+                "purchaseDate": req.purchaseDate,
+                "ingredients": results,
+            },
+        }
+    except Exception as e:
+        return {
+            "success": False,
+            "code": "AI500",
+            "result": "소비기한을 예측할 수 없습니다.",
+        }
