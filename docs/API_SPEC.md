@@ -1199,6 +1199,102 @@ AI 서버 인메모리 캐시를 초기화합니다.
 
 ---
 
+## 15. 백엔드 연동 API
+
+> 아래 2개는 Spring Boot 백엔드가 직접 호출하는 엔드포인트입니다.
+
+### 15-1. `POST /ai/ocr/analyze`
+
+영수증 이미지를 받아 OCR + 규칙 보정 + Qwen 1차 보정 후 식품명 리스트를 반환합니다.  
+DB 매칭 없이 식품명만 넘기므로, DB 저장은 백엔드에서 처리합니다.
+
+**요청**: `Content-Type: multipart/form-data`
+
+| 필드 | 타입 | 필수 | 설명 |
+|------|------|------|------|
+| `image` | File | O | 영수증 이미지 (jpg/png) |
+
+**응답:**
+```json
+{
+  "result_code": "OK",
+  "trace_id": "tr-a1b2c3d4e5f6",
+  "model_version": "ai-server-v1.1.0",
+  "result": {
+    "items": [
+      { "name": "삼겹살", "category": "축산물", "price": 15000 },
+      { "name": "대파", "category": "농산물", "price": 2000 },
+      { "name": "깻잎", "category": "농산물", "price": 1500 }
+    ],
+    "item_count": 3,
+    "store_name": "이마트",
+    "purchase_date": "2026-04-15",
+    "model": "rule_based_v1 + qwen"
+  },
+  "error": null
+}
+```
+
+| 응답 필드 | 타입 | 설명 |
+|-----------|------|------|
+| `items` | Array | 추출된 식품 목록 |
+| `items[].name` | String | 식품명 (OCR 보정 완료) |
+| `items[].category` | String | 카테고리 (축산물, 농산물, 유제품 등) |
+| `items[].price` | Int \| null | 가격 (원) |
+| `item_count` | Int | 추출된 식품 수 |
+| `store_name` | String \| null | 매장명 (인식 실패 시 null) |
+| `purchase_date` | String \| null | 구매일 YYYY-MM-DD (인식 실패 시 null) |
+| `model` | String | 사용된 모델명 |
+
+---
+
+### 15-2. `GET /ai/ingredient/prediction`
+
+식재료의 소비기한을 GPT-4o-mini로 계산합니다. GPT 실패 시 규칙 기반으로 자동 전환됩니다.
+
+**요청**: `GET /ai/ingredient/prediction?name=삼겹살&purchase_date=2026-04-16&storage=냉장`
+
+| 파라미터 | 타입 | 필수 | 설명 | 예시 |
+|----------|------|------|------|------|
+| `name` | String | O | 식재료명 | `삼겹살` |
+| `purchase_date` | String | O | 구매일 (YYYY-MM-DD) | `2026-04-16` |
+| `storage` | String | X | 보관방법 (기본값: 냉장) | `냉장` / `냉동` / `상온` |
+
+**응답:**
+```json
+{
+  "result_code": "OK",
+  "trace_id": "tr-b2c3d4e5f6a1",
+  "model_version": "ai-server-v1.1.0",
+  "result": {
+    "item_name": "삼겹살",
+    "purchase_date": "2026-04-16",
+    "storage_method": "냉장",
+    "expiry_date": "2026-04-19",
+    "d_day": 2,
+    "risk_level": "caution",
+    "confidence": 0.85,
+    "method": "gpt-4o-mini",
+    "reason": "냉장 보관 시 삼겹살은 3일 정도의 소비기한을 가집니다."
+  },
+  "error": null
+}
+```
+
+| 응답 필드 | 타입 | 설명 |
+|-----------|------|------|
+| `item_name` | String | 식재료명 |
+| `purchase_date` | String | 구매일 |
+| `storage_method` | String | 보관방법 |
+| `expiry_date` | String | 소비기한 (YYYY-MM-DD) |
+| `d_day` | Int | 남은 일수 (음수면 이미 만료) |
+| `risk_level` | String | `safe`(4일+) / `caution`(2~3일) / `danger`(0~1일) / `expired`(만료) |
+| `confidence` | Float | 신뢰도 (GPT: 0.85, 규칙: 0.70) |
+| `method` | String | `gpt-4o-mini` 또는 `rule-based` |
+| `reason` | String | 판단 근거 설명 |
+
+---
+
 ## 오류 코드 목록
 
 | 코드 | HTTP | 설명 |
