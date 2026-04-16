@@ -146,6 +146,22 @@ def _filter_receipt_extraction_payload(payload: object) -> dict | None:
     return filtered if filtered else None
 
 
+def _filter_receipt_header_payload(payload: object) -> dict | None:
+    if not isinstance(payload, dict):
+        return None
+
+    filtered: dict = {}
+    for key in ("vendor_name", "purchased_at"):
+        value = payload.get(key)
+        if value is None:
+            filtered[key] = None
+        elif isinstance(value, str):
+            cleaned = value.strip()
+            filtered[key] = cleaned or None
+
+    return filtered if filtered else None
+
+
 def _filter_receipt_item_normalization_payload(payload: object) -> dict | None:
     if not isinstance(payload, dict):
         return None
@@ -207,6 +223,9 @@ def _filter_recipe_explanation_payload(payload: object) -> dict | None:
 
 
 class NoopQwenProvider:
+    def rescue_receipt_header(self, payload: dict) -> dict | None:
+        return None
+
     def extract_receipt(self, payload: dict) -> dict | None:
         return None
 
@@ -233,6 +252,19 @@ class LocalTransformersQwenProvider:
         self.enabled = enabled if enabled is not None else os.environ.get("ENABLE_LOCAL_QWEN") == "1"
         self._tokenizer = None
         self._model = None
+
+    def rescue_receipt_header(self, payload: dict) -> dict | None:
+        if not self._runtime_available():
+            return None
+        prompt = self._build_receipt_header_prompt(payload)
+        return _filter_receipt_header_payload(
+            extract_json_object(
+                self._call_generate_text(
+                    prompt,
+                    max_new_tokens=32,
+                )
+            )
+        )
 
     def extract_receipt(self, payload: dict) -> dict | None:
         if not self._runtime_available():
@@ -288,12 +320,36 @@ class LocalTransformersQwenProvider:
             f"{json.dumps(payload, ensure_ascii=False)}"
         )
 
+    def _build_receipt_header_prompt(self, payload: dict) -> str:
+        return (
+            "receipt header rescue\n"
+            "Return one-line minified JSON only.\n"
+            "Schema: {\"vendor_name\":null,\"purchased_at\":null}\n"
+            "Examples:\n"
+            "Input: {\"top_strip_rows\":[\"GS25\",\"2023-11-24 00:01:04\"]}\n"
+            "Output: {\"vendor_name\":\"GS25\",\"purchased_at\":\"2023-11-24\"}\n"
+            "Input: {\"top_strip_rows\":[\"re-MART\",\"2024-09-12 18:59\"]}\n"
+            "Output: {\"vendor_name\":\"re-MART\",\"purchased_at\":\"2024-09-12\"}\n"
+            "Rules:\n"
+            "- Use only OCR evidence from merged_rows, raw_tokens, top_strip_rows.\n"
+            "- Prefer top_strip_rows over merged_rows.\n"
+            "- purchased_at must be YYYY-MM-DD or null.\n"
+            "- If an exact date is visible, do not return null.\n"
+            "- vendor_name must be a short plausible store name or null.\n"
+            "- Never echo raw OCR gibberish, product names, item headers, or numeric fragments as vendor_name.\n"
+            "- If uncertain, return null.\n"
+            f"{json.dumps(payload, ensure_ascii=False, separators=(',', ':'))}"
+        )
+
     def _build_receipt_item_prompt(self, payload: dict) -> str:
         return (
             "receipt item normalization\n"
             "Return one-line minified JSON only.\n"
             "Schema: {\"items\":[{\"index\":0,\"normalized_name\":\"\",\"quantity\":0,\"unit\":\"\",\"amount\":0}]}\n"
-            "Use only OCR rows. No English slugs. No extra items.\n"
+            "Use source_lines first, then context_lines if source_lines are incomplete.\n"
+            "You may correct OCR typos in normalized_name when review_reasons include low_confidence.\n"
+            "Prefer current numeric values unless a field is missing. Do not invent extra items.\n"
+            "Use only OCR rows. No English slugs, product codes, or unrelated guesses.\n"
             f"{json.dumps(payload, ensure_ascii=False, separators=(',', ':'))}"
         )
 
@@ -413,6 +469,14 @@ class OpenAICompatibleQwenProvider:
         timeout_value = os.environ.get("QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS", "30").strip()
         self.timeout_seconds = float(timeout_value) if timeout_value else 30.0
 
+    def rescue_receipt_header(self, payload: dict) -> dict | None:
+        if not self._runtime_available():
+            return None
+        prompt = self._build_receipt_header_prompt(payload)
+        return _filter_receipt_header_payload(
+            extract_json_object(self._generate_text(prompt))
+        )
+
     def extract_receipt(self, payload: dict) -> dict | None:
         if not self._runtime_available():
             return None
@@ -455,12 +519,36 @@ class OpenAICompatibleQwenProvider:
             f"{json.dumps(payload, ensure_ascii=False)}"
         )
 
+    def _build_receipt_header_prompt(self, payload: dict) -> str:
+        return (
+            "receipt header rescue\n"
+            "Return one-line minified JSON only.\n"
+            "Schema: {\"vendor_name\":null,\"purchased_at\":null}\n"
+            "Examples:\n"
+            "Input: {\"top_strip_rows\":[\"GS25\",\"2023-11-24 00:01:04\"]}\n"
+            "Output: {\"vendor_name\":\"GS25\",\"purchased_at\":\"2023-11-24\"}\n"
+            "Input: {\"top_strip_rows\":[\"re-MART\",\"2024-09-12 18:59\"]}\n"
+            "Output: {\"vendor_name\":\"re-MART\",\"purchased_at\":\"2024-09-12\"}\n"
+            "Rules:\n"
+            "- Use only OCR evidence from merged_rows, raw_tokens, top_strip_rows.\n"
+            "- Prefer top_strip_rows over merged_rows.\n"
+            "- purchased_at must be YYYY-MM-DD or null.\n"
+            "- If an exact date is visible, do not return null.\n"
+            "- vendor_name must be a short plausible store name or null.\n"
+            "- Never echo raw OCR gibberish, product names, item headers, or numeric fragments as vendor_name.\n"
+            "- If uncertain, return null.\n"
+            f"{json.dumps(payload, ensure_ascii=False, separators=(',', ':'))}"
+        )
+
     def _build_receipt_item_prompt(self, payload: dict) -> str:
         return (
             "receipt item normalization\n"
             "Return strict JSON only with key items.\n"
             "Each item must include index and may include normalized_name, quantity, unit, amount.\n"
-            "Use only the provided OCR rows. Do not invent English slugs, product codes, or extra items.\n"
+            "Use source_lines first, then context_lines if source_lines are incomplete.\n"
+            "You may correct OCR typos in normalized_name when review_reasons include low_confidence.\n"
+            "Prefer current numeric values unless a field is missing. Do not invent extra items.\n"
+            "Use only the provided OCR rows. Do not invent English slugs, product codes, or unrelated guesses.\n"
             f"{json.dumps(payload, ensure_ascii=False, separators=(',', ':'))}"
         )
 

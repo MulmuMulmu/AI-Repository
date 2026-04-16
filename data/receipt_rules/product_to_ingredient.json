@@ -1,0 +1,267 @@
+{
+  "version": 1,
+  "updated_at": "2026-04-16",
+  "description": "Standard product name to ingredient name mappings.",
+  "mappings": [
+    {
+      "product": "허쉬밀크초콜릿",
+      "ingredient": "초콜릿",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "허쉬쿠키앤크림",
+      "ingredient": "과자",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "허쉬쿠키앤초코",
+      "ingredient": "과자",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "바닐라파인트474ml",
+      "ingredient": "아이스크림",
+      "reason": "dessert_to_ingredient"
+    },
+    {
+      "product": "초코파인트474ml",
+      "ingredient": "아이스크림",
+      "reason": "dessert_to_ingredient"
+    },
+    {
+      "product": "라라스윗 바닐라파인트474ml",
+      "ingredient": "아이스크림",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "라라스윗 초코파인트474ml",
+      "ingredient": "아이스크림",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "호가든캔330ml",
+      "ingredient": "맥주",
+      "reason": "alcohol_to_ingredient"
+    },
+    {
+      "product": "진로 소주 360ml",
+      "ingredient": "소주",
+      "reason": "alcohol_to_ingredient"
+    },
+    {
+      "product": "햇반",
+      "ingredient": "즉석밥",
+      "reason": "grain_to_ingredient"
+    },
+    {
+      "product": "큰사각햇반300g",
+      "ingredient": "즉석밥",
+      "reason": "grain_to_ingredient"
+    },
+    {
+      "product": "투썸딸기피치",
+      "ingredient": "음료",
+      "reason": "drink_to_ingredient"
+    },
+    {
+      "product": "투썸로얄밀크티",
+      "ingredient": "밀크티",
+      "reason": "drink_to_ingredient"
+    },
+    {
+      "product": "속이편한 누룽지",
+      "ingredient": "누룽지",
+      "reason": "grain_to_ingredient"
+    },
+    {
+      "product": "아몬드빼빼로",
+      "ingredient": "과자",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "화이트빼빼로",
+      "ingredient": "과자",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "호레오화이트",
+      "ingredient": "과자",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "코카콜라350ml",
+      "ingredient": "탄산음료",
+      "reason": "beverage_to_ingredient"
+    },
+    {
+      "product": "농심 김치 사발면",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "농심 너구리 컵",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "농심 새우탕 컵",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "농심 신라면 소컵",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "농심 오징어짬뽕 컵",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "농심 짜파게티",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "삼양 불닭볶음면",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "삼양 불닭소스",
+      "ingredient": "고추장",
+      "reason": "sauce_to_ingredient"
+    },
+    {
+      "product": "삼양 나가사끼짬뽕 컵",
+      "ingredient": "라면",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "오뚜기 옛날참기름",
+      "ingredient": "참기름",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "초이스엘 생와사비",
+      "ingredient": "와사비",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "청정원 순창 찰고추장",
+      "ingredient": "고추장",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "청정원 순창 초고추장",
+      "ingredient": "고추장",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "갈바니 리코타치즈",
+      "ingredient": "리코타 치즈",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "이클립스 페퍼민트향",
+      "ingredient": "민트",
+      "reason": "mint_product_to_ingredient"
+    },
+    {
+      "product": "쿠크다스커피",
+      "ingredient": "커피",
+      "reason": "flavor_product_to_ingredient"
+    },
+    {
+      "product": "유기농 바나나콘",
+      "ingredient": "바나나",
+      "reason": "fruit_product_to_ingredient"
+    },
+    {
+      "product": "해태 구운감자",
+      "ingredient": "감자",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "Koukakis 그릭요거트",
+      "ingredient": "요거트",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "완숙토마토",
+      "ingredient": "토마토",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "양상추",
+      "ingredient": "양상추",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "볶음아몬드",
+      "ingredient": "아몬드",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "바베큐 조미 오징어",
+      "ingredient": "오징어",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "45도 과일잼 딸기",
+      "ingredient": "딸기",
+      "reason": "fruit_based_product_to_ingredient"
+    },
+    {
+      "product": "게리치즈크래커",
+      "ingredient": "치즈",
+      "reason": "snack_to_ingredient"
+    },
+    {
+      "product": "블렌드슈레드치즈1kg",
+      "ingredient": "치즈",
+      "reason": "dairy_to_ingredient"
+    },
+    {
+      "product": "맛밤",
+      "ingredient": "밤",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "오뚜기 황도",
+      "ingredient": "황도",
+      "reason": "fruit_to_ingredient"
+    },
+    {
+      "product": "오뚜기 백도",
+      "ingredient": "복숭아",
+      "reason": "fruit_to_ingredient"
+    },
+    {
+      "product": "*한돈) 생목살",
+      "ingredient": "돼지고기 목살",
+      "reason": "meat_to_ingredient"
+    },
+    {
+      "product": "*한돈)벌집 삼겹살",
+      "ingredient": "돼지고기 삼겹살",
+      "reason": "meat_to_ingredient"
+    },
+    {
+      "product": "*청양고추",
+      "ingredient": "청양고추",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "*적상추",
+      "ingredient": "상추",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "*깐양파",
+      "ingredient": "양파",
+      "reason": "direct_ingredient"
+    }
+  ]
+}

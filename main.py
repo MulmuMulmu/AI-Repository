@@ -9,8 +9,10 @@ from __future__ import annotations
 import json
 import re
 import tempfile
+import threading
 import unicodedata
 from collections import defaultdict
+from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -73,6 +75,8 @@ _RECEIPT_BACKEND = None
 _RECEIPT_PARSER = None
 _RECEIPT_SERVICE_NOOP = None
 _RECEIPT_SERVICE_QWEN = None
+_RECEIPT_REFINEMENT_STORE = None
+_RECEIPT_RULES = None
 
 # ═══════════════════════════════════════════════════════════════
 #  Pydantic 스키마
@@ -91,6 +95,61 @@ class ApiResponse(BaseModel):
     success: bool
     data: Any = None
     error: Optional[Dict[str, str]] = None
+
+
+class ReceiptRefinementStore:
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self._records: dict[str, dict[str, Any]] = {}
+
+    def clear(self) -> None:
+        with self._lock:
+            self._records.clear()
+
+    def create_pending(self, trace_id: str, base_parsed: dict[str, Any]) -> None:
+        now = _utc_now_isoformat()
+        with self._lock:
+            self._records[trace_id] = {
+                "trace_id": trace_id,
+                "status": "pending",
+                "created_at": now,
+                "updated_at": now,
+                "base_parsed": dict(base_parsed),
+                "refined_parsed": None,
+                "error": None,
+            }
+
+    def mark_running(self, trace_id: str) -> None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            if record is None:
+                return
+            record["status"] = "running"
+            record["updated_at"] = _utc_now_isoformat()
+
+    def mark_completed(self, trace_id: str, refined_parsed: dict[str, Any]) -> None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            if record is None:
+                return
+            record["status"] = "completed"
+            record["updated_at"] = _utc_now_isoformat()
+            record["refined_parsed"] = dict(refined_parsed)
+            record["error"] = None
+
+    def mark_failed(self, trace_id: str, error: str) -> None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            if record is None:
+                return
+            record["status"] = "failed"
+            record["updated_at"] = _utc_now_isoformat()
+            record["error"] = error
+
+    def get(self, trace_id: str) -> dict[str, Any] | None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            return dict(record) if record is not None else None
 
 # ═══════════════════════════════════════════════════════════════
 #  유틸리티
@@ -113,42 +172,120 @@ def _similarity(a: str, b: str) -> float:
     return SequenceMatcher(None, na, nb).ratio()
 
 
+def _get_receipt_rules():
+    global _RECEIPT_RULES
+    if _RECEIPT_RULES is None:
+        from ocr_qwen.receipt_rules import ReceiptRules
+
+        _RECEIPT_RULES = ReceiptRules.load_default()
+    return _RECEIPT_RULES
+
+
+def _find_ingredient_by_name(candidate_name: str) -> dict[str, Any] | None:
+    normalized_candidate = _normalize_name(candidate_name)
+    for ingredient in _ingredients_raw:
+        if _normalize_name(ingredient["ingredientName"]) == normalized_candidate:
+            return ingredient
+    return None
+
+
+def _build_ingredient_match(
+    *,
+    original_product_name: str,
+    ingredient: dict[str, Any],
+    similarity: float,
+    mapping_source: str,
+    standard_product_name: str | None = None,
+) -> Dict[str, Any]:
+    return {
+        "product_name": original_product_name,
+        "ingredientId": ingredient["ingredientId"],
+        "ingredientName": ingredient["ingredientName"],
+        "category": ingredient["category"],
+        "similarity": round(similarity, 4),
+        "mapping_source": mapping_source,
+        "standard_product_name": standard_product_name or original_product_name,
+    }
+
+
 def _match_product_to_ingredient(product_name: str) -> Dict[str, Any]:
     """상품명을 DB 재료와 매칭. 최고 유사도 재료를 반환."""
+    rules = _get_receipt_rules()
+    aliased_product_name = rules.apply_product_alias(product_name).strip() or product_name.strip()
+    mapped = rules.lookup_product_to_ingredient(product_name)
+
+    if mapped is not None:
+        mapped_ingredient = _find_ingredient_by_name(mapped["ingredient_name"])
+        if mapped_ingredient is not None:
+            return _build_ingredient_match(
+                original_product_name=product_name,
+                ingredient=mapped_ingredient,
+                similarity=1.0,
+                mapping_source="receipt_rule_product_mapping",
+                standard_product_name=mapped["standard_product_name"],
+            )
+
     best_score = 0.0
     best_ingr = None
-    norm_product = _normalize_name(product_name)
+    best_source = "fuzzy_similarity"
+    best_standard_product_name = aliased_product_name
+    candidate_names = [aliased_product_name]
 
-    for ingr in _ingredients_raw:
-        ingr_name = ingr["ingredientName"]
-        norm_ingr = _normalize_name(ingr_name)
+    if mapped is not None:
+        mapped_ingredient_name = str(mapped["ingredient_name"]).strip()
+        if mapped_ingredient_name and mapped_ingredient_name not in candidate_names:
+            candidate_names.insert(0, mapped_ingredient_name)
+            best_standard_product_name = mapped["standard_product_name"]
 
-        if norm_product == norm_ingr:
-            return {
-                "product_name": product_name,
-                "ingredientId": ingr["ingredientId"],
-                "ingredientName": ingr_name,
-                "category": ingr["category"],
-                "similarity": 1.0,
-            }
+    original_product_name = product_name.strip()
+    if original_product_name and original_product_name not in candidate_names:
+        candidate_names.append(original_product_name)
 
-        if norm_product in norm_ingr or norm_ingr in norm_product:
-            score = 0.9
-        else:
-            score = SequenceMatcher(None, norm_product, norm_ingr).ratio()
+    for candidate_name in candidate_names:
+        norm_product = _normalize_name(candidate_name)
+        if not norm_product:
+            continue
 
-        if score > best_score:
-            best_score = score
-            best_ingr = ingr
+        for ingr in _ingredients_raw:
+            ingr_name = ingr["ingredientName"]
+            norm_ingr = _normalize_name(ingr_name)
+
+            if norm_product == norm_ingr:
+                return _build_ingredient_match(
+                    original_product_name=product_name,
+                    ingredient=ingr,
+                    similarity=1.0,
+                    mapping_source=(
+                        "receipt_rule_product_mapping_fallback"
+                        if mapped is not None and candidate_name == mapped.get("ingredient_name")
+                        else "normalized_exact_match"
+                    ),
+                    standard_product_name=best_standard_product_name,
+                )
+
+            if norm_product in norm_ingr or norm_ingr in norm_product:
+                score = 0.9
+            else:
+                score = SequenceMatcher(None, norm_product, norm_ingr).ratio()
+
+            if score > best_score:
+                best_score = score
+                best_ingr = ingr
+                if mapped is not None and candidate_name == mapped.get("ingredient_name"):
+                    best_source = "receipt_rule_product_mapping_fallback"
+                elif candidate_name == aliased_product_name and aliased_product_name != original_product_name:
+                    best_source = "product_alias_fuzzy_match"
+                else:
+                    best_source = "fuzzy_similarity"
 
     if best_ingr and best_score >= 0.5:
-        return {
-            "product_name": product_name,
-            "ingredientId": best_ingr["ingredientId"],
-            "ingredientName": best_ingr["ingredientName"],
-            "category": best_ingr["category"],
-            "similarity": round(best_score, 4),
-        }
+        return _build_ingredient_match(
+            original_product_name=product_name,
+            ingredient=best_ingr,
+            similarity=best_score,
+            mapping_source=best_source,
+            standard_product_name=best_standard_product_name,
+        )
     return None
 
 
@@ -161,6 +298,102 @@ def _find_suggestions(product_name: str, top_n: int = 3) -> List[str]:
             scored.append((s, ingr["ingredientName"]))
     scored.sort(key=lambda x: -x[0])
     return [name for _, name in scored[:top_n]]
+
+
+SNACK_KEYWORDS = (
+    "과자",
+    "쿠키",
+    "크래커",
+    "초코",
+    "빼빼로",
+    "오예스",
+    "붕어빵",
+    "초코볼",
+    "캔디",
+    "사탕",
+    "민트향",
+    "헬씨넛",
+    "로투스",
+)
+
+PROCESSED_FOOD_KEYWORDS = (
+    "라면",
+    "컵",
+    "소스",
+    "고추장",
+    "요거트",
+    "치즈",
+    "와사비",
+    "참기름",
+    "양념",
+    "주물럭",
+    "햇반",
+    "만두",
+    "떡",
+    "어묵",
+    "캔",
+)
+
+
+def _resolve_standard_product_name(product_name: str) -> str:
+    standard_name = _get_receipt_rules().apply_product_alias(product_name).strip()
+    return standard_name or product_name.strip()
+
+
+def _contains_classification_keyword(values: list[str], keywords: tuple[str, ...]) -> bool:
+    return any(keyword in value for value in values for keyword in keywords)
+
+
+def _infer_item_type(
+    product_name: str,
+    *,
+    standard_product_name: str | None = None,
+    matched_result: dict[str, Any] | None = None,
+) -> str:
+    candidate_values = [value.strip() for value in (product_name, standard_product_name or "") if value and value.strip()]
+    rules = _get_receipt_rules()
+    if any(rules.matches_non_item(value) for value in candidate_values):
+        return "NON_FOOD"
+
+    normalized_values = [_normalize_name(value) for value in candidate_values if value]
+    if _contains_classification_keyword(normalized_values, SNACK_KEYWORDS):
+        return "SNACK"
+    if _contains_classification_keyword(normalized_values, PROCESSED_FOOD_KEYWORDS):
+        return "PROCESSED_FOOD"
+
+    if matched_result is not None:
+        return "INGREDIENT"
+    return "UNKNOWN"
+
+
+def _normalize_prediction_match(product_name: str, match_result: dict[str, Any]) -> dict[str, Any]:
+    result = dict(match_result)
+    standard_product_name = str(result.get("standard_product_name") or _resolve_standard_product_name(product_name)).strip()
+    result["product_name"] = product_name
+    result["standard_product_name"] = standard_product_name
+    result["mapping_status"] = "MAPPED"
+    result["item_type"] = _infer_item_type(
+        product_name,
+        standard_product_name=standard_product_name,
+        matched_result=result,
+    )
+    return result
+
+
+def _build_unmatched_prediction(product_name: str) -> dict[str, Any]:
+    standard_product_name = _resolve_standard_product_name(product_name)
+    item_type = _infer_item_type(product_name, standard_product_name=standard_product_name)
+    mapping_status = "EXCLUDED" if item_type == "NON_FOOD" else "UNMAPPED"
+    reason = "비식품 또는 제외 대상" if mapping_status == "EXCLUDED" else "DB에 일치하는 재료 없음"
+
+    return {
+        "product_name": product_name,
+        "standard_product_name": standard_product_name,
+        "item_type": item_type,
+        "mapping_status": mapping_status,
+        "reason": reason,
+        "suggestions": [] if mapping_status == "EXCLUDED" else _find_suggestions(standard_product_name),
+    }
 
 
 def _normalize_food_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -233,6 +466,27 @@ def _legacy_model_name_from_parsed(parsed: Dict[str, Any]) -> str:
     return engine_version
 
 
+def _legacy_ocr_response_data_from_parsed(parsed: Dict[str, Any]) -> Dict[str, Any]:
+    ocr_texts = parsed.get("ocr_texts", [])
+    food_items = _legacy_food_items_from_parsed(parsed)
+    model_name = _legacy_model_name_from_parsed(parsed)
+    return {
+        "trace_id": parsed.get("trace_id"),
+        "ocr_texts": ocr_texts,
+        "food_items": food_items,
+        "food_count": len(food_items),
+        "model": model_name,
+        "vendor_name": parsed.get("vendor_name"),
+        "purchased_at": parsed.get("purchased_at"),
+        "totals": parsed.get("totals", {}),
+        "diagnostics": parsed.get("diagnostics", {}),
+    }
+
+
+def _utc_now_isoformat() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
 def _get_receipt_backend():
     global _RECEIPT_BACKEND
     if _RECEIPT_BACKEND is None:
@@ -275,6 +529,39 @@ def _get_receipt_service(use_qwen: bool):
             qwen_provider=NoopQwenProvider(),
         )
     return _RECEIPT_SERVICE_NOOP
+
+
+def _get_receipt_refinement_store() -> ReceiptRefinementStore:
+    global _RECEIPT_REFINEMENT_STORE
+    if _RECEIPT_REFINEMENT_STORE is None:
+        _RECEIPT_REFINEMENT_STORE = ReceiptRefinementStore()
+    return _RECEIPT_REFINEMENT_STORE
+
+
+def _run_receipt_refinement(trace_id: str, temp_path: str) -> None:
+    store = _get_receipt_refinement_store()
+    try:
+        store.mark_running(trace_id)
+        parsed = _get_receipt_service(use_qwen=True).parse({"receipt_image_url": temp_path})
+        parsed["trace_id"] = trace_id
+        store.mark_completed(trace_id, parsed)
+    except Exception as exc:
+        store.mark_failed(trace_id, str(exc))
+    finally:
+        Path(temp_path).unlink(missing_ok=True)
+
+
+def _schedule_receipt_refinement(*, trace_id: str, image_bytes: bytes, suffix: str) -> None:
+    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+        tmp.write(image_bytes)
+        temp_path = tmp.name
+
+    thread = threading.Thread(
+        target=_run_receipt_refinement,
+        args=(trace_id, temp_path),
+        daemon=True,
+    )
+    thread.start()
 
 
 @app.on_event("startup")
@@ -366,6 +653,10 @@ async def ocr_receipt(
             "응답 계약(ocr_texts, food_items, food_count, model)은 유지됩니다."
         ),
     ),
+    async_refinement: bool = Query(
+        default=False,
+        description="true면 rule-based 결과를 즉시 반환하고 Qwen 보정은 백그라운드에서 수행합니다.",
+    ),
 ):
     """영수증 이미지 → PaddleOCR 기반 OCR + 선택적 Qwen 보정 → 식품명 추출."""
     if image.content_type not in ("image/jpeg", "image/png", "image/jpg"):
@@ -381,25 +672,22 @@ async def ocr_receipt(
         tmp_path = tmp.name
 
     try:
-        service = _get_receipt_service(use_qwen=use_qwen)
+        should_enqueue_refinement = use_qwen and async_refinement
+        service = _get_receipt_service(use_qwen=False if should_enqueue_refinement else use_qwen)
         parsed = service.parse({"receipt_image_url": tmp_path})
+        data = _legacy_ocr_response_data_from_parsed(parsed)
 
-        ocr_texts = parsed.get("ocr_texts", [])
-        food_items = _legacy_food_items_from_parsed(parsed)
-        model_name = _legacy_model_name_from_parsed(parsed)
+        if should_enqueue_refinement:
+            trace_id = str(parsed.get("trace_id") or "")
+            if trace_id:
+                _get_receipt_refinement_store().create_pending(trace_id, parsed)
+                _schedule_receipt_refinement(trace_id=trace_id, image_bytes=content, suffix=suffix)
+                data["refinement_status"] = "pending"
+                data["refinement_poll_url"] = f"/ai/ocr/refinement/{trace_id}"
 
         return ApiResponse(
             success=True,
-            data={
-                "ocr_texts": ocr_texts,
-                "food_items": food_items,
-                "food_count": len(food_items),
-                "model": model_name,
-                "vendor_name": parsed.get("vendor_name"),
-                "purchased_at": parsed.get("purchased_at"),
-                "totals": parsed.get("totals", {}),
-                "diagnostics": parsed.get("diagnostics", {}),
-            },
+            data=data,
         )
     except ImportError:
         raise HTTPException(
@@ -415,6 +703,31 @@ async def ocr_receipt(
         Path(tmp_path).unlink(missing_ok=True)
 
 
+@app.get("/ai/ocr/refinement/{trace_id}")
+async def get_ocr_refinement(trace_id: str):
+    record = _get_receipt_refinement_store().get(trace_id)
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail={"code": "REFINEMENT_NOT_FOUND", "message": f"refinement trace not found: {trace_id}"},
+        )
+
+    base_parsed = record.get("base_parsed")
+    refined_parsed = record.get("refined_parsed")
+    return ApiResponse(
+        success=True,
+        data={
+            "trace_id": trace_id,
+            "status": record.get("status"),
+            "created_at": record.get("created_at"),
+            "updated_at": record.get("updated_at"),
+            "error": record.get("error"),
+            "rule_based_result": _legacy_ocr_response_data_from_parsed(base_parsed) if isinstance(base_parsed, dict) else None,
+            "refined_result": _legacy_ocr_response_data_from_parsed(refined_parsed) if isinstance(refined_parsed, dict) else None,
+        },
+    )
+
+
 @app.post("/ai/ingredient/prediction")
 async def match_ingredients(req: MatchRequest):
     """OCR 추출 상품명 → DB Ingredient 매칭."""
@@ -424,13 +737,9 @@ async def match_ingredients(req: MatchRequest):
     for name in req.product_names:
         result = _match_product_to_ingredient(name)
         if result:
-            matched.append(result)
+            matched.append(_normalize_prediction_match(name, result))
         else:
-            unmatched.append({
-                "product_name": name,
-                "reason": "DB에 일치하는 재료 없음",
-                "suggestions": _find_suggestions(name),
-            })
+            unmatched.append(_build_unmatched_prediction(name))
 
     return ApiResponse(
         success=True,

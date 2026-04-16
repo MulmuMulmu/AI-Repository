@@ -138,7 +138,18 @@
 
 ## 4. `POST /ai/ingredient/prediction`
 
-OCR에서 정리된 상품명을 받아 재료 테이블 기준으로 가장 가까운 재료를 예측합니다.
+ OCR에서 정리된 상품명을 받아 다음 순서로 재료를 예측합니다.
+
+1. 상품 alias 정규화
+2. `product_to_ingredient` 규칙 사전 매핑
+3. DB 재료명 exact match
+4. DB 재료명 fuzzy match
+
+매칭되지 않은 항목도 버리지 않습니다.
+
+- 식품이지만 사전에 없는 경우: `mapping_status=UNMAPPED`
+- 비식품/제외 대상인 경우: `mapping_status=EXCLUDED`
+- 모든 항목은 `product_name`, `standard_product_name`, `item_type`를 함께 반환합니다.
 
 ### Request
 
@@ -160,12 +171,19 @@ OCR에서 정리된 상품명을 받아 재료 테이블 기준으로 가장 가
         "ingredientId": "ingredient-1",
         "ingredientName": "두부",
         "category": "가공식품",
-        "similarity": 0.92
+        "similarity": 0.92,
+        "mapping_source": "fuzzy_similarity",
+        "standard_product_name": "국산콩 두부",
+        "mapping_status": "MAPPED",
+        "item_type": "INGREDIENT"
       }
     ],
     "unmatched": [
       {
         "product_name": "CJ 햇반",
+        "standard_product_name": "CJ 햇반",
+        "item_type": "PROCESSED_FOOD",
+        "mapping_status": "UNMAPPED",
         "reason": "DB에 일치하는 재료 없음",
         "suggestions": ["밥", "쌀"]
       }
@@ -184,6 +202,23 @@ OCR에서 정리된 상품명을 받아 재료 테이블 기준으로 가장 가
 | `unmatched` | array | 예측 실패 상품 |
 | `matched_count` | int | 성공 개수 |
 | `unmatched_count` | int | 실패 개수 |
+
+`matched` 내부 추가 필드:
+
+| 필드 | 타입 | 설명 |
+|---|---|---|
+| `mapping_source` | string | `receipt_rule_product_mapping`, `receipt_rule_product_mapping_fallback`, `normalized_exact_match`, `product_alias_fuzzy_match`, `fuzzy_similarity` 중 하나 |
+| `standard_product_name` | string | alias 정규화 이후 내부 비교에 사용된 표준 상품명 |
+| `mapping_status` | string | 항상 `MAPPED` |
+| `item_type` | string | `INGREDIENT`, `PROCESSED_FOOD`, `SNACK`, `NON_FOOD`, `UNKNOWN` 중 하나 |
+
+`unmatched` 내부 추가 필드:
+
+| 필드 | 타입 | 설명 |
+|---|---|---|
+| `standard_product_name` | string | alias 정규화 이후 비교에 사용된 표준 상품명 |
+| `mapping_status` | string | `UNMAPPED` 또는 `EXCLUDED` |
+| `item_type` | string | `PROCESSED_FOOD`, `SNACK`, `NON_FOOD`, `UNKNOWN` 등 추정 분류 |
 
 ---
 

@@ -9,12 +9,13 @@ from uuid import uuid4
 
 import httpx
 import numpy as np
+from PIL import Image, ImageEnhance, ImageFilter, ImageOps
 
 os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 
 from .expiry import ExpiryEvaluator, InventoryItem
 from .preprocess import ReceiptPreprocessor, preprocess_receipt
-from .qwen import LocalTransformersQwenProvider
+from .qwen import LocalTransformersQwenProvider, NoopQwenProvider
 from .receipts import CATEGORY_STORAGE, OcrLine, ReceiptParser
 from .recommendations import (
     InventorySnapshot,
@@ -37,6 +38,14 @@ VALID_CATEGORIES = {
 VALID_STORAGE_TYPES = {"room", "refrigerated", "frozen"}
 RECEIPT_ENGINE_VERSION = "receipt-engine-v2"
 OCR_ROW_MERGE_TOLERANCE = 18.0
+DATE_FALLBACK_TOP_RATIO = 0.22
+DATE_FALLBACK_MIN_HEIGHT = 140
+DATE_FALLBACK_MAX_HEIGHT = 320
+DATE_FALLBACK_UPSCALE = 3
+QWEN_HEADER_MAX_MERGED_ROWS = 2
+QWEN_HEADER_MAX_RAW_TOKENS = 4
+QWEN_HEADER_MAX_TOP_STRIP_ROWS = 4
+QWEN_ITEM_MAX_REVIEW_ITEMS = 4
 
 
 @dataclass
@@ -296,38 +305,250 @@ class ReceiptParseService:
             extraction=extraction,
             trace_id=trace_id,
         )
+        top_strip_extraction = self._extract_top_strip_extraction(source=source, source_type=source_type)
+        self._apply_top_strip_date_fallback(parsed, top_strip_extraction=top_strip_extraction)
 
-        qwen_attempted = False
-        qwen_fallback_reason = "provider_missing"
-        if self.qwen_provider is not None:
+        header_qwen_attempted = False
+        header_qwen_used = False
+        header_qwen_fallback_reason = "provider_missing"
+        if self._supports_qwen_header_rescue() and self._should_request_qwen_header_rescue(parsed):
+            if (
+                isinstance(self.qwen_provider, LocalTransformersQwenProvider)
+                and os.environ.get("ENABLE_SYNC_LOCAL_QWEN_HEADER_RESCUE", "0") != "1"
+            ):
+                header_qwen_fallback_reason = "disabled_sync_local_qwen_header"
+            else:
+                header_qwen_attempted = True
+                header_payload = self._build_qwen_header_rescue_payload(
+                    parsed=parsed,
+                    extraction=extraction,
+                    top_strip_extraction=top_strip_extraction,
+                )
+                try:
+                    header_qwen_result = self._invoke_qwen_header_rescue(header_payload)
+                except Exception:
+                    header_qwen_fallback_reason = "provider_error"
+                else:
+                    if isinstance(header_qwen_result, dict):
+                        header_qwen_used = self._apply_qwen_header_rescue(parsed, header_qwen_result)
+                        header_qwen_fallback_reason = None if header_qwen_used else "invalid_response"
+                    else:
+                        header_qwen_fallback_reason = "empty_response"
+        elif self.qwen_provider is not None and not isinstance(self.qwen_provider, NoopQwenProvider):
+            header_qwen_fallback_reason = "not_needed"
+
+        item_qwen_attempted = False
+        item_qwen_used = False
+        item_qwen_fallback_reason = "provider_missing"
+        if self._supports_qwen_item_normalization():
             if (
                 isinstance(self.qwen_provider, LocalTransformersQwenProvider)
                 and os.environ.get("ENABLE_SYNC_LOCAL_QWEN_ITEM_NORMALIZATION", "0") != "1"
             ):
-                qwen_fallback_reason = "disabled_sync_local_qwen"
+                item_qwen_fallback_reason = "disabled_sync_local_qwen"
             else:
                 qwen_payload = self._build_qwen_item_normalization_payload(parsed=parsed, lines=extraction.lines)
                 if qwen_payload["review_items"]:
-                    qwen_attempted = True
+                    item_qwen_attempted = True
                     try:
                         qwen_result = self._invoke_qwen_item_normalizer(qwen_payload)
                     except Exception:
-                        qwen_fallback_reason = "provider_error"
+                        item_qwen_fallback_reason = "provider_error"
                     else:
                         if isinstance(qwen_result, dict):
-                            qwen_used = self._apply_qwen_item_normalization(parsed, qwen_result)
-                            qwen_fallback_reason = None if qwen_used else "invalid_response"
+                            item_qwen_used = self._apply_qwen_item_normalization(parsed, qwen_result)
+                            item_qwen_fallback_reason = None if item_qwen_used else "invalid_response"
                         else:
-                            qwen_fallback_reason = "empty_response"
+                            item_qwen_fallback_reason = "empty_response"
                 else:
-                    qwen_fallback_reason = "no_review_items"
+                    item_qwen_fallback_reason = "no_review_items"
 
-        parsed["diagnostics"]["qwen_attempted"] = qwen_attempted
-        parsed["diagnostics"]["qwen_used"] = qwen_fallback_reason is None
-        parsed["diagnostics"]["qwen_mode"] = "item_refinement" if qwen_attempted else "disabled"
-        parsed["diagnostics"]["qwen_fallback_reason"] = qwen_fallback_reason
+        parsed["diagnostics"]["qwen_header_attempted"] = header_qwen_attempted
+        parsed["diagnostics"]["qwen_header_used"] = header_qwen_used
+        parsed["diagnostics"]["qwen_header_fallback_reason"] = header_qwen_fallback_reason
+        parsed["diagnostics"]["qwen_item_attempted"] = item_qwen_attempted
+        parsed["diagnostics"]["qwen_item_used"] = item_qwen_used
+        parsed["diagnostics"]["qwen_item_fallback_reason"] = item_qwen_fallback_reason
+        parsed["diagnostics"]["qwen_attempted"] = header_qwen_attempted or item_qwen_attempted
+        parsed["diagnostics"]["qwen_used"] = header_qwen_used or item_qwen_used
+        parsed["diagnostics"]["qwen_mode"] = self._resolve_qwen_mode(
+            header_qwen_attempted=header_qwen_attempted,
+            item_qwen_attempted=item_qwen_attempted,
+        )
+        parsed["diagnostics"]["qwen_fallback_reason"] = (
+            None
+            if (header_qwen_used or item_qwen_used)
+            else header_qwen_fallback_reason if header_qwen_attempted else item_qwen_fallback_reason
+        )
         self._finalize_parse_result(parsed, extraction.low_quality_reasons)
         return parsed
+
+    def _apply_top_strip_date_fallback(self, parsed: dict, *, top_strip_extraction: OcrExtraction | None) -> None:
+        diagnostics = parsed.setdefault("diagnostics", {})
+        diagnostics["date_fallback_used"] = False
+        if parsed.get("purchased_at") is not None:
+            return
+
+        purchased_at = self._extract_purchased_at_from_top_strip(top_strip_extraction=top_strip_extraction)
+        if purchased_at is None:
+            return
+
+        parsed["purchased_at"] = purchased_at
+        diagnostics["date_fallback_used"] = True
+        diagnostics["date_fallback_source"] = "top_strip"
+        parsed["review_reasons"] = [
+            reason for reason in parsed.get("review_reasons", []) if reason != "missing_purchased_at"
+        ]
+        for item in parsed.get("items", []):
+            if isinstance(item, dict):
+                self._recalculate_review_state(item, purchased_at)
+
+    def _extract_purchased_at_from_top_strip(self, *, top_strip_extraction: OcrExtraction | None) -> str | None:
+        if top_strip_extraction is None:
+            return None
+        return self.parser._extract_purchased_at(top_strip_extraction.lines)
+
+    def _extract_top_strip_extraction(self, *, source: str, source_type: str) -> OcrExtraction | None:
+        if source_type != "receipt_image_url":
+            return None
+
+        image_path = Path(source).expanduser()
+        if not image_path.exists():
+            return None
+
+        strip_path: str | None = None
+        try:
+            with Image.open(image_path) as image:
+                strip = self._build_top_strip_date_image(image)
+                with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as handle:
+                    strip_path = handle.name
+            strip.save(strip_path)
+
+            return self._normalize_extraction(
+                self.ocr_backend.extract(strip_path, source_type="receipt_image_url")
+            )
+        except Exception:
+            return None
+        finally:
+            if strip_path:
+                Path(strip_path).unlink(missing_ok=True)
+
+    def _build_top_strip_date_image(self, image: Image.Image) -> Image.Image:
+        normalized = ImageOps.exif_transpose(image).convert("RGB")
+        width, height = normalized.size
+        strip_height = max(DATE_FALLBACK_MIN_HEIGHT, min(int(height * DATE_FALLBACK_TOP_RATIO), DATE_FALLBACK_MAX_HEIGHT))
+        strip = normalized.crop((0, 0, width, strip_height))
+        grayscale = ImageOps.grayscale(strip)
+        enhanced = ImageOps.autocontrast(grayscale)
+        enhanced = ImageEnhance.Contrast(enhanced).enhance(1.8)
+        enhanced = enhanced.filter(ImageFilter.SHARPEN).filter(ImageFilter.SHARPEN)
+        upscaled = enhanced.resize(
+            (enhanced.width * DATE_FALLBACK_UPSCALE, enhanced.height * DATE_FALLBACK_UPSCALE),
+            resample=Image.Resampling.LANCZOS,
+        )
+        return ImageOps.expand(upscaled, border=(0, 36, 0, 0), fill=255)
+
+    def _should_request_qwen_header_rescue(self, parsed: dict) -> bool:
+        return parsed.get("purchased_at") is None or parsed.get("vendor_name") is None
+
+    def _supports_qwen_header_rescue(self) -> bool:
+        return self.qwen_provider is not None and not isinstance(self.qwen_provider, NoopQwenProvider)
+
+    def _supports_qwen_item_normalization(self) -> bool:
+        return self.qwen_provider is not None and not isinstance(self.qwen_provider, NoopQwenProvider)
+
+    def _build_qwen_header_rescue_payload(
+        self,
+        *,
+        parsed: dict,
+        extraction: OcrExtraction,
+        top_strip_extraction: OcrExtraction | None,
+    ) -> dict:
+        payload = {
+            "rescue_targets": [
+                key for key in ("vendor_name", "purchased_at")
+                if parsed.get(key) is None
+            ],
+            "current_vendor_name": parsed.get("vendor_name"),
+            "current_purchased_at": parsed.get("purchased_at"),
+            "merged_rows": self._select_qwen_header_rows(extraction.lines),
+            "raw_tokens": self._select_qwen_header_raw_tokens(top_strip_extraction, extraction),
+            "top_strip_rows": [
+                line.text for line in (top_strip_extraction.lines[:QWEN_HEADER_MAX_TOP_STRIP_ROWS] if top_strip_extraction else [])
+            ],
+            "known_totals": dict(parsed.get("totals", {})),
+            "review_reasons": list(parsed.get("review_reasons", [])),
+            "diagnostics": {
+                "quality_score": extraction.quality_score,
+                "low_quality_reasons": list(extraction.low_quality_reasons),
+                "date_fallback_used": parsed.get("diagnostics", {}).get("date_fallback_used", False),
+            },
+        }
+        return payload
+
+    def _select_qwen_header_rows(self, lines: list[OcrLine]) -> list[dict]:
+        selected: list[dict] = []
+        for line in lines:
+            text = line.text.strip()
+            if not text:
+                continue
+            if self.parser._looks_like_item_header(text) or self.parser._looks_like_item_candidate(text):
+                break
+            selected.append(self._serialize_line(line))
+            if len(selected) >= QWEN_HEADER_MAX_MERGED_ROWS:
+                break
+        return selected
+
+    def _select_qwen_header_raw_tokens(
+        self,
+        top_strip_extraction: OcrExtraction | None,
+        extraction: OcrExtraction,
+    ) -> list[dict]:
+        source_tokens = top_strip_extraction.raw_tokens if top_strip_extraction and top_strip_extraction.raw_tokens else extraction.raw_tokens
+        return [self._serialize_raw_token(token) for token in source_tokens[:QWEN_HEADER_MAX_RAW_TOKENS]]
+
+    def _apply_qwen_header_rescue(self, parsed: dict, rescue: dict) -> bool:
+        applied = False
+
+        if parsed.get("vendor_name") is None:
+            vendor_name = self._clean_string(rescue.get("vendor_name"))
+            if vendor_name and self._is_plausible_vendor_name(vendor_name):
+                parsed["vendor_name"] = vendor_name
+                applied = True
+
+        if parsed.get("purchased_at") is None:
+            purchased_at = self._coerce_valid_purchased_at(rescue.get("purchased_at"))
+            if purchased_at is not None:
+                parsed["purchased_at"] = purchased_at
+                parsed["review_reasons"] = [
+                    reason for reason in parsed.get("review_reasons", []) if reason != "missing_purchased_at"
+                ]
+                for item in parsed.get("items", []):
+                    if isinstance(item, dict):
+                        self._recalculate_review_state(item, purchased_at)
+                applied = True
+
+        return applied
+
+    def _is_plausible_vendor_name(self, vendor_name: str) -> bool:
+        return self.parser._looks_like_vendor_candidate(vendor_name) or self.parser._looks_like_plausible_vendor_fallback(vendor_name)
+
+    def _coerce_valid_purchased_at(self, value: object) -> str | None:
+        cleaned = self._clean_string(value)
+        if cleaned is None:
+            return None
+        return self.parser._extract_purchased_at(
+            [OcrLine(text=cleaned, confidence=1.0, line_id=0, page_order=0)]
+        )
+
+    def _resolve_qwen_mode(self, *, header_qwen_attempted: bool, item_qwen_attempted: bool) -> str:
+        if header_qwen_attempted and item_qwen_attempted:
+            return "header_and_item"
+        if header_qwen_attempted:
+            return "header_rescue"
+        if item_qwen_attempted:
+            return "item_refinement"
+        return "disabled"
 
     def _build_rule_parse_response(
         self,
@@ -365,6 +586,7 @@ class ReceiptParseService:
 
     def _build_qwen_item_normalization_payload(self, parsed: dict, lines: list[OcrLine]) -> dict:
         line_map = {line.line_id: line.text for line in lines if line.line_id is not None}
+        line_index_map = {line.line_id: index for index, line in enumerate(lines) if line.line_id is not None}
         review_items = []
         for index, item in enumerate(parsed["items"]):
             if not self._should_request_qwen_item_normalization(item):
@@ -382,29 +604,134 @@ class ReceiptParseService:
                 {
                     "index": index,
                     "raw_name": item["raw_name"],
+                    "current_normalized_name": item.get("normalized_name"),
+                    "current_quantity": item.get("quantity"),
+                    "current_unit": item.get("unit"),
+                    "current_amount": item.get("amount"),
+                    "confidence": item.get("match_confidence") or item.get("confidence"),
+                    "review_reasons": list(item.get("review_reason", [])),
                     "missing_fields": missing_fields,
                     "source_lines": [
                         line_map.get(line_id)
                         for line_id in item.get("source_line_ids", [])
                         if line_map.get(line_id)
                     ],
+                    "context_lines": self._build_qwen_item_context_lines(
+                        item=item,
+                        lines=lines,
+                        line_index_map=line_index_map,
+                    ),
                 }
             )
+        review_items.sort(
+            key=lambda value: self._qwen_item_priority(
+                review_reasons=value.get("review_reasons", []),
+                raw_name=value.get("raw_name", ""),
+            ),
+            reverse=True,
+        )
         return {
-            "review_items": review_items,
+            "current_vendor_name": parsed.get("vendor_name"),
+            "current_purchased_at": parsed.get("purchased_at"),
+            "known_totals": dict(parsed.get("totals", {})),
+            "review_items": review_items[:QWEN_ITEM_MAX_REVIEW_ITEMS],
         }
+
+    def _build_qwen_item_context_lines(
+        self,
+        *,
+        item: dict,
+        lines: list[OcrLine],
+        line_index_map: dict[int, int],
+    ) -> list[str]:
+        source_line_ids = [
+            line_id
+            for line_id in item.get("source_line_ids", [])
+            if isinstance(line_id, int) and line_id in line_index_map
+        ]
+        if not source_line_ids:
+            return []
+
+        indices = [line_index_map[line_id] for line_id in source_line_ids]
+        start = max(0, min(indices) - 1)
+        end = min(len(lines), max(indices) + 2)
+
+        context_lines: list[str] = []
+        seen: set[str] = set()
+        for line in lines[start:end]:
+            text = line.text.strip()
+            if not text or text in seen:
+                continue
+            seen.add(text)
+            context_lines.append(text)
+        return context_lines
 
     def _should_request_qwen_item_normalization(self, item: dict) -> bool:
         if not item.get("needs_review"):
             return False
         reasons = set(item.get("review_reason", []))
-        return bool({"unknown_item", "missing_quantity_or_unit"} & reasons)
+        if "missing_amount" in reasons or "missing_quantity_or_unit" in reasons or "low_confidence" in reasons:
+            return True
+        if "unknown_item" in reasons:
+            return self._looks_like_suspicious_ocr_item_name(item.get("raw_name"))
+        return False
+
+    def _looks_like_suspicious_ocr_item_name(self, raw_name: object) -> bool:
+        if not isinstance(raw_name, str):
+            return False
+        cleaned = raw_name.strip()
+        compact = "".join(cleaned.split())
+        if len(compact) <= 2:
+            return True
+        if any(char in cleaned for char in "[]{}|"):
+            return True
+        if cleaned.endswith(("L", "I", "]")):
+            return True
+        return False
+
+    def _qwen_item_priority(self, *, review_reasons: list[str], raw_name: object) -> int:
+        reasons = set(review_reasons)
+        score = 0
+        if "missing_amount" in reasons:
+            score += 200
+        if "missing_quantity_or_unit" in reasons:
+            score += 180
+        if "low_confidence" in reasons:
+            score += 70
+        if "unknown_item" in reasons and self._looks_like_suspicious_ocr_item_name(raw_name):
+            score += 40
+        return score
 
     def _invoke_qwen_item_normalizer(self, payload: dict) -> dict | None:
         provider_method = getattr(self.qwen_provider, "normalize_receipt_items", None)
-        if callable(provider_method):
-            return provider_method(payload)
-        return None
+        if not callable(provider_method):
+            return None
+
+        result = provider_method(payload)
+        if result is not None:
+            return result
+
+        review_items = payload.get("review_items")
+        if not isinstance(review_items, list) or len(review_items) <= 1:
+            return None
+
+        merged_items: list[dict] = []
+        for review_item in review_items:
+            if not isinstance(review_item, dict):
+                continue
+            single_payload = {
+                **payload,
+                "review_items": [review_item],
+            }
+            single_result = provider_method(single_payload)
+            if not isinstance(single_result, dict):
+                continue
+            single_items = single_result.get("items")
+            if not isinstance(single_items, list):
+                continue
+            merged_items.extend(item for item in single_items if isinstance(item, dict))
+
+        return {"items": merged_items} if merged_items else None
 
     def _apply_qwen_item_normalization(self, parsed: dict, normalization: dict) -> bool:
         corrections = normalization.get("items")
@@ -419,37 +746,56 @@ class ReceiptParseService:
             if not isinstance(index, int) or not 0 <= index < len(parsed["items"]):
                 continue
             item = parsed["items"][index]
+            item_updated = False
 
             normalized_name = self._clean_string(correction.get("normalized_name"))
             if (
-                item.get("normalized_name") is None
-                and normalized_name is not None
-                and self._is_plausible_normalized_name(item["raw_name"], normalized_name)
+                normalized_name is not None
+                and self._should_accept_qwen_normalized_name(item, normalized_name)
             ):
                 item["normalized_name"] = normalized_name
-                applied = True
+                item_updated = True
 
             if item.get("quantity") is None:
                 quantity = self._coerce_float(correction.get("quantity"))
                 if quantity is not None:
                     item["quantity"] = quantity
-                    applied = True
+                    item_updated = True
 
             if item.get("unit") is None:
                 unit = self._clean_string(correction.get("unit"))
                 if unit is not None:
                     item["unit"] = unit
-                    applied = True
+                    item_updated = True
 
             if item.get("amount") is None:
                 amount = self._coerce_float(correction.get("amount"))
                 if amount is not None:
                     item["amount"] = amount
-                    applied = True
+                    item_updated = True
+
+            if item_updated:
+                item["review_reason"] = [
+                    reason for reason in item.get("review_reason", []) if reason != "low_confidence"
+                ]
+                applied = True
 
             self._recalculate_review_state(item, parsed["purchased_at"])
 
         return applied
+
+    def _should_accept_qwen_normalized_name(self, item: dict, normalized_name: str) -> bool:
+        if not self._is_plausible_normalized_name(item["raw_name"], normalized_name):
+            return False
+
+        current_normalized_name = self._clean_string(item.get("normalized_name"))
+        if current_normalized_name is None:
+            return True
+        if current_normalized_name == normalized_name:
+            return False
+
+        reasons = set(item.get("review_reason", []))
+        return bool({"low_confidence", "unknown_item"} & reasons)
 
     def _build_qwen_receipt_payload(
         self,
@@ -502,6 +848,12 @@ class ReceiptParseService:
         if callable(fallback_method):
             return fallback_method(payload)
         return None
+
+    def _invoke_qwen_header_rescue(self, payload: dict) -> dict | None:
+        provider_method = getattr(self.qwen_provider, "rescue_receipt_header", None)
+        if callable(provider_method):
+            return provider_method(payload)
+        return self._invoke_qwen_receipt_extractor(payload)
 
     def _build_qwen_parse_response(
         self,
@@ -641,11 +993,19 @@ class ReceiptParseService:
             reasons = [reason for reason in reasons if reason != "missing_quantity_or_unit"]
         elif "missing_quantity_or_unit" not in reasons:
             reasons.append("missing_quantity_or_unit")
+        if item.get("amount") is not None:
+            reasons = [reason for reason in reasons if reason != "missing_amount"]
+        elif "missing_amount" not in reasons:
+            reasons.append("missing_amount")
         item["review_reason"] = reasons
         item["needs_review"] = bool(reasons)
 
     def _finalize_parse_result(self, parsed: dict, low_quality_reasons: list[str]) -> None:
-        review_reasons = list(parsed.get("review_reasons", []))
+        review_reasons = [
+            reason
+            for reason in list(parsed.get("review_reasons", []))
+            if reason not in {"missing_purchased_at", "unresolved_items", "total_mismatch"}
+        ]
         if parsed.get("purchased_at") is None and "missing_purchased_at" not in review_reasons:
             review_reasons.append("missing_purchased_at")
         if any(item.get("needs_review") for item in parsed["items"]) and "unresolved_items" not in review_reasons:

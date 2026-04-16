@@ -12,7 +12,7 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-from ocr_qwen.qwen import NoopQwenProvider
+from ocr_qwen.qwen import build_default_qwen_provider
 from ocr_qwen.receipts import OcrLine, ReceiptParser
 from ocr_qwen.services import PaddleOcrBackend, ReceiptParseService
 
@@ -28,7 +28,7 @@ class ReceiptOCR:
         self.service = ReceiptParseService(
             ocr_backend=self.backend,
             parser=self.parser,
-            qwen_provider=NoopQwenProvider(),
+            qwen_provider=build_default_qwen_provider(),
         )
 
     def warm_up(self) -> None:

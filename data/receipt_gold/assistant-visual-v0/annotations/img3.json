@@ -1,0 +1,62 @@
+{
+  "dataset_name": "assistant-visual-v0",
+  "label_source": "assistant-visual-v0",
+  "generated_at": "2026-04-16T08:30:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "img3.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img3.jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-visual-baseline"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2015-01-20",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "속이편한 누룽지",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 5600.0
+      },
+      {
+        "raw_name": "속이편한 누룽지",
+        "normalized_name": null,
+        "quantity": 7.0,
+        "unit": "개",
+        "amount": 39200.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "맥주비어",
+        "quantity": 4.0,
+        "amount": 3960.0,
+        "reason": "low_visual_confidence"
+      },
+      {
+        "raw_name": "롯데 앤디카페초콜릿 다크",
+        "quantity": 1.0,
+        "amount": 4800.0,
+        "reason": "low_visual_confidence"
+      }
+    ],
+    "excluded_rows": [
+      {
+        "raw_name": "재사용봉투(안산시)20L*낱장",
+        "reason": "non_food_supply"
+      },
+      {
+        "raw_name": "할인쿠폰",
+        "reason": "discount_row"
+      }
+    ],
+    "totals": {},
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

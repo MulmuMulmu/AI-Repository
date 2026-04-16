@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import dataclass, field, replace
+import json
 import os
 from pathlib import Path
 import re
@@ -9,14 +10,15 @@ from statistics import mean
 from typing import Mapping
 
 from .ingredient_dictionary import load_ingredient_lookup
+from .receipt_rules import NonItemCategoryRule, load_receipt_rules
 
 
 LOW_CONFIDENCE_THRESHOLD = 0.80
 ROW_GROUP_TOLERANCE = 26.0
 
 DATE_PATTERNS = (
-    re.compile(r"(?P<year>20\d{2})[./-](?P<month>\d{1,2})[./-](?P<day>\d{1,2})"),
-    re.compile(r"(?P<year>\d{2})[./-](?P<month>\d{1,2})[./-](?P<day>\d{1,2})"),
+    re.compile(r"(?P<year>20\d{2})\s*[./-]\s*(?P<month>\d{1,2})\s*[./-]\s*(?P<day>\d{1,2})"),
+    re.compile(r"(?P<year>\d{2})\s*[./-]\s*(?P<month>\d{1,2})\s*[./-]\s*(?P<day>\d{1,2})"),
     re.compile(r"(?P<year>20\d{2})년\s*(?P<month>\d{1,2})월\s*(?P<day>\d{1,2})일"),
 )
 QUANTITY_PATTERN = re.compile(
@@ -66,9 +68,24 @@ NAME_GIFT_PATTERN = re.compile(
     r"^(?P<name>.+?)\s+(?P<quantity>\d+(?:\.\d+)?)\s+증정품$"
 )
 NUMERIC_DETAIL_ROW_PATTERN = re.compile(
-    r"^(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d+)\s+"
+    r"^(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d{1,5})\s+"
     r"(?P<quantity>\d+(?:\.\d+)?)\s+"
     r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
+)
+CODE_NUMERIC_DETAIL_ROW_PATTERN = re.compile(
+    r"^(?P<code>\d{6,})\s+"
+    r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d+)\s+"
+    r"(?P<quantity>\d+(?:\.\d+)?)\s+"
+    r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
+)
+CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN = re.compile(
+    r"^(?P<code>\d{6,})\s+"
+    r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d+)\s+"
+    r"(?P<placeholder>[-_!|Il—–−]+)\s+"
+    r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
+)
+INCOMPLETE_CODE_DETAIL_ROW_PATTERN = re.compile(
+    r"^(?P<code>\d{6,})\s+(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d{1,5})\s+(?P<quantity>\d+(?:\.\d+)?)$"
 )
 PRICE_PATTERN = re.compile(r"^\d{1,3}(?:[,.]\d{3})+$|^\d+$")
 COUNT_PATTERN = re.compile(r"^\d+(?:\.\d+)?$")
@@ -78,6 +95,7 @@ DASH_PATTERN = re.compile(r"^[\-\_=]{3,}$")
 TOTAL_KEYWORDS = (
     "합계",
     "총계",
+    "구매금액",
     "결제금액",
     "결제대상액",
     "최종결제",
@@ -89,11 +107,12 @@ TOTAL_KEYWORDS = (
     "현금",
     "카드결제",
 )
-PAYMENT_KEYWORDS = ("결제금액", "결제대상액", "최종결제", "현금", "카드결제")
+PAYMENT_KEYWORDS = ("구매금액", "결제금액", "결제대상액", "최종결제", "현금", "카드결제")
 DATE_HINT_KEYWORDS = ("판매일", "구매", "주문", "결제", "거래일")
 FOOTER_KEYWORDS = (
     "합계",
     "총계",
+    "구매금액",
     "부가세",
     "세액",
     "물품가액",
@@ -154,9 +173,49 @@ VENDOR_BLOCK_KEYWORDS = (
     "자:",
     "소:",
 )
+STORE_HINT_TOKENS = (
+    "마트",
+    "마켓",
+    "슈퍼",
+    "편의점",
+    "스토어",
+    "카페",
+    "커피",
+    "베이커리",
+    "정육",
+    "약국",
+    "gs25",
+    "cu",
+    "세븐일레븐",
+    "7-eleven",
+    "emart",
+    "이마트",
+    "롯데마트",
+    "홈플러스",
+    "re-mart",
+)
+CANONICAL_VENDOR_ALIASES = {
+    "gs25": "GS25",
+    "cu": "CU",
+    "세븐일레븐": "세븐일레븐",
+    "7-eleven": "7-ELEVEN",
+    "7eleven": "7-ELEVEN",
+    "seveneleven": "7-ELEVEN",
+    "emart": "emart",
+    "이마트": "이마트",
+    "롯데마트": "롯데마트",
+    "홈플러스": "홈플러스",
+    "re-mart": "re-MART",
+}
 BRAND_TOKENS = ("서울우유", "비비고", "CJ", "농심", "오뚜기", "매일", "빙그레")
 OCR_CANONICAL_ALIASES = {
     "깨잎": "깻잎",
+    "했반": "햇반",
+    "바널라": "바닐라",
+    "속이면한": "속이편한",
+    "누룸지": "누룽지",
+    "딸기피지": "딸기피치",
+    "코볼": "초코볼",
 }
 ITEM_RULES = (
     (re.compile(r"우유|밀크"), "우유", "dairy"),
@@ -177,6 +236,73 @@ CATEGORY_STORAGE = {
     "frozen": "frozen",
     "other": "room",
 }
+
+
+@dataclass(frozen=True)
+class ReceiptRules:
+    footer_keywords: tuple[str, ...]
+    payment_keywords: tuple[str, ...]
+    date_hint_keywords: tuple[str, ...]
+    date_penalty_keywords: tuple[str, ...]
+    header_keywords: tuple[str, ...]
+    noise_keywords: tuple[str, ...]
+    structural_noise_keywords: tuple[str, ...]
+    vendor_block_keywords: tuple[str, ...]
+    store_hint_tokens: tuple[str, ...]
+    canonical_vendor_aliases: dict[str, str]
+    brand_tokens: tuple[str, ...]
+    ocr_canonical_aliases: dict[str, str]
+    item_rules: tuple[tuple[str, str, str], ...]
+    non_item_rules: tuple[NonItemCategoryRule, ...] = ()
+    product_alias_replacements: tuple[tuple[str, str], ...] = ()
+    product_to_ingredient: dict[str, str] = field(default_factory=dict)
+    compiled_item_rules: tuple[tuple[re.Pattern[str], str, str], ...] = field(init=False, repr=False)
+
+    def __post_init__(self) -> None:
+        object.__setattr__(
+            self,
+            "compiled_item_rules",
+            tuple((re.compile(pattern), normalized_name, category) for pattern, normalized_name, category in self.item_rules),
+        )
+
+
+def build_default_receipt_rules() -> ReceiptRules:
+    external_rules = None
+    try:
+        external_rules = load_receipt_rules()
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        external_rules = None
+
+    ocr_aliases = dict(OCR_CANONICAL_ALIASES)
+    product_alias_replacements: tuple[tuple[str, str], ...] = ()
+    non_item_rules: tuple[NonItemCategoryRule, ...] = ()
+    product_to_ingredient: dict[str, str] = {}
+    if external_rules is not None:
+        non_item_rules = external_rules.non_item_rules
+        product_alias_replacements = external_rules.product_alias_replacements
+        product_to_ingredient = dict(external_rules.product_to_ingredient)
+    return ReceiptRules(
+        footer_keywords=FOOTER_KEYWORDS,
+        payment_keywords=PAYMENT_KEYWORDS,
+        date_hint_keywords=DATE_HINT_KEYWORDS,
+        date_penalty_keywords=("사업자", "주소", "대표", "전화", "승인", "전표", "카드"),
+        header_keywords=HEADER_KEYWORDS,
+        noise_keywords=NOISE_KEYWORDS,
+        structural_noise_keywords=STRUCTURAL_NOISE_KEYWORDS,
+        vendor_block_keywords=VENDOR_BLOCK_KEYWORDS,
+        store_hint_tokens=STORE_HINT_TOKENS,
+        canonical_vendor_aliases=CANONICAL_VENDOR_ALIASES,
+        brand_tokens=BRAND_TOKENS,
+        ocr_canonical_aliases=ocr_aliases,
+        item_rules=tuple((pattern.pattern, normalized_name, category) for pattern, normalized_name, category in ITEM_RULES),
+        non_item_rules=non_item_rules,
+        product_alias_replacements=product_alias_replacements,
+        product_to_ingredient=product_to_ingredient,
+    )
+
+
+def _contains_any(text: str, keywords: tuple[str, ...]) -> bool:
+    return any(keyword in text for keyword in keywords)
 
 
 @dataclass(frozen=True)
@@ -227,8 +353,13 @@ class ReceiptParseResult:
 
 
 class ReceiptParser:
-    def __init__(self, ingredient_lookup: Mapping[str, Mapping[str, str]] | None = None) -> None:
+    def __init__(
+        self,
+        ingredient_lookup: Mapping[str, Mapping[str, str]] | None = None,
+        rules: ReceiptRules | None = None,
+    ) -> None:
         self.ingredient_lookup = ingredient_lookup or _load_default_ingredient_lookup()
+        self.rules = rules or build_default_receipt_rules()
 
     def parse_lines(self, lines: list[OcrLine]) -> ReceiptParseResult:
         ordered_lines = self._prepare_lines(lines)
@@ -238,6 +369,7 @@ class ReceiptParser:
         sections, section_confidence = self._classify_sections(ordered_lines, vendor_name, purchased_at)
 
         items, consumed_line_ids = self._parse_items(ordered_lines, sections, purchased_at)
+        items = self._filter_parsed_items(items)
 
         review_reasons = self._collect_global_review_reasons(
             items=items,
@@ -288,20 +420,58 @@ class ReceiptParser:
             text = line.text.strip()
             if not text:
                 continue
-            if self._looks_like_header(text) or self._looks_like_probable_item_row(text):
-                break
+            normalized_vendor = self._normalize_vendor_candidate(text)
+            if normalized_vendor is not None:
+                return normalized_vendor
             if self._looks_like_date(text) or self._looks_like_footer(text) or self._looks_like_header(text):
                 continue
             if self._looks_like_numeric_fragment(text) or self._looks_like_noise(text) or self._looks_like_barcode(text):
                 continue
-            if any(keyword in text for keyword in VENDOR_BLOCK_KEYWORDS):
+            if _contains_any(text, self.rules.vendor_block_keywords):
                 continue
-            return text
+            if text.startswith("*") and self._looks_like_item_candidate(text):
+                continue
+            if self._looks_like_vendor_candidate(text):
+                return normalized_vendor or text
+            if self._looks_like_probable_item_row(text):
+                break
+            if self._looks_like_item_candidate(text) and not self._looks_like_marketing_slogan(text):
+                break
+            if self._looks_like_plausible_vendor_fallback(text):
+                return normalized_vendor or text
         return None
 
+    def _looks_like_vendor_candidate(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text).lower()
+        if _contains_any(normalized, self.rules.store_hint_tokens):
+            return True
+        return bool(re.fullmatch(r"(?:[a-z]{3,10}|[a-z]{2,5}\d{1,4})", normalized))
+
+    def _looks_like_plausible_vendor_fallback(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text)
+        if len(normalized) < 2:
+            return False
+        if self._looks_like_marketing_slogan(text):
+            return False
+        if any(char in normalized for char in ":;/\\"):
+            return False
+        digit_count = sum(char.isdigit() for char in normalized)
+        punct_count = sum(not char.isalnum() for char in normalized)
+        hangul_count = sum("가" <= char <= "힣" for char in normalized)
+        alpha_count = sum(char.isalpha() for char in normalized)
+        if hangul_count < 2 and alpha_count < 3:
+            return False
+        if digit_count > max(3, len(normalized) // 4):
+            return False
+        return punct_count <= 2
+
+    def _looks_like_marketing_slogan(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text)
+        return any(token in normalized for token in ("세계1등", "1등", "플랫폼", "일상", "lifestyle", "재미있는"))
+
     def _extract_purchased_at(self, lines: list[OcrLine]) -> str | None:
-        best_candidate: tuple[int, str] | None = None
-        for line in lines:
+        best_candidate: tuple[int, int, str] | None = None
+        for index, line in enumerate(lines):
             text = line.text.strip()
             if not text:
                 continue
@@ -311,9 +481,10 @@ class ReceiptParser:
                     if candidate is None:
                         continue
                     score = self._date_candidate_score(text)
-                    if best_candidate is None or score > best_candidate[0]:
-                        best_candidate = (score, candidate)
-        return best_candidate[1] if best_candidate else None
+                    candidate_rank = (score, -index, candidate)
+                    if best_candidate is None or candidate_rank > best_candidate:
+                        best_candidate = candidate_rank
+        return best_candidate[2] if best_candidate else None
 
     def _classify_sections(
         self,
@@ -351,7 +522,7 @@ class ReceiptParser:
             elif DASH_PATTERN.match(normalized):
                 sections[line_id] = "ignored"
             elif index >= item_block_start and self._looks_like_footer(text):
-                sections[line_id] = "payment" if any(keyword in normalized for keyword in PAYMENT_KEYWORDS) else "totals"
+                sections[line_id] = "payment" if _contains_any(normalized, self.rules.payment_keywords) else "totals"
             elif self._looks_like_noise(text):
                 sections[line_id] = "ignored"
             elif self._looks_like_header(text):
@@ -466,12 +637,27 @@ class ReceiptParser:
                 continue
 
             single_line_item = self._build_single_line_item(line, purchased_at)
+            if self._should_skip_single_line_candidate(lines, index, single_line_item):
+                index += 1
+                continue
             if single_line_item is not None:
                 items.append(single_line_item)
                 consumed_line_ids.update(single_line_item.source_line_ids)
             index += 1
 
         return items, consumed_line_ids
+
+    def _filter_parsed_items(self, items: list[ReceiptItem]) -> list[ReceiptItem]:
+        filtered: list[ReceiptItem] = []
+        excluded_categories = {"discount", "packaging", "metadata", "non_food"}
+        for item in items:
+            candidates = [item.raw_name]
+            if item.normalized_name:
+                candidates.append(item.normalized_name)
+            if any(self._matches_non_item_category(candidate, excluded_categories) for candidate in candidates if candidate):
+                continue
+            filtered.append(item)
+        return filtered
 
     def _detect_item_window(self, lines: list[OcrLine]) -> tuple[int, int]:
         header_indices = [
@@ -493,13 +679,23 @@ class ReceiptParser:
 
     def _infer_item_block_start(self, lines: list[OcrLine]) -> int:
         for start in range(len(lines)):
+            window = lines[start : min(start + 6, len(lines))]
+            pair_offsets = [
+                offset
+                for offset in range(len(window) - 1)
+                if self._looks_like_name_then_detail_pair(window, offset)
+            ]
+            if len(pair_offsets) >= 2:
+                first_pair_index = start + pair_offsets[0]
+                return lines[first_pair_index].page_order if lines[first_pair_index].page_order is not None else first_pair_index
+
             score = 0
             first_structured_index: int | None = None
-            for candidate in lines[start : min(start + 5, len(lines))]:
+            for offset, candidate in enumerate(window):
                 if self._looks_like_structured_item_row(candidate.text):
                     score += 1
                     if first_structured_index is None:
-                        first_structured_index = candidate.page_order if candidate.page_order is not None else start
+                        first_structured_index = candidate.page_order if candidate.page_order is not None else start + offset
                 elif self._looks_like_noise(candidate.text) or self._looks_like_pure_noise_line(candidate.text):
                     continue
                 elif score > 0:
@@ -507,6 +703,22 @@ class ReceiptParser:
             if score >= 2:
                 return first_structured_index if first_structured_index is not None else start
         return 0
+
+    def _looks_like_name_then_detail_pair(self, lines: list[OcrLine], offset: int) -> bool:
+        if offset + 1 >= len(lines):
+            return False
+        name_line = lines[offset]
+        detail_line = lines[offset + 1]
+        if not self._looks_like_item_candidate(name_line.text):
+            return False
+        detail_text = detail_line.text.strip()
+        return bool(
+            NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
+            or CODE_NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
+            or CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN.match(detail_text)
+            or COMPACT_BARCODE_ITEM_PATTERN.match(detail_text)
+            or COMPACT_BARCODE_INFERRED_QTY_PATTERN.match(detail_text)
+        )
 
     def _looks_like_item_like_row(self, text: str) -> bool:
         stripped = self._cleanup_noisy_item_name(text.strip())
@@ -535,9 +747,10 @@ class ReceiptParser:
 
     def _looks_like_item_header(self, text: str) -> bool:
         normalized = re.sub(r"\s+", "", text)
-        if "합계" in normalized or "총계" in normalized or "결제" in normalized:
+        if "합계" in normalized or "총계" in normalized or "결제" in normalized or "받은금액" in normalized:
             return False
-        return any(keyword in normalized for keyword in ("상품명", "단가", "수량", "금액"))
+        header_hits = sum(1 for keyword in ("상품명", "단가", "수량", "금액") if keyword in normalized)
+        return header_hits >= 2 or ("상품명" in normalized and header_hits >= 1)
 
     def _parse_bbox_row_items(
         self,
@@ -823,10 +1036,31 @@ class ReceiptParser:
         cleaned_name = self._cleanup_noisy_item_name(name_line.text.strip())
         if not self._looks_like_item_candidate(cleaned_name):
             return None
+        preview_normalized_name, _, _ = self._normalize_item_name(cleaned_name)
+        if preview_normalized_name is None and name_line.confidence < 0.75:
+            return None
 
-        match = NUMERIC_DETAIL_ROW_PATTERN.match(detail_line.text.strip())
+        detail_text = detail_line.text.strip()
+        match = NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
+        parse_pattern = "name_then_numeric_detail"
+        source_line_ids = [name_line.line_id or 0, detail_line.line_id or 0]
+        quantity = None
+        if match is None:
+            code_match = CODE_NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
+            if code_match is None:
+                code_placeholder_match = CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN.match(detail_text)
+                if code_placeholder_match is None:
+                    return None
+                match = code_placeholder_match
+                parse_pattern = "name_then_code_amount_inferred_qty"
+                quantity = 1.0
+            else:
+                match = code_match
+                parse_pattern = "name_then_code_numeric_detail"
         if match is None:
             return None
+        if quantity is None:
+            quantity = float(match.group("quantity"))
 
         amount = self._extract_last_price(match.group("amount"))
         if amount is None:
@@ -837,11 +1071,11 @@ class ReceiptParser:
                 raw_name=cleaned_name,
                 confidence_lines=[name_line, detail_line],
                 purchased_at=purchased_at,
-                quantity=float(match.group("quantity")),
+                quantity=quantity,
                 unit="개",
                 amount=amount,
-                parse_pattern="name_then_numeric_detail",
-                source_line_ids=[name_line.line_id or 0, detail_line.line_id or 0],
+                parse_pattern=parse_pattern,
+                source_line_ids=source_line_ids,
             ),
             2,
         )
@@ -857,12 +1091,46 @@ class ReceiptParser:
         cleaned = text
         cleaned = re.sub(r"^\*?\d{8,}\s*", "", cleaned)
         cleaned = re.sub(r"^\d{1,3}\s*", "", cleaned)
-        cleaned = re.sub(r"^\d{1,3}(?=[가-힣A-Za-z])", "", cleaned)
         cleaned = re.sub(r"\b(행사|증정품)\b", " ", cleaned)
+        cleaned = re.sub(r"\s+행상$", "", cleaned)
         cleaned = re.sub(r"\b1[가-힣A-Za-z]{1,3}$", "", cleaned).strip()
         cleaned = re.sub(r"\([^)]*\)", " ", cleaned)
+        cleaned = re.sub(r"\^+", " ", cleaned)
+        cleaned = cleaned.strip()
+        cleaned = re.sub(r"^([가-힣A-Za-z]{2,4})\)(?=\1)", "", cleaned)
+        cleaned = re.sub(r"^(?!\*)([가-힣A-Za-z]{2,6})\)\s*", r"\1 ", cleaned)
+        cleaned = cleaned.replace("m]", "ml").replace("m1", "ml").replace("M]", "ML").replace("M1", "ML")
+        cleaned = cleaned.replace("ML", "ml")
+        cleaned = re.sub(r"(?i)(\d+ml)(?:\s*\1)+", r"\1", cleaned)
+        cleaned = re.sub(r"[\]}]+", " ", cleaned)
         cleaned = re.sub(r"\s+", " ", cleaned).strip()
+        cleaned = re.sub(r"^([가-힣A-Za-z]{2,4})\s+(?=\1)", "", cleaned)
+        for source, target in self.rules.ocr_canonical_aliases.items():
+            cleaned = cleaned.replace(source, target)
         return cleaned
+
+    def _should_skip_single_line_candidate(
+        self,
+        lines: list[OcrLine],
+        index: int,
+        item: ReceiptItem | None,
+    ) -> bool:
+        if item is None:
+            return False
+
+        raw_text = lines[index].text.strip()
+        preview_normalized_name, _, _ = self._normalize_item_name(item.raw_name)
+        if preview_normalized_name is None and lines[index].confidence < 0.75:
+            return True
+
+        if item.parse_pattern != "single_line_name_amount":
+            return False
+        if not re.match(r"^\d{1,3}\s+", raw_text):
+            return False
+        if index + 1 >= len(lines):
+            return False
+        next_text = lines[index + 1].text.strip()
+        return bool(INCOMPLETE_CODE_DETAIL_ROW_PATTERN.match(next_text))
 
     def _build_single_line_item(self, line: OcrLine, purchased_at: str | None) -> ReceiptItem | None:
         gift_candidate = line.text.strip()
@@ -920,6 +1188,10 @@ class ReceiptParser:
 
         quantity, unit = self._extract_quantity(line.text)
         amount = self._extract_last_price(line.text)
+        if quantity is not None and unit is not None:
+            numeric_tokens_in_name = re.findall(r"\d{1,3}(?:[,.]\d{3})+|\d+", cleaned_name)
+            if len(numeric_tokens_in_name) <= 1:
+                amount = None
         return self._build_item(
             raw_name=cleaned_name,
             confidence_lines=[line],
@@ -1007,9 +1279,13 @@ class ReceiptParser:
             if total_key is None:
                 continue
 
+            next_text = lines[index + 1].text.strip() if index + 1 < len(lines) else ""
+            if total_key == "payment_amount" and not self._looks_like_total_amount_line(text):
+                if not (next_text and PRICE_PATTERN.match(next_text)):
+                    continue
+
             amount = self._extract_last_price(text)
-            if amount is None and index + 1 < len(lines):
-                next_text = lines[index + 1].text.strip()
+            if amount is None and next_text:
                 if PRICE_PATTERN.match(next_text):
                     amount = self._extract_last_price(next_text)
             if amount is not None:
@@ -1020,7 +1296,9 @@ class ReceiptParser:
         return totals
 
     def _classify_total_key(self, normalized_text: str) -> str | None:
-        if any(keyword in normalized_text for keyword in PAYMENT_KEYWORDS):
+        if normalized_text.startswith("계:") or normalized_text == "계":
+            return "total"
+        if _contains_any(normalized_text, self.rules.payment_keywords):
             return "payment_amount"
         if "부가세" in normalized_text or "세액" in normalized_text:
             return "tax"
@@ -1054,7 +1332,7 @@ class ReceiptParser:
     def _normalize_item_name(self, text: str) -> tuple[str | None, str, str | None]:
         candidates = self._candidate_item_names(text)
         for candidate in candidates:
-            for pattern, normalized_name, category in ITEM_RULES:
+            for pattern, normalized_name, category in self.rules.compiled_item_rules:
                 if pattern.search(candidate):
                     return normalized_name, category, None
 
@@ -1078,23 +1356,40 @@ class ReceiptParser:
 
     def _looks_like_footer(self, text: str) -> bool:
         normalized = re.sub(r"\s+", "", text)
-        return any(keyword in normalized for keyword in FOOTER_KEYWORDS)
+        if normalized.startswith("계:") or normalized == "계":
+            return True
+        if self._matches_non_item_category(text, {"summary", "payment"}):
+            return True
+        return _contains_any(normalized, self.rules.footer_keywords)
 
     def _looks_like_header(self, text: str) -> bool:
         normalized = re.sub(r"\s+", "", text)
-        return any(keyword in normalized for keyword in HEADER_KEYWORDS)
+        if self._matches_non_item_category(text, {"header"}):
+            return True
+        return _contains_any(normalized, self.rules.header_keywords)
 
     def _looks_like_noise(self, text: str) -> bool:
         normalized = re.sub(r"\s+", "", text)
         if DASH_PATTERN.match(normalized):
             return True
-        if any(keyword in normalized for keyword in STRUCTURAL_NOISE_KEYWORDS):
+        if self._looks_like_adjustment_row(text):
             return True
-        return any(keyword in normalized for keyword in NOISE_KEYWORDS)
+        if self._matches_non_item_category(text, {"discount", "packaging", "metadata"}):
+            return True
+        if _contains_any(normalized, self.rules.structural_noise_keywords):
+            return True
+        return _contains_any(normalized, self.rules.noise_keywords)
 
     def _looks_like_pure_noise_line(self, text: str) -> bool:
         normalized = re.sub(r"\s+", "", text)
         return normalized in {"행사", "증정품", "할인", "세일"}
+
+    def _looks_like_adjustment_row(self, text: str) -> bool:
+        stripped = text.strip()
+        normalized = re.sub(r"\s+", "", stripped)
+        if not re.search(r"-\d{1,3}(?:[,.]\d{3})+|-\d+", normalized):
+            return False
+        return stripped.startswith(("[", "]", "(", "{", "△", "-"))
 
     def _looks_like_numeric_fragment(self, text: str) -> bool:
         return bool(PRICE_PATTERN.match(text.strip()))
@@ -1149,13 +1444,22 @@ class ReceiptParser:
 
     def _date_candidate_score(self, text: str) -> int:
         score = 0
-        if any(keyword in text for keyword in DATE_HINT_KEYWORDS):
+        if _contains_any(text, self.rules.date_hint_keywords):
             score += 3
-        if re.search(r"\d{1,2}:\d{2}", text):
-            score += 1
-        if any(keyword in text for keyword in ("사업자", "주소", "대표", "전화")):
+        if _contains_any(text, self.rules.date_penalty_keywords):
             score -= 3
         return score
+
+    def _normalize_vendor_candidate(self, text: str) -> str | None:
+        normalized = re.sub(r"\s+", "", text).lower()
+        for token, canonical in self.rules.canonical_vendor_aliases.items():
+            if token in normalized:
+                return canonical
+        return None
+
+    def _looks_like_total_amount_line(self, text: str) -> bool:
+        compact = re.sub(r"\s+", "", text)
+        return bool(re.search(r"(?:\d{1,3}(?:[,.]\d{3})+|\d{4,})(?:원)?$", compact))
 
     def _normalize_date_text(self, text: str) -> str:
         extracted = self._extract_purchased_at([OcrLine(text=text, confidence=1.0)])
@@ -1180,19 +1484,37 @@ class ReceiptParser:
             candidates.append(prefix_stripped)
 
         cleaned = original
-        for token in BRAND_TOKENS:
+        for token in self.rules.brand_tokens:
             cleaned = cleaned.replace(token, "").strip()
         if cleaned and cleaned not in candidates:
             candidates.append(cleaned)
 
         for candidate in list(candidates):
-            for source, target in OCR_CANONICAL_ALIASES.items():
+            for source, target in self.rules.ocr_canonical_aliases.items():
                 if source in candidate:
                     replaced = candidate.replace(source, target)
                     if replaced and replaced not in candidates:
                         candidates.append(replaced)
 
+        for candidate in list(candidates):
+            aliased = self._apply_product_aliases(candidate)
+            if aliased and aliased not in candidates:
+                candidates.append(aliased)
+
         return [candidate for candidate in candidates if candidate]
+
+    def _matches_non_item_category(self, text: str, categories: set[str]) -> bool:
+        for rule in self.rules.non_item_rules:
+            if rule.name in categories and rule.matches(text):
+                return True
+        return False
+
+    def _apply_product_aliases(self, text: str) -> str:
+        updated = text
+        for source, target in self.rules.product_alias_replacements:
+            if source and source in updated:
+                updated = updated.replace(source, target)
+        return updated
 
 
 def _load_default_ingredient_lookup() -> dict[str, dict[str, str]]:

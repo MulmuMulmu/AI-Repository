@@ -1,0 +1,50 @@
+{
+  "dataset_name": "assistant-visual-v0",
+  "label_source": "assistant-visual-v0",
+  "generated_at": "2026-04-16T08:30:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "img2.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img2.jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-visual-baseline"
+  },
+  "expected": {
+    "vendor_name": "7-ELEVEN",
+    "purchased_at": "2020-06-09",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "라라스윗 바닐라파인트474",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6900.0
+      },
+      {
+        "raw_name": "라라스윗 초코파인트474ml",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6900.0
+      }
+    ],
+    "uncertain_items": [],
+    "excluded_rows": [
+      {
+        "raw_name": "비닐봉투 보증금 20원",
+        "reason": "non_food_supply"
+      }
+    ],
+    "totals": {
+      "subtotal": 12545.0,
+      "tax": 1255.0,
+      "total": 13820.0,
+      "payment_amount": 13820.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

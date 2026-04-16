@@ -235,6 +235,19 @@ QWEN_RECEIPT_MAX_TOKENS=256
 - `matched_count`
 - `unmatched_count`
 
+매칭 순서:
+- 상품 alias 정규화
+- `data/receipt_rules/product_to_ingredient.json` 규칙 사전 확인
+- DB exact match
+- DB fuzzy match
+
+open-set 처리:
+- 사전에 없는 식품은 버리지 않고 `mapping_status=UNMAPPED`로 반환
+- 비식품/제외 대상은 `mapping_status=EXCLUDED`로 반환
+- 모든 항목에 `standard_product_name`, `item_type`를 포함
+
+`matched` 항목에는 `mapping_source`, `standard_product_name`, `mapping_status`, `item_type`가 포함됩니다.
+
 ## 8. 검증
 
 전체 테스트:

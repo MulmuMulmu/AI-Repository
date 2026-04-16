@@ -58,3 +58,12 @@ def test_receipt_ocr_adapts_prototype_parse_result_to_legacy_shape(monkeypatch) 
     assert result["food_items"][0]["notes"] == "low_confidence"
     assert result["food_items"][0]["box"] == ((0, 0), (100, 0), (100, 20), (0, 20))
     assert result["all_texts"][0]["text"] == "허니버터칩 1 2,000"
+
+
+def test_receipt_ocr_uses_default_qwen_provider_factory(monkeypatch) -> None:
+    stub_provider = object()
+    monkeypatch.setattr("receipt_ocr.build_default_qwen_provider", lambda: stub_provider)
+
+    ocr = ReceiptOCR()
+
+    assert ocr.service.qwen_provider is stub_provider

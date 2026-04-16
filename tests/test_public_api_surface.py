@@ -39,7 +39,33 @@ def test_ingredient_prediction_endpoint_returns_match_result(monkeypatch) -> Non
     assert data["matched_count"] == 1
     assert data["unmatched_count"] == 1
     assert data["matched"][0]["ingredientName"] == "두부"
+    assert data["matched"][0]["mapping_status"] == "MAPPED"
+    assert data["matched"][0]["item_type"] == "INGREDIENT"
     assert data["unmatched"][0]["suggestions"] == ["두부", "순두부"]
+    assert data["unmatched"][0]["mapping_status"] == "UNMAPPED"
+    assert data["unmatched"][0]["item_type"] == "UNKNOWN"
+
+
+def test_ingredient_prediction_endpoint_keeps_non_food_as_excluded(monkeypatch) -> None:
+    monkeypatch.setattr(main, "_match_product_to_ingredient", lambda product_name: None)
+    monkeypatch.setattr(main, "_find_suggestions", lambda product_name: [])
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.post(
+                "/ai/ingredient/prediction",
+                json={"product_names": ["구글홈미니"]},
+            )
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    payload = response.json()["data"]
+    assert payload["matched_count"] == 0
+    assert payload["unmatched_count"] == 1
+    assert payload["unmatched"][0]["mapping_status"] == "EXCLUDED"
+    assert payload["unmatched"][0]["item_type"] == "NON_FOOD"
 
 
 def test_legacy_api_routes_are_not_exposed() -> None:
