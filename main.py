@@ -952,3 +952,95 @@ async def cache_clear():
     trace_id = _gen_trace()
     _cache.clear()
     return _ok({"message": "캐시가 초기화되었습니다."}, trace_id)
+
+
+# ═══════════════════════════════════════════════════════════════
+#  백엔드 팀 연동 API (실제 Spring Boot가 호출하는 엔드포인트)
+# ═══════════════════════════════════════════════════════════════
+
+
+@app.post("/ai/ocr/analyze")
+async def ocr_analyze(image: UploadFile = File(...)):
+    """
+    영수증 OCR 분석 — PaddleOCR + 규칙 보정 + Qwen 1차 보정.
+    DB 매칭 없이 식품명 리스트만 반환한다.
+    """
+    trace_id = _gen_trace()
+
+    if image.content_type not in ("image/jpeg", "image/png", "image/jpg"):
+        raise HTTPException(status_code=400, detail=_fail(
+            "INVALID_IMAGE", "jpg, png 파일만 지원합니다.", trace_id,
+        ).model_dump())
+
+    suffix = ".jpg" if "jpeg" in (image.content_type or "") else ".png"
+    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+        content = await image.read()
+        tmp.write(content)
+        tmp_path = tmp.name
+
+    try:
+        from receipt_ocr import ReceiptOCR
+
+        ocr = ReceiptOCR()
+        analysis = ocr.analyze_receipt(tmp_path)
+        ocr_texts = analysis.get("all_texts", [])
+
+        rule_result = _normalizer.process(analysis, match_db=False)
+        food_items = rule_result["items"]
+        model_name = rule_result["model"]
+
+        try:
+            from qwen_receipt_assistant import QwenReceiptAssistant
+            assistant = QwenReceiptAssistant()
+            refined = assistant.refine_analysis(analysis)
+            qwen_items = refined.get("items", [])
+            if qwen_items:
+                food_items = _merge_rule_and_qwen(food_items, qwen_items)
+                model_name = f"rule_based_v1 + {refined.get('model', 'qwen')}"
+        except Exception:
+            pass
+
+        items = []
+        for it in food_items:
+            items.append({
+                "name": it.get("product_name", it.get("product_name_raw", "")),
+                "category": it.get("category_major", ""),
+                "price": it.get("amount_krw"),
+            })
+
+        return _ok({
+            "items": items,
+            "item_count": len(items),
+            "store_name": rule_result.get("store_name"),
+            "purchase_date": rule_result.get("purchase_date"),
+            "model": model_name,
+        }, trace_id)
+
+    except ImportError:
+        raise HTTPException(status_code=503, detail=_fail(
+            "SERVICE_UNAVAILABLE", "PaddleOCR가 설치되지 않았습니다.", trace_id,
+        ).model_dump())
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=_fail(
+            "OCR_FAILED", str(e), trace_id,
+        ).model_dump())
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
+
+
+@app.get("/ai/ingredient/prediction")
+async def ingredient_prediction(
+    name: str = Query(..., description="식재료명"),
+    purchase_date: str = Query(..., description="구매일 (YYYY-MM-DD)"),
+    storage: str = Query("냉장", description="보관방법 (냉장/냉동/상온)"),
+):
+    """
+    소비기한 계산 — GPT-4o-mini + 규칙 기반 fallback.
+    """
+    trace_id = _gen_trace()
+    result = _expiry_calc.calculate(
+        item_name=name,
+        purchase_date=purchase_date,
+        storage_method=storage,
+    )
+    return _ok(result, trace_id)
