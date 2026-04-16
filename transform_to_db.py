@@ -95,6 +95,8 @@ def transform():
             "recipeId": recipe_id,
             "name": r.get("title", "").strip(),
             "category": r.get("category", "").strip(),
+            "cookingMethod": r.get("cooking_method", "").strip(),
+            "cookingMethodCode": r.get("cooking_method_code", "").strip(),
             "imageUrl": "",
         })
 

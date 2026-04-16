@@ -1,721 +1,406 @@
-# AI FastAPI 요청/응답 명세서
+# AI Server API 명세 (설계서 v1.1)
 
-> **프로젝트**: 영수증 기반 식재료 인식 및 레시피 추천 시스템  
-> **AI 서버**: FastAPI (Python)  
-> **백엔드 서버**: Spring Boot (Java)  
-> **Base URL**: `http://{AI_SERVER_HOST}:8000`
+> 기본 경로: `/ai/v1`  
+> 공통 응답 형식: `AiResponse { result_code, trace_id, model_version, result, error }`
 
 ---
 
-## 목차
+## 공통 응답 구조
 
-1. [시스템 아키텍처](#1-시스템-아키텍처)
-2. [DB 스키마 (ERD)](#2-db-스키마-erd)
-3. [API 엔드포인트 목록](#3-api-엔드포인트-목록)
-4. [API 상세 명세](#4-api-상세-명세)
-   - 4.1 [영수증 OCR + Qwen 보정](#41-영수증-ocr--qwen-보정)
-   - 4.2 [OCR 추출 상품명 → DB 재료 매칭](#42-ocr-추출-상품명--db-재료-매칭)
-   - 4.3 [보유 재료 기반 레시피 추천](#43-보유-재료-기반-레시피-추천)
-   - 4.4 [레시피 상세 조회](#44-레시피-상세-조회)
-   - 4.5 [재료 키워드 검색](#45-재료-키워드-검색)
-   - 4.6 [서비스 상태 확인 (Health Check)](#46-서비스-상태-확인-health-check)
-5. [에러 응답 공통 형식](#5-에러-응답-공통-형식)
-6. [전체 흐름 시퀀스](#6-전체-흐름-시퀀스)
-
----
-
-## 1. 시스템 아키텍처
-
-```
-Flutter App (클라이언트)
-    │
-    ▼
-Spring Boot (백엔드)
-    │
-    ├─── DB (MySQL/PostgreSQL) ◀── Recipe, Ingredient, RecipeIngredient, RecipeStep
-    │
-    └───▶ AI FastAPI 서버
-              ├── PaddleOCR (영수증 텍스트 인식)
-              ├── Qwen LLM (OCR 오타 보정 + 상품명 정리)
-              └── 재료 매칭 / 레시피 추천 엔진
-```
-
-| 담당 | Spring Boot | AI FastAPI |
-|------|------------|------------|
-| 영수증 OCR + LLM 보정 | 이미지 전달 | **PaddleOCR + Qwen 처리** |
-| 재료 매칭 | 요청 전달 | **유사도 기반 매칭** |
-| 레시피 추천 | 요청 전달 | **추천 알고리즘 수행** |
-| 레시피 CRUD | **JPA/DB 직접 처리** | - |
-| 회원 관리 | **Spring Security** | - |
-
----
-
-## 2. DB 스키마 (ERD)
-
-### Recipe 테이블
-| 컬럼 | 타입 | 설명 |
-|------|------|------|
-| `recipeId` | UUID (PK) | 레시피 고유 ID |
-| `name` | VARCHAR | 레시피명 |
-| `category` | VARCHAR | 카테고리 (반찬, 국/찌개, 볶음류, 디저트 등) |
-| `imageUrl` | VARCHAR | 레시피 이미지 URL |
-
-### Ingredient 테이블
-| 컬럼 | 타입 | 설명 |
-|------|------|------|
-| `ingredientId` | UUID (PK) | 재료 고유 ID |
-| `ingredientName` | VARCHAR | 재료명 |
-| `category` | VARCHAR | 분류 (정육/계란, 해산물, 채소/과일, 유제품, 쌀/면/빵, 소스/조미료/오일, 가공식품, 기타) |
-
-### RecipeIngredient 테이블
-| 컬럼 | 타입 | 설명 |
-|------|------|------|
-| `recipeIngredientId` | UUID (PK) | 고유 ID |
-| `recipeId` | UUID (FK → Recipe) | 레시피 ID |
-| `ingredientId` | UUID (FK → Ingredient) | 재료 ID |
-| `amount` | FLOAT | 수량 |
-| `unit` | VARCHAR | 단위 (g, ml, 개, 큰술 등) |
-
-### RecipeStep 테이블
-| 컬럼 | 타입 | 설명 |
-|------|------|------|
-| `recipeStepId` | UUID (PK) | 고유 ID |
-| `recipeId` | UUID (FK → Recipe) | 레시피 ID |
-| `stepOrder` | INT | 조리 순서 (1, 2, 3...) |
-| `description` | TEXT | 조리 단계 설명 |
-
----
-
-## 3. API 엔드포인트 목록
-
-| # | Method | Endpoint | 설명 |
-|---|--------|----------|------|
-| 1 | `POST` | `/api/ocr/receipt` | 영수증 이미지 OCR + Qwen LLM 보정 |
-| 2 | `POST` | `/api/ingredients/match` | OCR 추출 상품명 → DB Ingredient 매칭 |
-| 3 | `POST` | `/api/recipes/recommend` | 보유 재료 기반 레시피 추천 |
-| 4 | `GET`  | `/api/recipes/{recipeId}` | 레시피 상세 조회 (재료 + 조리 단계) |
-| 5 | `GET`  | `/api/ingredients/search` | 키워드로 재료 검색 |
-| 6 | `GET`  | `/api/health` | 서비스 상태 확인 |
-
----
-
-## 4. API 상세 명세
-
-### 4.1 영수증 OCR + Qwen 보정
-
-영수증 이미지를 업로드하면 PaddleOCR로 텍스트를 인식하고, Qwen LLM이 OCR 오타를 보정하여 식품 상품명 목록을 반환합니다.
-
-**`POST /api/ocr/receipt`**
-
-#### Request
-
-| 항목 | 값 |
-|------|-----|
-| Content-Type | `multipart/form-data` |
-
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|------|------|
-| `image` | File (jpg/png) | O | 영수증 이미지 파일 |
-| `use_qwen` | boolean | X (기본: true) | Qwen LLM 보정 사용 여부 |
-
-#### Response — `200 OK`
+모든 엔드포인트는 아래 JSON 구조를 반환합니다.
 
 ```json
 {
-  "success": true,
-  "data": {
-    "ocr_texts": [
-      {"text": "신선설렁탕", "confidence": 0.9512},
-      {"text": "깻잎", "confidence": 0.9821},
-      {"text": "3,900", "confidence": 0.9134},
-      {"text": "국산콩두부", "confidence": 0.8745}
-    ],
-    "food_items": [
-      {
-        "product_name": "깻잎",
-        "amount_krw": 1500,
-        "notes": ""
-      },
-      {
-        "product_name": "국산콩 두부",
-        "amount_krw": 3900,
-        "notes": "국산콩두부 → 국산콩 두부"
-      },
-      {
-        "product_name": "삼겹살",
-        "amount_krw": 12900,
-        "notes": ""
-      }
-    ],
-    "food_count": 3,
-    "model": "qwen3:latest"
+  "result_code": "OK",
+  "trace_id": "tr-a1b2c3d4e5f6",
+  "model_version": "ai-server-v1.1.0",
+  "result": { ... },
+  "error": null
+}
+```
+
+| 필드 | 타입 | 설명 |
+|------|------|------|
+| `result_code` | string | `"OK"` 또는 오류 코드 |
+| `trace_id` | string | 요청 추적 ID (`tr-` 접두사) |
+| `model_version` | string | 서버 버전 |
+| `result` | object/null | 정상 응답 데이터 |
+| `error` | object/null | `{"code": str, "message": str}` |
+
+---
+
+## 1. 헬스체크
+
+### `GET /ai/v1/health`
+
+서버 상태, 서비스 가용성, 통계를 반환합니다.
+
+**응답 (result)**
+```json
+{
+  "status": "healthy",
+  "version": "ai-server-v1.1.0",
+  "uptime": "2h 30m 15s",
+  "services": {
+    "paddleocr": "available",
+    "rule_based_normalizer": "active (v1)",
+    "recipe_recommender": "active (weighted_scoring_v1)",
+    "expiry_calculator": "active (gpt4omini + rule_fallback)",
+    "sharing_filter": "active (v1)",
+    "qwen_llm": "optional"
+  },
+  "stats": {
+    "total_recipes": 1200,
+    "total_ingredients": 350,
+    "total_recipe_ingredients": 8500,
+    "total_recipe_steps": 6000
   }
 }
 ```
 
-#### Response 필드 설명
-
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `ocr_texts` | Array | PaddleOCR 원본 인식 결과 (전체 텍스트) |
-| `ocr_texts[].text` | string | 인식된 텍스트 |
-| `ocr_texts[].confidence` | float | 인식 신뢰도 (0~1) |
-| `food_items` | Array | Qwen 보정 후 최종 식품 목록 |
-| `food_items[].product_name` | string | 보정된 상품명 |
-| `food_items[].amount_krw` | int \| null | 결제 금액 (원), 불확실하면 null |
-| `food_items[].notes` | string | OCR 오타 수정 내역 등 |
-| `food_count` | int | 추출된 식품 개수 |
-| `model` | string | 사용된 LLM 모델명 |
-
 ---
 
-### 4.2 OCR 추출 상품명 → DB 재료 매칭
+## 2. OCR 파이프라인 (3단계)
 
-OCR에서 추출된 상품명(예: "국산콩 두부")을 DB의 `Ingredient` 테이블과 매칭하여, 가장 유사한 재료를 반환합니다.
+### 2-1. `POST /ai/v1/ocr/preprocess`
 
-**`POST /api/ingredients/match`**
+영수증 이미지 → PaddleOCR → 원시 텍스트 추출 → 규칙 기반 정규화.
 
-#### Request
+**요청**: `multipart/form-data`
 
-| 항목 | 값 |
-|------|-----|
-| Content-Type | `application/json` |
+| 필드 | 타입 | 필수 | 설명 |
+|------|------|------|------|
+| `image` | file | O | jpg/png 영수증 이미지 |
+| `use_qwen` | bool | X | Qwen 보강 여부 (기본 false) |
 
+**응답 (result)**
 ```json
 {
-  "product_names": ["국산콩 두부", "깻잎", "삼겹살", "CJ 햇반"]
+  "job_id": "ocr-a1b2c3d4",
+  "status": "completed",
+  "ocr_texts": [ {"text": "...", "confidence": 0.95} ],
+  "food_items": [ { "product_name_raw": "삼겹쌀", "product_name": "삼겹살", ... } ],
+  "food_count": 5,
+  "model": "rule_based_v1",
+  "store_name": "이마트",
+  "purchase_date": "2026-04-15"
 }
 ```
 
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|------|------|
-| `product_names` | string[] | O | OCR에서 추출된 상품명 배열 |
+### 2-2. `POST /ai/v1/ocr/extract-lines`
 
-#### Response — `200 OK`
+텍스트 목록 → OCR 보정 → 라인 분류.
 
+**요청**
 ```json
-{
-  "success": true,
-  "data": {
-    "matched": [
-      {
-        "product_name": "국산콩 두부",
-        "ingredientId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-        "ingredientName": "두부",
-        "category": "가공식품",
-        "similarity": 0.92
-      },
-      {
-        "product_name": "깻잎",
-        "ingredientId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-        "ingredientName": "깻잎",
-        "category": "채소/과일",
-        "similarity": 1.0
-      },
-      {
-        "product_name": "삼겹살",
-        "ingredientId": "c3d4e5f6-a7b8-9012-cdef-123456789012",
-        "ingredientName": "삼겹살",
-        "category": "정육/계란",
-        "similarity": 1.0
-      }
-    ],
-    "unmatched": [
-      {
-        "product_name": "CJ 햇반",
-        "reason": "DB에 일치하는 재료 없음",
-        "suggestions": ["밥", "쌀"]
-      }
-    ],
-    "matched_count": 3,
-    "unmatched_count": 1
-  }
-}
+{ "product_names": ["삼겹쌀 2,500", "합계", "..."] }
 ```
 
-#### Response 필드 설명
-
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `matched` | Array | 매칭 성공한 재료 목록 |
-| `matched[].product_name` | string | 입력된 상품명 (원본) |
-| `matched[].ingredientId` | UUID | DB 재료 ID |
-| `matched[].ingredientName` | string | DB 재료명 |
-| `matched[].category` | string | 재료 카테고리 |
-| `matched[].similarity` | float | 매칭 유사도 (0~1) |
-| `unmatched` | Array | 매칭 실패한 상품 목록 |
-| `unmatched[].product_name` | string | 매칭 실패한 상품명 |
-| `unmatched[].reason` | string | 실패 사유 |
-| `unmatched[].suggestions` | string[] | 유사 재료 추천 |
-
----
-
-### 4.3 보유 재료 기반 레시피 추천
-
-사용자가 보유한 재료 ID 목록을 받아, **일부 재료만 보유하고 있어도** 일치율(matchRate) 기반으로 레시피를 추천합니다.
-
-> **핵심 동작**: 레시피에 필요한 재료를 전부 갖추지 않아도 추천됩니다.  
-> 예를 들어, "두부"와 "순두부" 2개만 보유해도 "김치두부솥(matchRate: 25%)", "두부된장무침(matchRate: 25%)" 등이 추천됩니다.  
-> 보유 재료와 부족한 재료를 분리하여 반환하므로, 사용자가 추가 구매할 재료를 파악할 수 있습니다.
-
-**`POST /api/recipes/recommend`**
-
-#### Request
-
-| 항목 | 값 |
-|------|-----|
-| Content-Type | `application/json` |
-
+**응답 (result)**
 ```json
 {
-  "ingredientIds": [
-    "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
-    "b2c3d4e5-f6a7-8901-bcde-f12345678901"
+  "lines": [
+    { "raw": "삼겹쌀 2,500", "corrected": "삼겹살 2,500", "line_type": "product", "ocr_changed": true }
   ],
+  "line_count": 1
+}
+```
+
+### 2-3. `POST /ai/v1/ocr/normalize`
+
+상품명 → 정규화 → 카테고리 → DB 매칭.
+
+**요청**
+```json
+{ "product_names": ["삼겹살", "대파", "..."] }
+```
+
+**응답 (result)**
+```json
+{
+  "items": [
+    {
+      "product_name_raw": "삼겹살",
+      "product_name": "삼겹살",
+      "category_major": "축산물",
+      "category_sub": "돼지고기",
+      "ingredient_match": { "ingredientId": "ING_001", "ingredientName": "삼겹살", "category": "정육/계란", "similarity": 1.0 },
+      "confidence": 1.0,
+      "needs_review": false,
+      "notes": ""
+    }
+  ],
+  "item_count": 1,
+  "model": "rule_based_v1"
+}
+```
+
+---
+
+## 3. 재료 매칭
+
+### `POST /ai/v1/ingredients/match`
+
+상품명 → DB 재료 매칭.
+
+**요청**
+```json
+{ "product_names": ["삼겹살", "알수없는재료"] }
+```
+
+**응답 (result)**
+```json
+{
+  "matched": [ { "product_name": "삼겹살", "ingredientId": "ING_001", "ingredientName": "삼겹살", "category": "정육/계란", "similarity": 1.0 } ],
+  "unmatched": [ { "product_name": "알수없는재료", "reason": "DB에 일치하는 재료 없음", "suggestions": ["양배추", "양파"] } ],
+  "matched_count": 1,
+  "unmatched_count": 1
+}
+```
+
+---
+
+## 4. 레시피 추천
+
+### 4-1. `POST /ai/v1/recommendations/candidates`
+
+보유 재료 기반 추천 후보 목록.
+
+**요청**
+```json
+{
+  "ingredientIds": ["ING_001", "ING_002"],
   "top_k": 10,
   "category": null,
+  "cookingMethod": null,
+  "mode": "partial",
   "min_match_rate": 0.0
 }
 ```
 
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|------|------|
-| `ingredientIds` | UUID[] | O | 보유 재료 ID 목록 (일부만 있어도 가능) |
-| `top_k` | int | X (기본: 10) | 최대 추천 개수 |
-| `category` | string \| null | X | 카테고리 필터 (null이면 전체) |
-| `min_match_rate` | float | X (기본: 0.0) | 최소 일치율 필터 (0.0~1.0). 예: 0.3이면 재료 30% 이상 일치하는 레시피만 반환 |
+| 필드 | 설명 |
+|------|------|
+| `mode` | `"partial"` — 부족 재료 50%까지 허용 / `"exact"` — 보유 재료만 |
+| `cookingMethod` | 한글명(`볶기`) 또는 코드(`STIRFRY`) |
 
-#### 추천 알고리즘
-
-```
-1. 각 레시피의 필요 재료 목록 조회
-2. 사용자 보유 재료와 교집합 계산
-   → matchRate = (보유 재료 ∩ 레시피 재료) / 레시피 전체 재료 수
-3. matchRate > 0 (보유 재료가 1개라도 포함)인 레시피 필터
-4. min_match_rate 이상인 레시피만 필터
-5. matchRate 내림차순 → 보유 재료 수 내림차순으로 정렬
-6. 상위 top_k개 반환
-```
-
-#### Response — `200 OK`
-
+**응답 (result)**
 ```json
 {
-  "success": true,
-  "data": {
-    "recommendations": [
-      {
-        "recipeId": "0848e1e1-65b9-4302-ab8c-f6e2ee9c70e8",
-        "name": "김치두부솥",
-        "category": "찜류",
-        "imageUrl": "",
-        "matchedIngredients": [
-          {"ingredientId": "a1b2...", "ingredientName": "두부"}
-        ],
-        "missingIngredients": [
-          {"ingredientId": "d4e5...", "ingredientName": "신김치"},
-          {"ingredientId": "e5f6...", "ingredientName": "돼지고기"},
-          {"ingredientId": "f6a7...", "ingredientName": "청고추"}
-        ],
-        "matchRate": 0.25,
-        "totalIngredientCount": 4
-      },
-      {
-        "recipeId": "233c9632-a481-44f1-967d-b78ce0e3a173",
-        "name": "두부된장무침",
-        "category": "반찬",
-        "imageUrl": "",
-        "matchedIngredients": [
-          {"ingredientId": "a1b2...", "ingredientName": "두부"}
-        ],
-        "missingIngredients": [
-          {"ingredientId": "c3d4...", "ingredientName": "된장"},
-          {"ingredientId": "d4e5...", "ingredientName": "고춧가루"},
-          {"ingredientId": "e5f6...", "ingredientName": "참기름"}
-        ],
-        "matchRate": 0.25,
-        "totalIngredientCount": 4
-      },
-      {
-        "recipeId": "5b272c8f-58d5-4281-b640-9b3494e15c94",
-        "name": "김치동그랑땡",
-        "category": "반찬",
-        "imageUrl": "",
-        "matchedIngredients": [
-          {"ingredientId": "a1b2...", "ingredientName": "두부"}
-        ],
-        "missingIngredients": [
-          {"ingredientId": "f6a7...", "ingredientName": "김치"},
-          {"ingredientId": "a7b8...", "ingredientName": "돼지고기"},
-          {"ingredientId": "b8c9...", "ingredientName": "계란"},
-          {"ingredientId": "c9d0...", "ingredientName": "부침가루"}
-        ],
-        "matchRate": 0.2,
-        "totalIngredientCount": 5
-      }
-    ],
-    "total_count": 3,
-    "input_ingredient_count": 2
-  }
-}
-```
-
-#### Response 필드 설명
-
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `recommendations` | Array | 추천 레시피 목록 (matchRate 내림차순 정렬) |
-| `recommendations[].recipeId` | UUID | 레시피 ID |
-| `recommendations[].name` | string | 레시피명 |
-| `recommendations[].category` | string | 카테고리 |
-| `recommendations[].imageUrl` | string | 이미지 URL |
-| `recommendations[].matchedIngredients` | Array | **보유 중인 재료** 목록 |
-| `recommendations[].missingIngredients` | Array | **부족한 재료** 목록 (추가 구매 필요) |
-| `recommendations[].matchRate` | float | 재료 일치율 (0~1). 1.0이면 모든 재료 보유 |
-| `recommendations[].totalIngredientCount` | int | 레시피에 필요한 전체 재료 수 |
-| `total_count` | int | 추천된 레시피 총 개수 |
-| `input_ingredient_count` | int | 입력된 보유 재료 수 |
-
-#### 사용 시나리오 예시
-
-| 시나리오 | min_match_rate | 결과 |
-|----------|---------------|------|
-| 어떤 재료든 포함되면 추천 | `0.0` (기본값) | 보유 재료 1개라도 포함된 모든 레시피 |
-| 재료 절반 이상 보유한 것만 | `0.5` | matchRate ≥ 50%인 레시피만 |
-| 거의 다 갖춘 것만 | `0.8` | matchRate ≥ 80%인 레시피만 |
-| 모든 재료 보유한 것만 | `1.0` | 재료를 100% 보유한 레시피만 |
-
----
-
-### 4.4 레시피 상세 조회
-
-레시피 ID로 레시피 상세 정보(재료 목록 + 조리 단계)를 조회합니다.
-
-**`GET /api/recipes/{recipeId}`**
-
-#### Path Parameter
-
-| 파라미터 | 타입 | 설명 |
-|----------|------|------|
-| `recipeId` | UUID | 조회할 레시피 ID |
-
-#### Response — `200 OK`
-
-```json
-{
-  "success": true,
-  "data": {
-    "recipeId": "0848e1e1-65b9-4302-ab8c-f6e2ee9c70e8",
-    "name": "L.A갈비구이",
-    "category": "반찬",
-    "imageUrl": "",
-    "ingredients": [
-      {
-        "recipeIngredientId": "7b21236d-6ce6-43bb-8d42-f97c8be6e8e9",
-        "ingredientId": "b287457a-6bd2-410c-82d7-29a1de745623",
-        "ingredientName": "L.A갈비",
-        "category": "정육/계란",
-        "amount": 200.0,
-        "unit": "g"
-      },
-      {
-        "ingredientId": "fcb73e85-1b87-49d1-9637-11394d76baba",
-        "ingredientName": "양파",
-        "category": "채소/과일",
-        "amount": 20.0,
-        "unit": "g"
-      },
-      {
-        "ingredientId": "4d26fb3a-a0d7-4843-9d1a-61d08a5888b3",
-        "ingredientName": "저염간장",
-        "category": "소스/조미료/오일",
-        "amount": 20.0,
-        "unit": "g"
-      }
-    ],
-    "steps": [
-      {
-        "recipeStepId": "4a36e484-9480-4259-9eb1-800cbd7d0fad",
-        "stepOrder": 1,
-        "description": "L.A 갈비는 물에 담그어 핏물과 갈비 톱밥을 제거시켜 놓는다."
-      },
-      {
-        "recipeStepId": "a93aa941-2095-4025-b8bc-d30ffc17d64c",
-        "stepOrder": 2,
-        "description": "강판에 배와 양파를 곱게 갈아 준비한다."
-      },
-      {
-        "recipeStepId": "e6a5d2b9-05ce-417a-a5c7-5e61270b2289",
-        "stepOrder": 3,
-        "description": "핏물을 제거한 갈비에 배즙과 양파즙을 넣어 숙성시킨다."
-      }
-    ],
-    "step_count": 3,
-    "ingredient_count": 3
-  }
-}
-```
-
-#### Response 필드 설명
-
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `recipeId` | UUID | 레시피 ID |
-| `name` | string | 레시피명 |
-| `category` | string | 카테고리 |
-| `imageUrl` | string | 이미지 URL (없으면 빈 문자열) |
-| `ingredients` | Array | 필요한 재료 목록 |
-| `ingredients[].ingredientId` | UUID | 재료 ID |
-| `ingredients[].ingredientName` | string | 재료명 |
-| `ingredients[].category` | string | 재료 카테고리 |
-| `ingredients[].amount` | float | 수량 |
-| `ingredients[].unit` | string | 단위 |
-| `steps` | Array | 조리 단계 목록 (stepOrder 오름차순) |
-| `steps[].recipeStepId` | UUID | 조리 단계 ID |
-| `steps[].stepOrder` | int | 조리 순서 |
-| `steps[].description` | string | 조리 설명 |
-
----
-
-### 4.5 재료 키워드 검색
-
-키워드로 DB의 재료를 검색합니다. 사용자가 수동으로 재료를 추가할 때 사용합니다.
-
-**`GET /api/ingredients/search`**
-
-#### Query Parameter
-
-| 파라미터 | 타입 | 필수 | 설명 |
-|----------|------|------|------|
-| `q` | string | O | 검색 키워드 |
-| `category` | string | X | 카테고리 필터 |
-| `limit` | int | X (기본: 20) | 최대 반환 개수 |
-
-#### 예시 요청
-
-```
-GET /api/ingredients/search?q=돼지&category=정육/계란&limit=10
-```
-
-#### Response — `200 OK`
-
-```json
-{
-  "success": true,
-  "data": {
-    "results": [
-      {
-        "ingredientId": "f1234567-abcd-4321-efab-1234567890ab",
-        "ingredientName": "돼지고기",
-        "category": "정육/계란"
-      },
-      {
-        "ingredientId": "a2345678-bcde-5432-fabc-234567890abc",
-        "ingredientName": "돼지갈비",
-        "category": "정육/계란"
-      },
-      {
-        "ingredientId": "b3456789-cdef-6543-abcd-34567890abcd",
-        "ingredientName": "돼지안심",
-        "category": "정육/계란"
-      }
-    ],
-    "total_count": 3,
-    "query": "돼지"
-  }
-}
-```
-
-#### Response 필드 설명
-
-| 필드 | 타입 | 설명 |
-|------|------|------|
-| `results` | Array | 검색 결과 재료 목록 |
-| `results[].ingredientId` | UUID | 재료 ID |
-| `results[].ingredientName` | string | 재료명 |
-| `results[].category` | string | 재료 카테고리 |
-| `total_count` | int | 검색 결과 총 개수 |
-| `query` | string | 입력된 검색어 |
-
----
-
-### 4.6 서비스 상태 확인 (Health Check)
-
-AI 서버 및 의존 서비스(PaddleOCR, Qwen LLM)의 상태를 확인합니다.
-
-**`GET /api/health`**
-
-#### Response — `200 OK`
-
-```json
-{
-  "success": true,
-  "data": {
-    "status": "healthy",
-    "version": "1.0.0",
-    "services": {
-      "paddleocr": "available",
-      "qwen_llm": "available",
-      "database": "connected"
-    },
-    "stats": {
-      "total_recipes": 2005,
-      "total_ingredients": 3176,
-      "total_recipe_ingredients": 17101,
-      "total_recipe_steps": 10984
+  "recommendations": [
+    {
+      "recipeId": "RCP_001",
+      "name": "제육볶음",
+      "score": 0.85,
+      "matchRate": 0.75,
+      "weightedMatchRate": 0.82,
+      "coreCoverage": 0.9,
+      "feasibility": 0.8,
+      "matchedIngredients": [...],
+      "missingIngredients": [...],
+      "substitutions": [...]
     }
-  }
+  ],
+  "total_count": 10,
+  "input_ingredient_count": 2,
+  "mode": "partial"
+}
+```
+
+### 4-2. `POST /ai/v1/recommendations/explanations`
+
+특정 레시피에 대한 추천 이유 상세.
+
+**요청**
+```json
+{ "recipeId": "RCP_001", "ingredientIds": ["ING_001", "ING_002"] }
+```
+
+**응답 (result)**
+```json
+{
+  "recipeId": "RCP_001",
+  "name": "제육볶음",
+  "explanation": "[제육볶음] 추천 점수 85% | 보유 재료: 삼겹살, 양파 | 대체 가능: 진간장→간장 | 부족: 고추장",
+  "score": 0.85,
+  "matchRate": 0.75,
+  "matchedIngredients": [...],
+  "missingIngredients": [...],
+  "substitutions": [...]
 }
 ```
 
 ---
 
-## 5. 에러 응답 공통 형식
+## 5. 레시피 상세
 
-모든 API는 에러 발생 시 동일한 형식으로 응답합니다.
+### `GET /ai/v1/recipes/{recipe_id}`
 
+**응답 (result)**
 ```json
 {
-  "success": false,
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "사람이 읽을 수 있는 에러 메시지"
-  }
-}
-```
-
-### 에러 코드 목록
-
-| HTTP Status | code | 설명 |
-|-------------|------|------|
-| `400` | `INVALID_REQUEST` | 필수 파라미터 누락 또는 형식 오류 |
-| `400` | `INVALID_IMAGE` | 이미지 파일이 아니거나 읽을 수 없음 |
-| `404` | `RECIPE_NOT_FOUND` | 해당 recipeId의 레시피가 없음 |
-| `404` | `INGREDIENT_NOT_FOUND` | 해당 ingredientId의 재료가 없음 |
-| `422` | `OCR_FAILED` | OCR 처리 실패 (이미지 품질 문제 등) |
-| `500` | `LLM_ERROR` | Qwen LLM 호출 실패 |
-| `500` | `INTERNAL_ERROR` | 서버 내부 오류 |
-| `503` | `SERVICE_UNAVAILABLE` | PaddleOCR 또는 LLM 서비스 비활성 |
-
-### 에러 응답 예시
-
-```json
-{
-  "success": false,
-  "error": {
-    "code": "INVALID_IMAGE",
-    "message": "지원하지 않는 이미지 형식입니다. jpg, png 파일만 업로드 가능합니다."
-  }
-}
-```
-
-```json
-{
-  "success": false,
-  "error": {
-    "code": "RECIPE_NOT_FOUND",
-    "message": "레시피를 찾을 수 없습니다: 0848e1e1-65b9-4302-ab8c-000000000000"
-  }
+  "recipeId": "RCP_001",
+  "name": "제육볶음",
+  "category": "한식",
+  "cookingMethod": "볶기",
+  "cookingMethodCode": "STIRFRY",
+  "imageUrl": "...",
+  "ingredients": [
+    { "recipeIngredientId": "RI_001", "ingredientId": "ING_001", "ingredientName": "삼겹살", "amount": "300", "unit": "g" }
+  ],
+  "steps": [
+    { "recipeStepId": "RS_001", "stepOrder": 1, "description": "삼겹살을 한입 크기로 자른다." }
+  ]
 }
 ```
 
 ---
 
-## 6. 전체 흐름 시퀀스
+## 6. 소비기한 계산
 
-사용자가 영수증을 촬영하고 레시피를 추천받기까지의 전체 흐름입니다.
+### 6-1. `POST /ai/v1/expiry/calculate`
 
-```
-┌──────────┐    ┌──────────────┐    ┌──────────────┐
-│  Flutter  │    │ Spring Boot  │    │  AI FastAPI   │
-│   App     │    │   Backend    │    │   Server      │
-└────┬─────┘    └──────┬───────┘    └──────┬───────┘
-     │                 │                    │
-     │ ① 영수증 촬영    │                    │
-     │ ────────────────>                    │
-     │                 │ ② 이미지 전달       │
-     │                 │ ──────────────────> │
-     │                 │   POST /api/ocr/   │
-     │                 │   receipt           │
-     │                 │                    │
-     │                 │   PaddleOCR 실행    │
-     │                 │   Qwen LLM 보정    │
-     │                 │                    │
-     │                 │ ③ 식품명 목록 반환   │
-     │                 │ <────────────────── │
-     │                 │                    │
-     │ ④ 추출된 상품    │                    │
-     │   목록 표시      │                    │
-     │ <────────────────                    │
-     │                 │                    │
-     │ ⑤ 사용자 확인    │                    │
-     │   (수정/삭제)    │                    │
-     │ ────────────────>                    │
-     │                 │ ⑥ 상품명→재료 매칭   │
-     │                 │ ──────────────────> │
-     │                 │   POST /api/       │
-     │                 │   ingredients/match │
-     │                 │                    │
-     │                 │ ⑦ 매칭된 재료 반환   │
-     │                 │ <────────────────── │
-     │                 │                    │
-     │                 │ ⑧ 보유 재료로       │
-     │                 │   레시피 추천 요청   │
-     │                 │   (일부만 있어도 OK) │
-     │                 │ ──────────────────> │
-     │                 │   POST /api/       │
-     │                 │   recipes/recommend │
-     │                 │                    │
-     │                 │   matchRate 계산    │
-     │                 │   (보유/전체 재료)   │
-     │                 │                    │
-     │                 │ ⑨ 추천 레시피 반환   │
-     │                 │   + 부족 재료 포함   │
-     │                 │ <────────────────── │
-     │                 │                    │
-     │ ⑩ 추천 레시피    │                    │
-     │   + 부족 재료    │                    │
-     │   목록 표시      │                    │
-     │ <────────────────                    │
-     │                 │                    │
-     │ ⑪ 레시피 선택    │                    │
-     │ ────────────────>                    │
-     │                 │ ⑫ 레시피 상세 조회   │
-     │                 │ ──────────────────> │
-     │                 │   GET /api/recipes/ │
-     │                 │   {recipeId}        │
-     │                 │                    │
-     │                 │ ⑬ 상세 정보 반환    │
-     │                 │ <────────────────── │
-     │                 │                    │
-     │ ⑭ 레시피 상세    │                    │
-     │   화면 표시      │                    │
-     │ <────────────────                    │
-     │                 │                    │
+단일 품목 소비기한 계산.
+
+**요청**
+```json
+{
+  "item_name": "삼겹살",
+  "purchase_date": "2026-04-15",
+  "storage_method": "냉장",
+  "category": null
+}
 ```
 
-### 단계별 요약
+**응답 (result)**
+```json
+{
+  "item_name": "삼겹살",
+  "purchase_date": "2026-04-15",
+  "storage_method": "냉장",
+  "expiry_date": "2026-04-18",
+  "d_day": 2,
+  "risk_level": "caution",
+  "confidence": 0.85,
+  "method": "gpt-4o-mini",
+  "reason": "돼지고기 냉장 보관 시 3일 기준"
+}
+```
 
-| 단계 | 설명 | API 호출 |
-|------|------|----------|
-| ① ~ ③ | 영수증 촬영 → OCR + LLM 보정 | `POST /api/ocr/receipt` |
-| ④ ~ ⑤ | 추출된 상품 목록 사용자 확인/수정 | (클라이언트 처리) |
-| ⑥ ~ ⑦ | 확인된 상품명 → DB 재료 매칭 | `POST /api/ingredients/match` |
-| ⑧ ~ ⑨ | 보유 재료로 레시피 추천 (일부만 있어도 matchRate 기반 추천) | `POST /api/recipes/recommend` |
-| ⑩ ~ ⑪ | 추천 레시피 + 부족 재료 목록 → 사용자 선택 | (클라이언트 처리) |
-| ⑫ ~ ⑭ | 선택한 레시피 상세 조회 | `GET /api/recipes/{recipeId}` |
+### 6-2. `POST /ai/v1/expiry/batch`
+
+여러 품목 일괄 계산 + 알림 포함.
+
+### 6-3. `POST /ai/v1/expiry/alerts`
+
+소비기한 임박 품목 알림 트리거 (D-3 이하).
 
 ---
 
-### 참고: 재료 카테고리 코드
+## 7. 나눔 금지 품목 필터링
 
-| 코드 | 설명 | 예시 |
+### `POST /ai/v1/sharing/check`
+
+**요청**
+```json
+{ "item_names": ["삼겹살", "수제 반찬", "참치캔"] }
+```
+
+**응답 (result)**
+```json
+{
+  "blocked": [ { "item_name": "수제 반찬", "reason": "나눔 금지 품목: 개봉 반찬/조리 음식", "category": "개봉 반찬/조리 음식" } ],
+  "review_required": [],
+  "allowed": [ { "item_name": "삼겹살" }, { "item_name": "참치캔" } ],
+  "summary": { "blocked": 1, "review": 0, "allowed": 2 }
+}
+```
+
+---
+
+## 8. 재료 검색 / 조리방법
+
+### `GET /ai/v1/ingredients/search?q=삼겹&limit=10`
+
+키워드로 DB 재료 검색.
+
+### `GET /ai/v1/cooking-methods`
+
+조리방법 목록 + 레시피 수.
+
+---
+
+## 9. 작업(Job) 관리
+
+### `GET /ai/v1/jobs/{job_id}`
+
+비동기 OCR 작업 상태 조회.
+
+### `GET /ai/v1/jobs?status=completed&limit=20`
+
+작업 목록 조회.
+
+---
+
+## 10. 운영/품질 관리 API
+
+### `GET /ai/v1/quality/metrics?window=1h`
+
+품질 지표 (요청 수, 오류율, 응답시간 P95 등).
+
+### `GET /ai/v1/quality/drift?window=7d`
+
+품질 드리프트 감지 (`normal` / `degraded` / `critical` / `slow`).
+
+### `GET /ai/v1/quality/errors?limit=50`
+
+최근 오류 로그.
+
+### `GET /ai/v1/models/version`
+
+모델 버전 정보 (OCR, Normalizer, Recommender, Expiry).
+
+### `GET /ai/v1/dictionaries/version`
+
+품목 사전 버전 정보.
+
+### `PATCH /ai/v1/dictionaries/reload`
+
+품목 사전 다시 로드.
+
+### `GET /ai/v1/prompts/version`
+
+프롬프트 템플릿 버전 정보.
+
+### `GET /ai/v1/thresholds`
+
+현재 임계값 설정 조회.
+
+### `PATCH /ai/v1/thresholds`
+
+임계값 업데이트.
+
+### `GET /ai/v1/fallback/policies`
+
+Fallback 정책 목록.
+
+### `PATCH /ai/v1/fallback/policies/{policy_id}`
+
+특정 Fallback 정책 업데이트.
+
+### `DELETE /ai/v1/cache/clear`
+
+AI 서버 캐시 초기화.
+
+---
+
+## 오류 코드 목록
+
+| 코드 | HTTP | 설명 |
 |------|------|------|
-| `정육/계란` | 육류 및 계란 | 소고기, 돼지고기, 닭고기, 계란 |
-| `해산물` | 수산물 | 새우, 오징어, 연어, 조개 |
-| `채소/과일` | 채소류 및 과일 | 양파, 감자, 시금치, 사과 |
-| `유제품` | 우유, 치즈 등 | 우유, 생크림, 모짜렐라치즈 |
-| `쌀/면/빵` | 주식류 | 쌀, 소면, 식빵, 떡 |
-| `소스/조미료/오일` | 양념 및 소스 | 간장, 고추장, 참기름, 소금 |
-| `가공식품` | 가공/포장 식품 | 두부, 어묵, 햄, 통조림 |
-| `기타` | 기타 분류 | 젤라틴, 한천, 식용꽃 |
+| `INVALID_IMAGE` | 400 | 지원하지 않는 이미지 형식 |
+| `INVALID_REQUEST` | 400 | 요청 데이터 오류 |
+| `RECIPE_NOT_FOUND` | 404 | 레시피 미존재 |
+| `JOB_NOT_FOUND` | 404 | 작업 미존재 |
+| `POLICY_NOT_FOUND` | 404 | Fallback 정책 미존재 |
+| `SERVICE_UNAVAILABLE` | 503 | PaddleOCR 미설치 등 |
+| `OCR_FAILED` | 500 | OCR 처리 실패 |

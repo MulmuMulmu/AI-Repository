@@ -1,0 +1,81 @@
+{
+  "store_name": "춘천제일식자재마트",
+  "purchase_date": null,
+  "processed_at": "2026-04-08T16:03:09",
+  "source_image": "data/receipt_images/sample_chuncheon.png",
+  "items": [
+    {
+      "product_name_raw": "004 농심)감자깡75g",
+      "product_name": "감자깡",
+      "category_major": "신선 식재료",
+      "category_sub": "농산물",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "005 한돈부어스트 오리지널 450g(225*",
+      "product_name": "한돈부어스트 오리지널 450g",
+      "category_major": "가공 식재료",
+      "category_sub": "육가공품",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "007방가루새우김100",
+      "product_name": "방가루새우김",
+      "category_major": "가공 식재료",
+      "category_sub": "수산가공품",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "013 감급",
+      "product_name": "감급",
+      "category_major": "신선 식재료",
+      "category_sub": "농산물",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "015 쥬시클파인930m| 930m",
+      "product_name": "쥬시클파인930m",
+      "category_major": "신선 식재료",
+      "category_sub": "농산물",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "016 가쓰오우동+튀김우동 4인분957g",
+      "product_name": "가쓰오우동+튀김우동 4인분",
+      "category_major": "가공 식재료",
+      "category_sub": "면류",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "017(푸)생생바나나4인 225*4me",
+      "product_name": "생생바나나4인 225 4me",
+      "category_major": "신선 식재료",
+      "category_sub": "농산물",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "020 초)포장두부 550(국산)1맥",
+      "product_name": "포장두부 550",
+      "category_major": "신선 식재료",
+      "category_sub": "농산물",
+      "amount_krw": null,
+      "notes": ""
+    },
+    {
+      "product_name_raw": "021깨잎",
+      "product_name": "깨잎",
+      "category_major": "신선 식재료",
+      "category_sub": "농산물",
+      "amount_krw": null,
+      "notes": ""
+    }
+  ],
+  "item_count": 9
+}

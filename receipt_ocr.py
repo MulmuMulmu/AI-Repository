@@ -410,15 +410,21 @@ class ReceiptOCR:
 
 def main():
     if len(sys.argv) < 2:
-        print("사용법: python receipt_ocr.py <영수증_이미지_경로> [--visualize] [--qwen]")
-        print("예시:   python receipt_ocr.py receipt.jpg")
-        print("        python receipt_ocr.py receipt.jpg --visualize")
-        print("        python receipt_ocr.py receipt.jpg --qwen   # Qwen으로 상품명 보정(환경변수 설정 필요)")
+        print("사용법: python receipt_ocr.py <영수증_이미지_경로> [옵션]")
+        print("옵션:")
+        print("  --rule       규칙 기반 정규화 모델 적용 (기본값)")
+        print("  --qwen       Qwen LLM 보정 추가 적용 (Ollama 필요)")
+        print("  --save       정규화 후 CSV/JSON 저장 (data/output/)")
+        print("  --visualize  결과 시각화 이미지 저장")
+        print("예시:")
+        print("  python receipt_ocr.py receipt.jpg --save")
+        print("  python receipt_ocr.py receipt.jpg --qwen --save")
         return
 
     image_path = sys.argv[1]
     visualize = "--visualize" in sys.argv
     use_qwen = "--qwen" in sys.argv
+    save_data = "--save" in sys.argv
 
     ocr = ReceiptOCR()
     result = ocr.analyze_receipt(image_path)
@@ -443,6 +449,12 @@ def main():
 
     print("=" * 50)
 
+    from rule_based_normalizer import RuleBasedNormalizer, print_result as print_rule_result
+
+    normalizer = RuleBasedNormalizer()
+    rule_result = normalizer.process(result)
+    print_rule_result(rule_result)
+
     if use_qwen:
         try:
             from qwen_receipt_assistant import QwenReceiptAssistant, print_refined_summary
@@ -457,6 +469,22 @@ def main():
             print(f"\n[Qwen 보조 생략] {e}")
         except Exception as e:
             print(f"\n[Qwen 보조 오류] {e}")
+
+    if save_data:
+        try:
+            from data_normalizer import save_as_csv, save_as_json
+
+            out_dir = Path("data/output")
+            stem = Path(image_path).stem
+            ts = rule_result["processed_at"].replace(":", "").replace("-", "")
+            json_path = save_as_json(rule_result, str(out_dir / f"{stem}_{ts}.json"))
+            csv_path = save_as_csv(rule_result, str(out_dir / "receipts.csv"))
+            print(f"\n  JSON 저장: {json_path}")
+            print(f"  CSV 저장:  {csv_path}")
+        except ImportError as e:
+            print(f"\n[저장 생략] {e}")
+        except Exception as e:
+            print(f"\n[저장 오류] {e}")
 
     if visualize:
         output_path = str(Path(image_path).stem) + "_result.png"
