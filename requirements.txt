@@ -1,14 +1,12 @@
 # 레시피 추천 AI 시스템 — 설계서 v1.1
 # Python 3.9 ~ 3.11 권장
 
-# ── FastAPI 서버 ──
-fastapi>=0.104.0
-uvicorn[standard]>=0.24.0
-pydantic>=2.5.0
-python-multipart>=0.0.6
+# API 서버
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
 
-# ── PaddleOCR (영수증 식품명 인식) ──
-# CPU 버전; GPU 사용 시 paddlepaddle-gpu로 교체
+# PaddlePaddle (CPU 버전, GPU 사용 시 paddlepaddle-gpu로 교체)
 paddlepaddle
 paddleocr
 
@@ -20,9 +18,12 @@ numpy>=1.22
 # ── 시각화 (receipt_ocr --visualize 옵션용, 선택) ──
 matplotlib>=3.7.0
 
-# ── GPT-4o-mini 소비기한 계산 + Qwen 보조 (선택) ──
+# 선택적 Qwen 보조
 openai>=1.12.0
 python-dotenv>=1.0.0
 
 # ── 데이터 수집 (공공데이터 API) ──
 requests>=2.31.0
+
+# 테스트
+pytest>=8.0.0

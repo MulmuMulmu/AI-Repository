@@ -1,0 +1,117 @@
+{
+  "dataset_name": "assistant-visual-v0",
+  "label_source": "assistant-visual-v0",
+  "generated_at": "2026-04-16T08:30:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-visual-baseline"
+  },
+  "expected": {
+    "vendor_name": "GS25",
+    "purchased_at": "2023-11-24",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "투썸로얄밀크티",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null
+      },
+      {
+        "raw_name": "투썸딸기피치",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2800.0
+      },
+      {
+        "raw_name": "허쉬쿠키앤크림",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0
+      },
+      {
+        "raw_name": "허쉬밀크초콜릿",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0
+      },
+      {
+        "raw_name": "허쉬쿠키앤초코",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null
+      },
+      {
+        "raw_name": "호가든캔330ml",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3500.0
+      },
+      {
+        "raw_name": "아몬드초코볼",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2000.0
+      },
+      {
+        "raw_name": "아몬드빼빼로",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1700.0
+      },
+      {
+        "raw_name": "화이트빼빼로",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1700.0
+      },
+      {
+        "raw_name": "호레오화이트",
+        "normalized_name": null,
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 4000.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "초코빼빼로류",
+        "quantity": 1.0,
+        "amount": 1700.0,
+        "reason": "low_visual_confidence"
+      }
+    ],
+    "excluded_rows": [
+      {
+        "raw_name": "*재사용봉투20L",
+        "reason": "non_food_supply"
+      },
+      {
+        "raw_name": "*3L",
+        "reason": "unresolved_non_food_or_packaging"
+      }
+    ],
+    "totals": {
+      "subtotal": 18726.0,
+      "tax": 1874.0,
+      "total": 24090.0,
+      "payment_amount": 24090.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

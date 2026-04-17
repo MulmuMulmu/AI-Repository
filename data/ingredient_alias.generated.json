@@ -1,0 +1,338 @@
+[
+  {
+    "ingredient_id": 1,
+    "alias_name": "다진마늘",
+    "alias_type": "recipe_source",
+    "observed_count": 308
+  },
+  {
+    "ingredient_id": 8,
+    "alias_name": "통깨",
+    "alias_type": "recipe_source",
+    "observed_count": 164
+  },
+  {
+    "ingredient_id": 10,
+    "alias_name": "달걀",
+    "alias_type": "recipe_source",
+    "observed_count": 115
+  },
+  {
+    "ingredient_id": 15,
+    "alias_name": "청양고추",
+    "alias_type": "recipe_source",
+    "observed_count": 109
+  },
+  {
+    "ingredient_id": 9,
+    "alias_name": "후춧가루",
+    "alias_type": "recipe_source",
+    "observed_count": 53
+  },
+  {
+    "ingredient_id": 8,
+    "alias_name": "깨소금",
+    "alias_type": "recipe_source",
+    "observed_count": 46
+  },
+  {
+    "ingredient_id": 3,
+    "alias_name": "쪽파",
+    "alias_type": "recipe_source",
+    "observed_count": 43
+  },
+  {
+    "ingredient_id": 15,
+    "alias_name": "홍고추",
+    "alias_type": "recipe_source",
+    "observed_count": 35
+  },
+  {
+    "ingredient_id": 12,
+    "alias_name": "고추가루",
+    "alias_type": "recipe_source",
+    "observed_count": 33
+  },
+  {
+    "ingredient_id": 40,
+    "alias_name": "파슬리가루",
+    "alias_type": "recipe_source",
+    "observed_count": 28
+  },
+  {
+    "ingredient_id": 34,
+    "alias_name": "케찹",
+    "alias_type": "recipe_source",
+    "observed_count": 25
+  },
+  {
+    "ingredient_id": 3,
+    "alias_name": "다진파",
+    "alias_type": "recipe_source",
+    "observed_count": 22
+  },
+  {
+    "ingredient_id": 60,
+    "alias_name": "들깨가루",
+    "alias_type": "recipe_source",
+    "observed_count": 20
+  },
+  {
+    "ingredient_id": 3,
+    "alias_name": "파",
+    "alias_type": "recipe_source",
+    "observed_count": 20
+  },
+  {
+    "ingredient_id": 45,
+    "alias_name": "전분가루",
+    "alias_type": "recipe_source",
+    "observed_count": 16
+  },
+  {
+    "ingredient_id": 71,
+    "alias_name": "카레가루",
+    "alias_type": "recipe_source",
+    "observed_count": 16
+  },
+  {
+    "ingredient_id": 8,
+    "alias_name": "참깨",
+    "alias_type": "recipe_source",
+    "observed_count": 15
+  },
+  {
+    "ingredient_id": 63,
+    "alias_name": "김가루",
+    "alias_type": "recipe_source",
+    "observed_count": 14
+  },
+  {
+    "ingredient_id": 39,
+    "alias_name": "슬라이스치즈",
+    "alias_type": "recipe_source",
+    "observed_count": 14
+  },
+  {
+    "ingredient_id": 55,
+    "alias_name": "크래미",
+    "alias_type": "recipe_source",
+    "observed_count": 13
+  },
+  {
+    "ingredient_id": 81,
+    "alias_name": "생강가루",
+    "alias_type": "recipe_source",
+    "observed_count": 11
+  },
+  {
+    "ingredient_id": 9,
+    "alias_name": "후추가루",
+    "alias_type": "recipe_source",
+    "observed_count": 11
+  },
+  {
+    "ingredient_id": 3,
+    "alias_name": "다진대파",
+    "alias_type": "recipe_source",
+    "observed_count": 8
+  },
+  {
+    "ingredient_id": 6,
+    "alias_name": "다진양파",
+    "alias_type": "recipe_source",
+    "observed_count": 7
+  },
+  {
+    "ingredient_id": 39,
+    "alias_name": "파마산치즈가루",
+    "alias_type": "recipe_source",
+    "observed_count": 6
+  },
+  {
+    "ingredient_id": 15,
+    "alias_name": "청고추",
+    "alias_type": "recipe_source",
+    "observed_count": 5
+  },
+  {
+    "ingredient_id": 24,
+    "alias_name": "쌀밥",
+    "alias_type": "recipe_source",
+    "observed_count": 3
+  },
+  {
+    "ingredient_id": 39,
+    "alias_name": "체다슬라이스치즈",
+    "alias_type": "recipe_source",
+    "observed_count": 3
+  },
+  {
+    "ingredient_id": 1,
+    "alias_name": "다진 마늘",
+    "alias_type": "recipe_source",
+    "observed_count": 2
+  },
+  {
+    "ingredient_id": 7,
+    "alias_name": "·양념장 : 저염간장",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 25,
+    "alias_name": "감자(소)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 3,
+    "alias_name": "다진 대파",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 440,
+    "alias_name": "다진 땅콩",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 6,
+    "alias_name": "다진양파(중)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 114,
+    "alias_name": "또띠아(소)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 144,
+    "alias_name": "맛간장(진간장)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 11,
+    "alias_name": "물(종이컵)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 51,
+    "alias_name": "미림(맛술)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 65,
+    "alias_name": "부침가루(밀가루)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 562,
+    "alias_name": "블랙페이퍼(흑후추)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 2,
+    "alias_name": "설탕(올리고당)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 602,
+    "alias_name": "소이카페(두유)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 226,
+    "alias_name": "스파게티소스(피자소스)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 42,
+    "alias_name": "스팸(小)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 42,
+    "alias_name": "스팸(마일드)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 61,
+    "alias_name": "시금치(포항초)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 163,
+    "alias_name": "양상추(소)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 6,
+    "alias_name": "양파(소)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 120,
+    "alias_name": "오징어(小)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 338,
+    "alias_name": "자숙새우(칵테일새우)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 193,
+    "alias_name": "쯔유(일본간장)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 8,
+    "alias_name": "참깨 약간",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 105,
+    "alias_name": "청경채(소)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 8,
+    "alias_name": "통깨 약간",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 359,
+    "alias_name": "핫소스(타바스코소스)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  },
+  {
+    "ingredient_id": 137,
+    "alias_name": "햄(소시지)",
+    "alias_type": "recipe_source",
+    "observed_count": 1
+  }
+]

@@ -1,0 +1,1395 @@
+{
+  "dataset_name": "jevi-silver-v0",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-16T06:38:15Z",
+  "image": {
+    "file_name": "image.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\image.png"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "상품명 단 가 수량 금 액",
+        "confidence": 0.9029695093631744,
+        "bbox": [
+          [
+            31.0,
+            11.0
+          ],
+          [
+            437.0,
+            11.0
+          ],
+          [
+            437.0,
+            40.0
+          ],
+          [
+            31.0,
+            40.0
+          ]
+        ],
+        "center": [
+          234.0,
+          25.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "양념등심돈까스",
+        "confidence": 0.9927657842636108,
+        "bbox": [
+          [
+            23.0,
+            52.0
+          ],
+          [
+            160.0,
+            52.0
+          ],
+          [
+            160.0,
+            76.0
+          ],
+          [
+            23.0,
+            76.0
+          ]
+        ],
+        "center": [
+          91.5,
+          64.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "1500000141394 16, 980 1 16,980",
+        "confidence": 0.9883166253566742,
+        "bbox": [
+          [
+            23.0,
+            70.0
+          ],
+          [
+            447.0,
+            70.0
+          ],
+          [
+            447.0,
+            96.0
+          ],
+          [
+            23.0,
+            96.0
+          ]
+        ],
+        "center": [
+          235.0,
+          83.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "× 파프리카(팩)",
+        "confidence": 0.8258454203605652,
+        "bbox": [
+          [
+            2.0,
+            91.0
+          ],
+          [
+            137.0,
+            91.0
+          ],
+          [
+            137.0,
+            116.0
+          ],
+          [
+            2.0,
+            116.0
+          ]
+        ],
+        "center": [
+          69.5,
+          103.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "2500000007828 6, 480 1 6, 480",
+        "confidence": 0.9613452851772308,
+        "bbox": [
+          [
+            22.0,
+            108.0
+          ],
+          [
+            447.0,
+            108.0
+          ],
+          [
+            447.0,
+            135.0
+          ],
+          [
+            22.0,
+            135.0
+          ]
+        ],
+        "center": [
+          234.5,
+          121.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "2021 채소S-POINT -1,500",
+        "confidence": 0.957580953836441,
+        "bbox": [
+          [
+            70.0,
+            130.0
+          ],
+          [
+            447.0,
+            130.0
+          ],
+          [
+            447.0,
+            156.0
+          ],
+          [
+            70.0,
+            156.0
+          ]
+        ],
+        "center": [
+          258.5,
+          143.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "* 완숙토마토 4kg/박스",
+        "confidence": 0.9320945739746094,
+        "bbox": [
+          [
+            4.0,
+            152.0
+          ],
+          [
+            207.0,
+            152.0
+          ],
+          [
+            207.0,
+            173.0
+          ],
+          [
+            4.0,
+            173.0
+          ]
+        ],
+        "center": [
+          105.5,
+          162.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "2500000013522 17, 980 1 17,980",
+        "confidence": 0.979908674955368,
+        "bbox": [
+          [
+            25.0,
+            169.0
+          ],
+          [
+            446.0,
+            169.0
+          ],
+          [
+            446.0,
+            196.0
+          ],
+          [
+            25.0,
+            196.0
+          ]
+        ],
+        "center": [
+          235.5,
+          182.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "양념닭주물럭2.2kg",
+        "confidence": 0.939842939376831,
+        "bbox": [
+          [
+            25.0,
+            190.0
+          ],
+          [
+            190.0,
+            190.0
+          ],
+          [
+            190.0,
+            214.0
+          ],
+          [
+            25.0,
+            214.0
+          ]
+        ],
+        "center": [
+          107.5,
+          202.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "2500000284861 27, 980 1 27, 980",
+        "confidence": 0.937565341591835,
+        "bbox": [
+          [
+            26.0,
+            209.0
+          ],
+          [
+            444.0,
+            209.0
+          ],
+          [
+            444.0,
+            234.0
+          ],
+          [
+            26.0,
+            234.0
+          ]
+        ],
+        "center": [
+          235.0,
+          221.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "포인트에누리행사 -2,500",
+        "confidence": 0.9765390753746033,
+        "bbox": [
+          [
+            73.0,
+            229.0
+          ],
+          [
+            446.0,
+            229.0
+          ],
+          [
+            446.0,
+            255.0
+          ],
+          [
+            73.0,
+            255.0
+          ]
+        ],
+        "center": [
+          259.5,
+          242.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "8801052993485 청정원 서해안 까나리",
+        "confidence": 0.9589497745037079,
+        "bbox": [
+          [
+            26.0,
+            249.0
+          ],
+          [
+            219.0,
+            249.0
+          ],
+          [
+            219.0,
+            290.0
+          ],
+          [
+            26.0,
+            290.0
+          ]
+        ],
+        "center": [
+          122.5,
+          269.5
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "6, 780 1 6,780",
+        "confidence": 0.9455292820930481,
+        "bbox": [
+          [
+            242.0,
+            268.0
+          ],
+          [
+            445.0,
+            268.0
+          ],
+          [
+            445.0,
+            294.0
+          ],
+          [
+            242.0,
+            294.0
+          ]
+        ],
+        "center": [
+          343.5,
+          281.0
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "하인즈유기농케찹90",
+        "confidence": 0.8483458757400513,
+        "bbox": [
+          [
+            25.0,
+            298.0
+          ],
+          [
+            220.0,
+            298.0
+          ],
+          [
+            220.0,
+            325.0
+          ],
+          [
+            25.0,
+            325.0
+          ]
+        ],
+        "center": [
+          122.5,
+          311.5
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "8801065000699 9, 980 1 9,980",
+        "confidence": 0.9774659425020218,
+        "bbox": [
+          [
+            27.0,
+            319.0
+          ],
+          [
+            444.0,
+            319.0
+          ],
+          [
+            444.0,
+            343.0
+          ],
+          [
+            27.0,
+            343.0
+          ]
+        ],
+        "center": [
+          235.5,
+          331.0
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "가공에누리(전점) -2,500",
+        "confidence": 0.9619273841381073,
+        "bbox": [
+          [
+            73.0,
+            336.0
+          ],
+          [
+            445.0,
+            336.0
+          ],
+          [
+            445.0,
+            363.0
+          ],
+          [
+            73.0,
+            363.0
+          ]
+        ],
+        "center": [
+          259.0,
+          349.5
+        ],
+        "page_order": 15
+      },
+      {
+        "line_id": 16,
+        "text": "0738824102401 갈바니'리코타치느4",
+        "confidence": 0.9087245762348175,
+        "bbox": [
+          [
+            26.0,
+            357.0
+          ],
+          [
+            220.0,
+            357.0
+          ],
+          [
+            220.0,
+            396.0
+          ],
+          [
+            26.0,
+            396.0
+          ]
+        ],
+        "center": [
+          123.0,
+          376.5
+        ],
+        "page_order": 16
+      },
+      {
+        "line_id": 17,
+        "text": "6, 680 1 6, 680",
+        "confidence": 0.9397452076276144,
+        "bbox": [
+          [
+            242.0,
+            376.0
+          ],
+          [
+            444.0,
+            376.0
+          ],
+          [
+            444.0,
+            400.0
+          ],
+          [
+            242.0,
+            400.0
+          ]
+        ],
+        "center": [
+          343.0,
+          388.0
+        ],
+        "page_order": 17
+      },
+      {
+        "line_id": 18,
+        "text": "Koukakis 그릭요거트",
+        "confidence": 0.9584456086158752,
+        "bbox": [
+          [
+            25.0,
+            393.0
+          ],
+          [
+            209.0,
+            393.0
+          ],
+          [
+            209.0,
+            418.0
+          ],
+          [
+            25.0,
+            418.0
+          ]
+        ],
+        "center": [
+          117.0,
+          405.5
+        ],
+        "page_order": 18
+      },
+      {
+        "line_id": 19,
+        "text": "5200106871572 8, 480 1 8,480",
+        "confidence": 0.9786340147256851,
+        "bbox": [
+          [
+            26.0,
+            413.0
+          ],
+          [
+            444.0,
+            413.0
+          ],
+          [
+            444.0,
+            437.0
+          ],
+          [
+            26.0,
+            437.0
+          ]
+        ],
+        "center": [
+          235.0,
+          425.0
+        ],
+        "page_order": 19
+      },
+      {
+        "line_id": 20,
+        "text": "블렌드슈레드치즈1kg",
+        "confidence": 0.9830474257469177,
+        "bbox": [
+          [
+            27.0,
+            433.0
+          ],
+          [
+            209.0,
+            433.0
+          ],
+          [
+            209.0,
+            454.0
+          ],
+          [
+            27.0,
+            454.0
+          ]
+        ],
+        "center": [
+          118.0,
+          443.5
+        ],
+        "page_order": 20
+      },
+      {
+        "line_id": 21,
+        "text": "8809234660309 11, 980 1 11, 980",
+        "confidence": 0.961823120713234,
+        "bbox": [
+          [
+            26.0,
+            450.0
+          ],
+          [
+            445.0,
+            450.0
+          ],
+          [
+            445.0,
+            476.0
+          ],
+          [
+            26.0,
+            476.0
+          ]
+        ],
+        "center": [
+          235.5,
+          463.0
+        ],
+        "page_order": 21
+      },
+      {
+        "line_id": 22,
+        "text": "* 국내산 양상추 2입",
+        "confidence": 0.9003004431724548,
+        "bbox": [
+          [
+            7.0,
+            470.0
+          ],
+          [
+            190.0,
+            470.0
+          ],
+          [
+            190.0,
+            494.0
+          ],
+          [
+            7.0,
+            494.0
+          ]
+        ],
+        "center": [
+          98.5,
+          482.0
+        ],
+        "page_order": 22
+      },
+      {
+        "line_id": 23,
+        "text": "2500000006425 4,780 1 4,780",
+        "confidence": 0.9981173574924469,
+        "bbox": [
+          [
+            25.0,
+            488.0
+          ],
+          [
+            446.0,
+            488.0
+          ],
+          [
+            446.0,
+            513.0
+          ],
+          [
+            25.0,
+            513.0
+          ]
+        ],
+        "center": [
+          235.5,
+          500.5
+        ],
+        "page_order": 23
+      },
+      {
+        "line_id": 24,
+        "text": "멜오에이지파마산분",
+        "confidence": 0.9819260835647583,
+        "bbox": [
+          [
+            24.0,
+            517.0
+          ],
+          [
+            208.0,
+            517.0
+          ],
+          [
+            208.0,
+            542.0
+          ],
+          [
+            24.0,
+            542.0
+          ]
+        ],
+        "center": [
+          116.0,
+          529.5
+        ],
+        "page_order": 24
+      },
+      {
+        "line_id": 25,
+        "text": "8809256675480 5,980 1 5, 980",
+        "confidence": 0.9725659489631653,
+        "bbox": [
+          [
+            25.0,
+            539.0
+          ],
+          [
+            447.0,
+            539.0
+          ],
+          [
+            447.0,
+            562.0
+          ],
+          [
+            25.0,
+            562.0
+          ]
+        ],
+        "center": [
+          236.0,
+          550.5
+        ],
+        "page_order": 25
+      },
+      {
+        "line_id": 26,
+        "text": "품 2 11",
+        "confidence": 0.7830939193566641,
+        "bbox": [
+          [
+            180.0,
+            569.0
+          ],
+          [
+            448.0,
+            569.0
+          ],
+          [
+            448.0,
+            591.0
+          ],
+          [
+            180.0,
+            591.0
+          ]
+        ],
+        "center": [
+          314.0,
+          580.0
+        ],
+        "page_order": 26
+      },
+      {
+        "line_id": 27,
+        "text": "(*) 세 물물 27,740",
+        "confidence": 0.8985134661197662,
+        "bbox": [
+          [
+            123.0,
+            587.0
+          ],
+          [
+            449.0,
+            587.0
+          ],
+          [
+            449.0,
+            632.0
+          ],
+          [
+            123.0,
+            632.0
+          ]
+        ],
+        "center": [
+          286.0,
+          609.5
+        ],
+        "page_order": 27
+      },
+      {
+        "line_id": 28,
+        "text": "세 품품세 81, 673",
+        "confidence": 0.9726067582766215,
+        "bbox": [
+          [
+            179.0,
+            588.0
+          ],
+          [
+            449.0,
+            588.0
+          ],
+          [
+            449.0,
+            653.0
+          ],
+          [
+            179.0,
+            653.0
+          ]
+        ],
+        "center": [
+          314.0,
+          620.5
+        ],
+        "page_order": 28
+      },
+      {
+        "line_id": 29,
+        "text": "가 8,167",
+        "confidence": 0.9949538111686707,
+        "bbox": [
+          [
+            197.0,
+            627.0
+          ],
+          [
+            450.0,
+            627.0
+          ],
+          [
+            450.0,
+            652.0
+          ],
+          [
+            197.0,
+            652.0
+          ]
+        ],
+        "center": [
+          323.5,
+          639.5
+        ],
+        "page_order": 29
+      },
+      {
+        "line_id": 30,
+        "text": "계 117, 580",
+        "confidence": 0.9797223210334778,
+        "bbox": [
+          [
+            244.0,
+            646.0
+          ],
+          [
+            450.0,
+            646.0
+          ],
+          [
+            450.0,
+            670.0
+          ],
+          [
+            244.0,
+            670.0
+          ]
+        ],
+        "center": [
+          347.0,
+          658.0
+        ],
+        "page_order": 30
+      },
+      {
+        "line_id": 31,
+        "text": "삼성카드할인 -5,000",
+        "confidence": 0.9392932653427124,
+        "bbox": [
+          [
+            1.0,
+            665.0
+          ],
+          [
+            451.0,
+            665.0
+          ],
+          [
+            451.0,
+            694.0
+          ],
+          [
+            1.0,
+            694.0
+          ]
+        ],
+        "center": [
+          226.0,
+          679.5
+        ],
+        "page_order": 31
+      },
+      {
+        "line_id": 32,
+        "text": "결제대상금액 112,580",
+        "confidence": 0.894745796918869,
+        "bbox": [
+          [
+            1.0,
+            685.0
+          ],
+          [
+            451.0,
+            685.0
+          ],
+          [
+            451.0,
+            712.0
+          ],
+          [
+            1.0,
+            712.0
+          ]
+        ],
+        "center": [
+          226.0,
+          698.5
+        ],
+        "page_order": 32
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "양념등심돈까스",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": null,
+        "confidence": 0.99,
+        "match_confidence": 0.9928,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          1
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "× 파프리카",
+        "normalized_name": "파프리카",
+        "category": "vegetable",
+        "storage_type": "refrigerated",
+        "quantity": null,
+        "unit": null,
+        "amount": null,
+        "confidence": 0.83,
+        "match_confidence": 0.8258,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          3
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "1 채소S-POINT -1,500",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": 1500.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9576,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          5
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "* 완숙토마토 4kg/박스",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 4.0,
+        "unit": "kg",
+        "amount": null,
+        "confidence": 0.93,
+        "match_confidence": 0.9321,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "양념닭주물럭2.2kg",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.2,
+        "unit": "kg",
+        "amount": 2.0,
+        "confidence": 0.94,
+        "match_confidence": 0.9398,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          8
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "청정원 서해안 까나리",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": 8801052993485.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9589,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          11
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "하인즈유기농케찹90",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": 90.0,
+        "confidence": 0.85,
+        "match_confidence": 0.8483,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          13
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "가공에누리 -2,500",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": 2500.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9619,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          15
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "갈바니'리코타치느4",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": 4.0,
+        "confidence": 0.91,
+        "match_confidence": 0.9087,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          16
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "Koukakis 그릭요거트",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": null,
+        "confidence": 0.96,
+        "match_confidence": 0.9584,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          18
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "블렌드슈레드치즈1kg",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "kg",
+        "amount": null,
+        "confidence": 0.98,
+        "match_confidence": 0.983,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          20
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "* 국내산 양상추 2입",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4780.0,
+        "confidence": 0.9,
+        "match_confidence": 0.9492,
+        "parse_pattern": "two_line_barcode",
+        "source_line_ids": [
+          22,
+          23
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "멜오에이지파마산분",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": null,
+        "confidence": 0.98,
+        "match_confidence": 0.9819,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          24
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "품",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 11.0,
+        "confidence": 0.78,
+        "match_confidence": 0.7831,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          26
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "세 물물",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 27740.0,
+        "confidence": 0.9,
+        "match_confidence": 0.8985,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          27
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "세 품품세 81,",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 673.0,
+        "confidence": 0.97,
+        "match_confidence": 0.9726,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          28
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "가",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 8167.0,
+        "confidence": 0.99,
+        "match_confidence": 0.995,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          29
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "계 117,",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 580.0,
+        "confidence": 0.98,
+        "match_confidence": 0.9797,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          30
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "missing_purchased_at",
+      "unresolved_items"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 18,
+      "section_map": {
+        "0": "header",
+        "1": "items",
+        "2": "items",
+        "3": "items",
+        "4": "items",
+        "5": "items",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "items",
+        "10": "ignored",
+        "11": "items",
+        "12": "items",
+        "13": "items",
+        "14": "items",
+        "15": "items",
+        "16": "items",
+        "17": "items",
+        "18": "items",
+        "19": "items",
+        "20": "items",
+        "21": "items",
+        "22": "items",
+        "23": "items",
+        "24": "items",
+        "25": "items",
+        "26": "items",
+        "27": "items",
+        "28": "items",
+        "29": "items",
+        "30": "items",
+        "31": "totals",
+        "32": "ignored"
+      },
+      "consumed_line_ids": [
+        1,
+        3,
+        5,
+        6,
+        8,
+        11,
+        13,
+        15,
+        16,
+        18,
+        20,
+        22,
+        23,
+        24,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "quality_score": 0.7773,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [],
+      "date_fallback_used": false,
+      "qwen_header_attempted": true,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "empty_response",
+      "qwen_item_attempted": true,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "empty_response",
+      "qwen_attempted": true,
+      "qwen_mode": "header_and_item",
+      "qwen_fallback_reason": "empty_response"
+    }
+  }
+}

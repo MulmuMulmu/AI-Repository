@@ -1,16 +1,5 @@
 """
-AI FastAPI 서버 — 설계서 v1.1 기준 /ai/v1/ API
-
-엔드포인트 목록:
-  ■ OCR  → /ai/v1/ocr/preprocess, /ai/v1/ocr/extract-lines, /ai/v1/ocr/normalize
-  ■ 추천  → /ai/v1/recommendations/candidates, /ai/v1/recommendations/explanations
-  ■ 레시피 → /ai/v1/recipes/{id}
-  ■ 소비기한 → /ai/v1/expiry/calculate, /ai/v1/expiry/alerts
-  ■ 나눔  → /ai/v1/sharing/check
-  ■ 재료  → /ai/v1/ingredients/search, /ai/v1/cooking-methods
-  ■ 운영  → /ai/v1/health, /ai/v1/quality/metrics, /ai/v1/quality/drift,
-            /ai/v1/models/version, /ai/v1/dictionaries/version,
-            /ai/v1/prompts/version, /ai/v1/cache/clear, /ai/v1/jobs/{id}
+AI FastAPI 서버 — 영수증 OCR 분석 + 재료 예측
 
 실행: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 """
@@ -20,11 +9,10 @@ from __future__ import annotations
 import json
 import re
 import tempfile
-import time
+import threading
 import unicodedata
-import uuid
-from collections import Counter, defaultdict
-from datetime import datetime
+from collections import defaultdict
+from datetime import datetime, timezone
 from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -36,25 +24,15 @@ from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from rule_based_normalizer import RuleBasedNormalizer
-from recipe_recommender import RecipeRecommender
-from expiry_calculator import ExpiryCalculator
-from sharing_filter import SharingFilter
-from quality_monitor import QualityMonitor
-
 # ═══════════════════════════════════════════════════════════════
 #  데이터 로드
 # ═══════════════════════════════════════════════════════════════
 
 DATA_DIR = Path(__file__).resolve().parent / "data" / "db"
 
-MODEL_VERSION = "ai-server-v1.1.0"
-
-
 def _load_json(name: str) -> list:
     with open(DATA_DIR / name, encoding="utf-8") as f:
         return json.load(f)
-
 
 _recipes_raw: list = _load_json("recipes.json")
 _ingredients_raw: list = _load_json("ingredients.json")
@@ -79,31 +57,13 @@ INGR_NAME_INDEX: Dict[str, str] = {
 }
 
 # ═══════════════════════════════════════════════════════════════
-#  서비스 초기화
-# ═══════════════════════════════════════════════════════════════
-
-_normalizer = RuleBasedNormalizer()
-_recommender = RecipeRecommender(
-    recipes=RECIPES, ingredients=INGREDIENTS, recipe_ingredients=RECIPE_INGR,
-)
-_expiry_calc = ExpiryCalculator()
-_sharing_filter = SharingFilter()
-_monitor = QualityMonitor()
-
-# 비동기 작업 저장소 (in-memory)
-_jobs: Dict[str, Dict[str, Any]] = {}
-
-# 캐시 (in-memory)
-_cache: Dict[str, Dict[str, Any]] = {}
-
-# ═══════════════════════════════════════════════════════════════
 #  FastAPI 앱
 # ═══════════════════════════════════════════════════════════════
 
 app = FastAPI(
-    title="레시피 추천 AI API",
-    version=MODEL_VERSION,
-    description="설계서 v1.1 — 영수증 OCR + 재료 매칭 + 레시피 추천 + 소비기한 + 나눔 필터링",
+    title="영수증 OCR / 재료 예측 AI API",
+    version="1.0.0",
+    description="영수증 OCR 분석과 재료 예측을 제공하는 AI API",
 )
 
 app.add_middleware(
@@ -114,98 +74,99 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ═══════════════════════════════════════════════════════════════
-#  공통 응답 모델 (설계서 요구사항)
-# ═══════════════════════════════════════════════════════════════
-
-
-class AiResponse(BaseModel):
-    """모든 AI API의 공통 응답 형식."""
-    model_config = {"protected_namespaces": ()}
-
-    result_code: str = "OK"
-    trace_id: str = ""
-    model_version: str = MODEL_VERSION
-    result: Any = None
-    error: Optional[Dict[str, str]] = None
-
-
-def _ok(data: Any, trace_id: str = "") -> AiResponse:
-    return AiResponse(
-        result_code="OK",
-        trace_id=trace_id or _gen_trace(),
-        result=data,
-    )
-
-
-def _fail(code: str, message: str, trace_id: str = "") -> AiResponse:
-    return AiResponse(
-        result_code=code,
-        trace_id=trace_id or _gen_trace(),
-        error={"code": code, "message": message},
-    )
-
-
-def _gen_trace() -> str:
-    return f"tr-{uuid.uuid4().hex[:12]}"
-
+_RECEIPT_BACKEND = None
+_RECEIPT_PARSER = None
+_RECEIPT_SERVICE_NOOP = None
+_RECEIPT_SERVICE_QWEN = None
+_RECEIPT_REFINEMENT_STORE = None
+_RECEIPT_RULES = None
 
 # ═══════════════════════════════════════════════════════════════
-#  Pydantic 요청 스키마
+#  Pydantic 스키마
 # ═══════════════════════════════════════════════════════════════
 
-
-class OcrNormalizeRequest(BaseModel):
+class MatchRequest(BaseModel):
     product_names: List[str] = Field(..., min_length=1)
-
 
 class RecommendRequest(BaseModel):
     ingredientIds: List[str] = Field(..., min_length=1)
     top_k: int = Field(default=10, ge=1, le=100)
     category: Optional[str] = None
-    cookingMethod: Optional[str] = Field(
-        default=None,
-        description="조리방법 필터 — 한글명(끓이기, 굽기 등) 또는 코드(BOIL, GRILL 등)",
-    )
-    mode: str = Field(
-        default="partial",
-        description="partial: 부족 재료 50%까지 허용, exact: 보유 재료만 사용",
-    )
     min_match_rate: float = Field(default=0.0, ge=0.0, le=1.0)
 
-
-class ExpiryRequest(BaseModel):
-    item_name: str
-    purchase_date: str = Field(description="YYYY-MM-DD")
-    storage_method: str = Field(default="냉장")
-    category: Optional[str] = None
+class ApiResponse(BaseModel):
+    success: bool
+    data: Any = None
+    error: Optional[Dict[str, str]] = None
 
 
-class ExpiryBatchRequest(BaseModel):
-    items: List[ExpiryRequest]
+class ReceiptRefinementStore:
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self._records: dict[str, dict[str, Any]] = {}
 
+    def clear(self) -> None:
+        with self._lock:
+            self._records.clear()
 
-class SharingCheckRequest(BaseModel):
-    item_names: List[str] = Field(..., min_length=1)
+    def create_pending(self, trace_id: str, base_parsed: dict[str, Any]) -> None:
+        now = _utc_now_isoformat()
+        with self._lock:
+            self._records[trace_id] = {
+                "trace_id": trace_id,
+                "status": "pending",
+                "created_at": now,
+                "updated_at": now,
+                "base_parsed": dict(base_parsed),
+                "refined_parsed": None,
+                "error": None,
+            }
 
+    def mark_running(self, trace_id: str) -> None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            if record is None:
+                return
+            record["status"] = "running"
+            record["updated_at"] = _utc_now_isoformat()
 
-class ExplainRequest(BaseModel):
-    recipeId: str
-    ingredientIds: List[str] = Field(..., min_length=1)
+    def mark_completed(self, trace_id: str, refined_parsed: dict[str, Any]) -> None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            if record is None:
+                return
+            record["status"] = "completed"
+            record["updated_at"] = _utc_now_isoformat()
+            record["refined_parsed"] = dict(refined_parsed)
+            record["error"] = None
 
+    def mark_failed(self, trace_id: str, error: str) -> None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            if record is None:
+                return
+            record["status"] = "failed"
+            record["updated_at"] = _utc_now_isoformat()
+            record["error"] = error
+
+    def get(self, trace_id: str) -> dict[str, Any] | None:
+        with self._lock:
+            record = self._records.get(trace_id)
+            return dict(record) if record is not None else None
 
 # ═══════════════════════════════════════════════════════════════
 #  유틸리티
 # ═══════════════════════════════════════════════════════════════
 
-
 def _normalize_name(name: str) -> str:
+    """비교를 위한 이름 정규화: 공백·특수문자 제거, 소문자, NFC 정규화."""
     s = unicodedata.normalize("NFC", name.strip().lower())
     s = re.sub(r"[^\w가-힣]", "", s)
     return s
 
 
 def _similarity(a: str, b: str) -> float:
+    """두 문자열의 유사도 (0~1)."""
     na, nb = _normalize_name(a), _normalize_name(b)
     if na == nb:
         return 1.0
@@ -214,45 +175,125 @@ def _similarity(a: str, b: str) -> float:
     return SequenceMatcher(None, na, nb).ratio()
 
 
-def _match_product_to_ingredient(product_name: str) -> Optional[Dict[str, Any]]:
+def _get_receipt_rules():
+    global _RECEIPT_RULES
+    if _RECEIPT_RULES is None:
+        from ocr_qwen.receipt_rules import ReceiptRules
+
+        _RECEIPT_RULES = ReceiptRules.load_default()
+    return _RECEIPT_RULES
+
+
+def _find_ingredient_by_name(candidate_name: str) -> dict[str, Any] | None:
+    normalized_candidate = _normalize_name(candidate_name)
+    for ingredient in _ingredients_raw:
+        if _normalize_name(ingredient["ingredientName"]) == normalized_candidate:
+            return ingredient
+    return None
+
+
+def _build_ingredient_match(
+    *,
+    original_product_name: str,
+    ingredient: dict[str, Any],
+    similarity: float,
+    mapping_source: str,
+    standard_product_name: str | None = None,
+) -> Dict[str, Any]:
+    return {
+        "product_name": original_product_name,
+        "ingredientId": ingredient["ingredientId"],
+        "ingredientName": ingredient["ingredientName"],
+        "category": ingredient["category"],
+        "similarity": round(similarity, 4),
+        "mapping_source": mapping_source,
+        "standard_product_name": standard_product_name or original_product_name,
+    }
+
+
+def _match_product_to_ingredient(product_name: str) -> Dict[str, Any]:
+    """상품명을 DB 재료와 매칭. 최고 유사도 재료를 반환."""
+    rules = _get_receipt_rules()
+    aliased_product_name = rules.apply_product_alias(product_name).strip() or product_name.strip()
+    mapped = rules.lookup_product_to_ingredient(product_name)
+
+    if mapped is not None:
+        mapped_ingredient = _find_ingredient_by_name(mapped["ingredient_name"])
+        if mapped_ingredient is not None:
+            return _build_ingredient_match(
+                original_product_name=product_name,
+                ingredient=mapped_ingredient,
+                similarity=1.0,
+                mapping_source="receipt_rule_product_mapping",
+                standard_product_name=mapped["standard_product_name"],
+            )
+
     best_score = 0.0
     best_ingr = None
-    norm_product = _normalize_name(product_name)
+    best_source = "fuzzy_similarity"
+    best_standard_product_name = aliased_product_name
+    candidate_names = [aliased_product_name]
 
-    for ingr in _ingredients_raw:
-        ingr_name = ingr["ingredientName"]
-        norm_ingr = _normalize_name(ingr_name)
+    if mapped is not None:
+        mapped_ingredient_name = str(mapped["ingredient_name"]).strip()
+        if mapped_ingredient_name and mapped_ingredient_name not in candidate_names:
+            candidate_names.insert(0, mapped_ingredient_name)
+            best_standard_product_name = mapped["standard_product_name"]
 
-        if norm_product == norm_ingr:
-            return {
-                "product_name": product_name,
-                "ingredientId": ingr["ingredientId"],
-                "ingredientName": ingr_name,
-                "category": ingr["category"],
-                "similarity": 1.0,
-            }
+    original_product_name = product_name.strip()
+    if original_product_name and original_product_name not in candidate_names:
+        candidate_names.append(original_product_name)
 
-        if norm_product in norm_ingr or norm_ingr in norm_product:
-            score = 0.9
-        else:
-            score = SequenceMatcher(None, norm_product, norm_ingr).ratio()
+    for candidate_name in candidate_names:
+        norm_product = _normalize_name(candidate_name)
+        if not norm_product:
+            continue
 
-        if score > best_score:
-            best_score = score
-            best_ingr = ingr
+        for ingr in _ingredients_raw:
+            ingr_name = ingr["ingredientName"]
+            norm_ingr = _normalize_name(ingr_name)
+
+            if norm_product == norm_ingr:
+                return _build_ingredient_match(
+                    original_product_name=product_name,
+                    ingredient=ingr,
+                    similarity=1.0,
+                    mapping_source=(
+                        "receipt_rule_product_mapping_fallback"
+                        if mapped is not None and candidate_name == mapped.get("ingredient_name")
+                        else "normalized_exact_match"
+                    ),
+                    standard_product_name=best_standard_product_name,
+                )
+
+            if norm_product in norm_ingr or norm_ingr in norm_product:
+                score = 0.9
+            else:
+                score = SequenceMatcher(None, norm_product, norm_ingr).ratio()
+
+            if score > best_score:
+                best_score = score
+                best_ingr = ingr
+                if mapped is not None and candidate_name == mapped.get("ingredient_name"):
+                    best_source = "receipt_rule_product_mapping_fallback"
+                elif candidate_name == aliased_product_name and aliased_product_name != original_product_name:
+                    best_source = "product_alias_fuzzy_match"
+                else:
+                    best_source = "fuzzy_similarity"
 
     if best_ingr and best_score >= 0.5:
-        return {
-            "product_name": product_name,
-            "ingredientId": best_ingr["ingredientId"],
-            "ingredientName": best_ingr["ingredientName"],
-            "category": best_ingr["category"],
-            "similarity": round(best_score, 4),
-        }
+        return _build_ingredient_match(
+            original_product_name=product_name,
+            ingredient=best_ingr,
+            similarity=best_score,
+            mapping_source=best_source,
+            standard_product_name=best_standard_product_name,
+        )
     return None
 
 
 def _find_suggestions(product_name: str, top_n: int = 3) -> List[str]:
+    """매칭 실패 시 유사한 재료명 추천."""
     scored = []
     for ingr in _ingredients_raw:
         s = _similarity(product_name, ingr["ingredientName"])
@@ -262,125 +303,370 @@ def _find_suggestions(product_name: str, top_n: int = 3) -> List[str]:
     return [name for _, name in scored[:top_n]]
 
 
-def _merge_rule_and_qwen(
-    rule_items: List[Dict[str, Any]], qwen_items: List[Dict[str, Any]],
-) -> List[Dict[str, Any]]:
-    rule_names = {
-        _normalize_name(it.get("product_name", "")): i
-        for i, it in enumerate(rule_items)
+SNACK_KEYWORDS = (
+    "과자",
+    "쿠키",
+    "크래커",
+    "초코",
+    "빼빼로",
+    "오예스",
+    "붕어빵",
+    "초코볼",
+    "캔디",
+    "사탕",
+    "민트향",
+    "헬씨넛",
+    "로투스",
+)
+
+PROCESSED_FOOD_KEYWORDS = (
+    "라면",
+    "컵",
+    "소스",
+    "고추장",
+    "요거트",
+    "치즈",
+    "와사비",
+    "참기름",
+    "양념",
+    "주물럭",
+    "햇반",
+    "만두",
+    "떡",
+    "어묵",
+    "캔",
+)
+
+
+def _resolve_standard_product_name(product_name: str) -> str:
+    standard_name = _get_receipt_rules().apply_product_alias(product_name).strip()
+    return standard_name or product_name.strip()
+
+
+def _contains_classification_keyword(values: list[str], keywords: tuple[str, ...]) -> bool:
+    return any(keyword in value for value in values for keyword in keywords)
+
+
+def _infer_item_type(
+    product_name: str,
+    *,
+    standard_product_name: str | None = None,
+    matched_result: dict[str, Any] | None = None,
+) -> str:
+    candidate_values = [value.strip() for value in (product_name, standard_product_name or "") if value and value.strip()]
+    rules = _get_receipt_rules()
+    if any(rules.matches_non_item(value) for value in candidate_values):
+        return "NON_FOOD"
+
+    normalized_values = [_normalize_name(value) for value in candidate_values if value]
+    if _contains_classification_keyword(normalized_values, SNACK_KEYWORDS):
+        return "SNACK"
+    if _contains_classification_keyword(normalized_values, PROCESSED_FOOD_KEYWORDS):
+        return "PROCESSED_FOOD"
+
+    if matched_result is not None:
+        return "INGREDIENT"
+    return "UNKNOWN"
+
+
+def _normalize_prediction_match(product_name: str, match_result: dict[str, Any]) -> dict[str, Any]:
+    result = dict(match_result)
+    standard_product_name = str(result.get("standard_product_name") or _resolve_standard_product_name(product_name)).strip()
+    result["product_name"] = product_name
+    result["standard_product_name"] = standard_product_name
+    result["mapping_status"] = "MAPPED"
+    result["item_type"] = _infer_item_type(
+        product_name,
+        standard_product_name=standard_product_name,
+        matched_result=result,
+    )
+    return result
+
+
+def _build_unmatched_prediction(product_name: str) -> dict[str, Any]:
+    standard_product_name = _resolve_standard_product_name(product_name)
+    item_type = _infer_item_type(product_name, standard_product_name=standard_product_name)
+    mapping_status = "EXCLUDED" if item_type == "NON_FOOD" else "UNMAPPED"
+    reason = "비식품 또는 제외 대상" if mapping_status == "EXCLUDED" else "DB에 일치하는 재료 없음"
+
+    return {
+        "product_name": product_name,
+        "standard_product_name": standard_product_name,
+        "item_type": item_type,
+        "mapping_status": mapping_status,
+        "reason": reason,
+        "suggestions": [] if mapping_status == "EXCLUDED" else _find_suggestions(standard_product_name),
     }
-    merged = list(rule_items)
 
-    for qwen_it in qwen_items:
-        q_name = qwen_it.get("product_name", "").strip()
-        if not q_name:
+
+def _normalize_food_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """OCR 또는 Qwen 결과를 API 계약에 맞는 식품 항목으로 정규화한다."""
+    if not isinstance(item, dict):
+        return None
+
+    product_name = item.get("product_name") or item.get("name")
+    if not isinstance(product_name, str):
+        product_name = str(product_name or "").strip()
+    product_name = product_name.strip()
+    if not product_name:
+        return None
+
+    amount_krw = item.get("amount_krw")
+    if amount_krw is not None and amount_krw != "":
+        try:
+            amount_krw = int(str(amount_krw).replace(",", ""))
+        except (TypeError, ValueError):
+            amount_krw = None
+    else:
+        amount_krw = None
+
+    notes = item.get("notes", "")
+    if notes is None:
+        notes = ""
+
+    return {
+        "product_name": product_name,
+        "amount_krw": amount_krw,
+        "notes": str(notes).strip(),
+    }
+
+
+def _normalize_food_items(items: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
+    normalized: list[Dict[str, Any]] = []
+    for item in items:
+        normalized_item = _normalize_food_item(item)
+        if normalized_item is not None:
+            normalized.append(normalized_item)
+    return normalized
+
+
+def _legacy_food_items_from_parsed(parsed: Dict[str, Any]) -> list[Dict[str, Any]]:
+    legacy_items: list[Dict[str, Any]] = []
+    for item in parsed.get("items", []):
+        if not isinstance(item, dict):
             continue
-        q_norm = _normalize_name(q_name)
+        product_name = item.get("normalized_name") or item.get("raw_name")
+        if not product_name:
+            continue
+        amount = item.get("amount")
+        if isinstance(amount, float) and amount.is_integer():
+            amount = int(amount)
+        legacy_items.append(
+            {
+                "product_name": product_name,
+                "amount_krw": amount,
+                "notes": ", ".join(item.get("review_reason", [])),
+            }
+        )
+    return _normalize_food_items(legacy_items)
 
-        matched_idx = rule_names.get(q_norm)
-        if matched_idx is not None:
-            if qwen_it.get("amount_krw") and not merged[matched_idx].get("amount_krw"):
-                merged[matched_idx]["amount_krw"] = qwen_it["amount_krw"]
-            if qwen_it.get("notes"):
-                existing_notes = merged[matched_idx].get("notes", "")
-                if existing_notes:
-                    merged[matched_idx]["notes"] = f"{existing_notes}; Qwen: {qwen_it['notes']}"
-                else:
-                    merged[matched_idx]["notes"] = f"Qwen: {qwen_it['notes']}"
+
+def _legacy_model_name_from_parsed(parsed: Dict[str, Any]) -> str:
+    engine_version = str(parsed.get("engine_version") or "receipt-engine-v2")
+    diagnostics = parsed.get("diagnostics", {})
+    if isinstance(diagnostics, dict) and diagnostics.get("qwen_used"):
+        return f"{engine_version}+qwen"
+    return engine_version
+
+
+def _legacy_ocr_response_data_from_parsed(parsed: Dict[str, Any]) -> Dict[str, Any]:
+    ocr_texts = parsed.get("ocr_texts", [])
+    food_items = _legacy_food_items_from_parsed(parsed)
+    model_name = _legacy_model_name_from_parsed(parsed)
+    return {
+        "trace_id": parsed.get("trace_id"),
+        "ocr_texts": ocr_texts,
+        "food_items": food_items,
+        "food_count": len(food_items),
+        "model": model_name,
+        "vendor_name": parsed.get("vendor_name"),
+        "purchased_at": parsed.get("purchased_at"),
+        "totals": parsed.get("totals", {}),
+        "diagnostics": parsed.get("diagnostics", {}),
+    }
+
+
+def _utc_now_isoformat() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _get_receipt_backend():
+    global _RECEIPT_BACKEND
+    if _RECEIPT_BACKEND is None:
+        from ocr_qwen.services import PaddleOcrBackend
+
+        _RECEIPT_BACKEND = PaddleOcrBackend()
+    return _RECEIPT_BACKEND
+
+
+def _get_receipt_parser():
+    global _RECEIPT_PARSER
+    if _RECEIPT_PARSER is None:
+        from ocr_qwen.receipts import ReceiptParser
+
+        _RECEIPT_PARSER = ReceiptParser()
+    return _RECEIPT_PARSER
+
+
+def _get_receipt_service(use_qwen: bool):
+    global _RECEIPT_SERVICE_NOOP, _RECEIPT_SERVICE_QWEN
+    if use_qwen:
+        if _RECEIPT_SERVICE_QWEN is None:
+            from ocr_qwen.qwen import build_default_qwen_provider
+            from ocr_qwen.services import ReceiptParseService
+
+            _RECEIPT_SERVICE_QWEN = ReceiptParseService(
+                ocr_backend=_get_receipt_backend(),
+                parser=_get_receipt_parser(),
+                qwen_provider=build_default_qwen_provider(),
+            )
+        return _RECEIPT_SERVICE_QWEN
+
+    if _RECEIPT_SERVICE_NOOP is None:
+        from ocr_qwen.qwen import NoopQwenProvider
+        from ocr_qwen.services import ReceiptParseService
+
+        _RECEIPT_SERVICE_NOOP = ReceiptParseService(
+            ocr_backend=_get_receipt_backend(),
+            parser=_get_receipt_parser(),
+            qwen_provider=NoopQwenProvider(),
+        )
+    return _RECEIPT_SERVICE_NOOP
+
+
+def _get_receipt_refinement_store() -> ReceiptRefinementStore:
+    global _RECEIPT_REFINEMENT_STORE
+    if _RECEIPT_REFINEMENT_STORE is None:
+        _RECEIPT_REFINEMENT_STORE = ReceiptRefinementStore()
+    return _RECEIPT_REFINEMENT_STORE
+
+
+def _run_receipt_refinement(trace_id: str, temp_path: str) -> None:
+    store = _get_receipt_refinement_store()
+    try:
+        store.mark_running(trace_id)
+        parsed = _get_receipt_service(use_qwen=True).parse({"receipt_image_url": temp_path})
+        parsed["trace_id"] = trace_id
+        store.mark_completed(trace_id, parsed)
+    except Exception as exc:
+        store.mark_failed(trace_id, str(exc))
+    finally:
+        Path(temp_path).unlink(missing_ok=True)
+
+
+def _schedule_receipt_refinement(*, trace_id: str, image_bytes: bytes, suffix: str) -> None:
+    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
+        tmp.write(image_bytes)
+        temp_path = tmp.name
+
+    thread = threading.Thread(
+        target=_run_receipt_refinement,
+        args=(trace_id, temp_path),
+        daemon=True,
+    )
+    thread.start()
+
+
+@app.on_event("startup")
+def _warm_up_receipt_services() -> None:
+    try:
+        _get_receipt_backend().warm_up()
+    except Exception as exc:
+        print(f"[startup] receipt ocr warm-up skipped: {exc}")
+
+# ═══════════════════════════════════════════════════════════════
+#  레시피 추천 엔진
+# ═══════════════════════════════════════════════════════════════
+
+def recommend_recipes(
+    ingredient_ids: List[str],
+    top_k: int = 10,
+    category: Optional[str] = None,
+    min_match_rate: float = 0.0,
+) -> List[dict]:
+    """
+    보유 재료 ID 목록으로 레시피를 추천.
+    일부 재료만 있어도 matchRate(일치율) 기준으로 정렬하여 반환.
+    """
+    owned = set(ingredient_ids)
+    results = []
+
+    for recipe_id, recipe in RECIPES.items():
+        if category and recipe["category"] != category:
             continue
 
-        found = False
-        for rn in rule_names:
-            if q_norm in rn or rn in q_norm:
-                found = True
-                break
-        if found:
+        ri_list = RECIPE_INGR.get(recipe_id, [])
+        if not ri_list:
             continue
 
-        cat = _normalizer.classify_category(q_name)
-        ingr_match = _normalizer.match_to_ingredient(q_name)
-        merged.append({
-            "product_name_raw": q_name,
-            "product_name": q_name,
-            "category_major": cat["major"],
-            "category_sub": cat["sub"],
-            "amount_krw": qwen_it.get("amount_krw"),
-            "ingredient_match": ingr_match,
-            "notes": f"Qwen 추가: {qwen_it.get('notes', '')}".strip(),
+        recipe_ingr_ids = {ri["ingredientId"] for ri in ri_list}
+        matched_ids = owned & recipe_ingr_ids
+        missing_ids = recipe_ingr_ids - owned
+
+        match_rate = len(matched_ids) / len(recipe_ingr_ids)
+        if match_rate < min_match_rate:
+            continue
+        if not matched_ids:
+            continue
+
+        matched_list = []
+        for iid in matched_ids:
+            ingr = INGREDIENTS.get(iid)
+            if ingr:
+                matched_list.append({
+                    "ingredientId": iid,
+                    "ingredientName": ingr["ingredientName"],
+                })
+
+        missing_list = []
+        for iid in missing_ids:
+            ingr = INGREDIENTS.get(iid)
+            if ingr:
+                missing_list.append({
+                    "ingredientId": iid,
+                    "ingredientName": ingr["ingredientName"],
+                })
+
+        results.append({
+            "recipeId": recipe_id,
+            "name": recipe["name"],
+            "category": recipe["category"],
+            "imageUrl": recipe.get("imageUrl", ""),
+            "matchedIngredients": matched_list,
+            "missingIngredients": missing_list,
+            "matchRate": round(match_rate, 4),
+            "totalIngredientCount": len(recipe_ingr_ids),
         })
 
-    return merged
-
-
-# ═══════════════════════════════════════════════════════════════
-#  로깅 미들웨어
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.middleware("http")
-async def monitor_middleware(request, call_next):
-    start = time.time()
-    response = await call_next(request)
-    elapsed_ms = (time.time() - start) * 1000
-    endpoint = request.url.path
-    if endpoint.startswith("/ai/v1"):
-        _monitor.log_request(
-            endpoint=endpoint,
-            elapsed_ms=elapsed_ms,
-            status_code=response.status_code,
-            trace_id=response.headers.get("X-Trace-Id", ""),
-        )
-    return response
-
+    results.sort(key=lambda r: (-r["matchRate"], -len(r["matchedIngredients"])))
+    return results[:top_k]
 
 # ═══════════════════════════════════════════════════════════════
-#  1. 헬스체크
+#  API 엔드포인트
 # ═══════════════════════════════════════════════════════════════
 
-
-@app.get("/ai/v1/health")
-async def health_check():
-    return _ok({
-        "status": "healthy",
-        "version": MODEL_VERSION,
-        "uptime": _monitor.get_uptime(),
-        "services": {
-            "paddleocr": "available",
-            "rule_based_normalizer": "active (v1)",
-            "recipe_recommender": "active (weighted_scoring_v1)",
-            "expiry_calculator": "active (gpt4omini + rule_fallback)",
-            "sharing_filter": "active (v1)",
-            "qwen_llm": "optional",
-        },
-        "stats": {
-            "total_recipes": len(RECIPES),
-            "total_ingredients": len(INGREDIENTS),
-            "total_recipe_ingredients": len(_recipe_ingredients_raw),
-            "total_recipe_steps": len(_recipe_steps_raw),
-        },
-    })
-
-
-# ═══════════════════════════════════════════════════════════════
-#  2. OCR 파이프라인 (3단계 분리)
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.post("/ai/v1/ocr/preprocess")
-async def ocr_preprocess(
+@app.post("/ai/ocr/analyze")
+async def ocr_receipt(
     image: UploadFile = File(...),
-    use_qwen: bool = False,
+    use_qwen: bool = Query(
+        default=True,
+        description=(
+            "로컬 Qwen 보정 사용 여부. "
+            "true여도 로컬 Qwen 런타임이 비활성화되어 있으면 OCR-only로 fallback하며, "
+            "응답 계약(ocr_texts, food_items, food_count, model)은 유지됩니다."
+        ),
+    ),
+    async_refinement: bool = Query(
+        default=False,
+        description="true면 rule-based 결과를 즉시 반환하고 Qwen 보정은 백그라운드에서 수행합니다.",
+    ),
 ):
-    """
-    1단계: 영수증 이미지 → PaddleOCR → 원시 텍스트 추출.
-    비동기 job 생성 후 job_id 반환.
-    """
-    trace_id = _gen_trace()
-
+    """영수증 이미지 → PaddleOCR 기반 OCR + 선택적 Qwen 보정 → 식품명 추출."""
     if image.content_type not in ("image/jpeg", "image/png", "image/jpg"):
-        raise HTTPException(status_code=400, detail=_fail(
-            "INVALID_IMAGE", "jpg, png 파일만 지원합니다.", trace_id,
-        ).model_dump())
+        raise HTTPException(
+            status_code=400,
+            detail={"code": "INVALID_IMAGE", "message": "jpg, png 파일만 지원합니다."},
+        )
 
     suffix = ".jpg" if "jpeg" in (image.content_type or "") else ".png"
     with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
@@ -388,259 +674,125 @@ async def ocr_preprocess(
         tmp.write(content)
         tmp_path = tmp.name
 
-    job_id = f"ocr-{uuid.uuid4().hex[:8]}"
-
     try:
-        from receipt_ocr import ReceiptOCR
+        should_enqueue_refinement = use_qwen and async_refinement
+        service = _get_receipt_service(use_qwen=False if should_enqueue_refinement else use_qwen)
+        parsed = service.parse({"receipt_image_url": tmp_path})
+        data = _legacy_ocr_response_data_from_parsed(parsed)
 
-        ocr = ReceiptOCR()
-        analysis = ocr.analyze_receipt(tmp_path)
-        ocr_texts = analysis.get("all_texts", [])
+        if should_enqueue_refinement:
+            trace_id = str(parsed.get("trace_id") or "")
+            if trace_id:
+                _get_receipt_refinement_store().create_pending(trace_id, parsed)
+                _schedule_receipt_refinement(trace_id=trace_id, image_bytes=content, suffix=suffix)
+                data["refinement_status"] = "pending"
+                data["refinement_poll_url"] = f"/ai/ocr/refinement/{trace_id}"
 
-        rule_result = _normalizer.process(analysis)
-        food_items = rule_result["items"]
-        model_name = rule_result["model"]
-
-        if use_qwen:
-            try:
-                from qwen_receipt_assistant import QwenReceiptAssistant
-                assistant = QwenReceiptAssistant()
-                refined = assistant.refine_analysis(analysis)
-                qwen_items = refined.get("items", [])
-                if qwen_items:
-                    food_items = _merge_rule_and_qwen(food_items, qwen_items)
-                    model_name = f"rule_based_v1 + {refined.get('model', 'qwen')}"
-            except Exception as e:
-                model_name = f"rule_based_v1 (Qwen 보강 실패: {e})"
-
-        _jobs[job_id] = {
-            "job_id": job_id,
-            "status": "completed",
-            "created_at": datetime.now().isoformat(),
-            "completed_at": datetime.now().isoformat(),
-            "result": {
-                "ocr_texts": ocr_texts,
-                "food_items": food_items,
-                "food_count": len(food_items),
-                "model": model_name,
-                "store_name": rule_result.get("store_name"),
-                "purchase_date": rule_result.get("purchase_date"),
-            },
-        }
-
-        return _ok({
-            "job_id": job_id,
-            "status": "completed",
-            "ocr_texts": ocr_texts,
-            "food_items": food_items,
-            "food_count": len(food_items),
-            "model": model_name,
-            "store_name": rule_result.get("store_name"),
-            "purchase_date": rule_result.get("purchase_date"),
-        }, trace_id)
-
+        return ApiResponse(
+            success=True,
+            data=data,
+        )
     except ImportError:
-        raise HTTPException(status_code=503, detail=_fail(
-            "SERVICE_UNAVAILABLE", "PaddleOCR가 설치되지 않았습니다.", trace_id,
-        ).model_dump())
+        raise HTTPException(
+            status_code=503,
+            detail={"code": "SERVICE_UNAVAILABLE", "message": "PaddleOCR가 설치되지 않았습니다."},
+        )
     except Exception as e:
-        _jobs[job_id] = {
-            "job_id": job_id,
-            "status": "failed",
-            "created_at": datetime.now().isoformat(),
-            "error": str(e),
-        }
-        raise HTTPException(status_code=500, detail=_fail(
-            "OCR_FAILED", str(e), trace_id,
-        ).model_dump())
+        raise HTTPException(
+            status_code=500,
+            detail={"code": "OCR_FAILED", "message": str(e)},
+        )
     finally:
         Path(tmp_path).unlink(missing_ok=True)
 
 
-@app.post("/ai/v1/ocr/extract-lines")
-async def ocr_extract_lines(req: OcrNormalizeRequest):
-    """
-    2단계: 텍스트 목록 → OCR 보정 → 라인 분류 → 상품-가격 페어링.
-    """
-    trace_id = _gen_trace()
-    lines = []
-    for raw_text in req.product_names:
-        corrected = _normalizer.correct_ocr_errors(raw_text)
-        line_type = _normalizer.classify_line(corrected)
-        lines.append({
-            "raw": raw_text,
-            "corrected": corrected,
-            "line_type": line_type,
-            "ocr_changed": corrected != raw_text,
-        })
+@app.get("/ai/ocr/refinement/{trace_id}")
+async def get_ocr_refinement(trace_id: str):
+    record = _get_receipt_refinement_store().get(trace_id)
+    if record is None:
+        raise HTTPException(
+            status_code=404,
+            detail={"code": "REFINEMENT_NOT_FOUND", "message": f"refinement trace not found: {trace_id}"},
+        )
 
-    return _ok({"lines": lines, "line_count": len(lines)}, trace_id)
-
-
-@app.post("/ai/v1/ocr/normalize")
-async def ocr_normalize(req: OcrNormalizeRequest):
-    """
-    3단계: 상품명 목록 → 정규화 → 카테고리 분류 → DB 매칭.
-    """
-    trace_id = _gen_trace()
-    items = []
-    for raw_name in req.product_names:
-        corrected = _normalizer.correct_ocr_errors(raw_name)
-        normalized = _normalizer.normalize_product_name(corrected)
-        if not normalized or len(normalized) < 2:
-            continue
-        cat = _normalizer.classify_category(normalized)
-        ingr_match = _normalizer.match_to_ingredient(normalized)
-        items.append({
-            "product_name_raw": raw_name,
-            "product_name": normalized,
-            "category_major": cat["major"],
-            "category_sub": cat["sub"],
-            "ingredient_match": ingr_match,
-            "confidence": ingr_match["similarity"] if ingr_match else 0.0,
-            "needs_review": (ingr_match["similarity"] < 0.7) if ingr_match else True,
-            "notes": f"OCR 보정: {raw_name} → {corrected}" if corrected != raw_name else "",
-        })
-
-    return _ok({
-        "items": items,
-        "item_count": len(items),
-        "model": "rule_based_v1",
-    }, trace_id)
+    base_parsed = record.get("base_parsed")
+    refined_parsed = record.get("refined_parsed")
+    return ApiResponse(
+        success=True,
+        data={
+            "trace_id": trace_id,
+            "status": record.get("status"),
+            "created_at": record.get("created_at"),
+            "updated_at": record.get("updated_at"),
+            "error": record.get("error"),
+            "rule_based_result": _legacy_ocr_response_data_from_parsed(base_parsed) if isinstance(base_parsed, dict) else None,
+            "refined_result": _legacy_ocr_response_data_from_parsed(refined_parsed) if isinstance(refined_parsed, dict) else None,
+        },
+    )
 
 
-# ═══════════════════════════════════════════════════════════════
-#  3. 재료 매칭
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.post("/ai/v1/ingredients/match")
-async def match_ingredients(req: OcrNormalizeRequest):
+@app.post("/ai/ingredient/prediction")
+async def match_ingredients(req: MatchRequest):
     """OCR 추출 상품명 → DB Ingredient 매칭."""
-    trace_id = _gen_trace()
     matched = []
     unmatched = []
 
     for name in req.product_names:
         result = _match_product_to_ingredient(name)
         if result:
-            matched.append(result)
+            matched.append(_normalize_prediction_match(name, result))
         else:
-            unmatched.append({
-                "product_name": name,
-                "reason": "DB에 일치하는 재료 없음",
-                "suggestions": _find_suggestions(name),
-            })
+            unmatched.append(_build_unmatched_prediction(name))
 
-    return _ok({
-        "matched": matched,
-        "unmatched": unmatched,
-        "matched_count": len(matched),
-        "unmatched_count": len(unmatched),
-    }, trace_id)
+    return ApiResponse(
+        success=True,
+        data={
+            "matched": matched,
+            "unmatched": unmatched,
+            "matched_count": len(matched),
+            "unmatched_count": len(unmatched),
+        },
+    )
 
-
-# ═══════════════════════════════════════════════════════════════
-#  4. 레시피 추천 (candidates + explanations 분리)
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.post("/ai/v1/recommendations/candidates")
-async def recommend_candidates(req: RecommendRequest):
-    """
-    보유 재료 기반 레시피 추천 후보 목록.
-
-    mode:
-      - partial: 부족 재료가 전체의 50% 이하인 레시피까지 허용
-      - exact:   보유 재료만으로 만들 수 있는 레시피만
-    """
-    trace_id = _gen_trace()
+async def recommend(req: RecommendRequest):
+    """보유 재료 기반 레시피 추천. 일부 재료만 있어도 추천 가능."""
     valid_ids = [iid for iid in req.ingredientIds if iid in INGREDIENTS]
     if not valid_ids:
-        raise HTTPException(status_code=400, detail=_fail(
-            "INVALID_REQUEST", "유효한 ingredientId가 없습니다.", trace_id,
-        ).model_dump())
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "code": "INVALID_REQUEST",
+                "message": "유효한 ingredientId가 없습니다.",
+            },
+        )
 
-    if req.mode == "exact":
-        min_match = max(req.min_match_rate, 1.0)
-    elif req.mode == "partial":
-        min_match = max(req.min_match_rate, 0.5)
-    else:
-        min_match = req.min_match_rate
-
-    recommendations = _recommender.recommend(
+    recommendations = recommend_recipes(
         ingredient_ids=valid_ids,
         top_k=req.top_k,
         category=req.category,
-        cooking_method=req.cookingMethod,
-        min_match_rate=min_match,
+        min_match_rate=req.min_match_rate,
     )
 
-    return _ok({
-        "recommendations": recommendations,
-        "total_count": len(recommendations),
-        "input_ingredient_count": len(valid_ids),
-        "mode": req.mode,
-    }, trace_id)
+    return ApiResponse(
+        success=True,
+        data={
+            "recommendations": recommendations,
+            "total_count": len(recommendations),
+            "input_ingredient_count": len(valid_ids),
+        },
+    )
 
-
-@app.post("/ai/v1/recommendations/explanations")
-async def recommend_explanations(req: ExplainRequest):
-    """특정 레시피에 대한 추천 이유를 상세히 설명한다."""
-    trace_id = _gen_trace()
-    valid_ids = [iid for iid in req.ingredientIds if iid in INGREDIENTS]
-    if not valid_ids:
-        raise HTTPException(status_code=400, detail=_fail(
-            "INVALID_REQUEST", "유효한 ingredientId가 없습니다.", trace_id,
-        ).model_dump())
-
-    recipe = RECIPES.get(req.recipeId)
-    if not recipe:
-        raise HTTPException(status_code=404, detail=_fail(
-            "RECIPE_NOT_FOUND", f"레시피를 찾을 수 없습니다: {req.recipeId}", trace_id,
-        ).model_dump())
-
-    scored = _recommender._score_recipe(req.recipeId, set(valid_ids))
-    if scored is None:
-        return _ok({
-            "recipeId": req.recipeId,
-            "explanation": "이 레시피와 보유 재료 사이에 일치하는 재료가 없습니다.",
-            "score": 0.0,
-        }, trace_id)
-
-    explanation = _recommender.explain(scored)
-
-    return _ok({
-        "recipeId": req.recipeId,
-        "name": scored["name"],
-        "explanation": explanation,
-        "score": scored["score"],
-        "matchRate": scored["matchRate"],
-        "weightedMatchRate": scored["weightedMatchRate"],
-        "coreCoverage": scored["coreCoverage"],
-        "feasibility": scored["feasibility"],
-        "matchedIngredients": scored["matchedIngredients"],
-        "missingIngredients": scored["missingIngredients"],
-        "substitutions": scored["substitutions"],
-    }, trace_id)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  5. 레시피 상세
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.get("/ai/v1/recipes/{recipe_id}")
 async def get_recipe(recipe_id: str):
     """레시피 상세 조회 (재료 + 조리 단계)."""
-    trace_id = _gen_trace()
     recipe = RECIPES.get(recipe_id)
     if not recipe:
-        raise HTTPException(status_code=404, detail=_fail(
-            "RECIPE_NOT_FOUND",
-            f"레시피를 찾을 수 없습니다: {recipe_id}",
-            trace_id,
-        ).model_dump())
+        raise HTTPException(
+            status_code=404,
+            detail={
+                "code": "RECIPE_NOT_FOUND",
+                "message": f"레시피를 찾을 수 없습니다: {recipe_id}",
+            },
+        )
 
     ri_list = RECIPE_INGR.get(recipe_id, [])
     ingredients = []
@@ -665,110 +817,26 @@ async def get_recipe(recipe_id: str):
         for s in RECIPE_STEPS.get(recipe_id, [])
     ]
 
-    return _ok({
-        "recipeId": recipe_id,
-        "name": recipe["name"],
-        "category": recipe["category"],
-        "cookingMethod": recipe.get("cookingMethod", ""),
-        "cookingMethodCode": recipe.get("cookingMethodCode", ""),
-        "imageUrl": recipe.get("imageUrl", ""),
-        "ingredients": ingredients,
-        "steps": steps,
-        "ingredient_count": len(ingredients),
-        "step_count": len(steps),
-    }, trace_id)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  6. 소비기한 계산
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.post("/ai/v1/expiry/calculate")
-async def calculate_expiry(req: ExpiryRequest):
-    """단일 품목 소비기한 계산 (GPT-4o-mini + 규칙 기반 fallback)."""
-    trace_id = _gen_trace()
-    result = _expiry_calc.calculate(
-        item_name=req.item_name,
-        purchase_date=req.purchase_date,
-        storage_method=req.storage_method,
-        category=req.category,
+    return ApiResponse(
+        success=True,
+        data={
+            "recipeId": recipe_id,
+            "name": recipe["name"],
+            "category": recipe["category"],
+            "imageUrl": recipe.get("imageUrl", ""),
+            "ingredients": ingredients,
+            "steps": steps,
+            "ingredient_count": len(ingredients),
+            "step_count": len(steps),
+        },
     )
-    return _ok(result, trace_id)
 
-
-@app.post("/ai/v1/expiry/batch")
-async def calculate_expiry_batch(req: ExpiryBatchRequest):
-    """여러 품목 소비기한 일괄 계산."""
-    trace_id = _gen_trace()
-    items = [
-        {
-            "item_name": it.item_name,
-            "purchase_date": it.purchase_date,
-            "storage_method": it.storage_method,
-            "category": it.category,
-        }
-        for it in req.items
-    ]
-    results = _expiry_calc.calculate_batch(items)
-    alerts = _expiry_calc.generate_alerts(results)
-
-    return _ok({
-        "results": results,
-        "total_count": len(results),
-        "alerts": alerts,
-        "alert_count": len(alerts),
-    }, trace_id)
-
-
-@app.post("/ai/v1/expiry/alerts")
-async def expiry_alerts(req: ExpiryBatchRequest):
-    """소비기한 임박 품목 알림 트리거."""
-    trace_id = _gen_trace()
-    items = [
-        {
-            "item_name": it.item_name,
-            "purchase_date": it.purchase_date,
-            "storage_method": it.storage_method,
-            "category": it.category,
-        }
-        for it in req.items
-    ]
-    results = _expiry_calc.calculate_batch(items)
-    alerts = _expiry_calc.generate_alerts(results, threshold_days=3)
-
-    return _ok({
-        "alerts": alerts,
-        "alert_count": len(alerts),
-    }, trace_id)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  7. 나눔 금지 품목 필터링
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.post("/ai/v1/sharing/check")
-async def sharing_check(req: SharingCheckRequest):
-    """나눔 금지 품목 1차 필터링 — 차단/검수/허용 판별."""
-    trace_id = _gen_trace()
-    result = _sharing_filter.check(req.item_names)
-    return _ok(result, trace_id)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  8. 재료 검색 / 조리방법
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.get("/ai/v1/ingredients/search")
 async def search_ingredients(
     q: str = Query(..., min_length=1, description="검색 키워드"),
     category: Optional[str] = Query(None, description="카테고리 필터"),
     limit: int = Query(20, ge=1, le=100, description="최대 반환 개수"),
 ):
     """키워드로 재료 검색."""
-    trace_id = _gen_trace()
     q_norm = _normalize_name(q)
     results = []
 
@@ -784,284 +852,11 @@ async def search_ingredients(
             if len(results) >= limit:
                 break
 
-    return _ok({
-        "results": results,
-        "total_count": len(results),
-        "query": q,
-    }, trace_id)
-
-
-@app.get("/ai/v1/cooking-methods")
-async def list_cooking_methods():
-    """사용 가능한 조리방법 목록과 각 레시피 수를 반환."""
-    trace_id = _gen_trace()
-    method_counts: Counter = Counter()
-    for recipe in _recipes_raw:
-        m = recipe.get("cookingMethod", "")
-        c = recipe.get("cookingMethodCode", "")
-        if m:
-            method_counts[(m, c)] += 1
-
-    methods = [
-        {"name": name, "code": code, "recipeCount": cnt}
-        for (name, code), cnt in method_counts.most_common()
-    ]
-
-    return _ok({
-        "methods": methods,
-        "total_count": len(methods),
-    }, trace_id)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  9. 작업(Job) 관리
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.get("/ai/v1/jobs/{job_id}")
-async def get_job(job_id: str):
-    """비동기 작업 상태 조회."""
-    trace_id = _gen_trace()
-    job = _jobs.get(job_id)
-    if not job:
-        raise HTTPException(status_code=404, detail=_fail(
-            "JOB_NOT_FOUND", f"작업을 찾을 수 없습니다: {job_id}", trace_id,
-        ).model_dump())
-    return _ok(job, trace_id)
-
-
-@app.get("/ai/v1/jobs")
-async def list_jobs(
-    status: Optional[str] = Query(None, description="상태 필터 (completed, failed, processing)"),
-    limit: int = Query(20, ge=1, le=100),
-):
-    """작업 목록 조회."""
-    trace_id = _gen_trace()
-    jobs = list(_jobs.values())
-    if status:
-        jobs = [j for j in jobs if j.get("status") == status]
-    jobs.sort(key=lambda j: j.get("created_at", ""), reverse=True)
-    return _ok({
-        "jobs": jobs[:limit],
-        "total_count": len(jobs),
-    }, trace_id)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  10. 운영/품질 관리 API
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.get("/ai/v1/quality/metrics")
-async def quality_metrics(
-    window: str = Query("1h", description="시간 윈도우 (1h, 6h, 1d, 7d)"),
-):
-    """품질 지표 — 요청 수, 오류율, 응답시간."""
-    trace_id = _gen_trace()
-    metrics = _monitor.get_metrics(window)
-    return _ok(metrics, trace_id)
-
-
-@app.get("/ai/v1/quality/drift")
-async def quality_drift(
-    window: str = Query("7d", description="모니터링 윈도우"),
-):
-    """품질 드리프트 감지."""
-    trace_id = _gen_trace()
-    drift = _monitor.get_drift(window)
-    return _ok(drift, trace_id)
-
-
-@app.get("/ai/v1/quality/errors")
-async def quality_errors(
-    limit: int = Query(50, ge=1, le=500),
-):
-    """최근 오류 로그."""
-    trace_id = _gen_trace()
-    errors = _monitor.get_recent_errors(limit)
-    return _ok({"errors": errors, "total_count": len(errors)}, trace_id)
-
-
-@app.get("/ai/v1/models/version")
-async def model_version():
-    """현재 모델 버전 정보."""
-    trace_id = _gen_trace()
-    return _ok(_monitor.get_model_version(), trace_id)
-
-
-@app.get("/ai/v1/dictionaries/version")
-async def dict_version():
-    """품목 사전 버전 정보."""
-    trace_id = _gen_trace()
-    return _ok(_monitor.get_dict_version(), trace_id)
-
-
-@app.patch("/ai/v1/dictionaries/reload")
-async def dict_reload():
-    """품목 사전을 다시 로드한다."""
-    trace_id = _gen_trace()
-    global _normalizer
-    _normalizer = RuleBasedNormalizer()
-    return _ok({"message": "사전이 새로 로드되었습니다."}, trace_id)
-
-
-@app.get("/ai/v1/prompts/version")
-async def prompt_version():
-    """프롬프트 템플릿 버전 정보."""
-    trace_id = _gen_trace()
-    return _ok(_monitor.get_prompt_version(), trace_id)
-
-
-@app.get("/ai/v1/thresholds")
-async def get_thresholds():
-    """현재 임계값 설정 조회."""
-    trace_id = _gen_trace()
-    return _ok(_monitor.get_thresholds(), trace_id)
-
-
-@app.patch("/ai/v1/thresholds")
-async def update_thresholds(updates: Dict[str, Any]):
-    """임계값 설정 업데이트."""
-    trace_id = _gen_trace()
-    result = _monitor.update_thresholds(updates)
-    return _ok(result, trace_id)
-
-
-@app.get("/ai/v1/fallback/policies")
-async def get_fallback_policies():
-    """Fallback 정책 목록 조회."""
-    trace_id = _gen_trace()
-    return _ok(_monitor.get_fallback_policies(), trace_id)
-
-
-@app.patch("/ai/v1/fallback/policies/{policy_id}")
-async def update_fallback_policy(policy_id: str, updates: Dict[str, Any]):
-    """특정 Fallback 정책 업데이트."""
-    trace_id = _gen_trace()
-    result = _monitor.update_fallback_policy(policy_id, updates)
-    if result is None:
-        raise HTTPException(status_code=404, detail=_fail(
-            "POLICY_NOT_FOUND", f"정책을 찾을 수 없습니다: {policy_id}", trace_id,
-        ).model_dump())
-    return _ok(result, trace_id)
-
-
-@app.delete("/ai/v1/cache/clear")
-async def cache_clear():
-    """AI 서버 캐시 초기화."""
-    trace_id = _gen_trace()
-    _cache.clear()
-    return _ok({"message": "캐시가 초기화되었습니다."}, trace_id)
-
-
-# ═══════════════════════════════════════════════════════════════
-#  백엔드 팀 연동 API (실제 Spring Boot가 호출하는 엔드포인트)
-# ═══════════════════════════════════════════════════════════════
-
-
-@app.post("/ai/ocr/analyze")
-async def ocr_analyze(image: UploadFile = File(...)):
-    """
-    영수증 OCR 분석 — PaddleOCR + 규칙 보정 + Qwen 1차 보정.
-    DB 매칭 없이 식품명 리스트만 반환한다.
-    """
-    trace_id = _gen_trace()
-
-    if image.content_type not in ("image/jpeg", "image/png", "image/jpg"):
-        raise HTTPException(status_code=400, detail=_fail(
-            "INVALID_IMAGE", "jpg, png 파일만 지원합니다.", trace_id,
-        ).model_dump())
-
-    suffix = ".jpg" if "jpeg" in (image.content_type or "") else ".png"
-    with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as tmp:
-        content = await image.read()
-        tmp.write(content)
-        tmp_path = tmp.name
-
-    try:
-        from receipt_ocr import ReceiptOCR
-
-        ocr = ReceiptOCR()
-        analysis = ocr.analyze_receipt(tmp_path)
-        ocr_texts = analysis.get("all_texts", [])
-
-        rule_result = _normalizer.process(analysis, match_db=False)
-        food_items = rule_result["items"]
-        model_name = rule_result["model"]
-
-        try:
-            from qwen_receipt_assistant import QwenReceiptAssistant
-            assistant = QwenReceiptAssistant()
-            refined = assistant.refine_analysis(analysis)
-            qwen_items = refined.get("items", [])
-            if qwen_items:
-                food_items = _merge_rule_and_qwen(food_items, qwen_items)
-                model_name = f"rule_based_v1 + {refined.get('model', 'qwen')}"
-        except Exception:
-            pass
-
-        items = []
-        for it in food_items:
-            items.append({
-                "name": it.get("product_name", it.get("product_name_raw", "")),
-                "category": it.get("category_major", ""),
-                "price": it.get("amount_krw"),
-            })
-
-        return _ok({
-            "items": items,
-            "item_count": len(items),
-            "store_name": rule_result.get("store_name"),
-            "purchase_date": rule_result.get("purchase_date"),
-            "model": model_name,
-        }, trace_id)
-
-    except ImportError:
-        raise HTTPException(status_code=503, detail=_fail(
-            "SERVICE_UNAVAILABLE", "PaddleOCR가 설치되지 않았습니다.", trace_id,
-        ).model_dump())
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=_fail(
-            "OCR_FAILED", str(e), trace_id,
-        ).model_dump())
-    finally:
-        Path(tmp_path).unlink(missing_ok=True)
-
-
-class IngredientPredictionRequest(BaseModel):
-    purchaseDate: str = Field(..., description="구매일 (YYYY-MM-DD)")
-    ingredients: List[str] = Field(..., min_length=1, description="식재료명 배열")
-
-
-@app.post("/ai/ingredient/prediction")
-async def ingredient_prediction(req: IngredientPredictionRequest):
-    """
-    소비기한 계산 — GPT-4o-mini + 규칙 기반 fallback.
-    백엔드 연동 형식: purchaseDate + ingredients 배열 → ingredientName + expirationDate 배열
-    """
-    try:
-        results = []
-        for name in req.ingredients:
-            calc = _expiry_calc.calculate(
-                item_name=name,
-                purchase_date=req.purchaseDate,
-                storage_method="냉장",
-            )
-            results.append({
-                "ingredientName": name,
-                "expirationDate": calc.get("expiry_date", ""),
-            })
-
-        return {
-            "success": True,
-            "result": {
-                "purchaseDate": req.purchaseDate,
-                "ingredients": results,
-            },
-        }
-    except Exception as e:
-        return {
-            "success": False,
-            "code": "AI500",
-            "result": "소비기한을 예측할 수 없습니다.",
-        }
+    return ApiResponse(
+        success=True,
+        data={
+            "results": results,
+            "total_count": len(results),
+            "query": q,
+        },
+    )

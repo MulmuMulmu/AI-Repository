@@ -1,0 +1,30 @@
+{
+  "dataset_name": "assistant-visual-v0",
+  "input_dir": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비",
+  "image_count": 4,
+  "total_item_count": 31,
+  "review_required_count": 0,
+  "images": [
+    {
+      "file_name": "1652882389756.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\1652882389756.jpg"
+    },
+    {
+      "file_name": "img2.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img2.jpg"
+    },
+    {
+      "file_name": "img3.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img3.jpg"
+    },
+    {
+      "file_name": "SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg"
+    }
+  ],
+  "label_policy": {
+    "source": "assistant-visual-read",
+    "verification_status": "assistant_labeled_unverified",
+    "scoring_rule": "uncertain_items are excluded from F1 scoring until human verification"
+  }
+}

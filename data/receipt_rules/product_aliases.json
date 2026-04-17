@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "updated_at": "2026-04-16",
+  "description": "OCR typo and product normalization aliases.",
+  "aliases": [
+    {
+      "raw": "어쉬밀크클릿 [",
+      "standard": "허쉬밀크초콜릿",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "투썸딸기피지",
+      "standard": "투썸딸기피치",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "투썸알밀크티",
+      "standard": "투썸로얄밀크티",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "바널라파인트474",
+      "standard": "바닐라파인트474ml",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "라라스윗)바닐라파인트474 행사",
+      "standard": "라라스윗 바닐라파인트474ml",
+      "reason": "ocr_cleanup"
+    },
+    {
+      "raw": "초코파인트474m|",
+      "standard": "초코파인트474ml",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "라라스윗)초코파인트474ml 행사",
+      "standard": "라라스윗 초코파인트474ml",
+      "reason": "ocr_cleanup"
+    },
+    {
+      "raw": "허쉬밀크초콜릿",
+      "standard": "허쉬밀크초콜릿",
+      "reason": "standard"
+    },
+    {
+      "raw": "허쉬쿠키앤클릴",
+      "standard": "허쉬쿠키앤크림",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "허쉬쿠키앤초코",
+      "standard": "허쉬쿠키앤초코",
+      "reason": "standard"
+    },
+    {
+      "raw": "호가든캔330ML",
+      "standard": "호가든캔330ml",
+      "reason": "unit_normalization"
+    },
+    {
+      "raw": "아몬드빼빼로",
+      "standard": "아몬드빼빼로",
+      "reason": "standard"
+    },
+    {
+      "raw": "초코빼빼로지암 L",
+      "standard": "초코빼빼로",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "했반",
+      "standard": "햇반",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "누룸지",
+      "standard": "누룽지",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "햇반200g",
+      "standard": "햇반",
+      "reason": "pack_size_cleanup"
+    },
+    {
+      "raw": "× 파프리카",
+      "standard": "파프리카",
+      "reason": "ocr_symbol_cleanup"
+    },
+    {
+      "raw": "라라스윗 바닐라파인트474",
+      "standard": "라라스윗 바닐라파인트474ml",
+      "reason": "unit_completion"
+    },
+    {
+      "raw": "농심 김치 사발면 4,200",
+      "standard": "농심 김치 사발면",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "농심 너구리 컵 3,750",
+      "standard": "농심 너구리 컵",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "농심 새우탕 컵 3,750",
+      "standard": "농심 새우탕 컵",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "농심 신라면 소컵 4,500",
+      "standard": "농심 신라면 소컵",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "농심 오징어짧뽕 컵 3,750",
+      "standard": "농심 오징어짬뽕 컵",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "농심 짜파게티 3,850",
+      "standard": "농심 짜파게티",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "삼양 불닭볶음면 3,980",
+      "standard": "삼양 불닭볶음면",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "삼양 불닭소스 3,280",
+      "standard": "삼양 불닭소스",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "삼양나가사끼짬뽕 컵5,040",
+      "standard": "삼양 나가사끼짬뽕 컵",
+      "reason": "ocr_spacing_cleanup"
+    },
+    {
+      "raw": "오뚜기 옛날참기름 4,480",
+      "standard": "오뚜기 옛날참기름",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "초이스엘 생와사비 2,350",
+      "standard": "초이스엘 생와사비",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "청정원 순창 찰고추장12,780",
+      "standard": "청정원 순창 찰고추장",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "청정원 순창 초고추장 2,980",
+      "standard": "청정원 순창 초고추장",
+      "reason": "price_suffix_cleanup"
+    },
+    {
+      "raw": "갈바니'리코타치느4",
+      "standard": "갈바니 리코타치즈",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "이클립스 페퍼민트향 34g",
+      "standard": "이클립스 페퍼민트향",
+      "reason": "pack_size_cleanup"
+    },
+    {
+      "raw": "쿠크다스커피144G",
+      "standard": "쿠크다스커피",
+      "reason": "pack_size_cleanup"
+    },
+    {
+      "raw": "유기농 바나나콘",
+      "standard": "유기농 바나나콘",
+      "reason": "standard"
+    },
+    {
+      "raw": "해태구문감자4",
+      "standard": "해태 구운감자",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "* 완숙토마토 4kg/박스",
+      "standard": "완숙토마토",
+      "reason": "weight_suffix_cleanup"
+    },
+    {
+      "raw": "* 국내산 양상추 2입",
+      "standard": "양상추",
+      "reason": "count_suffix_cleanup"
+    },
+    {
+      "raw": "맛밤42G*10",
+      "standard": "맛밤",
+      "reason": "pack_size_cleanup"
+    },
+    {
+      "raw": "속이면한",
+      "standard": "속이편한",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "속이편한 누룽지(5입)",
+      "standard": "속이편한 누룽지",
+      "reason": "pack_size_cleanup"
+    },
+    {
+      "raw": "초코빼빼로지암 L",
+      "standard": "초코빼빼로",
+      "reason": "ocr_typo"
+    }
+  ]
+}
