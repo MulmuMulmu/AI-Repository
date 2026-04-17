@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import os
+from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -11,8 +12,8 @@ from .services import ExpiryService, ReceiptParseService, RecipeService
 
 
 class ReceiptParseRequest(BaseModel):
-    receipt_image_url: str | None = None
-    s3_key: str | None = None
+    receipt_image_url: Optional[str] = None
+    s3_key: Optional[str] = None
 
 
 class ReceiptItemInput(BaseModel):
@@ -23,7 +24,7 @@ class ReceiptItemInput(BaseModel):
 
 
 class ExpiryEvaluateRequest(BaseModel):
-    items: list[ReceiptItemInput]
+    items: List[ReceiptItemInput]
 
 
 class RecommendationItemInput(BaseModel):
@@ -33,13 +34,13 @@ class RecommendationItemInput(BaseModel):
 
 
 class RecommendationRequest(BaseModel):
-    items: list[RecommendationItemInput]
+    items: List[RecommendationItemInput]
 
 
 def create_app(
-    receipt_service: object | None = None,
-    expiry_service: object | None = None,
-    recipe_service: object | None = None,
+    receipt_service: Optional[object] = None,
+    expiry_service: Optional[object] = None,
+    recipe_service: Optional[object] = None,
 ) -> FastAPI:
     qwen_provider = build_default_qwen_provider()
     app = FastAPI(title="mulmumulmu-ai", version="1.0.0")

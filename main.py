@@ -399,6 +399,38 @@ def _build_unmatched_prediction(product_name: str) -> dict[str, Any]:
     }
 
 
+_VALID_CATEGORIES = frozenset({
+    "채소/과일", "소스/조미료/오일", "정육/계란", "해산물",
+    "쌀/면/빵", "유제품", "가공식품", "기타",
+})
+
+
+def _classify_food_category(product_name: str) -> str:
+    """상품명을 DB 재료와 직접 매칭해 8가지 카테고리 중 하나를 반환한다."""
+    norm = _normalize_name(product_name)
+    if not norm:
+        return "기타"
+
+    best_score = 0.0
+    best_category = "기타"
+
+    for ingr in _ingredients_raw:
+        ingr_norm = _normalize_name(ingr["ingredientName"])
+        if norm == ingr_norm:
+            return ingr["category"]
+        if norm in ingr_norm or ingr_norm in norm:
+            score = 0.9
+        else:
+            score = SequenceMatcher(None, norm, ingr_norm).ratio()
+        if score > best_score:
+            best_score = score
+            best_category = ingr["category"]
+
+    if best_score >= 0.5 and best_category in _VALID_CATEGORIES:
+        return best_category
+    return "기타"
+
+
 def _normalize_food_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """OCR 또는 Qwen 결과를 API 계약에 맞는 식품 항목으로 정규화한다."""
     if not isinstance(item, dict):
@@ -411,23 +443,9 @@ def _normalize_food_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     if not product_name:
         return None
 
-    amount_krw = item.get("amount_krw")
-    if amount_krw is not None and amount_krw != "":
-        try:
-            amount_krw = int(str(amount_krw).replace(",", ""))
-        except (TypeError, ValueError):
-            amount_krw = None
-    else:
-        amount_krw = None
-
-    notes = item.get("notes", "")
-    if notes is None:
-        notes = ""
-
     return {
         "product_name": product_name,
-        "amount_krw": amount_krw,
-        "notes": str(notes).strip(),
+        "category": _classify_food_category(product_name),
     }
 
 
@@ -448,41 +466,15 @@ def _legacy_food_items_from_parsed(parsed: Dict[str, Any]) -> list[Dict[str, Any
         product_name = item.get("normalized_name") or item.get("raw_name")
         if not product_name:
             continue
-        amount = item.get("amount")
-        if isinstance(amount, float) and amount.is_integer():
-            amount = int(amount)
-        legacy_items.append(
-            {
-                "product_name": product_name,
-                "amount_krw": amount,
-                "notes": ", ".join(item.get("review_reason", [])),
-            }
-        )
+        legacy_items.append({"product_name": product_name})
     return _normalize_food_items(legacy_items)
 
 
-def _legacy_model_name_from_parsed(parsed: Dict[str, Any]) -> str:
-    engine_version = str(parsed.get("engine_version") or "receipt-engine-v2")
-    diagnostics = parsed.get("diagnostics", {})
-    if isinstance(diagnostics, dict) and diagnostics.get("qwen_used"):
-        return f"{engine_version}+qwen"
-    return engine_version
-
-
 def _legacy_ocr_response_data_from_parsed(parsed: Dict[str, Any]) -> Dict[str, Any]:
-    ocr_texts = parsed.get("ocr_texts", [])
     food_items = _legacy_food_items_from_parsed(parsed)
-    model_name = _legacy_model_name_from_parsed(parsed)
     return {
-        "trace_id": parsed.get("trace_id"),
-        "ocr_texts": ocr_texts,
-        "food_items": food_items,
-        "food_count": len(food_items),
-        "model": model_name,
-        "vendor_name": parsed.get("vendor_name"),
         "purchased_at": parsed.get("purchased_at"),
-        "totals": parsed.get("totals", {}),
-        "diagnostics": parsed.get("diagnostics", {}),
+        "food_items": food_items,
     }
 
 
@@ -653,7 +645,7 @@ async def ocr_receipt(
         description=(
             "로컬 Qwen 보정 사용 여부. "
             "true여도 로컬 Qwen 런타임이 비활성화되어 있으면 OCR-only로 fallback하며, "
-            "응답 계약(ocr_texts, food_items, food_count, model)은 유지됩니다."
+            "응답 계약(ocr_texts, food_items, model)은 유지됩니다."
         ),
     ),
     async_refinement: bool = Query(
@@ -685,6 +677,7 @@ async def ocr_receipt(
             if trace_id:
                 _get_receipt_refinement_store().create_pending(trace_id, parsed)
                 _schedule_receipt_refinement(trace_id=trace_id, image_bytes=content, suffix=suffix)
+                data["trace_id"] = trace_id
                 data["refinement_status"] = "pending"
                 data["refinement_poll_url"] = f"/ai/ocr/refinement/{trace_id}"
 

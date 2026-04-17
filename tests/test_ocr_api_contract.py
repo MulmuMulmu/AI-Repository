@@ -120,18 +120,19 @@ def test_ocr_analyze_endpoint_preserves_legacy_contract(monkeypatch) -> None:
     payload = response.json()
     assert payload["success"] is True
     data = payload["data"]
-    assert set(("ocr_texts", "food_items", "food_count", "model")) <= set(data.keys())
+    assert "food_items" in data
+    assert "purchased_at" in data
+    assert "food_count" not in data
+    assert "vendor_name" not in data
+    assert "ocr_texts" not in data
+    assert "totals" not in data
     assert data["food_items"] == [
         {
             "product_name": "우유",
-            "amount_krw": 3500,
-            "notes": "",
+            "category": "유제품",
         }
     ]
-    assert data["food_count"] == 1
-    assert data["vendor_name"] == "이마트"
     assert data["purchased_at"] == "2026-03-11"
-    assert data["totals"]["payment_amount"] == 3500.0
 
 
 def test_ocr_analyze_endpoint_can_enqueue_async_refinement(monkeypatch) -> None:

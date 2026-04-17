@@ -1,0 +1,70 @@
+{
+  "preprocessors": [
+    "RAW",
+    "OLD",
+    "NEW"
+  ],
+  "degradations": [
+    "clean",
+    "mild",
+    "medium",
+    "severe"
+  ],
+  "RAW": {
+    "clean": {
+      "recall": 0.9778,
+      "char_acc": 0.4134
+    },
+    "mild": {
+      "recall": 1.0,
+      "char_acc": 0.515
+    },
+    "medium": {
+      "recall": 1.0,
+      "char_acc": 0.5412
+    },
+    "severe": {
+      "recall": 0.8443,
+      "char_acc": 0.6205
+    },
+    "overall": 0.9555
+  },
+  "OLD": {
+    "clean": {
+      "recall": 1.0,
+      "char_acc": 0.5644
+    },
+    "mild": {
+      "recall": 1.0,
+      "char_acc": 0.4994
+    },
+    "medium": {
+      "recall": 0.9714,
+      "char_acc": 0.5009
+    },
+    "severe": {
+      "recall": 0.8392,
+      "char_acc": 0.5909
+    },
+    "overall": 0.9527
+  },
+  "NEW": {
+    "clean": {
+      "recall": 1.0,
+      "char_acc": 0.5644
+    },
+    "mild": {
+      "recall": 1.0,
+      "char_acc": 0.4994
+    },
+    "medium": {
+      "recall": 0.9714,
+      "char_acc": 0.5009
+    },
+    "severe": {
+      "recall": 0.5286,
+      "char_acc": 0.4087
+    },
+    "overall": 0.875
+  }
+}
