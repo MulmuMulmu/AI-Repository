@@ -421,6 +421,12 @@ class ReceiptParser:
         items, consumed_line_ids = self._parse_items(ordered_lines, sections, purchased_at)
         items = self._filter_parsed_items(items)
         items = self._prune_summary_like_items(items, lines=ordered_lines, vendor_name=vendor_name, totals=totals)
+        consumed_line_ids = {
+            line_id
+            for item in items
+            for line_id in item.source_line_ids
+            if isinstance(line_id, int)
+        }
 
         review_reasons = self._collect_global_review_reasons(
             items=items,
@@ -731,7 +737,17 @@ class ReceiptParser:
             candidates = [item.raw_name]
             if item.normalized_name:
                 candidates.append(item.normalized_name)
-            if any(self._matches_non_item_category(candidate, excluded_categories) for candidate in candidates if candidate):
+            should_exclude = False
+            for candidate in candidates:
+                if not candidate:
+                    continue
+                if not self._matches_non_item_category(candidate, excluded_categories):
+                    continue
+                if self._matches_non_item_category(candidate, {"packaging"}) and self._looks_like_food_packaging_name(candidate):
+                    continue
+                should_exclude = True
+                break
+            if should_exclude:
                 continue
             if item.normalized_name is None and self._looks_like_summary_fragment_name(item.raw_name):
                 continue
@@ -2188,7 +2204,9 @@ class ReceiptParser:
             return True
         if self._looks_like_adjustment_row(text):
             return True
-        if self._matches_non_item_category(text, {"discount", "packaging", "metadata"}):
+        if self._matches_non_item_category(text, {"discount", "metadata"}):
+            return True
+        if self._matches_non_item_category(text, {"packaging"}) and not self._looks_like_food_packaging_name(text):
             return True
         if _contains_any(normalized, self.rules.structural_noise_keywords):
             return True
@@ -2324,6 +2342,12 @@ class ReceiptParser:
             if rule.name in categories and rule.matches(text):
                 return True
         return False
+
+    def _looks_like_food_packaging_name(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text or "")
+        if not normalized or not any("가" <= char <= "힣" for char in normalized):
+            return False
+        return bool(re.search(r"용기(?:면|죽|밥)", normalized))
 
     def _looks_like_summary_fragment_name(self, text: str) -> bool:
         compact = re.sub(r"[^가-힣]", "", text or "")

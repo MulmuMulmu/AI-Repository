@@ -1246,3 +1246,38 @@ def test_parser_does_not_treat_trailing_pack_size_as_price() -> None:
     )
 
     assert result.items == []
+
+
+def test_parser_parses_two_line_item_when_name_contains_food_packaging_phrase() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="농심 쌀국수 용기면 6입", confidence=0.98, line_id=1, page_order=1),
+            OcrLine(text="5,940 1 5,940", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="합계 5,940", confidence=0.99, line_id=3, page_order=3),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "농심 쌀국수 용기면 6입"
+    assert result.items[0].amount == 5940.0
+    assert result.items[0].parse_pattern == "name_then_numeric_detail"
+
+
+def test_parser_diagnostics_exclude_filtered_non_food_rows_from_consumed_ids() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="농심 새우탕 컵 3,750 1 3,750", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="OnlyPrice 삼중스펀지 수세미", confidence=0.98, line_id=2, page_order=2),
+            OcrLine(text="1,000 1 1,000", confidence=0.98, line_id=3, page_order=3),
+            OcrLine(text="합계 4,750", confidence=0.99, line_id=4, page_order=4),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["농심 새우탕 컵"]
+    assert result.diagnostics["consumed_line_ids"] == [1]

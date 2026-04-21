@@ -298,3 +298,106 @@ def test_service_finalize_parse_result_uses_unconsumed_item_amount_to_avoid_tota
 
     assert "total_mismatch" not in parsed["review_reasons"]
     assert "unresolved_items" not in parsed["review_reasons"]
+
+
+def test_service_finalize_parse_result_allows_missing_vendor_for_item_strip_recovered_receipt() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": None,
+        "purchased_at": "2015-01-20",
+        "items": [
+            {"normalized_name": "속이편한 누룽지", "quantity": 1.0, "unit": "개", "amount": 5600.0, "needs_review": False, "review_reason": []},
+            {"normalized_name": "맥주 바이젠 미니", "quantity": 4.0, "unit": "개", "amount": 3960.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {},
+        "ocr_texts": [
+            {"line_id": 0, "text": "속이편한 누룽지(5입)"},
+            {"line_id": 1, "text": "5,600 1 5,600"},
+            {"line_id": 2, "text": "맥주 바이젠 미니"},
+            {"line_id": 3, "text": "990 4 3,960"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {"quality_score": 1.0, "item_strip_fallback_used": True},
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert "missing_vendor_name" not in parsed["review_reasons"]
+    assert parsed["review_required"] is False
+
+
+def test_service_finalize_parse_result_allows_missing_vendor_for_single_item_payment_receipt() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": None,
+        "purchased_at": "2023-06-08",
+        "items": [
+            {"normalized_name": "스팀덱 64GB", "quantity": 1.0, "unit": "개", "amount": 589000.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {
+            "payment_amount": 589000.0,
+        },
+        "ocr_texts": [
+            {"line_id": 0, "text": "전자제품 영수증"},
+            {"line_id": 1, "text": "거래일자 2023-06-08"},
+            {"line_id": 2, "text": "품목"},
+            {"line_id": 3, "text": "스팀덱 64GB 589,000"},
+            {"line_id": 4, "text": "카드결제 589,000"},
+            {"line_id": 5, "text": "승인번호 123456"},
+            {"line_id": 6, "text": "고객용"},
+            {"line_id": 7, "text": "감사합니다"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {"quality_score": 1.0},
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert "missing_vendor_name" not in parsed["review_reasons"]
+    assert parsed["review_required"] is False
+
+
+def test_service_finalize_parse_result_ignores_tax_and_loyalty_rows_from_unconsumed_amount_total() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": "롯데마트",
+        "purchased_at": "2019-11-25",
+        "items": [
+            {"normalized_name": "A", "quantity": 1.0, "unit": "개", "amount": 2500.0, "needs_review": False, "review_reason": []},
+            {"normalized_name": "B", "quantity": 1.0, "unit": "개", "amount": 2500.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {
+            "payment_amount": 6000.0,
+        },
+        "ocr_texts": [
+            {"line_id": 0, "text": "상품명 단가 수량 금액"},
+            {"line_id": 1, "text": "A 2,500 1 2,500"},
+            {"line_id": 2, "text": "B 2,500 1 2,500"},
+            {"line_id": 3, "text": "OnlyPrice 삼중스펀지 수세미"},
+            {"line_id": 4, "text": "1,000 1 1,000"},
+            {"line_id": 5, "text": "부 I 가 세 819"},
+            {"line_id": 6, "text": "은*학 고객님: 최우수단계(0.1%적립)"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {
+            "quality_score": 1.0,
+            "section_map": {
+                "0": "header",
+                "1": "items",
+                "2": "items",
+                "3": "items",
+                "4": "items",
+                "5": "ignored",
+                "6": "ignored",
+            },
+            "consumed_line_ids": [1, 2],
+        },
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert parsed["diagnostics"]["unconsumed_item_amount_total"] == 1000.0
+    assert "total_mismatch" not in parsed["review_reasons"]

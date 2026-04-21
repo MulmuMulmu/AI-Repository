@@ -1368,6 +1368,40 @@ class ReceiptParseService:
             return True
         return bool(re.search(r"\d{1,3}(?:,\d{3})+\s+\d+\s+\d{1,3}(?:,\d{3})+", text))
 
+    def _looks_like_unconsumed_metadata_row(self, text: str) -> bool:
+        hangul_only = re.sub(r"[^가-힣]", "", text or "")
+        if not hangul_only:
+            return False
+        metadata_tokens = (
+            "부가세",
+            "과세물품",
+            "물품가액",
+            "포인트",
+            "고객님",
+            "적립",
+            "미사용",
+            "소멸",
+        )
+        return any(token in hangul_only for token in metadata_tokens)
+
+    def _allows_missing_vendor_without_review(self, parsed: dict, *, partial_receipt: bool) -> bool:
+        if partial_receipt:
+            return True
+        if parsed.get("vendor_name") is not None:
+            return False
+        items = [item for item in parsed.get("items", []) if isinstance(item, dict)]
+        if not items or any(item.get("needs_review") for item in items):
+            return False
+        diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
+        if diagnostics.get("item_strip_fallback_used") and parsed.get("purchased_at") is not None:
+            return True
+        totals = parsed.get("totals", {}) if isinstance(parsed, dict) else {}
+        has_known_total = isinstance(totals, dict) and any(
+            totals.get(key) is not None for key in ("payment_amount", "total", "subtotal")
+        )
+        row_count = len(self._iter_ocr_text_rows(parsed))
+        return parsed.get("purchased_at") is not None and len(items) <= 2 and has_known_total and row_count >= 8
+
     def _extract_discount_adjustment_total(self, parsed: dict) -> float:
         total = 0.0
         for row in self._iter_ocr_text_rows(parsed):
@@ -1435,6 +1469,8 @@ class ReceiptParseService:
                 continue
             if self.parser._looks_like_footer(text) or self.parser._looks_like_date(text):
                 continue
+            if self._looks_like_unconsumed_metadata_row(text):
+                continue
             if self._looks_like_item_strip_gift_tail_row(text):
                 continue
             compact_text = re.sub(r"\s+", "", text).lower()
@@ -1477,7 +1513,8 @@ class ReceiptParseService:
         for item in parsed["items"]:
             if isinstance(item, dict):
                 self._recalculate_review_state(item, parsed.get("purchased_at"))
-        if not partial_receipt and parsed.get("vendor_name") is None and "missing_vendor_name" not in review_reasons:
+        allows_missing_vendor = self._allows_missing_vendor_without_review(parsed, partial_receipt=partial_receipt)
+        if not allows_missing_vendor and parsed.get("vendor_name") is None and "missing_vendor_name" not in review_reasons:
             review_reasons.append("missing_vendor_name")
         if not partial_receipt and parsed.get("purchased_at") is None and "missing_purchased_at" not in review_reasons:
             review_reasons.append("missing_purchased_at")

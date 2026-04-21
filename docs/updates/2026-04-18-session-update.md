@@ -974,3 +974,36 @@ barcode_detail 60장 subset 평가:
 - 최신 gold 8장 baseline:
   - `item_name_f1_avg = 0.8916`
   - `review_required_accuracy = 0.5`
+
+## 2026-04-22 focused receipt + packaging follow-up
+
+추가한 내용:
+
+- `용기면` 같은 식품명은 packaging noise에서 제외
+- focused receipt의 `missing_vendor_name`는 아래 조건에서 review를 올리지 않도록 축소
+  - `item_strip_fallback_used` + purchased_at 존재
+  - 또는 OCR row 수가 충분한 단일상품 payment receipt
+- parser diagnostics의 `consumed_line_ids`를 final surviving items 기준으로 재계산
+- `unconsumed_item_amount_total` 계산에서 tax/포인트/고객님/소멸 metadata row 제외
+
+검증:
+
+- 신규 parser/service 테스트 5개 추가
+- 전체 테스트: `160 passed`
+
+효과:
+
+- `R (1).jpg`, `R (2).jpg`
+  - `농심 쌀국수 용기면 6입` 복구
+  - `item_f1 = 0.8889 -> 0.9286`
+  - `total_mismatch` 제거
+- `img3.jpg`, `OIP (10).webp`
+  - `missing_vendor_name` review 제거
+- 최신 gold 8장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 1.0`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9015`
+  - `quantity_match_rate_avg = 0.9367`
+  - `amount_match_rate_avg = 0.9342`
+  - `review_required_accuracy = 1.0`

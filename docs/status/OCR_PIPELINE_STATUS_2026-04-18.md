@@ -245,7 +245,7 @@ Qwen은 현재 메인 파서가 아니다.
 
 2026-04-18 기준 전체 테스트 결과:
 
-- `155 passed`
+- `160 passed`
 
 집중 검증 테스트:
 
@@ -704,3 +704,39 @@ variant별:
 - 범위는 trailing orphan digit `1` 케이스로만 제한해서
   - `갈바니'리코타치느4`
   같은 실제 상품명 숫자는 보존한다.
+
+## 2026-04-22 focused receipt + packaging + final consumed-id alignment
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `용기면` 같은 식품명은 packaging noise로 버리지 않도록 예외 처리
+  - filtered-out non-food row는 final surviving items 기준으로 다시 계산한 `consumed_line_ids`에서 제외
+- `ReceiptParseService`
+  - focused receipt 예외 추가
+    - `item_strip_fallback_used` + purchased_at 존재
+    - 또는 OCR row 수가 충분한 단일상품 payment receipt
+    - 위 두 경우에는 `missing_vendor_name`만으로 review를 올리지 않음
+  - `unconsumed_item_amount_total` 계산에서 `부 I 가 세`, 포인트/고객님/소멸 문구 같은 metadata row 제외
+
+검증:
+
+- 신규 parser/service 회귀 테스트 5개 추가
+- 전체 테스트: `160 passed`
+
+효과:
+
+- `R (1).jpg`, `R (2).jpg`
+  - `농심 쌀국수 용기면 6입` 2줄 품목 복구
+  - `item_f1 = 0.8889 -> 0.9286`
+  - non-food row `1,000`이 totals reconciliation에 다시 반영되면서 `total_mismatch` 해소
+- `img3.jpg`, `OIP (10).webp`
+  - focused receipt 예외로 `missing_vendor_name` review 제거
+- 최신 gold 8장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 1.0`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9015`
+  - `quantity_match_rate_avg = 0.9367`
+  - `amount_match_rate_avg = 0.9342`
+  - `review_required_accuracy = 1.0`

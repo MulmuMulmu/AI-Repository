@@ -63,10 +63,10 @@ Noop Qwen 기준 결과:
 | vendor_name_accuracy | 1.0 |
 | purchased_at_accuracy | 1.0 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.8916 |
-| quantity_match_rate_avg | 0.9188 |
-| amount_match_rate_avg | 0.9163 |
-| review_required_accuracy | 0.5 |
+| item_name_f1_avg | 0.9015 |
+| quantity_match_rate_avg | 0.9367 |
+| amount_match_rate_avg | 0.9342 |
+| review_required_accuracy | 1.0 |
 
 이미지별:
 
@@ -74,9 +74,9 @@ Noop Qwen 기준 결과:
 |---|---:|---|
 | `2a4dd3c18f06cec1571dc9ca52dc5946.jpg` | 0.8000 | snack 품목 일부 과검출 |
 | `image.png` | 0.7273 | spaced numeric detail 복구, totals 회복, summary garbage 제거 |
-| `R (1).jpg` | 0.8889 | 가장 안정적, 라면/소스류 대형마트 영수증 |
+| `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
 | `R.jpg` | 0.8750 | Homeplus/snack alias 보정 후 남은 불확실 snack 일부만 잔존 |
-| `R (2).jpg` | 0.8889 | `R (1)`과 유사한 대형마트 라면/소스 레이아웃 |
+| `R (2).jpg` | 0.9286 | `R (1)`과 동일 계열, `용기면 6입` 복구 반영 |
 | `img3.jpg` | 1.0000 | lower item strip fallback으로 `맥주 바이젠 미니` 회복, `(5입)` pack-count 비교 정규화 반영 |
 | `SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg` | 0.9524 | gift-tail item strip fallback으로 `투썸로얄밀크티` gift 복구 |
 | `OIP (10).webp` | 1.0000 | 단일 고가 상품 영수증, 바코드 suffix/결제금액 회복 |
@@ -88,6 +88,7 @@ Noop Qwen 기준 결과:
   - `img3.jpg`: 가짜 vendor 제거 후 `lower item strip fallback`으로 `맥주 바이젠 미니` 회복
   - `SE-...jpg`: exact alias lookup + gift-tail item strip fallback으로 `투썸로얄밀크티` gift까지 회복
   - `OIP (10).webp`: 상품명 뒤 바코드 suffix 제거, `결제대상금` 우선 유지
+  - `R (1)/(2).jpg`: `용기면` 식품명 허용 + final-item 기준 `consumed_line_ids` 재계산으로 non-food row를 totals reconciliation에 다시 반영
 - 평가 스크립트도 좁게 보정했다.
   - `(5입)`, `(2개)` 같은 parenthetical pack-count 표기는 동일 품목으로 본다.
   - `355ml`, `500ml` 같은 실제 용량 차이는 그대로 다른 품목으로 유지한다.
@@ -95,14 +96,14 @@ Noop Qwen 기준 결과:
   - `quantity_match_rate_avg`
   - `amount_match_rate_avg`
   - `review_required_accuracy`
-- 현재 실사 gold 8장 기준에서 review 축이 가장 약하다.
-  - `review_required_accuracy = 0.5`
-  - `2a4dd3...`와 `SE-...`는 review 정책 보강으로 해소됐다.
-  - 남은 review mismatch는 더 적은 수의 hard-case로 좁혀졌다.
+- 현재 실사 gold 8장 기준 review 축도 정렬됐다.
+  - `review_required_accuracy = 1.0`
+  - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
+  - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
 
 ## 다음 우선순위
 
-1. snack alias 추가 보강
-2. 남은 review mismatch 샘플 분해
-3. gold 8장 이후 다음 8장 후보 선정
-4. 실사 gold 8장 이후 다음 baseline 갱신
+1. `image.png`, `2a4dd3...jpg`의 snack alias 추가 보강
+2. gold 다음 8장 승격
+3. gold 16장 기준 baseline 재측정
+4. 필요 시 Qwen rescue를 hard-case subset에만 제한 적용
