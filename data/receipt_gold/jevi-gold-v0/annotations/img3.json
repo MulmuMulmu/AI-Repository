@@ -1,0 +1,72 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-21T12:55:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "img3.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img3.jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2015-01-20",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "속이편한 누룽지(5입)",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 5600.0
+      },
+      {
+        "raw_name": "속이편한 누룽지(5입)",
+        "normalized_name": null,
+        "quantity": 7.0,
+        "unit": "개",
+        "amount": 39200.0
+      },
+      {
+        "raw_name": "맥주 바이젠 미니",
+        "normalized_name": null,
+        "quantity": 4.0,
+        "unit": "개",
+        "amount": 3960.0
+      },
+      {
+        "raw_name": "롯데 앤디카페 초콜릿 다크빈",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4800.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "롯데 앤디카페 초콜릿 아몬드",
+        "reason": "image_cutoff"
+      }
+    ],
+    "excluded_rows": [
+      {
+        "raw_name": "재사용봉투(안산시)20L",
+        "reason": "packaging"
+      },
+      {
+        "raw_name": "할인쿠폰 -1,680",
+        "reason": "discount"
+      },
+      {
+        "raw_name": "할인쿠폰 -11,760",
+        "reason": "discount"
+      }
+    ],
+    "totals": {},
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

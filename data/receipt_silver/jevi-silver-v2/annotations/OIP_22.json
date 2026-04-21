@@ -1,0 +1,532 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:16Z",
+  "image": {
+    "file_name": "OIP (22).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (22).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": "온유약국",
+    "purchased_at": "2023-04-24",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "온유약국",
+        "confidence": 0.9959728717803955,
+        "bbox": [
+          [
+            68.0,
+            8.0
+          ],
+          [
+            149.0,
+            8.0
+          ],
+          [
+            149.0,
+            27.0
+          ],
+          [
+            68.0,
+            27.0
+          ]
+        ],
+        "center": [
+          108.5,
+          17.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "영수증N0:0100-1 지법모:4013500073",
+        "confidence": 0.9161640405654907,
+        "bbox": [
+          [
+            3.0,
+            36.0
+          ],
+          [
+            117.0,
+            36.0
+          ],
+          [
+            117.0,
+            68.0
+          ],
+          [
+            3.0,
+            68.0
+          ]
+        ],
+        "center": [
+          60.0,
+          52.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "X 82-745-5487 중로구로205 1",
+        "confidence": 0.7815771897633871,
+        "bbox": [
+          [
+            32.0,
+            60.0
+          ],
+          [
+            157.0,
+            60.0
+          ],
+          [
+            157.0,
+            98.0
+          ],
+          [
+            32.0,
+            98.0
+          ]
+        ],
+        "center": [
+          94.5,
+          79.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "일차 #(100007) 23-04-24 16:18:50",
+        "confidence": 0.784589946269989,
+        "bbox": [
+          [
+            1.0,
+            92.0
+          ],
+          [
+            135.0,
+            92.0
+          ],
+          [
+            135.0,
+            120.0
+          ],
+          [
+            1.0,
+            120.0
+          ]
+        ],
+        "center": [
+          68.0,
+          106.0
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "몰 단가 수랑 금액",
+        "confidence": 0.7467863820493221,
+        "bbox": [
+          [
+            0.0,
+            121.0
+          ],
+          [
+            193.0,
+            121.0
+          ],
+          [
+            193.0,
+            143.0
+          ],
+          [
+            0.0,
+            143.0
+          ]
+        ],
+        "center": [
+          96.5,
+          132.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "비판텐연고30G 스카밀골드렐20g 10,000 10,000",
+        "confidence": 0.9254962801933289,
+        "bbox": [
+          [
+            0.0,
+            139.0
+          ],
+          [
+            200.0,
+            139.0
+          ],
+          [
+            200.0,
+            175.0
+          ],
+          [
+            0.0,
+            175.0
+          ]
+        ],
+        "center": [
+          100.0,
+          157.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "일동주휴10n1×포 3,500 9,000 9,000",
+        "confidence": 0.9004200249910355,
+        "bbox": [
+          [
+            1.0,
+            164.0
+          ],
+          [
+            199.0,
+            164.0
+          ],
+          [
+            199.0,
+            195.0
+          ],
+          [
+            1.0,
+            195.0
+          ]
+        ],
+        "center": [
+          100.0,
+          179.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "멜라토닝크링30g 2 7,000",
+        "confidence": 0.9371511538823446,
+        "bbox": [
+          [
+            2.0,
+            184.0
+          ],
+          [
+            197.0,
+            184.0
+          ],
+          [
+            197.0,
+            203.0
+          ],
+          [
+            2.0,
+            203.0
+          ]
+        ],
+        "center": [
+          99.5,
+          193.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "메카인2T 메오큐액10n1×30v×2EA 15,000 30, 00",
+        "confidence": 0.7104572057723999,
+        "bbox": [
+          [
+            2.0,
+            197.0
+          ],
+          [
+            194.0,
+            197.0
+          ],
+          [
+            194.0,
+            226.0
+          ],
+          [
+            2.0,
+            226.0
+          ]
+        ],
+        "center": [
+          98.0,
+          211.5
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "클리스카움트라159 25,000 110,000 25,000",
+        "confidence": 0.9654449820518494,
+        "bbox": [
+          [
+            4.0,
+            220.0
+          ],
+          [
+            191.0,
+            220.0
+          ],
+          [
+            191.0,
+            253.0
+          ],
+          [
+            4.0,
+            253.0
+          ]
+        ],
+        "center": [
+          97.5,
+          236.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "소계: 청궁금액 192,000",
+        "confidence": 0.8774977922439575,
+        "bbox": [
+          [
+            5.0,
+            253.0
+          ],
+          [
+            188.0,
+            253.0
+          ],
+          [
+            188.0,
+            286.0
+          ],
+          [
+            5.0,
+            286.0
+          ]
+        ],
+        "center": [
+          96.5,
+          269.5
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "신용카 서울이: N 88,100",
+        "confidence": 0.7613869309425354,
+        "bbox": [
+          [
+            7.0,
+            304.0
+          ],
+          [
+            188.0,
+            304.0
+          ],
+          [
+            188.0,
+            343.0
+          ],
+          [
+            7.0,
+            343.0
+          ]
+        ],
+        "center": [
+          97.5,
+          323.5
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "103,900",
+        "confidence": 0.8687997460365295,
+        "bbox": [
+          [
+            149.0,
+            324.0
+          ],
+          [
+            186.0,
+            324.0
+          ],
+          [
+            186.0,
+            343.0
+          ],
+          [
+            149.0,
+            343.0
+          ]
+        ],
+        "center": [
+          167.5,
+          333.5
+        ],
+        "page_order": 12
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "비판텐연고30G 스카밀골드렐20g",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 10000.0,
+        "confidence": 0.93,
+        "match_confidence": 0.9255,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          5
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "일동주휴10n1×포 3,500",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 9000.0,
+        "confidence": 0.9,
+        "match_confidence": 0.9004,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "멜라토닝크링30g",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 7000.0,
+        "confidence": 0.94,
+        "match_confidence": 0.9372,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          7
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "클리스카움트라159 25,000 110,000",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 25000.0,
+        "confidence": 0.97,
+        "match_confidence": 0.9654,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          9
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "신용카 서울이: N",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 88100.0,
+        "confidence": 0.76,
+        "match_confidence": 0.7614,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          11
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "unresolved_items",
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.85,
+      "qwen_used": false,
+      "unresolved_groups": 1,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "header",
+        "3": "header",
+        "4": "header",
+        "5": "items",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "items",
+        "10": "header",
+        "11": "items",
+        "12": "items"
+      },
+      "consumed_line_ids": [
+        5,
+        6,
+        7,
+        9,
+        11
+      ],
+      "quality_score": 0.8986,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

@@ -4,6 +4,7 @@ from dataclasses import asdict, dataclass, field, replace
 from inspect import signature
 import os
 from pathlib import Path
+import re
 import tempfile
 from uuid import uuid4
 
@@ -42,10 +43,14 @@ DATE_FALLBACK_TOP_RATIO = 0.22
 DATE_FALLBACK_MIN_HEIGHT = 140
 DATE_FALLBACK_MAX_HEIGHT = 320
 DATE_FALLBACK_UPSCALE = 3
+ITEM_STRIP_FALLBACK_TOP_RATIO = 0.38
+GIFT_ITEM_STRIP_TOP_RATIO = 0.26
+GIFT_ITEM_STRIP_BOTTOM_RATIO = 0.62
 QWEN_HEADER_MAX_MERGED_ROWS = 2
 QWEN_HEADER_MAX_RAW_TOKENS = 4
 QWEN_HEADER_MAX_TOP_STRIP_ROWS = 4
 QWEN_ITEM_MAX_REVIEW_ITEMS = 4
+DISCOUNT_KEYWORDS = ("할인", "에누리", "포인트", "S-POINT", "쿠폰", "행사")
 
 
 @dataclass
@@ -306,7 +311,18 @@ class ReceiptParseService:
             trace_id=trace_id,
         )
         top_strip_extraction = self._extract_top_strip_extraction(source=source, source_type=source_type)
-        self._apply_top_strip_date_fallback(parsed, top_strip_extraction=top_strip_extraction)
+        self._apply_top_strip_header_fallback(parsed, top_strip_extraction=top_strip_extraction)
+        item_strip_extraction = None
+        item_strip_gap = self._detect_item_strip_gap(parsed, extraction=extraction, source_type=source_type)
+        if item_strip_gap is not None:
+            item_strip_extraction = self._extract_item_strip_extraction(
+                source=source,
+                source_type=source_type,
+                parsed=parsed,
+                extraction=extraction,
+                gap=item_strip_gap,
+            )
+        self._apply_item_strip_fallback(parsed, item_strip_extraction=item_strip_extraction, gap=item_strip_gap)
 
         header_qwen_attempted = False
         header_qwen_used = False
@@ -383,16 +399,26 @@ class ReceiptParseService:
         self._finalize_parse_result(parsed, extraction.low_quality_reasons)
         return parsed
 
-    def _apply_top_strip_date_fallback(self, parsed: dict, *, top_strip_extraction: OcrExtraction | None) -> None:
+    def _apply_top_strip_header_fallback(self, parsed: dict, *, top_strip_extraction: OcrExtraction | None) -> None:
         diagnostics = parsed.setdefault("diagnostics", {})
         diagnostics["date_fallback_used"] = False
+        diagnostics["vendor_fallback_used"] = False
+        if top_strip_extraction is None:
+            return
+
+        if parsed.get("vendor_name") is None:
+            vendor_name = self._extract_vendor_name_from_top_strip(top_strip_extraction=top_strip_extraction)
+            if vendor_name is not None:
+                parsed["vendor_name"] = vendor_name
+                diagnostics["vendor_fallback_used"] = True
+                diagnostics["vendor_fallback_source"] = "top_strip"
+
         if parsed.get("purchased_at") is not None:
             return
 
         purchased_at = self._extract_purchased_at_from_top_strip(top_strip_extraction=top_strip_extraction)
         if purchased_at is None:
             return
-
         parsed["purchased_at"] = purchased_at
         diagnostics["date_fallback_used"] = True
         diagnostics["date_fallback_source"] = "top_strip"
@@ -407,6 +433,11 @@ class ReceiptParseService:
         if top_strip_extraction is None:
             return None
         return self.parser._extract_purchased_at(top_strip_extraction.lines)
+
+    def _extract_vendor_name_from_top_strip(self, *, top_strip_extraction: OcrExtraction | None) -> str | None:
+        if top_strip_extraction is None:
+            return None
+        return self.parser._extract_vendor_name(top_strip_extraction.lines)
 
     def _extract_top_strip_extraction(self, *, source: str, source_type: str) -> OcrExtraction | None:
         if source_type != "receipt_image_url":
@@ -433,6 +464,203 @@ class ReceiptParseService:
             if strip_path:
                 Path(strip_path).unlink(missing_ok=True)
 
+    def _detect_item_strip_gap(
+        self,
+        parsed: dict,
+        *,
+        extraction: OcrExtraction,
+        source_type: str,
+    ) -> dict[str, object] | None:
+        if source_type != "receipt_image_url":
+            return None
+        if extraction.quality_score > 0.65 and not extraction.low_quality_reasons:
+            return None
+        rows = self._iter_unconsumed_rows_after_item_header(parsed)
+        for index in range(len(rows)):
+            current_text = str(rows[index]["text"])
+            if self._looks_like_item_strip_gift_tail_row(current_text):
+                return {"kind": "gift_tail", "line_id": rows[index]["line_id"]}
+            if index + 1 >= len(rows):
+                continue
+            next_text = str(rows[index + 1]["text"])
+            if self._looks_like_item_strip_placeholder_row(current_text) and self._looks_like_item_strip_gap_row(next_text):
+                return {"kind": "placeholder_barcode", "line_id": rows[index]["line_id"]}
+        return None
+
+    def _iter_unconsumed_rows_after_item_header(self, parsed: dict) -> list[dict[str, object]]:
+        diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
+        section_map = diagnostics.get("section_map", {})
+        consumed_ids = {int(value) for value in diagnostics.get("consumed_line_ids", [])}
+        item_header_line_id: int | None = None
+        earliest_item_line_id: int | None = None
+        for row in parsed.get("ocr_texts", []):
+            if not isinstance(row, dict):
+                continue
+            line_id = row.get("line_id")
+            text = self._clean_string(row.get("text"))
+            if isinstance(line_id, int) and text and self.parser._looks_like_item_header(text):
+                item_header_line_id = line_id
+                break
+        item_line_ids = [int(key) for key, section in section_map.items() if section == "items"]
+        if item_line_ids:
+            earliest_item_line_id = min(item_line_ids)
+        rows: list[dict[str, object]] = []
+        for row in parsed.get("ocr_texts", []):
+            if not isinstance(row, dict):
+                continue
+            line_id = row.get("line_id")
+            if not isinstance(line_id, int):
+                continue
+            if line_id in consumed_ids:
+                continue
+            text = self._clean_string(row.get("text"))
+            if not text:
+                continue
+            if item_header_line_id is not None and line_id <= item_header_line_id:
+                continue
+            if item_header_line_id is None and earliest_item_line_id is not None and line_id < max(0, earliest_item_line_id - 2):
+                continue
+            section = section_map.get(str(line_id))
+            if section in {"totals", "payment", "ignored"} and not self._looks_like_item_strip_gap_row(text):
+                continue
+            rows.append({"line_id": line_id, "text": text, "section": section})
+        return rows
+
+    def _looks_like_item_strip_placeholder_row(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text)
+        if len(normalized) < 3 or len(normalized) > 14:
+            return False
+        if re.search(r"\d{8,}", normalized):
+            return False
+        if "," in normalized or "-" in normalized:
+            return False
+        hangul_count = sum("가" <= char <= "힣" for char in normalized)
+        alpha_digit_count = sum(char.isascii() and char.isalnum() for char in normalized)
+        return hangul_count <= 1 and alpha_digit_count >= 3
+
+    def _looks_like_item_strip_gift_tail_row(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text)
+        if "증정" not in normalized:
+            return False
+        if not normalized or not normalized[0].isdigit():
+            return False
+        return True
+
+    def _looks_like_item_strip_following_item_row(self, text: str) -> bool:
+        if not re.search(r"\d{1,3}(?:,\d{3})+", text):
+            return False
+        return any("가" <= char <= "힣" for char in text)
+
+    def _looks_like_item_strip_gap_row(self, text: str) -> bool:
+        normalized = re.sub(r"\s+", "", text)
+        if re.search(r"\d{8,}", normalized):
+            return True
+        return bool(re.search(r"\d+\s+\d{1,3}(?:,\d{3})+", text))
+
+    def _extract_item_strip_extraction(
+        self,
+        *,
+        source: str,
+        source_type: str,
+        parsed: dict,
+        extraction: OcrExtraction,
+        gap: dict[str, object],
+    ) -> OcrExtraction | None:
+        if source_type != "receipt_image_url":
+            return None
+
+        image_path = Path(source).expanduser()
+        if not image_path.exists():
+            return None
+
+        strip_path: str | None = None
+        try:
+            with Image.open(image_path) as image:
+                strip = self._build_item_strip_image(image, parsed=parsed, extraction=extraction, gap=gap)
+                with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as handle:
+                    strip_path = handle.name
+            strip.save(strip_path)
+
+            return self._normalize_extraction(
+                self.ocr_backend.extract(strip_path, source_type="receipt_image_url")
+            )
+        except Exception:
+            return None
+        finally:
+            if strip_path:
+                Path(strip_path).unlink(missing_ok=True)
+
+    def _build_item_strip_image(
+        self,
+        image: Image.Image,
+        *,
+        parsed: dict,
+        extraction: OcrExtraction,
+        gap: dict[str, object],
+    ) -> Image.Image:
+        normalized = ImageOps.exif_transpose(image).convert("RGB")
+        width, height = normalized.size
+        if str(gap.get("kind") or "") == "gift_tail":
+            top = max(0, int(height * GIFT_ITEM_STRIP_TOP_RATIO))
+            bottom = min(height, max(top + 1, int(height * GIFT_ITEM_STRIP_BOTTOM_RATIO)))
+            return normalized.crop((0, top, width, bottom))
+        bounds = self._compute_item_strip_bounds(parsed=parsed, extraction=extraction, image_height=height, gap=gap)
+        if bounds is None:
+            top = min(max(int(height * ITEM_STRIP_FALLBACK_TOP_RATIO), 0), max(height - 1, 0))
+            return normalized.crop((0, top, width, height))
+        top, bottom = bounds
+        return normalized.crop((0, top, width, bottom))
+
+    def _compute_item_strip_bounds(
+        self,
+        *,
+        parsed: dict,
+        extraction: OcrExtraction,
+        image_height: int,
+        gap: dict[str, object],
+    ) -> tuple[int, int] | None:
+        diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
+        section_map = diagnostics.get("section_map", {})
+        line_map = {
+            line.line_id: line
+            for line in extraction.lines
+            if isinstance(line.line_id, int) and line.bbox is not None
+        }
+        candidate_line_ids: set[int] = set()
+        for row in parsed.get("ocr_texts", []):
+            if not isinstance(row, dict):
+                continue
+            line_id = row.get("line_id")
+            text = self._clean_string(row.get("text"))
+            if not isinstance(line_id, int) or not text:
+                continue
+            if section_map.get(str(line_id)) == "items":
+                candidate_line_ids.add(line_id)
+            if self._looks_like_item_strip_placeholder_row(text) or self._looks_like_item_strip_gift_tail_row(text):
+                candidate_line_ids.add(line_id)
+        selected_lines = [line_map[line_id] for line_id in candidate_line_ids if line_id in line_map]
+        if not selected_lines:
+            return None
+        min_top = min(min(point[1] for point in line.bbox) for line in selected_lines if line.bbox is not None)
+        max_bottom = max(max(point[1] for point in line.bbox) for line in selected_lines if line.bbox is not None)
+        gap_line_id = gap.get("line_id")
+        gap_kind = str(gap.get("kind") or "")
+        gap_line = line_map.get(gap_line_id) if isinstance(gap_line_id, int) else None
+        if gap_line is not None and gap_line.bbox is not None:
+            gap_top = min(point[1] for point in gap_line.bbox)
+            if gap_kind == "gift_tail":
+                top = max(0, int(gap_top) - 50)
+            elif gap_kind == "placeholder_barcode":
+                top = max(0, int(gap_top) - 100)
+            else:
+                top = max(0, int(min_top) - 60)
+        else:
+            top = max(0, int(min_top) - 60)
+        bottom = min(image_height, int(max_bottom) + 80)
+        if top >= bottom:
+            return None
+        return top, bottom
+
     def _build_top_strip_date_image(self, image: Image.Image) -> Image.Image:
         normalized = ImageOps.exif_transpose(image).convert("RGB")
         width, height = normalized.size
@@ -447,6 +675,98 @@ class ReceiptParseService:
             resample=Image.Resampling.LANCZOS,
         )
         return ImageOps.expand(upscaled, border=(0, 36, 0, 0), fill=255)
+
+    def _apply_item_strip_fallback(
+        self,
+        parsed: dict,
+        *,
+        item_strip_extraction: OcrExtraction | None,
+        gap: dict[str, object] | None,
+    ) -> None:
+        diagnostics = parsed.setdefault("diagnostics", {})
+        diagnostics["item_strip_fallback_used"] = False
+        diagnostics["item_strip_fallback_added_count"] = 0
+        if item_strip_extraction is None or gap is None:
+            return
+
+        fallback_result = self.parser.parse_lines(item_strip_extraction.lines)
+        existing_items = parsed.get("items", [])
+        added_count = 0
+        for candidate in fallback_result.items:
+            candidate_item = asdict(candidate)
+            self._recalculate_review_state(candidate_item, parsed.get("purchased_at"))
+            if not self._should_merge_item_strip_candidate(
+                candidate_item,
+                existing_items,
+                gap_kind=str(gap.get("kind") or ""),
+            ):
+                continue
+            existing_items.append(candidate_item)
+            added_count += 1
+
+        if added_count <= 0:
+            return
+        diagnostics["item_strip_fallback_used"] = True
+        diagnostics["item_strip_fallback_added_count"] = added_count
+        diagnostics["item_strip_fallback_source"] = "item_strip"
+
+    def _should_merge_item_strip_candidate(self, candidate: dict, existing_items: list[dict], *, gap_kind: str) -> bool:
+        candidate_name = self._clean_string(candidate.get("normalized_name")) or self._clean_string(candidate.get("raw_name"))
+        if candidate_name is None:
+            return False
+        candidate_parse_pattern = self._clean_string(candidate.get("parse_pattern")) or ""
+        candidate_is_gift = candidate_parse_pattern in {
+            "single_line_gift",
+            "split_gift",
+            "compact_gift",
+            "two_line_barcode_gift",
+        }
+        if candidate.get("quantity") is None or candidate.get("amount") is None:
+            if not candidate_is_gift:
+                return False
+        if gap_kind == "gift_tail" and not candidate_is_gift:
+            return False
+        if gap_kind == "placeholder_barcode" and candidate_is_gift:
+            return False
+        if self.parser._looks_like_summary_fragment_name(candidate_name):
+            return False
+        if self.parser._looks_like_domain_noise_name(candidate_name):
+            return False
+        candidate_names = self._item_name_keys(candidate)
+        for existing in existing_items:
+            if not isinstance(existing, dict):
+                continue
+            existing_names = self._item_name_keys(existing)
+            same_quantity = (
+                candidate.get("quantity") is not None
+                and existing.get("quantity") is not None
+                and abs(float(candidate["quantity"]) - float(existing["quantity"])) < 0.001
+            )
+            same_amount = (
+                candidate.get("amount") is not None
+                and existing.get("amount") is not None
+                and abs(float(candidate["amount"]) - float(existing["amount"])) < 1.0
+            )
+            existing_parse_pattern = self._clean_string(existing.get("parse_pattern")) or ""
+            existing_is_gift = existing_parse_pattern in {
+                "single_line_gift",
+                "split_gift",
+                "compact_gift",
+                "two_line_barcode_gift",
+            }
+            if same_quantity and same_amount and candidate_names & existing_names:
+                return False
+            if candidate_is_gift and existing_is_gift and same_quantity and candidate_names & existing_names:
+                return False
+        return True
+
+    def _item_name_keys(self, item: dict) -> set[str]:
+        keys: set[str] = set()
+        for field_name in ("normalized_name", "raw_name"):
+            value = self._clean_string(item.get(field_name))
+            if value:
+                keys.add(re.sub(r"\s+", "", value).lower())
+        return keys
 
     def _should_request_qwen_header_rescue(self, parsed: dict) -> bool:
         return parsed.get("purchased_at") is None or parsed.get("vendor_name") is None
@@ -667,13 +987,13 @@ class ReceiptParseService:
         return context_lines
 
     def _should_request_qwen_item_normalization(self, item: dict) -> bool:
+        reasons = set(item.get("review_reason", []))
+        if "unknown_item" in reasons and self._looks_like_suspicious_ocr_item_name(item.get("raw_name")):
+            return True
         if not item.get("needs_review"):
             return False
-        reasons = set(item.get("review_reason", []))
         if "missing_amount" in reasons or "missing_quantity_or_unit" in reasons or "low_confidence" in reasons:
             return True
-        if "unknown_item" in reasons:
-            return self._looks_like_suspicious_ocr_item_name(item.get("raw_name"))
         return False
 
     def _looks_like_suspicious_ocr_item_name(self, raw_name: object) -> bool:
@@ -981,6 +1301,13 @@ class ReceiptParseService:
 
     def _recalculate_review_state(self, item: dict, purchased_at: str | None) -> None:
         reasons = list(item.get("review_reason", []))
+        parse_pattern = self._clean_string(item.get("parse_pattern")) or ""
+        is_gift_item = parse_pattern in {
+            "single_line_gift",
+            "split_gift",
+            "compact_gift",
+            "two_line_barcode_gift",
+        }
         if purchased_at is not None:
             reasons = [reason for reason in reasons if reason != "missing_purchased_at"]
         elif "missing_purchased_at" not in reasons:
@@ -993,31 +1320,202 @@ class ReceiptParseService:
             reasons = [reason for reason in reasons if reason != "missing_quantity_or_unit"]
         elif "missing_quantity_or_unit" not in reasons:
             reasons.append("missing_quantity_or_unit")
-        if item.get("amount") is not None:
+        if item.get("amount") is not None or is_gift_item:
             reasons = [reason for reason in reasons if reason != "missing_amount"]
         elif "missing_amount" not in reasons:
             reasons.append("missing_amount")
         item["review_reason"] = reasons
-        item["needs_review"] = bool(reasons)
+        structural_reasons = [
+            reason
+            for reason in reasons
+            if reason not in {"unknown_item", "missing_purchased_at", "low_confidence"}
+        ]
+        item["needs_review"] = bool(structural_reasons)
+
+    def _iter_ocr_text_rows(self, parsed: dict) -> list[str]:
+        rows: list[str] = []
+        for value in parsed.get("ocr_texts", []):
+            if isinstance(value, dict):
+                text = self._clean_string(value.get("text"))
+            else:
+                text = self._clean_string(value)
+            if text:
+                rows.append(text)
+        return rows
+
+    def _looks_like_partial_receipt(self, parsed: dict) -> bool:
+        rows = self._iter_ocr_text_rows(parsed)
+        if not rows or not parsed.get("items"):
+            return False
+        first_row = rows[0]
+        if not self.parser._looks_like_item_header(first_row):
+            if parsed.get("vendor_name") is not None or parsed.get("purchased_at") is not None:
+                return False
+            if not parsed.get("totals"):
+                return False
+            leading_rows = rows[: min(len(rows), 6)]
+            item_like_rows = sum(1 for row in leading_rows if self._looks_like_partial_item_row(row))
+            return len(parsed.get("items", [])) >= 4 and item_like_rows >= min(3, len(leading_rows))
+        if parsed.get("vendor_name") is not None or parsed.get("purchased_at") is not None:
+            return False
+        return True
+
+    def _looks_like_partial_item_row(self, text: str) -> bool:
+        if self.parser._looks_like_item_candidate(text):
+            return True
+        compact = re.sub(r"\s+", "", text)
+        if re.search(r"\d{1,3}(?:,\d{3})+\d+\d{1,3}(?:,\d{3})+", compact):
+            return True
+        return bool(re.search(r"\d{1,3}(?:,\d{3})+\s+\d+\s+\d{1,3}(?:,\d{3})+", text))
+
+    def _extract_discount_adjustment_total(self, parsed: dict) -> float:
+        total = 0.0
+        for row in self._iter_ocr_text_rows(parsed):
+            if not any(keyword.lower() in row.lower() for keyword in DISCOUNT_KEYWORDS):
+                continue
+            matches = re.findall(r"-\d{1,3}(?:,\d{3})+|-\d+", row)
+            if not matches:
+                continue
+            amount = self._coerce_float(matches[-1])
+            if amount is None:
+                continue
+            total += amount
+        return total
+
+    def _extract_unconsumed_item_amount_total(self, parsed: dict) -> float:
+        diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
+        section_map = diagnostics.get("section_map", {})
+        consumed_ids = {int(value) for value in diagnostics.get("consumed_line_ids", [])}
+        item_header_line_id: int | None = None
+        item_line_ids: list[int] = []
+        inferred_item_like_line_ids: list[int] = []
+        for row in parsed.get("ocr_texts", []):
+            if not isinstance(row, dict):
+                continue
+            line_id = row.get("line_id")
+            text = self._clean_string(row.get("text"))
+            if isinstance(line_id, int) and text and self.parser._looks_like_item_header(text) and item_header_line_id is None:
+                item_header_line_id = line_id
+            if isinstance(line_id, int) and section_map.get(str(line_id)) == "items":
+                item_line_ids.append(line_id)
+            if isinstance(line_id, int) and text and (
+                self._looks_like_partial_item_row(text)
+                or self._looks_like_item_strip_gift_tail_row(text)
+                or self.parser._looks_like_item_candidate(text)
+            ):
+                inferred_item_like_line_ids.append(line_id)
+        earliest_item_line_id = min(item_line_ids) if item_line_ids else None
+        inferred_item_like_line_id = min(inferred_item_like_line_ids) if inferred_item_like_line_ids else None
+        total_candidates: list[float] = []
+        parsed_totals = parsed.get("totals", {}) if isinstance(parsed, dict) else {}
+        if isinstance(parsed_totals, dict):
+            for key in ("payment_amount", "total", "subtotal"):
+                value = parsed_totals.get(key)
+                if value is not None:
+                    total_candidates.append(float(value))
+        total = 0.0
+        for row in parsed.get("ocr_texts", []):
+            if not isinstance(row, dict):
+                continue
+            line_id = row.get("line_id")
+            text = self._clean_string(row.get("text"))
+            if not isinstance(line_id, int) or not text:
+                continue
+            if line_id in consumed_ids:
+                continue
+            if item_header_line_id is not None and line_id <= item_header_line_id:
+                continue
+            cutoff_line_id = inferred_item_like_line_id if inferred_item_like_line_id is not None else earliest_item_line_id
+            if item_header_line_id is None and cutoff_line_id is not None and line_id < max(0, cutoff_line_id - 2):
+                continue
+            section = section_map.get(str(line_id))
+            if section in {"totals", "payment"}:
+                continue
+            if section == "header":
+                continue
+            if self.parser._looks_like_footer(text) or self.parser._looks_like_date(text):
+                continue
+            if self._looks_like_item_strip_gift_tail_row(text):
+                continue
+            compact_text = re.sub(r"\s+", "", text).lower()
+            if any(keyword.lower() in compact_text for keyword in self.parser.rules.payment_keywords):
+                continue
+            if section == "ignored":
+                if not (
+                    text.startswith("*")
+                    or self.parser._looks_like_item_candidate(text)
+                    or bool(re.search(r"\d+\s+\d{1,3}(?:,\d{3})+", text))
+                ):
+                    continue
+            has_hangul = any("가" <= char <= "힣" for char in text)
+            if not has_hangul and not text.startswith("*") and "," not in text and not re.search(r"\d+\s+\d{1,3}(?:,\d{3})+", text):
+                continue
+            matches = re.findall(r"\d{1,3}(?:,\d{3})+|\d+", text)
+            if not matches:
+                continue
+            amount = self._coerce_float(matches[-1])
+            if amount is None or amount <= 0:
+                continue
+            if len(matches[-1]) >= 7 and "," not in matches[-1]:
+                continue
+            if amount < 100 and re.search(r"\d+[a-zA-Z]$", text):
+                continue
+            if section == "ignored" and any(abs(amount - candidate) <= 1.0 for candidate in total_candidates):
+                continue
+            total += amount
+        return total
 
     def _finalize_parse_result(self, parsed: dict, low_quality_reasons: list[str]) -> None:
+        diagnostics = parsed.setdefault("diagnostics", {})
+        partial_receipt = self._looks_like_partial_receipt(parsed)
+        diagnostics["partial_receipt"] = partial_receipt
         review_reasons = [
             reason
             for reason in list(parsed.get("review_reasons", []))
-            if reason not in {"missing_purchased_at", "unresolved_items", "total_mismatch"}
+            if reason not in {"missing_purchased_at", "missing_vendor_name", "unresolved_items", "total_mismatch"}
         ]
-        if parsed.get("purchased_at") is None and "missing_purchased_at" not in review_reasons:
+        for item in parsed["items"]:
+            if isinstance(item, dict):
+                self._recalculate_review_state(item, parsed.get("purchased_at"))
+        if not partial_receipt and parsed.get("vendor_name") is None and "missing_vendor_name" not in review_reasons:
+            review_reasons.append("missing_vendor_name")
+        if not partial_receipt and parsed.get("purchased_at") is None and "missing_purchased_at" not in review_reasons:
             review_reasons.append("missing_purchased_at")
         if any(item.get("needs_review") for item in parsed["items"]) and "unresolved_items" not in review_reasons:
             review_reasons.append("unresolved_items")
         if low_quality_reasons:
             review_reasons.extend(reason for reason in low_quality_reasons if reason not in review_reasons)
 
-        known_total = parsed["totals"].get("payment_amount") or parsed["totals"].get("total")
+        known_total_candidates: list[float] = []
+        subtotal = parsed["totals"].get("subtotal")
+        if subtotal is not None:
+            known_total_candidates.append(float(subtotal))
+        if parsed["totals"].get("payment_amount") is not None and parsed["totals"].get("tax") is not None:
+            known_total_candidates.append(float(parsed["totals"]["payment_amount"]) - float(parsed["totals"]["tax"]))
+        total = parsed["totals"].get("total")
+        if total is not None:
+            known_total_candidates.append(float(total))
+        payment_amount = parsed["totals"].get("payment_amount")
+        if payment_amount is not None:
+            known_total_candidates.append(float(payment_amount))
+        known_total_candidates = list(dict.fromkeys(known_total_candidates))
         item_sum = sum(float(item["amount"]) for item in parsed["items"] if item.get("amount") is not None)
-        if known_total is not None and item_sum > 0 and abs(float(known_total) - item_sum) > 1.0:
-            if "total_mismatch" not in review_reasons:
-                review_reasons.append("total_mismatch")
+        discount_adjustment_total = self._extract_discount_adjustment_total(parsed)
+        unconsumed_item_amount_total = self._extract_unconsumed_item_amount_total(parsed)
+        diagnostics["discount_adjustment_total"] = discount_adjustment_total
+        diagnostics["unconsumed_item_amount_total"] = unconsumed_item_amount_total
+        if known_total_candidates and item_sum > 0:
+            adjusted_item_sum = item_sum + discount_adjustment_total
+            fully_adjusted_item_sum = adjusted_item_sum + unconsumed_item_amount_total
+            matches_known_total = any(
+                abs(candidate - item_sum) <= 1.0
+                or abs(candidate - adjusted_item_sum) <= 1.0
+                or abs(candidate - fully_adjusted_item_sum) <= 1.0
+                for candidate in known_total_candidates
+            )
+            if not matches_known_total and not partial_receipt:
+                if "total_mismatch" not in review_reasons:
+                    review_reasons.append("total_mismatch")
 
         parsed["review_reasons"] = review_reasons
         parsed["review_required"] = bool(review_reasons)

@@ -1,0 +1,67 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:35Z",
+  "image": {
+    "file_name": "convenience_pos-0175.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0175.png"
+  },
+  "metadata": {
+    "layout_type": "convenience_pos",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "GS25",
+    "purchased_at": "2024-07-13",
+    "items": [
+      {
+        "raw_name": "라라스윗 초코파인트474ml",
+        "normalized_name": "라라스윗 초코파인트474ml",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null,
+        "unit_price": 6900.0,
+        "barcode": "8800174000123"
+      },
+      {
+        "raw_name": "속이편한 누룽지",
+        "normalized_name": "속이편한 누룽지",
+        "quantity": 2.0,
+        "unit": "봉",
+        "amount": 11200.0,
+        "unit_price": 5600.0,
+        "barcode": "8800174001123"
+      },
+      {
+        "raw_name": "롯데 앤디카페조릿 다크",
+        "normalized_name": "롯데 앤디카페조릿 다크",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 14400.0,
+        "unit_price": 4800.0,
+        "barcode": "8800174002123"
+      }
+    ],
+    "totals": {
+      "subtotal": 25600.0,
+      "tax": 2560.0,
+      "total": 28160.0,
+      "payment_amount": 28160.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "convenience_pos"
+    }
+  }
+}

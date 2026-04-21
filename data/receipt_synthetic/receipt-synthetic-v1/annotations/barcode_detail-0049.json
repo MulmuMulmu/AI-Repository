@@ -1,0 +1,67 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:28Z",
+  "image": {
+    "file_name": "barcode_detail-0049.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0049.png"
+  },
+  "metadata": {
+    "layout_type": "barcode_detail",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "7-ELEVEN",
+    "purchased_at": "2023-01-22",
+    "items": [
+      {
+        "raw_name": "맛밤42G*10",
+        "normalized_name": "맛밤42G*10",
+        "quantity": 1.0,
+        "unit": "봉",
+        "amount": 4990.0,
+        "unit_price": 4990.0,
+        "barcode": "8800048000123"
+      },
+      {
+        "raw_name": "오예스336g",
+        "normalized_name": "오예스336g",
+        "quantity": 1.0,
+        "unit": "박스",
+        "amount": 4980.0,
+        "unit_price": 4980.0,
+        "barcode": "8800048001123"
+      },
+      {
+        "raw_name": "닭주물럭2.2kg",
+        "normalized_name": "닭주물럭",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 14900.0,
+        "unit_price": 14900.0,
+        "barcode": "8800048002123"
+      }
+    ],
+    "totals": {
+      "subtotal": 24870.0,
+      "tax": 2487.0,
+      "total": 27357.0,
+      "payment_amount": 27357.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "barcode_detail"
+    }
+  }
+}

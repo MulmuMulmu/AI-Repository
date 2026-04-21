@@ -1,0 +1,667 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:29:52Z",
+  "image": {
+    "file_name": "img3.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img3.jpg"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": "[NATT",
+    "purchased_at": "2015-01-20",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "제가트 위소시 대금환 최대7월 0052-0054 소",
+        "confidence": 0.8306814730167389,
+        "bbox": [
+          [
+            152.0,
+            38.0
+          ],
+          [
+            582.0,
+            38.0
+          ],
+          [
+            582.0,
+            84.0
+          ],
+          [
+            152.0,
+            84.0
+          ]
+        ],
+        "center": [
+          367.0,
+          61.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "[반풀영수층] [/] 2015-01-20 18:28 POS:",
+        "confidence": 0.8682893315951029,
+        "bbox": [
+          [
+            144.0,
+            52.0
+          ],
+          [
+            464.0,
+            52.0
+          ],
+          [
+            464.0,
+            112.0
+          ],
+          [
+            144.0,
+            112.0
+          ]
+        ],
+        "center": [
+          304.0,
+          82.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "몸 수랑 금 액",
+        "confidence": 0.740494392812252,
+        "bbox": [
+          [
+            125.0,
+            107.0
+          ],
+          [
+            570.0,
+            107.0
+          ],
+          [
+            570.0,
+            155.0
+          ],
+          [
+            125.0,
+            155.0
+          ]
+        ],
+        "center": [
+          347.5,
+          131.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "단 가",
+        "confidence": 0.9022857248783112,
+        "bbox": [
+          [
+            304.0,
+            129.0
+          ],
+          [
+            390.0,
+            129.0
+          ],
+          [
+            390.0,
+            160.0
+          ],
+          [
+            304.0,
+            160.0
+          ]
+        ],
+        "center": [
+          347.0,
+          144.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "001재사용통투(안산시)20L*날장 500",
+        "confidence": 0.901302844285965,
+        "bbox": [
+          [
+            118.0,
+            162.0
+          ],
+          [
+            589.0,
+            162.0
+          ],
+          [
+            589.0,
+            214.0
+          ],
+          [
+            118.0,
+            214.0
+          ]
+        ],
+        "center": [
+          353.5,
+          188.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "*0412598780002 500 L",
+        "confidence": 0.9807061553001404,
+        "bbox": [
+          [
+            121.0,
+            191.0
+          ],
+          [
+            424.0,
+            191.0
+          ],
+          [
+            424.0,
+            222.0
+          ],
+          [
+            121.0,
+            222.0
+          ]
+        ],
+        "center": [
+          272.5,
+          206.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "002 속이면한 누룸지(5입)",
+        "confidence": 0.9208595752716064,
+        "bbox": [
+          [
+            120.0,
+            218.0
+          ],
+          [
+            369.0,
+            218.0
+          ],
+          [
+            369.0,
+            250.0
+          ],
+          [
+            120.0,
+            250.0
+          ]
+        ],
+        "center": [
+          244.5,
+          234.0
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "8801169770207 5,600 L 5,600",
+        "confidence": 0.9663746654987335,
+        "bbox": [
+          [
+            128.0,
+            244.0
+          ],
+          [
+            588.0,
+            244.0
+          ],
+          [
+            588.0,
+            279.0
+          ],
+          [
+            128.0,
+            279.0
+          ]
+        ],
+        "center": [
+          358.0,
+          261.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "[] L -1,680",
+        "confidence": 0.9100954135258993,
+        "bbox": [
+          [
+            130.0,
+            271.0
+          ],
+          [
+            586.0,
+            271.0
+          ],
+          [
+            586.0,
+            306.0
+          ],
+          [
+            130.0,
+            306.0
+          ]
+        ],
+        "center": [
+          358.0,
+          288.5
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "010(만매코드)913200000307",
+        "confidence": 0.9812920689582825,
+        "bbox": [
+          [
+            132.0,
+            296.0
+          ],
+          [
+            415.0,
+            296.0
+          ],
+          [
+            415.0,
+            330.0
+          ],
+          [
+            132.0,
+            330.0
+          ]
+        ],
+        "center": [
+          273.5,
+          313.0
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "003 속이면한 누룸지(5입)",
+        "confidence": 0.9017267227172852,
+        "bbox": [
+          [
+            127.0,
+            320.0
+          ],
+          [
+            378.0,
+            320.0
+          ],
+          [
+            378.0,
+            356.0
+          ],
+          [
+            127.0,
+            356.0
+          ]
+        ],
+        "center": [
+          252.5,
+          338.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "8801169770207 5,600 7 39,200",
+        "confidence": 0.9963450729846954,
+        "bbox": [
+          [
+            141.0,
+            343.0
+          ],
+          [
+            584.0,
+            343.0
+          ],
+          [
+            584.0,
+            387.0
+          ],
+          [
+            141.0,
+            387.0
+          ]
+        ],
+        "center": [
+          362.5,
+          365.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "[(야] 7 -11,760",
+        "confidence": 0.8657421271006266,
+        "bbox": [
+          [
+            145.0,
+            366.0
+          ],
+          [
+            583.0,
+            366.0
+          ],
+          [
+            583.0,
+            412.0
+          ],
+          [
+            145.0,
+            412.0
+          ]
+        ],
+        "center": [
+          364.0,
+          389.0
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "010(만매코드)913200000307",
+        "confidence": 0.985446035861969,
+        "bbox": [
+          [
+            149.0,
+            388.0
+          ],
+          [
+            422.0,
+            388.0
+          ],
+          [
+            422.0,
+            429.0
+          ],
+          [
+            149.0,
+            429.0
+          ]
+        ],
+        "center": [
+          285.5,
+          408.5
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "OV00",
+        "confidence": 0.6385945081710815,
+        "bbox": [
+          [
+            144.0,
+            408.0
+          ],
+          [
+            370.0,
+            408.0
+          ],
+          [
+            370.0,
+            453.0
+          ],
+          [
+            144.0,
+            453.0
+          ]
+        ],
+        "center": [
+          257.0,
+          430.5
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "8809145590207 066 4 3,960",
+        "confidence": 0.9990273118019104,
+        "bbox": [
+          [
+            157.0,
+            432.0
+          ],
+          [
+            580.0,
+            432.0
+          ],
+          [
+            580.0,
+            483.0
+          ],
+          [
+            157.0,
+            483.0
+          ]
+        ],
+        "center": [
+          368.5,
+          457.5
+        ],
+        "page_order": 15
+      },
+      {
+        "line_id": 16,
+        "text": "8801062639854 005 롯데앤디카페조릿 다크",
+        "confidence": 0.9224905967712402,
+        "bbox": [
+          [
+            147.0,
+            454.0
+          ],
+          [
+            483.0,
+            454.0
+          ],
+          [
+            483.0,
+            511.0
+          ],
+          [
+            147.0,
+            511.0
+          ]
+        ],
+        "center": [
+          315.0,
+          482.5
+        ],
+        "page_order": 16
+      },
+      {
+        "line_id": 17,
+        "text": "4,800 1 4,800",
+        "confidence": 0.986703356107076,
+        "bbox": [
+          [
+            335.0,
+            490.0
+          ],
+          [
+            579.0,
+            490.0
+          ],
+          [
+            579.0,
+            531.0
+          ],
+          [
+            335.0,
+            531.0
+          ]
+        ],
+        "center": [
+          457.0,
+          510.5
+        ],
+        "page_order": 17
+      },
+      {
+        "line_id": 18,
+        "text": "9901062629915 900",
+        "confidence": 0.8124012649059296,
+        "bbox": [
+          [
+            144.0,
+            499.0
+          ],
+          [
+            485.0,
+            499.0
+          ],
+          [
+            485.0,
+            546.0
+          ],
+          [
+            144.0,
+            546.0
+          ]
+        ],
+        "center": [
+          314.5,
+          522.5
+        ],
+        "page_order": 18
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "속이편한 누룽지",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 5600.0,
+        "confidence": 0.92,
+        "match_confidence": 0.9436,
+        "parse_pattern": "two_line_barcode_inferred_qty",
+        "source_line_ids": [
+          6,
+          7
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "속이편한 누룽지",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 7.0,
+        "unit": "개",
+        "amount": 39200.0,
+        "confidence": 0.9,
+        "match_confidence": 0.949,
+        "parse_pattern": "two_line_barcode",
+        "source_line_ids": [
+          10,
+          11
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "롯데앤디카페조릿 다크",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4800.0,
+        "confidence": 0.92,
+        "match_confidence": 0.9546,
+        "parse_pattern": "name_then_numeric_detail",
+        "source_line_ids": [
+          16,
+          17
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "ignored",
+        "2": "header",
+        "3": "header",
+        "4": "ignored",
+        "5": "header",
+        "6": "items",
+        "7": "items",
+        "8": "ignored",
+        "9": "ignored",
+        "10": "items",
+        "11": "items",
+        "12": "ignored",
+        "13": "ignored",
+        "14": "items",
+        "15": "items",
+        "16": "items",
+        "17": "items",
+        "18": "items"
+      },
+      "consumed_line_ids": [
+        6,
+        7,
+        10,
+        11,
+        16,
+        17
+      ],
+      "quality_score": 0.534,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [],
+      "date_fallback_used": false,
+      "vendor_fallback_used": true,
+      "vendor_fallback_source": "top_strip",
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

@@ -82,3 +82,198 @@ def test_legacy_api_routes_are_not_exposed() -> None:
     assert ocr_response.status_code == 404
     assert match_response.status_code == 404
     assert health_response.status_code == 404
+
+
+def test_sharing_check_endpoint_returns_filter_result(monkeypatch) -> None:
+    class _StubSharingFilter:
+        def check(self, item_names):
+            assert item_names == ["생고기 모둠", "통조림 참치"]
+            return {
+                "blocked": [{"item_name": "생고기 모둠", "category": "생고기/생선"}],
+                "review_required": [],
+                "allowed": [{"item_name": "통조림 참치"}],
+                "summary": {"blocked": 1, "review": 0, "allowed": 1},
+            }
+
+    monkeypatch.setattr(main, "_get_sharing_filter", lambda: _StubSharingFilter())
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.post("/ai/sharing/check", json={"item_names": ["생고기 모둠", "통조림 참치"]})
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    payload = response.json()["data"]
+    assert payload["summary"]["blocked"] == 1
+    assert payload["allowed"][0]["item_name"] == "통조림 참치"
+
+
+def test_expiry_calculate_endpoint_returns_expiry_result(monkeypatch) -> None:
+    class _StubExpiryCalculator:
+        def calculate(self, item_name, purchase_date, storage_method, category):
+            assert item_name == "양파"
+            assert purchase_date == "2026-04-10"
+            assert storage_method == "냉장"
+            assert category == "채소/과일"
+            return {
+                "item_name": item_name,
+                "purchase_date": purchase_date,
+                "storage_method": storage_method,
+                "expiry_date": "2026-05-10",
+                "d_day": 10,
+                "risk_level": "safe",
+                "confidence": 0.7,
+                "method": "rule-based",
+                "reason": "양파 냉장 기준 30일",
+            }
+
+    monkeypatch.setattr(main, "_get_expiry_calculator", lambda: _StubExpiryCalculator())
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.post(
+                "/ai/expiry/calculate",
+                json={
+                    "item_name": "양파",
+                    "purchase_date": "2026-04-10",
+                    "storage_method": "냉장",
+                    "category": "채소/과일",
+                },
+            )
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    payload = response.json()["data"]
+    assert payload["expiry_date"] == "2026-05-10"
+    assert payload["method"] == "rule-based"
+
+
+def test_quality_metrics_endpoint_returns_monitor_snapshot(monkeypatch) -> None:
+    class _StubQualityMonitor:
+        def get_metrics(self, window="1h"):
+            assert window == "24h"
+            return {
+                "window": window,
+                "total_requests": 3,
+                "error_count": 1,
+                "error_rate": 0.3333,
+                "avg_response_ms": 123.0,
+                "p95_response_ms": 240.0,
+                "endpoints": {"/ai/ocr/analyze": {"count": 3, "errors": 1, "avg_ms": 123.0}},
+            }
+
+    monkeypatch.setattr(main, "_get_quality_monitor", lambda: _StubQualityMonitor())
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.get("/ai/quality/metrics?window=24h")
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    payload = response.json()["data"]
+    assert payload["window"] == "24h"
+    assert payload["total_requests"] == 3
+
+
+def test_recommend_endpoint_is_exposed(monkeypatch) -> None:
+    monkeypatch.setattr(main, "INGREDIENTS", {"ingredient-1": {"ingredientId": "ingredient-1", "ingredientName": "양파"}})
+    monkeypatch.setattr(
+        main,
+        "recommend_recipes",
+        lambda ingredient_ids, top_k, category, min_match_rate, **kwargs: [
+            {
+                "recipeId": "recipe-1",
+                "name": "양파볶음",
+                "category": "반찬",
+                "matchedIngredients": [{"ingredientId": "ingredient-1", "ingredientName": "양파"}],
+                "missingIngredients": [],
+                "matchRate": 1.0,
+                "totalIngredientCount": 1,
+            }
+        ],
+    )
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.post("/ai/recommend", json={"ingredientIds": ["ingredient-1"]})
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    payload = response.json()["data"]
+    assert payload["recommendations"][0]["recipeId"] == "recipe-1"
+
+
+def test_recipe_detail_endpoint_is_exposed(monkeypatch) -> None:
+    monkeypatch.setattr(
+        main,
+        "RECIPES",
+        {"recipe-1": {"recipeId": "recipe-1", "name": "양파볶음", "category": "반찬", "imageUrl": ""}},
+    )
+    monkeypatch.setattr(
+        main,
+        "RECIPE_INGR",
+        {"recipe-1": [{"recipeIngredientId": "ri-1", "ingredientId": "ingredient-1", "amount": 1, "unit": "개"}]},
+    )
+    monkeypatch.setattr(
+        main,
+        "RECIPE_STEPS",
+        {"recipe-1": [{"recipeStepId": "step-1", "stepOrder": 1, "description": "볶는다"}]},
+    )
+    monkeypatch.setattr(
+        main,
+        "INGREDIENTS",
+        {"ingredient-1": {"ingredientId": "ingredient-1", "ingredientName": "양파", "category": "채소/과일"}},
+    )
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.get("/ai/recipes/recipe-1")
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    payload = response.json()["data"]
+    assert payload["recipeId"] == "recipe-1"
+    assert payload["ingredients"][0]["ingredientName"] == "양파"
+
+
+def test_connected_routes_log_quality_metrics(monkeypatch) -> None:
+    logged: list[tuple[str, int]] = []
+
+    class _StubQualityMonitor:
+        def log_request(self, endpoint, elapsed_ms, status_code=200, error=None, trace_id=None):
+            logged.append((endpoint, status_code))
+
+        def get_metrics(self, window="1h"):
+            return {"window": window, "total_requests": 0, "error_count": 0, "error_rate": 0.0, "avg_response_ms": 0.0, "p95_response_ms": 0.0, "endpoints": {}}
+
+    monkeypatch.setattr(main, "_get_quality_monitor", lambda: _StubQualityMonitor())
+    monkeypatch.setattr(main, "_match_product_to_ingredient", lambda product_name: None)
+    monkeypatch.setattr(main, "_find_suggestions", lambda product_name: [])
+
+    async def _request() -> list[httpx.Response]:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            responses = []
+            responses.append(await client.post("/ai/ingredient/prediction", json={"product_names": ["알수없는상품"]}))
+            responses.append(await client.post("/ai/sharing/check", json={"item_names": ["통조림 참치"]}))
+            responses.append(await client.get("/ai/quality/metrics"))
+            return responses
+
+    responses = asyncio.run(_request())
+
+    assert all(response.status_code == 200 for response in responses)
+    assert [endpoint for endpoint, _ in logged] == [
+        "/ai/ingredient/prediction",
+        "/ai/sharing/check",
+        "/ai/quality/metrics",
+    ]

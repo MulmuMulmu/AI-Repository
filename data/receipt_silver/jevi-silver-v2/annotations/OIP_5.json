@@ -1,0 +1,416 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:27Z",
+  "image": {
+    "file_name": "OIP (5).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (5).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "심 IC 13 수탐 2억",
+        "confidence": 0.6340426206588745,
+        "bbox": [
+          [
+            90.0,
+            2.0
+          ],
+          [
+            240.0,
+            2.0
+          ],
+          [
+            240.0,
+            17.0
+          ],
+          [
+            90.0,
+            17.0
+          ]
+        ],
+        "center": [
+          165.0,
+          9.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "170084 001목개장사발면 002(엄외)2배시과식조 460 z 025",
+        "confidence": 0.7757076521714529,
+        "bbox": [
+          [
+            88.0,
+            21.0
+          ],
+          [
+            237.0,
+            21.0
+          ],
+          [
+            237.0,
+            51.0
+          ],
+          [
+            88.0,
+            51.0
+          ]
+        ],
+        "center": [
+          162.5,
+          36.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "180127 003 스웨거에어C 2.150 인티에어로스 2.150 6.300",
+        "confidence": 0.8401669263839722,
+        "bbox": [
+          [
+            89.0,
+            45.0
+          ],
+          [
+            239.0,
+            45.0
+          ],
+          [
+            239.0,
+            76.0
+          ],
+          [
+            89.0,
+            76.0
+          ]
+        ],
+        "center": [
+          164.0,
+          60.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "220028 004탐방민 5,300 2.500 3 7,500",
+        "confidence": 0.9261494775613149,
+        "bbox": [
+          [
+            89.0,
+            62.0
+          ],
+          [
+            240.0,
+            62.0
+          ],
+          [
+            240.0,
+            94.0
+          ],
+          [
+            89.0,
+            94.0
+          ]
+        ],
+        "center": [
+          164.5,
+          78.0
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "070159 005 고주니리맛다시 710 2 1.420",
+        "confidence": 0.9538994073867798,
+        "bbox": [
+          [
+            88.0,
+            84.0
+          ],
+          [
+            241.0,
+            84.0
+          ],
+          [
+            241.0,
+            112.0
+          ],
+          [
+            88.0,
+            112.0
+          ]
+        ],
+        "center": [
+          164.5,
+          98.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "010204 190055 00621정2000 1.700 4 6.800",
+        "confidence": 0.9719289143880209,
+        "bbox": [
+          [
+            88.0,
+            103.0
+          ],
+          [
+            242.0,
+            103.0
+          ],
+          [
+            242.0,
+            133.0
+          ],
+          [
+            88.0,
+            133.0
+          ]
+        ],
+        "center": [
+          165.0,
+          118.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "25.090원 25.090년1",
+        "confidence": 0.8510452806949615,
+        "bbox": [
+          [
+            210.0,
+            135.0
+          ],
+          [
+            246.0,
+            135.0
+          ],
+          [
+            246.0,
+            169.0
+          ],
+          [
+            210.0,
+            169.0
+          ]
+        ],
+        "center": [
+          228.0,
+          152.0
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "발은금액:",
+        "confidence": 0.7855783700942993,
+        "bbox": [
+          [
+            89.0,
+            157.0
+          ],
+          [
+            127.0,
+            157.0
+          ],
+          [
+            127.0,
+            172.0
+          ],
+          [
+            89.0,
+            172.0
+          ]
+        ],
+        "center": [
+          108.0,
+          164.5
+        ],
+        "page_order": 7
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "084 001목개장사발면 002 2배시과식조 460 z",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 25.0,
+        "confidence": 0.78,
+        "match_confidence": 0.7757,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          1
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "127 003 스웨거에어C 2.150 인티에어로스 2.15",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 0.0,
+        "unit": "개",
+        "amount": 6300.0,
+        "confidence": 0.84,
+        "match_confidence": 0.8402,
+        "parse_pattern": "compact_qty_amount",
+        "source_line_ids": [
+          2
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "028 004탐방민 5,300 2.500",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 7500.0,
+        "confidence": 0.93,
+        "match_confidence": 0.9261,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          3
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "005 고주니리맛다시",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 1420.0,
+        "confidence": 0.95,
+        "match_confidence": 0.9539,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          4
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "204 190055 00621정2000 1.700",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 4.0,
+        "unit": "개",
+        "amount": 6800.0,
+        "confidence": 0.97,
+        "match_confidence": 0.9719,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          5
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": ".090원 25.090년1",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": 1.0,
+        "confidence": 0.85,
+        "match_confidence": 0.851,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "missing_purchased_at",
+      "unresolved_items",
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.55,
+      "qwen_used": false,
+      "unresolved_groups": 2,
+      "section_map": {
+        "0": "header",
+        "1": "items",
+        "2": "items",
+        "3": "items",
+        "4": "items",
+        "5": "items",
+        "6": "items",
+        "7": "header"
+      },
+      "consumed_line_ids": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "quality_score": 0.7809,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

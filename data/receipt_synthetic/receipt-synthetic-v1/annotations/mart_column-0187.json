@@ -1,0 +1,67 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:36Z",
+  "image": {
+    "file_name": "mart_column-0187.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mart_column-0187.png"
+  },
+  "metadata": {
+    "layout_type": "mart_column",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "이마트",
+    "purchased_at": "2024-07-25",
+    "items": [
+      {
+        "raw_name": "사과",
+        "normalized_name": "사과",
+        "quantity": 1.0,
+        "unit": "봉",
+        "amount": 5980.0,
+        "unit_price": 5980.0,
+        "barcode": "8800186000123"
+      },
+      {
+        "raw_name": "우유 1L",
+        "normalized_name": "우유",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 2980.0,
+        "unit_price": 2980.0,
+        "barcode": "8800186001123"
+      },
+      {
+        "raw_name": "두부",
+        "normalized_name": "두부",
+        "quantity": 1.0,
+        "unit": "모",
+        "amount": 1980.0,
+        "unit_price": 1980.0,
+        "barcode": "8800186002123"
+      }
+    ],
+    "totals": {
+      "subtotal": 10940.0,
+      "tax": 1094.0,
+      "total": 12034.0,
+      "payment_amount": 12034.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "mart_column"
+    }
+  }
+}

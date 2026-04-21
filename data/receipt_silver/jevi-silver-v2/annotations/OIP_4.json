@@ -1,0 +1,312 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:24Z",
+  "image": {
+    "file_name": "OIP (4).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (4).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "1069219028 KBABR 470 X 3",
+        "confidence": 0.7452225486437479,
+        "bbox": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            172.0,
+            1.0
+          ],
+          [
+            172.0,
+            27.0
+          ],
+          [
+            0.0,
+            27.0
+          ]
+        ],
+        "center": [
+          86.0,
+          14.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "아현미밥210g*3 4,980 X 2 9,960",
+        "confidence": 0.9051339228947958,
+        "bbox": [
+          [
+            0.0,
+            30.0
+          ],
+          [
+            234.0,
+            30.0
+          ],
+          [
+            234.0,
+            69.0
+          ],
+          [
+            0.0,
+            69.0
+          ]
+        ],
+        "center": [
+          117.0,
+          49.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "1007216294 행사일인 -9,960 0",
+        "confidence": 0.9144216328859329,
+        "bbox": [
+          [
+            0.0,
+            50.0
+          ],
+          [
+            235.0,
+            50.0
+          ],
+          [
+            235.0,
+            86.0
+          ],
+          [
+            0.0,
+            86.0
+          ]
+        ],
+        "center": [
+          117.5,
+          68.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "총 합 계 49,850원 -9,960원",
+        "confidence": 0.9050473968187968,
+        "bbox": [
+          [
+            50.0,
+            90.0
+          ],
+          [
+            234.0,
+            90.0
+          ],
+          [
+            234.0,
+            125.0
+          ],
+          [
+            50.0,
+            125.0
+          ]
+        ],
+        "center": [
+          142.0,
+          107.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "계 할인총금액 39,89021",
+        "confidence": 0.9337832530339559,
+        "bbox": [
+          [
+            35.0,
+            110.0
+          ],
+          [
+            231.0,
+            110.0
+          ],
+          [
+            231.0,
+            144.0
+          ],
+          [
+            35.0,
+            144.0
+          ]
+        ],
+        "center": [
+          133.0,
+          127.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "현금 400,000,000원 400,000,0002",
+        "confidence": 0.9861434698104858,
+        "bbox": [
+          [
+            38.0,
+            135.0
+          ],
+          [
+            228.0,
+            135.0
+          ],
+          [
+            228.0,
+            172.0
+          ],
+          [
+            38.0,
+            172.0
+          ]
+        ],
+        "center": [
+          133.0,
+          153.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": ";960, 10원",
+        "confidence": 0.9393655955791473,
+        "bbox": [
+          [
+            100.0,
+            162.0
+          ],
+          [
+            228.0,
+            162.0
+          ],
+          [
+            228.0,
+            185.0
+          ],
+          [
+            100.0,
+            185.0
+          ]
+        ],
+        "center": [
+          164.0,
+          173.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "19,800원",
+        "confidence": 0.9965704679489136,
+        "bbox": [
+          [
+            179.0,
+            188.0
+          ],
+          [
+            232.0,
+            188.0
+          ],
+          [
+            232.0,
+            207.0
+          ],
+          [
+            179.0,
+            207.0
+          ]
+        ],
+        "center": [
+          205.5,
+          197.5
+        ],
+        "page_order": 7
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "아현미밥210g*3 4,980 X",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 9960.0,
+        "confidence": 0.91,
+        "match_confidence": 0.9051,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          1
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "total": 9960.0,
+      "payment_amount": 2.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "missing_purchased_at",
+      "small_image",
+      "total_mismatch"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "items",
+        "2": "ignored",
+        "3": "totals",
+        "4": "totals",
+        "5": "payment",
+        "6": "ignored",
+        "7": "ignored"
+      },
+      "consumed_line_ids": [
+        1
+      ],
+      "quality_score": 0.7087,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": -9960.0
+    }
+  }
+}

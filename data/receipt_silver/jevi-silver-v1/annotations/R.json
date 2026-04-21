@@ -1,0 +1,878 @@
+{
+  "dataset_name": "jevi-silver-v1",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T11:12:16Z",
+  "image": {
+    "file_name": "R.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\R.jpg"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2014-07-03",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "Home plus 춤플러스",
+        "confidence": 0.8879710137844086,
+        "bbox": [
+          [
+            12.0,
+            63.0
+          ],
+          [
+            284.0,
+            63.0
+          ],
+          [
+            284.0,
+            110.0
+          ],
+          [
+            12.0,
+            110.0
+          ]
+        ],
+        "center": [
+          148.0,
+          86.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "220-81-60348 도싱환",
+        "confidence": 0.9314250349998474,
+        "bbox": [
+          [
+            210.0,
+            80.0
+          ],
+          [
+            380.0,
+            80.0
+          ],
+          [
+            380.0,
+            109.0
+          ],
+          [
+            210.0,
+            109.0
+          ]
+        ],
+        "center": [
+          295.0,
+          94.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "www.homeplus.co.kr",
+        "confidence": 0.9928996562957764,
+        "bbox": [
+          [
+            15.0,
+            113.0
+          ],
+          [
+            176.0,
+            113.0
+          ],
+          [
+            176.0,
+            140.0
+          ],
+          [
+            15.0,
+            140.0
+          ]
+        ],
+        "center": [
+          95.5,
+          126.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "영수증 미지참시 교환/환불 불가(한달이내)",
+        "confidence": 0.9338476657867432,
+        "bbox": [
+          [
+            18.0,
+            176.0
+          ],
+          [
+            411.0,
+            176.0
+          ],
+          [
+            411.0,
+            199.0
+          ],
+          [
+            18.0,
+            199.0
+          ]
+        ],
+        "center": [
+          214.5,
+          187.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "교환/환불은 구매점포만 가능(결제카드 지참)",
+        "confidence": 0.9138895869255066,
+        "bbox": [
+          [
+            10.0,
+            197.0
+          ],
+          [
+            419.0,
+            197.0
+          ],
+          [
+            419.0,
+            220.0
+          ],
+          [
+            10.0,
+            220.0
+          ]
+        ],
+        "center": [
+          214.5,
+          208.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "체크카드취소 시대금환급은 최대7일 소요",
+        "confidence": 0.9110827445983887,
+        "bbox": [
+          [
+            8.0,
+            216.0
+          ],
+          [
+            410.0,
+            216.0
+          ],
+          [
+            410.0,
+            242.0
+          ],
+          [
+            8.0,
+            242.0
+          ]
+        ],
+        "center": [
+          209.0,
+          229.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "2014/07/0313:29:53[목]",
+        "confidence": 0.9997166395187378,
+        "bbox": [
+          [
+            0.0,
+            257.0
+          ],
+          [
+            224.0,
+            257.0
+          ],
+          [
+            224.0,
+            281.0
+          ],
+          [
+            0.0,
+            281.0
+          ]
+        ],
+        "center": [
+          112.0,
+          269.0
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "상품명 단가 수량 금액",
+        "confidence": 0.9909418970346451,
+        "bbox": [
+          [
+            59.0,
+            295.0
+          ],
+          [
+            409.0,
+            295.0
+          ],
+          [
+            409.0,
+            324.0
+          ],
+          [
+            59.0,
+            324.0
+          ]
+        ],
+        "center": [
+          234.0,
+          309.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "크라우참쌀서과293G 4,320 1 4,320",
+        "confidence": 0.944895476102829,
+        "bbox": [
+          [
+            20.0,
+            334.0
+          ],
+          [
+            428.0,
+            334.0
+          ],
+          [
+            428.0,
+            361.0
+          ],
+          [
+            20.0,
+            361.0
+          ]
+        ],
+        "center": [
+          224.0,
+          347.5
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "888 맛밤42G*10 12,590 1 12,590",
+        "confidence": 0.9616417527198792,
+        "bbox": [
+          [
+            0.0,
+            336.0
+          ],
+          [
+            429.0,
+            336.0
+          ],
+          [
+            429.0,
+            403.0
+          ],
+          [
+            0.0,
+            403.0
+          ]
+        ],
+        "center": [
+          214.5,
+          369.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "와이멘씨라이스퍼프1 3,980 ] 3,980",
+        "confidence": 0.8720021396875381,
+        "bbox": [
+          [
+            29.0,
+            376.0
+          ],
+          [
+            427.0,
+            376.0
+          ],
+          [
+            427.0,
+            405.0
+          ],
+          [
+            29.0,
+            405.0
+          ]
+        ],
+        "center": [
+          228.0,
+          390.5
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "04 로투스헬씨넛견과믹 10,800 10,800",
+        "confidence": 0.9777380625406901,
+        "bbox": [
+          [
+            3.0,
+            397.0
+          ],
+          [
+            427.0,
+            397.0
+          ],
+          [
+            427.0,
+            421.0
+          ],
+          [
+            3.0,
+            421.0
+          ]
+        ],
+        "center": [
+          215.0,
+          409.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "05 쿠크다스커피144G 2,080 1 2,080",
+        "confidence": 0.9571408927440643,
+        "bbox": [
+          [
+            2.0,
+            416.0
+          ],
+          [
+            429.0,
+            416.0
+          ],
+          [
+            429.0,
+            443.0
+          ],
+          [
+            2.0,
+            443.0
+          ]
+        ],
+        "center": [
+          215.5,
+          429.5
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "06 오리온참붕어빵232G 2,890 2,890",
+        "confidence": 0.9804620742797852,
+        "bbox": [
+          [
+            4.0,
+            437.0
+          ],
+          [
+            429.0,
+            437.0
+          ],
+          [
+            429.0,
+            463.0
+          ],
+          [
+            4.0,
+            463.0
+          ]
+        ],
+        "center": [
+          216.5,
+          450.0
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "07오예스336g 3,840 3,840",
+        "confidence": 0.9909496108690897,
+        "bbox": [
+          [
+            3.0,
+            456.0
+          ],
+          [
+            429.0,
+            456.0
+          ],
+          [
+            429.0,
+            484.0
+          ],
+          [
+            3.0,
+            484.0
+          ]
+        ],
+        "center": [
+          216.0,
+          470.0
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "08부드러운쿠키블루베 3,980 3,980",
+        "confidence": 0.9689167539278666,
+        "bbox": [
+          [
+            4.0,
+            476.0
+          ],
+          [
+            429.0,
+            476.0
+          ],
+          [
+            429.0,
+            504.0
+          ],
+          [
+            4.0,
+            504.0
+          ]
+        ],
+        "center": [
+          216.5,
+          490.0
+        ],
+        "page_order": 15
+      },
+      {
+        "line_id": 16,
+        "text": "09 해태구문감자4 2 2,240",
+        "confidence": 0.9400343894958496,
+        "bbox": [
+          [
+            4.0,
+            494.0
+          ],
+          [
+            429.0,
+            494.0
+          ],
+          [
+            429.0,
+            524.0
+          ],
+          [
+            4.0,
+            524.0
+          ]
+        ],
+        "center": [
+          216.5,
+          509.0
+        ],
+        "page_order": 16
+      },
+      {
+        "line_id": 17,
+        "text": "11자 2 하 퍼팩트 7 7,600",
+        "confidence": 0.9672114749749502,
+        "bbox": [
+          [
+            8.0,
+            495.0
+          ],
+          [
+            430.0,
+            495.0
+          ],
+          [
+            430.0,
+            564.0
+          ],
+          [
+            8.0,
+            564.0
+          ]
+        ],
+        "center": [
+          219.0,
+          529.5
+        ],
+        "page_order": 17
+      },
+      {
+        "line_id": 18,
+        "text": "12 치 6 즈 샌 를 애 풀 b00 10,980",
+        "confidence": 0.6464513570070267,
+        "bbox": [
+          [
+            11.0,
+            538.0
+          ],
+          [
+            429.0,
+            538.0
+          ],
+          [
+            429.0,
+            576.0
+          ],
+          [
+            11.0,
+            576.0
+          ]
+        ],
+        "center": [
+          220.0,
+          557.0
+        ],
+        "page_order": 18
+      },
+      {
+        "line_id": 19,
+        "text": "13미니투셔바베큐4입( ㄷ120g TE.CO.KR 760 1 1,760",
+        "confidence": 0.9369707107543945,
+        "bbox": [
+          [
+            9.0,
+            555.0
+          ],
+          [
+            428.0,
+            555.0
+          ],
+          [
+            428.0,
+            599.0
+          ],
+          [
+            9.0,
+            599.0
+          ]
+        ],
+        "center": [
+          218.5,
+          577.0
+        ],
+        "page_order": 19
+      },
+      {
+        "line_id": 20,
+        "text": "1,450 1 1.450",
+        "confidence": 0.9727218151092529,
+        "bbox": [
+          [
+            251.0,
+            578.0
+          ],
+          [
+            428.0,
+            578.0
+          ],
+          [
+            428.0,
+            600.0
+          ],
+          [
+            251.0,
+            600.0
+          ]
+        ],
+        "center": [
+          339.5,
+          589.0
+        ],
+        "page_order": 20
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "크라우참쌀서과293G",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4320.0,
+        "confidence": 0.94,
+        "match_confidence": 0.9449,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          8
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "맛밤42G*10",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 12590.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9616,
+        "parse_pattern": "ocr_noisy_pos_line",
+        "source_line_ids": [
+          9
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "와이멘씨라이스퍼프1 3,980",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3980.0,
+        "confidence": 0.87,
+        "match_confidence": 0.872,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          10
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "로투스헬씨넛견과믹",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 10800.0,
+        "confidence": 0.98,
+        "match_confidence": 0.9777,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          11
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "쿠크다스커피144G",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2080.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9571,
+        "parse_pattern": "pos_single_line",
+        "source_line_ids": [
+          12
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "오리온참붕어빵232G",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2890.0,
+        "confidence": 0.98,
+        "match_confidence": 0.9805,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          13
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "오예스336g",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3840.0,
+        "confidence": 0.99,
+        "match_confidence": 0.9909,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          14
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "부드러운쿠키블루베",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3980.0,
+        "confidence": 0.97,
+        "match_confidence": 0.9689,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          15
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "해태구문감자4",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2240.0,
+        "confidence": 0.94,
+        "match_confidence": 0.94,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          16
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "자 2 하 퍼팩트",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 7600.0,
+        "confidence": 0.97,
+        "match_confidence": 0.9672,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          17
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "미니투셔바베큐4입( ㄷ120g TE.CO.KR",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1760.0,
+        "confidence": 0.94,
+        "match_confidence": 0.937,
+        "parse_pattern": "ocr_noisy_pos_line",
+        "source_line_ids": [
+          19
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "ignored",
+        "3": "ignored",
+        "4": "ignored",
+        "5": "header",
+        "6": "header",
+        "7": "header",
+        "8": "items",
+        "9": "items",
+        "10": "items",
+        "11": "items",
+        "12": "items",
+        "13": "items",
+        "14": "items",
+        "15": "items",
+        "16": "items",
+        "17": "items",
+        "18": "items",
+        "19": "items",
+        "20": "items"
+      },
+      "consumed_line_ids": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        19
+      ],
+      "quality_score": 0.6255,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing"
+    }
+  }
+}

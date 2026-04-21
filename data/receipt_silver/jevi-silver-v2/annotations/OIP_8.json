@@ -1,0 +1,551 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:36Z",
+  "image": {
+    "file_name": "OIP (8).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (8).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": "CDL Frlo.DDHa RERR",
+    "purchased_at": "2023-08-11",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "30 미지참시 그/한불기 AE700R 217",
+        "confidence": 0.7351681391398112,
+        "bbox": [
+          [
+            18.0,
+            4.0
+          ],
+          [
+            154.0,
+            4.0
+          ],
+          [
+            154.0,
+            41.0
+          ],
+          [
+            18.0,
+            41.0
+          ]
+        ],
+        "center": [
+          86.0,
+          22.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "상상에 한한30일 이내(신선 7일) C",
+        "confidence": 0.6756148636341095,
+        "bbox": [
+          [
+            18.0,
+            33.0
+          ],
+          [
+            169.0,
+            33.0
+          ],
+          [
+            169.0,
+            58.0
+          ],
+          [
+            18.0,
+            58.0
+          ]
+        ],
+        "center": [
+          93.5,
+          45.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "(x)0/",
+        "confidence": 0.6116982102394104,
+        "bbox": [
+          [
+            18.0,
+            54.0
+          ],
+          [
+            174.0,
+            54.0
+          ],
+          [
+            174.0,
+            68.0
+          ],
+          [
+            18.0,
+            68.0
+          ]
+        ],
+        "center": [
+          96.0,
+          61.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "[P 032023-08-11 12:46 단 가 수량 P0S:2005-7775",
+        "confidence": 0.8672480384508768,
+        "bbox": [
+          [
+            18.0,
+            74.0
+          ],
+          [
+            174.0,
+            74.0
+          ],
+          [
+            174.0,
+            105.0
+          ],
+          [
+            18.0,
+            105.0
+          ]
+        ],
+        "center": [
+          96.0,
+          89.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "상품명 금예",
+        "confidence": 0.8843935430049896,
+        "bbox": [
+          [
+            27.0,
+            92.0
+          ],
+          [
+            175.0,
+            92.0
+          ],
+          [
+            175.0,
+            105.0
+          ],
+          [
+            27.0,
+            105.0
+          ]
+        ],
+        "center": [
+          101.0,
+          98.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "B301056177584 01 칠성사이다 제로 500m 1,780 3,560",
+        "confidence": 0.8848410546779633,
+        "bbox": [
+          [
+            16.0,
+            111.0
+          ],
+          [
+            175.0,
+            111.0
+          ],
+          [
+            175.0,
+            135.0
+          ],
+          [
+            16.0,
+            135.0
+          ]
+        ],
+        "center": [
+          95.5,
+          123.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "250C003172533 02 김치제육심각 1,080 1.080",
+        "confidence": 0.8740522712469101,
+        "bbox": [
+          [
+            15.0,
+            129.0
+          ],
+          [
+            176.0,
+            129.0
+          ],
+          [
+            176.0,
+            154.0
+          ],
+          [
+            15.0,
+            154.0
+          ]
+        ],
+        "center": [
+          95.5,
+          141.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "2500000172526 03 라아요 상각 1,080 1,080",
+        "confidence": 0.868795782327652,
+        "bbox": [
+          [
+            15.0,
+            149.0
+          ],
+          [
+            176.0,
+            149.0
+          ],
+          [
+            176.0,
+            173.0
+          ],
+          [
+            15.0,
+            173.0
+          ]
+        ],
+        "center": [
+          95.5,
+          161.0
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "2500000172496 04 뉴 스명참치마요 삼각 1,080 1,080",
+        "confidence": 0.908870279788971,
+        "bbox": [
+          [
+            15.0,
+            168.0
+          ],
+          [
+            176.0,
+            168.0
+          ],
+          [
+            176.0,
+            192.0
+          ],
+          [
+            15.0,
+            192.0
+          ]
+        ],
+        "center": [
+          95.5,
+          180.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "2123510149804 05 (축지)이식세 14,980 14,980",
+        "confidence": 0.9233106672763824,
+        "bbox": [
+          [
+            15.0,
+            187.0
+          ],
+          [
+            175.0,
+            187.0
+          ],
+          [
+            175.0,
+            211.0
+          ],
+          [
+            15.0,
+            211.0
+          ]
+        ],
+        "center": [
+          95.0,
+          199.0
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "8801097086201 05 스타벅스키라멜731n 2,380 2,380",
+        "confidence": 0.8889191150665283,
+        "bbox": [
+          [
+            15.0,
+            209.0
+          ],
+          [
+            175.0,
+            209.0
+          ],
+          [
+            175.0,
+            230.0
+          ],
+          [
+            15.0,
+            230.0
+          ]
+        ],
+        "center": [
+          95.0,
+          219.5
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "부가 과세분 Iv 21,964 2.196",
+        "confidence": 0.7663667559623718,
+        "bbox": [
+          [
+            49.0,
+            228.0
+          ],
+          [
+            176.0,
+            228.0
+          ],
+          [
+            176.0,
+            250.0
+          ],
+          [
+            49.0,
+            250.0
+          ]
+        ],
+        "center": [
+          112.5,
+          239.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "길제대상금에 P 개 24,160 24,160",
+        "confidence": 0.7370001688599587,
+        "bbox": [
+          [
+            15.0,
+            248.0
+          ],
+          [
+            177.0,
+            248.0
+          ],
+          [
+            177.0,
+            269.0
+          ],
+          [
+            15.0,
+            269.0
+          ]
+        ],
+        "center": [
+          96.0,
+          258.5
+        ],
+        "page_order": 12
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "B301056177584 01 칠성사이다 제로 500ml 1,780",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3560.0,
+        "confidence": 0.88,
+        "match_confidence": 0.8848,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          5
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "C003172533 02 김치제육심각",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1080.0,
+        "confidence": 0.87,
+        "match_confidence": 0.8741,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "라아요 상각",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1080.0,
+        "confidence": 0.87,
+        "match_confidence": 0.8688,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          7
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "뉴 스명참치마요 삼각",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1080.0,
+        "confidence": 0.91,
+        "match_confidence": 0.9089,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          8
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "이식세",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 14980.0,
+        "confidence": 0.92,
+        "match_confidence": 0.9233,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          9
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "스타벅스키라멜731n",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2380.0,
+        "confidence": 0.89,
+        "match_confidence": 0.8889,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          10
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.85,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "header",
+        "3": "ignored",
+        "4": "header",
+        "5": "items",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "items",
+        "10": "items",
+        "11": "totals",
+        "12": "ignored"
+      },
+      "consumed_line_ids": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "quality_score": 0.7492,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": true,
+      "vendor_fallback_source": "top_strip",
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

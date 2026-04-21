@@ -1,0 +1,134 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-21T12:55:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "R (2).jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\R (2).jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": "롯데마트",
+    "purchased_at": "2019-11-25",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "농심 오징어짬뽕 컵",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3750.0
+      },
+      {
+        "raw_name": "삼양 나가사끼짬뽕 컵",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 5040.0
+      },
+      {
+        "raw_name": "농심 쌀국수 용기면 6입",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 5940.0
+      },
+      {
+        "raw_name": "농심 새우탕 컵",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3750.0
+      },
+      {
+        "raw_name": "농심 신라면 소컵",
+        "normalized_name": null,
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 9000.0
+      },
+      {
+        "raw_name": "농심 너구리 컵",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3750.0
+      },
+      {
+        "raw_name": "농심 김치 사발면",
+        "normalized_name": null,
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 8400.0
+      },
+      {
+        "raw_name": "삼양 불닭볶음면",
+        "normalized_name": null,
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 7960.0
+      },
+      {
+        "raw_name": "농심 짜파게티",
+        "normalized_name": null,
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 11550.0
+      },
+      {
+        "raw_name": "청정원 순창 찰고추장",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 12780.0
+      },
+      {
+        "raw_name": "오뚜기 옛날참기름",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4480.0
+      },
+      {
+        "raw_name": "삼양 불닭소스",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3280.0
+      },
+      {
+        "raw_name": "청정원 순창 초고추장",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2980.0
+      },
+      {
+        "raw_name": "초이스엘 생와사비",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2350.0
+      }
+    ],
+    "uncertain_items": [],
+    "excluded_rows": [
+      {
+        "raw_name": "OnlyPrice 삼중스펀지 수세미",
+        "reason": "non_food_supply"
+      }
+    ],
+    "totals": {
+      "subtotal": 78191.0,
+      "tax": 7819.0,
+      "total": 86010.0,
+      "payment_amount": 86010.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

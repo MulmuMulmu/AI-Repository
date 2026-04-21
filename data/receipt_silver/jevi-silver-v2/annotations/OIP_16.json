@@ -1,0 +1,465 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:27:54Z",
+  "image": {
+    "file_name": "OIP (16).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (16).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2021-04-29",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "롯데아느 -H 135-85-28034",
+        "confidence": 0.7070688406626383,
+        "bbox": [
+          [
+            12.0,
+            3.0
+          ],
+          [
+            115.0,
+            3.0
+          ],
+          [
+            115.0,
+            20.0
+          ],
+          [
+            12.0,
+            20.0
+          ]
+        ],
+        "center": [
+          63.5,
+          11.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "/Y OK",
+        "confidence": 0.5993060767650604,
+        "bbox": [
+          [
+            5.0,
+            21.0
+          ],
+          [
+            157.0,
+            21.0
+          ],
+          [
+            157.0,
+            44.0
+          ],
+          [
+            5.0,
+            44.0
+          ]
+        ],
+        "center": [
+          81.0,
+          32.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "체크키드취소시대금원급은최대일소요 고원/을 구대점에서만가능(결지기드지장)",
+        "confidence": 0.7238597571849823,
+        "bbox": [
+          [
+            4.0,
+            40.0
+          ],
+          [
+            179.0,
+            40.0
+          ],
+          [
+            179.0,
+            63.0
+          ],
+          [
+            4.0,
+            63.0
+          ]
+        ],
+        "center": [
+          91.5,
+          51.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "[] 2021-04-29 17=26 P0S: 0008-0145",
+        "confidence": 0.9606997668743134,
+        "bbox": [
+          [
+            4.0,
+            58.0
+          ],
+          [
+            180.0,
+            58.0
+          ],
+          [
+            180.0,
+            75.0
+          ],
+          [
+            4.0,
+            75.0
+          ]
+        ],
+        "center": [
+          92.0,
+          66.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "상품명 단가 수람 2먹",
+        "confidence": 0.7126508951187134,
+        "bbox": [
+          [
+            3.0,
+            81.0
+          ],
+          [
+            181.0,
+            81.0
+          ],
+          [
+            181.0,
+            96.0
+          ],
+          [
+            3.0,
+            96.0
+          ]
+        ],
+        "center": [
+          92.0,
+          88.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "삼진어목관관한 그들어국 다이소 균일가 (2,001)2,000 2,000",
+        "confidence": 0.8527519901593527,
+        "bbox": [
+          [
+            4.0,
+            102.0
+          ],
+          [
+            180.0,
+            102.0
+          ],
+          [
+            180.0,
+            129.0
+          ],
+          [
+            4.0,
+            129.0
+          ]
+        ],
+        "center": [
+          92.0,
+          115.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "990 GAP 진환경 교마사송이 3,780 3,780",
+        "confidence": 0.8808210492134094,
+        "bbox": [
+          [
+            6.0,
+            122.0
+          ],
+          [
+            179.0,
+            122.0
+          ],
+          [
+            179.0,
+            147.0
+          ],
+          [
+            6.0,
+            147.0
+          ]
+        ],
+        "center": [
+          92.5,
+          134.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "오뚜기 키레 (약간매문맛 991 5,380 990",
+        "confidence": 0.7832970470190048,
+        "bbox": [
+          [
+            7.0,
+            142.0
+          ],
+          [
+            179.0,
+            142.0
+          ],
+          [
+            179.0,
+            172.0
+          ],
+          [
+            7.0,
+            172.0
+          ]
+        ],
+        "center": [
+          93.0,
+          157.0
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "대이수2일가(1,001,000 5,330 1,000 866",
+        "confidence": 0.8213794529438019,
+        "bbox": [
+          [
+            8.0,
+            160.0
+          ],
+          [
+            177.0,
+            160.0
+          ],
+          [
+            177.0,
+            189.0
+          ],
+          [
+            8.0,
+            189.0
+          ]
+        ],
+        "center": [
+          92.5,
+          174.5
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "과세기의 연시 월기역 세 11,065 1.105",
+        "confidence": 0.6149154633283616,
+        "bbox": [
+          [
+            46.0,
+            179.0
+          ],
+          [
+            175.0,
+            179.0
+          ],
+          [
+            175.0,
+            209.0
+          ],
+          [
+            46.0,
+            209.0
+          ]
+        ],
+        "center": [
+          110.5,
+          194.0
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "약 I 13,160 13,160",
+        "confidence": 0.6177585870027542,
+        "bbox": [
+          [
+            49.0,
+            201.0
+          ],
+          [
+            176.0,
+            201.0
+          ],
+          [
+            176.0,
+            230.0
+          ],
+          [
+            49.0,
+            230.0
+          ]
+        ],
+        "center": [
+          112.5,
+          215.5
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "제지 () 01322 M8762 I",
+        "confidence": 0.5855193644762039,
+        "bbox": [
+          [
+            14.0,
+            230.0
+          ],
+          [
+            175.0,
+            230.0
+          ],
+          [
+            175.0,
+            263.0
+          ],
+          [
+            14.0,
+            263.0
+          ]
+        ],
+        "center": [
+          94.5,
+          246.5
+        ],
+        "page_order": 11
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "삼진어목관관한 그들어국 다이소 균일가",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2000.0,
+        "confidence": 0.85,
+        "match_confidence": 0.8528,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          5
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "GAP 진환경 교마사송이",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3780.0,
+        "confidence": 0.88,
+        "match_confidence": 0.8808,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "오뚜기 키레 (약간매문맛 991 5,380",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 990.0,
+        "confidence": 0.78,
+        "match_confidence": 0.7833,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          7
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "unresolved_items",
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.85,
+      "qwen_used": false,
+      "unresolved_groups": 1,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "header",
+        "3": "ignored",
+        "4": "header",
+        "5": "items",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "totals",
+        "10": "ignored",
+        "11": "ignored"
+      },
+      "consumed_line_ids": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "quality_score": 0.8452,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

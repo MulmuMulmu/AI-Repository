@@ -1,0 +1,694 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:10Z",
+  "image": {
+    "file_name": "OIP (20).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (20).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": "2aad=a25",
+    "purchased_at": null,
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "싱품 년기 수림 금액",
+        "confidence": 0.7928739041090012,
+        "bbox": [
+          [
+            11.0,
+            10.0
+          ],
+          [
+            197.0,
+            10.0
+          ],
+          [
+            197.0,
+            26.0
+          ],
+          [
+            11.0,
+            26.0
+          ]
+        ],
+        "center": [
+          104.0,
+          18.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "200078 한은) 생목심(구이용) 13,450 13,450",
+        "confidence": 0.904612734913826,
+        "bbox": [
+          [
+            6.0,
+            30.0
+          ],
+          [
+            197.0,
+            30.0
+          ],
+          [
+            197.0,
+            59.0
+          ],
+          [
+            6.0,
+            59.0
+          ]
+        ],
+        "center": [
+          101.5,
+          44.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "2808144263032 \"총원10(재사용봉우날장) 180 - 180",
+        "confidence": 0.8449431180953979,
+        "bbox": [
+          [
+            7.0,
+            52.0
+          ],
+          [
+            197.0,
+            52.0
+          ],
+          [
+            197.0,
+            79.0
+          ],
+          [
+            7.0,
+            79.0
+          ]
+        ],
+        "center": [
+          102.0,
+          65.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "200074 은)별집 심경상(입해지) 15,970 15,970",
+        "confidence": 0.9225302189588547,
+        "bbox": [
+          [
+            7.0,
+            73.0
+          ],
+          [
+            198.0,
+            73.0
+          ],
+          [
+            198.0,
+            102.0
+          ],
+          [
+            7.0,
+            102.0
+          ]
+        ],
+        "center": [
+          102.5,
+          87.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "202240 ·청양고수 1,390 1,390",
+        "confidence": 0.8710475564002991,
+        "bbox": [
+          [
+            8.0,
+            95.0
+          ],
+          [
+            198.0,
+            95.0
+          ],
+          [
+            198.0,
+            122.0
+          ],
+          [
+            8.0,
+            122.0
+          ]
+        ],
+        "center": [
+          103.0,
+          108.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "202210 (CJ)사각햇번300g 1,900 1,900",
+        "confidence": 0.9147389978170395,
+        "bbox": [
+          [
+            8.0,
+            128.0
+          ],
+          [
+            199.0,
+            128.0
+          ],
+          [
+            199.0,
+            153.0
+          ],
+          [
+            8.0,
+            153.0
+          ]
+        ],
+        "center": [
+          103.5,
+          140.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "B601007054195 (CJ)#2008 2,500 1 2.500",
+        "confidence": 0.9009837150573731,
+        "bbox": [
+          [
+            7.0,
+            148.0
+          ],
+          [
+            198.0,
+            148.0
+          ],
+          [
+            198.0,
+            175.0
+          ],
+          [
+            7.0,
+            175.0
+          ]
+        ],
+        "center": [
+          102.5,
+          161.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "8801007105618 비부이스4기지맛285g 1,800 1 1,600",
+        "confidence": 0.9145288467407227,
+        "bbox": [
+          [
+            7.0,
+            169.0
+          ],
+          [
+            199.0,
+            169.0
+          ],
+          [
+            199.0,
+            196.0
+          ],
+          [
+            7.0,
+            196.0
+          ]
+        ],
+        "center": [
+          103.0,
+          182.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "8601074258579 고35001350n1 6,300 1 6,300",
+        "confidence": 0.940714168548584,
+        "bbox": [
+          [
+            9.0,
+            194.0
+          ],
+          [
+            199.0,
+            194.0
+          ],
+          [
+            199.0,
+            217.0
+          ],
+          [
+            9.0,
+            217.0
+          ]
+        ],
+        "center": [
+          104.0,
+          205.5
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "8E01094017200 진로(뉴트위소신병)3 1,500 1 1,50",
+        "confidence": 0.84705650806427,
+        "bbox": [
+          [
+            7.0,
+            212.0
+          ],
+          [
+            199.0,
+            212.0
+          ],
+          [
+            199.0,
+            238.0
+          ],
+          [
+            7.0,
+            238.0
+          ]
+        ],
+        "center": [
+          103.0,
+          225.0
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "*깐양과 8601048101023 1,E50 1 1,650",
+        "confidence": 0.8585336565971374,
+        "bbox": [
+          [
+            6.0,
+            233.0
+          ],
+          [
+            199.0,
+            233.0
+          ],
+          [
+            199.0,
+            260.0
+          ],
+          [
+            6.0,
+            260.0
+          ]
+        ],
+        "center": [
+          102.5,
+          246.5
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "202037 2,620 1 2,620",
+        "confidence": 0.9905341416597366,
+        "bbox": [
+          [
+            6.0,
+            254.0
+          ],
+          [
+            200.0,
+            254.0
+          ],
+          [
+            200.0,
+            272.0
+          ],
+          [
+            6.0,
+            272.0
+          ]
+        ],
+        "center": [
+          103.0,
+          263.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "키트 구매금액 49,060 49,060",
+        "confidence": 0.8530762195587158,
+        "bbox": [
+          [
+            8.0,
+            278.0
+          ],
+          [
+            200.0,
+            278.0
+          ],
+          [
+            200.0,
+            304.0
+          ],
+          [
+            8.0,
+            304.0
+          ]
+        ],
+        "center": [
+          104.0,
+          291.0
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "반은급액 49,060",
+        "confidence": 0.9410615563392639,
+        "bbox": [
+          [
+            9.0,
+            300.0
+          ],
+          [
+            199.0,
+            300.0
+          ],
+          [
+            199.0,
+            315.0
+          ],
+          [
+            9.0,
+            315.0
+          ]
+        ],
+        "center": [
+          104.0,
+          307.5
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "연 세 *표시는 면체 용육입니다. 35,510",
+        "confidence": 0.8098669648170471,
+        "bbox": [
+          [
+            7.0,
+            321.0
+          ],
+          [
+            164.0,
+            321.0
+          ],
+          [
+            164.0,
+            348.0
+          ],
+          [
+            7.0,
+            348.0
+          ]
+        ],
+        "center": [
+          85.5,
+          334.5
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "괴 H 가 세 세 12,318 1,232",
+        "confidence": 0.7527746508518854,
+        "bbox": [
+          [
+            11.0,
+            344.0
+          ],
+          [
+            164.0,
+            344.0
+          ],
+          [
+            164.0,
+            370.0
+          ],
+          [
+            11.0,
+            370.0
+          ]
+        ],
+        "center": [
+          87.5,
+          357.0
+        ],
+        "page_order": 15
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "한은 생목심",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 13450.0,
+        "confidence": 0.9,
+        "match_confidence": 0.9046,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          1
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "은)별집 심경상",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 15970.0,
+        "confidence": 0.92,
+        "match_confidence": 0.9225,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          3
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "·청양고수",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1390.0,
+        "confidence": 0.87,
+        "match_confidence": 0.871,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          4
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "사각햇번300g",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1900.0,
+        "confidence": 0.91,
+        "match_confidence": 0.9147,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          5
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "비부이스4기지맛285g 1,800",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0,
+        "confidence": 0.91,
+        "match_confidence": 0.9145,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          7
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "고35001350n1",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6300.0,
+        "confidence": 0.94,
+        "match_confidence": 0.9407,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          8
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "E01094017200 진로 3 1,500 1 1,50",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": null,
+        "unit": null,
+        "amount": 50.0,
+        "confidence": 0.85,
+        "match_confidence": 0.8471,
+        "parse_pattern": "single_line",
+        "source_line_ids": [
+          9
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item",
+          "missing_quantity_or_unit"
+        ]
+      },
+      {
+        "raw_name": "*깐양과 8601048101023 1,E50 1 1,650",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2620.0,
+        "confidence": 0.86,
+        "match_confidence": 0.9245,
+        "parse_pattern": "name_then_code_numeric_detail",
+        "source_line_ids": [
+          10,
+          11
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "payment_amount": 49060.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_purchased_at",
+      "unresolved_items",
+      "small_image",
+      "total_mismatch"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 1,
+      "section_map": {
+        "0": "header",
+        "1": "items",
+        "2": "ignored",
+        "3": "items",
+        "4": "items",
+        "5": "items",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "items",
+        "10": "items",
+        "11": "items",
+        "12": "payment",
+        "13": "ignored",
+        "14": "ignored",
+        "15": "ignored"
+      },
+      "consumed_line_ids": [
+        1,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "quality_score": 0.706,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": true,
+      "vendor_fallback_source": "top_strip",
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:36Z",
+  "image": {
+    "file_name": "mart_column-0194.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mart_column-0194.png"
+  },
+  "metadata": {
+    "layout_type": "mart_column",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "low",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "홈플러스",
+    "purchased_at": "2024-02-05",
+    "items": [
+      {
+        "raw_name": "계란 10구",
+        "normalized_name": "계란 10구",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 4590.0,
+        "unit_price": 4590.0,
+        "barcode": "8800193000123"
+      },
+      {
+        "raw_name": "라라스윗 바닐라파인트474",
+        "normalized_name": "라라스윗 바닐라파인트474",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 20700.0,
+        "unit_price": 6900.0,
+        "barcode": "8800193001123"
+      },
+      {
+        "raw_name": "라라스윗 초코파인트474ml",
+        "normalized_name": "라라스윗 초코파인트474ml",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6900.0,
+        "unit_price": 6900.0,
+        "barcode": "8800193002123"
+      },
+      {
+        "raw_name": "속이편한 누룽지",
+        "normalized_name": "속이편한 누룽지",
+        "quantity": 2.0,
+        "unit": "봉",
+        "amount": 11200.0,
+        "unit_price": 5600.0,
+        "barcode": "8800193003123"
+      }
+    ],
+    "totals": {
+      "subtotal": 43390.0,
+      "tax": 4339.0,
+      "total": 47729.0,
+      "payment_amount": 47729.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "mart_column"
+    }
+  }
+}

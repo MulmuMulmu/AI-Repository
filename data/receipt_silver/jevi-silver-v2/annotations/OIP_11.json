@@ -1,0 +1,402 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:27:37Z",
+  "image": {
+    "file_name": "OIP (11).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (11).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2023-05-12",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "[영수증]",
+        "confidence": 0.9455845952033997,
+        "bbox": [
+          [
+            63.0,
+            16.0
+          ],
+          [
+            115.0,
+            16.0
+          ],
+          [
+            115.0,
+            34.0
+          ],
+          [
+            63.0,
+            34.0
+          ]
+        ],
+        "center": [
+          89.0,
+          25.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": ")지01106 [매장명] 판교십 (막동점)/130-85-7045 소서을정난구학동로158(논면, 불암",
+        "confidence": 0.7914308508237203,
+        "bbox": [
+          [
+            6.0,
+            38.0
+          ],
+          [
+            190.0,
+            38.0
+          ],
+          [
+            190.0,
+            66.0
+          ],
+          [
+            6.0,
+            66.0
+          ]
+        ],
+        "center": [
+          98.0,
+          52.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "[영주총]20230512-01-0016 [010일]2023-05-12 12:21:01 ][TB1 (-111-1111",
+        "confidence": 0.8711060484250387,
+        "bbox": [
+          [
+            5.0,
+            62.0
+          ],
+          [
+            141.0,
+            62.0
+          ],
+          [
+            141.0,
+            94.0
+          ],
+          [
+            5.0,
+            94.0
+          ]
+        ],
+        "center": [
+          73.0,
+          78.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "인동만우국반 상품명 11,000 답가수량 금약",
+        "confidence": 0.8392688751220703,
+        "bbox": [
+          [
+            5.0,
+            95.0
+          ],
+          [
+            173.0,
+            95.0
+          ],
+          [
+            173.0,
+            126.0
+          ],
+          [
+            5.0,
+            126.0
+          ]
+        ],
+        "center": [
+          89.0,
+          110.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "특회비법밥(영천) 19,000 N - 13,000 22,000",
+        "confidence": 0.8189378976821899,
+        "bbox": [
+          [
+            7.0,
+            116.0
+          ],
+          [
+            173.0,
+            116.0
+          ],
+          [
+            173.0,
+            136.0
+          ],
+          [
+            7.0,
+            136.0
+          ]
+        ],
+        "center": [
+          90.0,
+          126.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "만계급액 부가서과세족품가액 35,000 31.819",
+        "confidence": 0.8315334171056747,
+        "bbox": [
+          [
+            6.0,
+            140.0
+          ],
+          [
+            171.0,
+            140.0
+          ],
+          [
+            171.0,
+            168.0
+          ],
+          [
+            6.0,
+            168.0
+          ]
+        ],
+        "center": [
+          88.5,
+          154.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "Y 가 세 3.181",
+        "confidence": 0.7311405763030052,
+        "bbox": [
+          [
+            42.0,
+            163.0
+          ],
+          [
+            172.0,
+            163.0
+          ],
+          [
+            172.0,
+            178.0
+          ],
+          [
+            42.0,
+            178.0
+          ]
+        ],
+        "center": [
+          107.0,
+          170.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "밝을클 35.000 35,000",
+        "confidence": 0.7888580958048502,
+        "bbox": [
+          [
+            1.0,
+            175.0
+          ],
+          [
+            174.0,
+            175.0
+          ],
+          [
+            174.0,
+            205.0
+          ],
+          [
+            1.0,
+            205.0
+          ]
+        ],
+        "center": [
+          87.5,
+          190.0
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "SIEBN MN [IT(BLRONVN 35,000",
+        "confidence": 0.6503680745760599,
+        "bbox": [
+          [
+            6.0,
+            206.0
+          ],
+          [
+            174.0,
+            206.0
+          ],
+          [
+            174.0,
+            233.0
+          ],
+          [
+            6.0,
+            233.0
+          ]
+        ],
+        "center": [
+          90.0,
+          219.5
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "카드/매입사:1B기업카드/비비 드번호:4140-00-x0-8956 :35.000(일시금)",
+        "confidence": 0.7746306856473287,
+        "bbox": [
+          [
+            7.0,
+            231.0
+          ],
+          [
+            133.0,
+            231.0
+          ],
+          [
+            133.0,
+            261.0
+          ],
+          [
+            7.0,
+            261.0
+          ]
+        ],
+        "center": [
+          70.0,
+          246.0
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "단말기:12458961 중민/기행점:79898173/70786166 인일 시:2023-06-12 12:21:01",
+        "confidence": 0.8220194975535074,
+        "bbox": [
+          [
+            7.0,
+            254.0
+          ],
+          [
+            138.0,
+            254.0
+          ],
+          [
+            138.0,
+            284.0
+          ],
+          [
+            7.0,
+            284.0
+          ]
+        ],
+        "center": [
+          72.5,
+          269.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "I2ICBPY -SOUIUN",
+        "confidence": 0.5976378917694092,
+        "bbox": [
+          [
+            26.0,
+            281.0
+          ],
+          [
+            97.0,
+            281.0
+          ],
+          [
+            97.0,
+            290.0
+          ],
+          [
+            26.0,
+            290.0
+          ]
+        ],
+        "center": [
+          61.5,
+          285.5
+        ],
+        "page_order": 11
+      }
+    ],
+    "items": [],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.85,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "ignored",
+        "3": "header",
+        "4": "items",
+        "5": "totals",
+        "6": "ignored",
+        "7": "ignored",
+        "8": "ignored",
+        "9": "totals",
+        "10": "header",
+        "11": "ignored"
+      },
+      "consumed_line_ids": [
+        4
+      ],
+      "quality_score": 0.94,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

@@ -1,0 +1,448 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:01Z",
+  "image": {
+    "file_name": "OIP (18).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (18).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2019-10-25",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "402-80-28903 롯데스평(주햇데마브 집주점 H3",
+        "confidence": 0.6759187579154968,
+        "bbox": [
+          [
+            62.0,
+            3.0
+          ],
+          [
+            173.0,
+            3.0
+          ],
+          [
+            173.0,
+            25.0
+          ],
+          [
+            62.0,
+            25.0
+          ]
+        ],
+        "center": [
+          117.5,
+          14.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "영수증 비지산지 교환/원 일가(30원1) 데마는 무천로 240 1E:1035-249-2:00",
+        "confidence": 0.7061246633529663,
+        "bbox": [
+          [
+            5.0,
+            20.0
+          ],
+          [
+            175.0,
+            20.0
+          ],
+          [
+            175.0,
+            50.0
+          ],
+          [
+            5.0,
+            50.0
+          ]
+        ],
+        "center": [
+          90.0,
+          35.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "제그는 쉬소시 니금원급은 해내일 소요 유의/환금 구매첨에시만가니(격제카 시심)",
+        "confidence": 0.6039031445980072,
+        "bbox": [
+          [
+            5.0,
+            41.0
+          ],
+          [
+            183.0,
+            41.0
+          ],
+          [
+            183.0,
+            71.0
+          ],
+          [
+            5.0,
+            71.0
+          ]
+        ],
+        "center": [
+          94.0,
+          56.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "년금1소득공제 [6]2019-10-25 17:0B P0S:0007-0249",
+        "confidence": 0.8183616399765015,
+        "bbox": [
+          [
+            5.0,
+            62.0
+          ],
+          [
+            184.0,
+            62.0
+          ],
+          [
+            184.0,
+            93.0
+          ],
+          [
+            5.0,
+            93.0
+          ]
+        ],
+        "center": [
+          94.5,
+          77.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "신품명 4 가 수량 금 액",
+        "confidence": 0.6545610626538595,
+        "bbox": [
+          [
+            7.0,
+            94.0
+          ],
+          [
+            186.0,
+            94.0
+          ],
+          [
+            186.0,
+            114.0
+          ],
+          [
+            7.0,
+            114.0
+          ]
+        ],
+        "center": [
+          96.5,
+          104.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "롯더 몬스터칙촉 니레이수 960300 208,000",
+        "confidence": 0.8159320751825968,
+        "bbox": [
+          [
+            6.0,
+            119.0
+          ],
+          [
+            183.0,
+            119.0
+          ],
+          [
+            183.0,
+            144.0
+          ],
+          [
+            6.0,
+            144.0
+          ]
+        ],
+        "center": [
+          94.5,
+          131.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "나시 단국기백 부 가 시 261,B18 26.192",
+        "confidence": 0.7527007907629013,
+        "bbox": [
+          [
+            46.0,
+            141.0
+          ],
+          [
+            184.0,
+            141.0
+          ],
+          [
+            184.0,
+            164.0
+          ],
+          [
+            46.0,
+            164.0
+          ]
+        ],
+        "center": [
+          115.0,
+          152.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "k8 설지금적 28B,U00 288,000",
+        "confidence": 0.6557014137506485,
+        "bbox": [
+          [
+            45.0,
+            162.0
+          ],
+          [
+            184.0,
+            162.0
+          ],
+          [
+            184.0,
+            186.0
+          ],
+          [
+            45.0,
+            186.0
+          ]
+        ],
+        "center": [
+          114.5,
+          174.0
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "건 금 2B8,000",
+        "confidence": 0.7572646141052246,
+        "bbox": [
+          [
+            5.0,
+            194.0
+          ],
+          [
+            184.0,
+            194.0
+          ],
+          [
+            184.0,
+            208.0
+          ],
+          [
+            5.0,
+            208.0
+          ]
+        ],
+        "center": [
+          94.5,
+          201.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "현 금 거스트 받은크백 300,000 12,000",
+        "confidence": 0.8267259001731873,
+        "bbox": [
+          [
+            5.0,
+            213.0
+          ],
+          [
+            186.0,
+            213.0
+          ],
+          [
+            186.0,
+            240.0
+          ],
+          [
+            5.0,
+            240.0
+          ]
+        ],
+        "center": [
+          95.5,
+          226.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "신문의인변호 연금수승민 *245642 X2E303345",
+        "confidence": 0.6959064155817032,
+        "bbox": [
+          [
+            4.0,
+            256.0
+          ],
+          [
+            185.0,
+            256.0
+          ],
+          [
+            185.0,
+            285.0
+          ],
+          [
+            4.0,
+            285.0
+          ]
+        ],
+        "center": [
+          94.5,
+          270.5
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "t0:/(금.k(원의125-2)",
+        "confidence": 0.7211575508117676,
+        "bbox": [
+          [
+            4.0,
+            278.0
+          ],
+          [
+            148.0,
+            278.0
+          ],
+          [
+            148.0,
+            295.0
+          ],
+          [
+            4.0,
+            295.0
+          ]
+        ],
+        "center": [
+          76.0,
+          286.5
+        ],
+        "page_order": 11
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "롯더 몬스터칙촉 니레이수 960300",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 8000.0,
+        "confidence": 0.82,
+        "match_confidence": 0.8159,
+        "parse_pattern": "compact_qty_amount",
+        "source_line_ids": [
+          5
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "나시 단국기백 부 가 시 261,B18",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 26192.0,
+        "confidence": 0.75,
+        "match_confidence": 0.7527,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "payment_amount": 12000.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "unresolved_items",
+      "small_image",
+      "total_mismatch"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.85,
+      "qwen_used": false,
+      "unresolved_groups": 1,
+      "section_map": {
+        "0": "header",
+        "1": "ignored",
+        "2": "header",
+        "3": "header",
+        "4": "header",
+        "5": "items",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "payment",
+        "10": "ignored",
+        "11": "ignored"
+      },
+      "consumed_line_ids": [
+        5,
+        6,
+        8
+      ],
+      "quality_score": 0.8039,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

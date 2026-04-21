@@ -9,12 +9,27 @@
       "reason": "ocr_typo"
     },
     {
+      "raw": "어쉬밀크클릿",
+      "standard": "허쉬밀크초콜릿",
+      "reason": "ocr_typo"
+    },
+    {
       "raw": "투썸딸기피지",
       "standard": "투썸딸기피치",
       "reason": "ocr_typo"
     },
     {
       "raw": "투썸알밀크티",
+      "standard": "투썸로얄밀크티",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "투썰로알밀크티",
+      "standard": "투썸로얄밀크티",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "투썸로알밀크티",
       "standard": "투썸로얄밀크티",
       "reason": "ocr_typo"
     },
@@ -207,6 +222,26 @@
       "raw": "속이편한 누룽지(5입)",
       "standard": "속이편한 누룽지",
       "reason": "pack_size_cleanup"
+    },
+    {
+      "raw": "L맥주바이젠미니",
+      "standard": "맥주 바이젠 미니",
+      "reason": "manual_receipt_alias"
+    },
+    {
+      "raw": "이에",
+      "standard": "호레오화이트",
+      "reason": "manual_receipt_alias"
+    },
+    {
+      "raw": "롯데앤디카페조릿 다크",
+      "standard": "롯데 앤디카페 초콜릿 다크빈",
+      "reason": "manual_receipt_alias"
+    },
+    {
+      "raw": "롯데 앤디카페조릿 다크",
+      "standard": "롯데 앤디카페 초콜릿 다크빈",
+      "reason": "manual_receipt_alias"
     },
     {
       "raw": "초코빼빼로지암 L",

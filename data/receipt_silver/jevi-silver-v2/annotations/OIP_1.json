@@ -1,0 +1,323 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:27:21Z",
+  "image": {
+    "file_name": "OIP (1).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (1).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "에누리 *8801045522944 3,100 3,100 -620",
+        "confidence": 0.9945443630218506,
+        "bbox": [
+          [
+            27.0,
+            0.0
+          ],
+          [
+            267.0,
+            0.0
+          ],
+          [
+            267.0,
+            25.0
+          ],
+          [
+            27.0,
+            25.0
+          ]
+        ],
+        "center": [
+          147.0,
+          12.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "*8801551402013 015애니파워부탄가스 3,280 I 3,280",
+        "confidence": 0.8516955256462098,
+        "bbox": [
+          [
+            26.0,
+            21.0
+          ],
+          [
+            266.0,
+            21.0
+          ],
+          [
+            266.0,
+            53.0
+          ],
+          [
+            26.0,
+            53.0
+          ]
+        ],
+        "center": [
+          146.0,
+          37.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "*8B01075007602 016사조고추참치100g*3 2,220 1 2,220",
+        "confidence": 0.985854423046112,
+        "bbox": [
+          [
+            26.0,
+            47.0
+          ],
+          [
+            264.0,
+            47.0
+          ],
+          [
+            264.0,
+            75.0
+          ],
+          [
+            26.0,
+            75.0
+          ]
+        ],
+        "center": [
+          145.0,
+          61.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "017 *8801047815594 동원야채참치100g*3 4,480 4,480",
+        "confidence": 0.9896423101425171,
+        "bbox": [
+          [
+            27.0,
+            72.0
+          ],
+          [
+            265.0,
+            72.0
+          ],
+          [
+            265.0,
+            100.0
+          ],
+          [
+            27.0,
+            100.0
+          ]
+        ],
+        "center": [
+          146.0,
+          86.0
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "부가세 면세 물품가액 부가세 과세물품가액 95,409 2,590",
+        "confidence": 0.9414924383163452,
+        "bbox": [
+          [
+            26.0,
+            110.0
+          ],
+          [
+            266.0,
+            110.0
+          ],
+          [
+            266.0,
+            138.0
+          ],
+          [
+            26.0,
+            138.0
+          ]
+        ],
+        "center": [
+          146.0,
+          124.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "합 상품가격에 이미 포함된 부가세( 계 107,540 9,541)",
+        "confidence": 0.9668174266815186,
+        "bbox": [
+          [
+            25.0,
+            137.0
+          ],
+          [
+            265.0,
+            137.0
+          ],
+          [
+            265.0,
+            165.0
+          ],
+          [
+            25.0,
+            165.0
+          ]
+        ],
+        "center": [
+          145.0,
+          151.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "부가세 과세 품목입니다. 상품코드 앞 * 표시가 되어 있는 품목은",
+        "confidence": 0.891249418258667,
+        "bbox": [
+          [
+            23.0,
+            174.0
+          ],
+          [
+            250.0,
+            174.0
+          ],
+          [
+            250.0,
+            202.0
+          ],
+          [
+            23.0,
+            202.0
+          ]
+        ],
+        "center": [
+          136.5,
+          188.0
+        ],
+        "page_order": 6
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "애니파워부탄가스 3,280 I",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3280.0,
+        "confidence": 0.85,
+        "match_confidence": 0.8517,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          1
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "*8B01075007602 016사조고추참치100g*3",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2220.0,
+        "confidence": 0.99,
+        "match_confidence": 0.9859,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          2
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "동원야채참치100g*3",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4480.0,
+        "confidence": 0.99,
+        "match_confidence": 0.9896,
+        "parse_pattern": "ocr_noisy_pos_line_inferred_qty",
+        "source_line_ids": [
+          3
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "tax": 9541.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "missing_purchased_at",
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "ignored",
+        "1": "items",
+        "2": "items",
+        "3": "items",
+        "4": "totals",
+        "5": "totals",
+        "6": "totals"
+      },
+      "consumed_line_ids": [
+        1,
+        2,
+        3
+      ],
+      "quality_score": 0.7194,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": -620.0
+    }
+  }
+}

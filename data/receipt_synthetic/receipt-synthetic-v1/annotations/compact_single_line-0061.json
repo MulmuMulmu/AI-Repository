@@ -1,0 +1,67 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:29Z",
+  "image": {
+    "file_name": "compact_single_line-0061.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\compact_single_line-0061.png"
+  },
+  "metadata": {
+    "layout_type": "compact_single_line",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "GS25",
+    "purchased_at": "2023-01-07",
+    "items": [
+      {
+        "raw_name": "허쉬쿠키앤크림",
+        "normalized_name": "허쉬쿠키앤크림",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0,
+        "unit_price": 1600.0,
+        "barcode": "8800060000123"
+      },
+      {
+        "raw_name": "허쉬쿠키앤초코",
+        "normalized_name": "허쉬쿠키앤초코",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 3200.0,
+        "unit_price": 1600.0,
+        "barcode": "8800060001123"
+      },
+      {
+        "raw_name": "호가든캔330ml",
+        "normalized_name": "호가든캔330ml",
+        "quantity": 3.0,
+        "unit": "캔",
+        "amount": 10500.0,
+        "unit_price": 3500.0,
+        "barcode": "8800060002123"
+      }
+    ],
+    "totals": {
+      "subtotal": 15300.0,
+      "tax": 1530.0,
+      "total": 16830.0,
+      "payment_amount": 16830.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "compact_single_line"
+    }
+  }
+}

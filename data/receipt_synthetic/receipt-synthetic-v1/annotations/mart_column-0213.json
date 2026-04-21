@@ -1,0 +1,85 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:38Z",
+  "image": {
+    "file_name": "mart_column-0213.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mart_column-0213.png"
+  },
+  "metadata": {
+    "layout_type": "mart_column",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "low",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "롯데마트",
+    "purchased_at": "2024-09-24",
+    "items": [
+      {
+        "raw_name": "양파",
+        "normalized_name": "양파",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 2970.0,
+        "unit_price": 990.0,
+        "barcode": "8800212000123"
+      },
+      {
+        "raw_name": "대파",
+        "normalized_name": "대파",
+        "quantity": 1.0,
+        "unit": "단",
+        "amount": 2480.0,
+        "unit_price": 2480.0,
+        "barcode": "8800212001123"
+      },
+      {
+        "raw_name": "계란 10구",
+        "normalized_name": "계란 10구",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 4590.0,
+        "unit_price": 4590.0,
+        "barcode": "8800212002123"
+      },
+      {
+        "raw_name": "라라스윗 바닐라파인트474",
+        "normalized_name": "라라스윗 바닐라파인트474",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 20700.0,
+        "unit_price": 6900.0,
+        "barcode": "8800212003123"
+      },
+      {
+        "raw_name": "라라스윗 초코파인트474ml",
+        "normalized_name": "라라스윗 초코파인트474ml",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6900.0,
+        "unit_price": 6900.0,
+        "barcode": "8800212004123"
+      }
+    ],
+    "totals": {
+      "subtotal": 37640.0,
+      "tax": 3764.0,
+      "total": 41404.0,
+      "payment_amount": 41404.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "mart_column"
+    }
+  }
+}

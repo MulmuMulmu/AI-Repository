@@ -56,6 +56,15 @@ def test_match_product_to_ingredient_uses_new_brand_product_mappings() -> None:
     assert main._match_product_to_ingredient("쿠크다스커피144G")["ingredientName"] == "커피"
     assert main._match_product_to_ingredient("유기농 바나나콘")["ingredientName"] == "바나나"
     assert main._match_product_to_ingredient("해태구문감자4")["ingredientName"] == "감자"
+    assert main._match_product_to_ingredient("양념닭주물럭2.2kg")["ingredientName"] == "닭고기"
+    assert main._match_product_to_ingredient("청정원 서해안 까나리")["ingredientName"] == "까나리액젓"
+    assert main._match_product_to_ingredient("하인즈 유기농케찹 90")["ingredientName"] == "케찹"
+    assert main._match_product_to_ingredient("멜오에이지 파마산분")["ingredientName"] == "파마산치즈"
+    assert main._match_product_to_ingredient("속이편한 누룽지(5입)")["ingredientName"] == "누룽지"
+    assert main._match_product_to_ingredient("*국내산 양상추 2입")["ingredientName"] == "양상추"
+    assert main._match_product_to_ingredient("*완숙토마토 4kg/박스")["ingredientName"] == "토마토"
+    assert main._match_product_to_ingredient("갈바니 리코타 치즈4")["ingredientName"] == "리코타 치즈"
+    assert main._match_product_to_ingredient("블렌드 슈레드 치즈1kg")["ingredientName"] == "치즈"
 
 
 def test_receipt_rules_mark_discount_and_packaging_noise_as_non_items() -> None:

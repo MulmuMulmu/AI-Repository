@@ -1,0 +1,735 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:29:47Z",
+  "image": {
+    "file_name": "img2.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img2.jpg"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": "7-ELEVEN",
+    "purchased_at": "2020-06-09",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "세계1등 문이",
+        "confidence": 0.7755502462387085,
+        "bbox": [
+          [
+            502.0,
+            3.0
+          ],
+          [
+            1026.0,
+            3.0
+          ],
+          [
+            1026.0,
+            63.0
+          ],
+          [
+            502.0,
+            63.0
+          ]
+        ],
+        "center": [
+          764.0,
+          33.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "[수)코리아새원 www7 eleven co kr",
+        "confidence": 0.8002653121948242,
+        "bbox": [
+          [
+            490.0,
+            49.0
+          ],
+          [
+            1018.0,
+            49.0
+          ],
+          [
+            1018.0,
+            87.0
+          ],
+          [
+            490.0,
+            87.0
+          ]
+        ],
+        "center": [
+          754.0,
+          68.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "금라루금IA집 문정수정점#18308",
+        "confidence": 0.8241761326789856,
+        "bbox": [
+          [
+            422.0,
+            116.0
+          ],
+          [
+            1098.0,
+            116.0
+          ],
+          [
+            1098.0,
+            175.0
+          ],
+          [
+            422.0,
+            175.0
+          ]
+        ],
+        "center": [
+          760.0,
+          145.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "(024006307)",
+        "confidence": 0.9979978203773499,
+        "bbox": [
+          [
+            425.0,
+            155.0
+          ],
+          [
+            690.0,
+            155.0
+          ],
+          [
+            690.0,
+            202.0
+          ],
+          [
+            425.0,
+            202.0
+          ]
+        ],
+        "center": [
+          557.5,
+          178.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "최경호 2158544631",
+        "confidence": 0.9991353154182434,
+        "bbox": [
+          [
+            421.0,
+            179.0
+          ],
+          [
+            994.0,
+            179.0
+          ],
+          [
+            994.0,
+            230.0
+          ],
+          [
+            421.0,
+            230.0
+          ]
+        ],
+        "center": [
+          707.5,
+          204.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "서울시 송파ㅜ 동남로 8길 12",
+        "confidence": 0.9097178339958191,
+        "bbox": [
+          [
+            416.0,
+            210.0
+          ],
+          [
+            1088.0,
+            210.0
+          ],
+          [
+            1088.0,
+            269.0
+          ],
+          [
+            416.0,
+            269.0
+          ]
+        ],
+        "center": [
+          752.0,
+          239.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "(분첨동)",
+        "confidence": 0.8928129076957703,
+        "bbox": [
+          [
+            417.0,
+            255.0
+          ],
+          [
+            588.0,
+            255.0
+          ],
+          [
+            588.0,
+            308.0
+          ],
+          [
+            417.0,
+            308.0
+          ]
+        ],
+        "center": [
+          502.5,
+          281.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "→ H",
+        "confidence": 0.812075138092041,
+        "bbox": [
+          [
+            722.0,
+            395.0
+          ],
+          [
+            801.0,
+            395.0
+          ],
+          [
+            801.0,
+            429.0
+          ],
+          [
+            722.0,
+            429.0
+          ]
+        ],
+        "center": [
+          761.5,
+          412.0
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "[만 매H]2020-06-09 (화) 20:59:47",
+        "confidence": 0.9776515960693359,
+        "bbox": [
+          [
+            411.0,
+            418.0
+          ],
+          [
+            1117.0,
+            418.0
+          ],
+          [
+            1117.0,
+            503.0
+          ],
+          [
+            411.0,
+            503.0
+          ]
+        ],
+        "center": [
+          764.0,
+          460.5
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "상품명 수 량 금 액",
+        "confidence": 0.9842740654945373,
+        "bbox": [
+          [
+            479.0,
+            499.0
+          ],
+          [
+            1121.0,
+            499.0
+          ],
+          [
+            1121.0,
+            577.0
+          ],
+          [
+            479.0,
+            577.0
+          ]
+        ],
+        "center": [
+          800.0,
+          538.0
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "라라스윗)바널라파인트474 행상",
+        "confidence": 0.9144329130649567,
+        "bbox": [
+          [
+            427.0,
+            579.0
+          ],
+          [
+            1126.0,
+            579.0
+          ],
+          [
+            1126.0,
+            653.0
+          ],
+          [
+            427.0,
+            653.0
+          ]
+        ],
+        "center": [
+          776.5,
+          616.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "8809599360081 1 6,900",
+        "confidence": 0.9977976679801941,
+        "bbox": [
+          [
+            449.0,
+            622.0
+          ],
+          [
+            1128.0,
+            622.0
+          ],
+          [
+            1128.0,
+            690.0
+          ],
+          [
+            449.0,
+            690.0
+          ]
+        ],
+        "center": [
+          788.5,
+          656.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "라라스윗)초코파인트474m1 행사",
+        "confidence": 0.9444682002067566,
+        "bbox": [
+          [
+            434.0,
+            660.0
+          ],
+          [
+            1128.0,
+            660.0
+          ],
+          [
+            1128.0,
+            731.0
+          ],
+          [
+            434.0,
+            731.0
+          ]
+        ],
+        "center": [
+          781.0,
+          695.5
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "8809599360104 1 6,900",
+        "confidence": 0.998787502447764,
+        "bbox": [
+          [
+            451.0,
+            700.0
+          ],
+          [
+            1131.0,
+            700.0
+          ],
+          [
+            1131.0,
+            769.0
+          ],
+          [
+            451.0,
+            769.0
+          ]
+        ],
+        "center": [
+          791.0,
+          734.5
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "비닐봉투 본증금 20원",
+        "confidence": 0.8645901083946228,
+        "bbox": [
+          [
+            434.0,
+            749.0
+          ],
+          [
+            859.0,
+            749.0
+          ],
+          [
+            859.0,
+            811.0
+          ],
+          [
+            434.0,
+            811.0
+          ]
+        ],
+        "center": [
+          646.5,
+          780.0
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "*1171798100209 1 20",
+        "confidence": 0.8881810506184896,
+        "bbox": [
+          [
+            433.0,
+            783.0
+          ],
+          [
+            1131.0,
+            783.0
+          ],
+          [
+            1131.0,
+            845.0
+          ],
+          [
+            433.0,
+            845.0
+          ]
+        ],
+        "center": [
+          782.0,
+          814.0
+        ],
+        "page_order": 15
+      },
+      {
+        "line_id": 16,
+        "text": "과세물품가액 12,545",
+        "confidence": 0.9881745874881744,
+        "bbox": [
+          [
+            621.0,
+            822.0
+          ],
+          [
+            1131.0,
+            822.0
+          ],
+          [
+            1131.0,
+            883.0
+          ],
+          [
+            621.0,
+            883.0
+          ]
+        ],
+        "center": [
+          876.0,
+          852.5
+        ],
+        "page_order": 16
+      },
+      {
+        "line_id": 17,
+        "text": "부 \"가 세 1,255",
+        "confidence": 0.945923313498497,
+        "bbox": [
+          [
+            629.0,
+            862.0
+          ],
+          [
+            1132.0,
+            862.0
+          ],
+          [
+            1132.0,
+            917.0
+          ],
+          [
+            629.0,
+            917.0
+          ]
+        ],
+        "center": [
+          880.5,
+          889.5
+        ],
+        "page_order": 17
+      },
+      {
+        "line_id": 18,
+        "text": "봉투보증금액 20",
+        "confidence": 0.9958452880382538,
+        "bbox": [
+          [
+            624.0,
+            906.0
+          ],
+          [
+            1131.0,
+            906.0
+          ],
+          [
+            1131.0,
+            962.0
+          ],
+          [
+            624.0,
+            962.0
+          ]
+        ],
+        "center": [
+          877.5,
+          934.0
+        ],
+        "page_order": 18
+      },
+      {
+        "line_id": 19,
+        "text": "w73. 820",
+        "confidence": 0.8434688150882721,
+        "bbox": [
+          [
+            809.0,
+            946.0
+          ],
+          [
+            1129.0,
+            946.0
+          ],
+          [
+            1129.0,
+            995.0
+          ],
+          [
+            809.0,
+            995.0
+          ]
+        ],
+        "center": [
+          969.0,
+          970.5
+        ],
+        "page_order": 19
+      },
+      {
+        "line_id": 20,
+        "text": "한겔",
+        "confidence": 0.3600812256336212,
+        "bbox": [
+          [
+            424.0,
+            933.0
+          ],
+          [
+            627.0,
+            933.0
+          ],
+          [
+            627.0,
+            1051.0
+          ],
+          [
+            424.0,
+            1051.0
+          ]
+        ],
+        "center": [
+          525.5,
+          992.0
+        ],
+        "page_order": 20
+      },
+      {
+        "line_id": 21,
+        "text": "20",
+        "confidence": 0.9996621012687683,
+        "bbox": [
+          [
+            1074.0,
+            986.0
+          ],
+          [
+            1131.0,
+            986.0
+          ],
+          [
+            1131.0,
+            1035.0
+          ],
+          [
+            1074.0,
+            1035.0
+          ]
+        ],
+        "center": [
+          1102.5,
+          1010.5
+        ],
+        "page_order": 21
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "라라스윗 바닐라파인트474",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6900.0,
+        "confidence": 0.91,
+        "match_confidence": 0.9561,
+        "parse_pattern": "two_line_barcode",
+        "source_line_ids": [
+          10,
+          11
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "라라스윗 초코파인트474ml",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6900.0,
+        "confidence": 0.94,
+        "match_confidence": 0.9716,
+        "parse_pattern": "two_line_barcode",
+        "source_line_ids": [
+          12,
+          13
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "subtotal": 12545.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "total_mismatch"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.99,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "ignored",
+        "2": "header",
+        "3": "header",
+        "4": "header",
+        "5": "header",
+        "6": "header",
+        "7": "header",
+        "8": "ignored",
+        "9": "header",
+        "10": "items",
+        "11": "items",
+        "12": "ignored",
+        "13": "items",
+        "14": "ignored",
+        "15": "items",
+        "16": "totals",
+        "17": "ignored",
+        "18": "ignored",
+        "19": "ignored",
+        "20": "ignored",
+        "21": "ignored"
+      },
+      "consumed_line_ids": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "quality_score": 0.4989,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

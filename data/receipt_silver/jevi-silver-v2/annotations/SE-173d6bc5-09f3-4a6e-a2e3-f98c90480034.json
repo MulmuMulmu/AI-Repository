@@ -1,0 +1,1253 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:29:26Z",
+  "image": {
+    "file_name": "SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": "GS25",
+    "purchased_at": "2023-11-24",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "재미있는 일상 플랫폼 GS25",
+        "confidence": 0.9022407531738281,
+        "bbox": [
+          [
+            195.0,
+            2.0
+          ],
+          [
+            579.0,
+            2.0
+          ],
+          [
+            579.0,
+            59.0
+          ],
+          [
+            195.0,
+            59.0
+          ]
+        ],
+        "center": [
+          387.0,
+          30.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "GS25",
+        "confidence": 0.9922365546226501,
+        "bbox": [
+          [
+            201.0,
+            81.0
+          ],
+          [
+            256.0,
+            81.0
+          ],
+          [
+            256.0,
+            116.0
+          ],
+          [
+            201.0,
+            116.0
+          ]
+        ],
+        "center": [
+          228.5,
+          98.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "6032785687",
+        "confidence": 0.9458093643188477,
+        "bbox": [
+          [
+            448.0,
+            114.0
+          ],
+          [
+            566.0,
+            114.0
+          ],
+          [
+            566.0,
+            150.0
+          ],
+          [
+            448.0,
+            150.0
+          ]
+        ],
+        "center": [
+          507.0,
+          132.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "∠023/ 11/24 1층",
+        "confidence": 0.8770442605018616,
+        "bbox": [
+          [
+            208.0,
+            144.0
+          ],
+          [
+            562.0,
+            144.0
+          ],
+          [
+            562.0,
+            189.0
+          ],
+          [
+            208.0,
+            189.0
+          ]
+        ],
+        "center": [
+          385.0,
+          166.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "NO:17509",
+        "confidence": 0.9367475509643555,
+        "bbox": [
+          [
+            468.0,
+            164.0
+          ],
+          [
+            562.0,
+            164.0
+          ],
+          [
+            562.0,
+            196.0
+          ],
+          [
+            468.0,
+            196.0
+          ]
+        ],
+        "center": [
+          515.0,
+          180.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "이이",
+        "confidence": 0.35506096482276917,
+        "bbox": [
+          [
+            205.0,
+            202.0
+          ],
+          [
+            518.0,
+            202.0
+          ],
+          [
+            518.0,
+            241.0
+          ],
+          [
+            205.0,
+            241.0
+          ]
+        ],
+        "center": [
+          361.5,
+          221.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "반드시 영수증을“지참하셔야 하며,",
+        "confidence": 0.8735471367835999,
+        "bbox": [
+          [
+            209.0,
+            227.0
+          ],
+          [
+            554.0,
+            227.0
+          ],
+          [
+            554.0,
+            263.0
+          ],
+          [
+            209.0,
+            263.0
+          ]
+        ],
+        "center": [
+          381.5,
+          245.0
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "카드결제는 30일(12월24일)이내",
+        "confidence": 0.9727762937545776,
+        "bbox": [
+          [
+            211.0,
+            252.0
+          ],
+          [
+            526.0,
+            252.0
+          ],
+          [
+            526.0,
+            281.0
+          ],
+          [
+            211.0,
+            281.0
+          ]
+        ],
+        "center": [
+          368.5,
+          266.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "카드와 영수층 지참 시 가능합니다",
+        "confidence": 0.9451889395713806,
+        "bbox": [
+          [
+            210.0,
+            274.0
+          ],
+          [
+            559.0,
+            274.0
+          ],
+          [
+            559.0,
+            304.0
+          ],
+          [
+            210.0,
+            304.0
+          ]
+        ],
+        "center": [
+          384.5,
+          289.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "1 증정풍",
+        "confidence": 0.9576724171638489,
+        "bbox": [
+          [
+            414.0,
+            318.0
+          ],
+          [
+            559.0,
+            318.0
+          ],
+          [
+            559.0,
+            349.0
+          ],
+          [
+            414.0,
+            349.0
+          ]
+        ],
+        "center": [
+          486.5,
+          333.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "투썸딸기피지 1 2,800",
+        "confidence": 0.8794205784797668,
+        "bbox": [
+          [
+            217.0,
+            333.0
+          ],
+          [
+            559.0,
+            333.0
+          ],
+          [
+            559.0,
+            375.0
+          ],
+          [
+            217.0,
+            375.0
+          ]
+        ],
+        "center": [
+          388.0,
+          354.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "허쉬쿠키앤크림 1 1,600",
+        "confidence": 0.9596760272979736,
+        "bbox": [
+          [
+            217.0,
+            357.0
+          ],
+          [
+            560.0,
+            357.0
+          ],
+          [
+            560.0,
+            392.0
+          ],
+          [
+            217.0,
+            392.0
+          ]
+        ],
+        "center": [
+          388.5,
+          374.5
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "어쉬밀크클릿 [ 1,600",
+        "confidence": 0.7924055258433024,
+        "bbox": [
+          [
+            215.0,
+            379.0
+          ],
+          [
+            558.0,
+            379.0
+          ],
+          [
+            558.0,
+            415.0
+          ],
+          [
+            215.0,
+            415.0
+          ]
+        ],
+        "center": [
+          386.5,
+          397.0
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "허쉬쿠키앤초코 1 증정품",
+        "confidence": 0.8945302764574686,
+        "bbox": [
+          [
+            216.0,
+            402.0
+          ],
+          [
+            558.0,
+            402.0
+          ],
+          [
+            558.0,
+            435.0
+          ],
+          [
+            216.0,
+            435.0
+          ]
+        ],
+        "center": [
+          387.0,
+          418.5
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "호가든캔330ML 1 3,500",
+        "confidence": 0.9415848851203918,
+        "bbox": [
+          [
+            216.0,
+            424.0
+          ],
+          [
+            558.0,
+            424.0
+          ],
+          [
+            558.0,
+            457.0
+          ],
+          [
+            216.0,
+            457.0
+          ]
+        ],
+        "center": [
+          387.0,
+          440.5
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "아몬드코볼 1 2,000",
+        "confidence": 0.9684344927469889,
+        "bbox": [
+          [
+            214.0,
+            445.0
+          ],
+          [
+            557.0,
+            445.0
+          ],
+          [
+            557.0,
+            477.0
+          ],
+          [
+            214.0,
+            477.0
+          ]
+        ],
+        "center": [
+          385.5,
+          461.0
+        ],
+        "page_order": 15
+      },
+      {
+        "line_id": 16,
+        "text": "1 1,700",
+        "confidence": 0.9868662655353546,
+        "bbox": [
+          [
+            409.0,
+            473.0
+          ],
+          [
+            558.0,
+            473.0
+          ],
+          [
+            558.0,
+            499.0
+          ],
+          [
+            409.0,
+            499.0
+          ]
+        ],
+        "center": [
+          483.5,
+          486.0
+        ],
+        "page_order": 16
+      },
+      {
+        "line_id": 17,
+        "text": "화이트빼빼로 1 1,700",
+        "confidence": 0.9563187956809998,
+        "bbox": [
+          [
+            213.0,
+            489.0
+          ],
+          [
+            558.0,
+            489.0
+          ],
+          [
+            558.0,
+            523.0
+          ],
+          [
+            213.0,
+            523.0
+          ]
+        ],
+        "center": [
+          385.5,
+          506.0
+        ],
+        "page_order": 17
+      },
+      {
+        "line_id": 18,
+        "text": "초코빼빼로지암 L 1,700",
+        "confidence": 0.7575997610886892,
+        "bbox": [
+          [
+            213.0,
+            512.0
+          ],
+          [
+            557.0,
+            512.0
+          ],
+          [
+            557.0,
+            544.0
+          ],
+          [
+            213.0,
+            544.0
+          ]
+        ],
+        "center": [
+          385.0,
+          528.0
+        ],
+        "page_order": 18
+      },
+      {
+        "line_id": 19,
+        "text": "이에 2 4,000",
+        "confidence": 0.7698174118995667,
+        "bbox": [
+          [
+            213.0,
+            534.0
+          ],
+          [
+            558.0,
+            534.0
+          ],
+          [
+            558.0,
+            567.0
+          ],
+          [
+            213.0,
+            567.0
+          ]
+        ],
+        "center": [
+          385.5,
+          550.5
+        ],
+        "page_order": 19
+      },
+      {
+        "line_id": 20,
+        "text": "*재사용봉투20L 1 490",
+        "confidence": 0.9648856918017069,
+        "bbox": [
+          [
+            200.0,
+            557.0
+          ],
+          [
+            558.0,
+            557.0
+          ],
+          [
+            558.0,
+            588.0
+          ],
+          [
+            200.0,
+            588.0
+          ]
+        ],
+        "center": [
+          379.0,
+          572.5
+        ],
+        "page_order": 20
+      },
+      {
+        "line_id": 21,
+        "text": "*3l() 1 3,000",
+        "confidence": 0.9115230441093445,
+        "bbox": [
+          [
+            199.0,
+            578.0
+          ],
+          [
+            558.0,
+            578.0
+          ],
+          [
+            558.0,
+            611.0
+          ],
+          [
+            199.0,
+            611.0
+          ]
+        ],
+        "center": [
+          378.5,
+          594.5
+        ],
+        "page_order": 21
+      },
+      {
+        "line_id": 22,
+        "text": "합계수량/금액 14 24,090",
+        "confidence": 0.9702238241831461,
+        "bbox": [
+          [
+            199.0,
+            600.0
+          ],
+          [
+            559.0,
+            600.0
+          ],
+          [
+            559.0,
+            636.0
+          ],
+          [
+            199.0,
+            636.0
+          ]
+        ],
+        "center": [
+          379.0,
+          618.0
+        ],
+        "page_order": 22
+      },
+      {
+        "line_id": 23,
+        "text": "과세매출 18,726",
+        "confidence": 0.9777751863002777,
+        "bbox": [
+          [
+            197.0,
+            645.0
+          ],
+          [
+            559.0,
+            645.0
+          ],
+          [
+            559.0,
+            680.0
+          ],
+          [
+            197.0,
+            680.0
+          ]
+        ],
+        "center": [
+          378.0,
+          662.5
+        ],
+        "page_order": 23
+      },
+      {
+        "line_id": 24,
+        "text": "HOIY 3,490",
+        "confidence": 0.8184295892715454,
+        "bbox": [
+          [
+            197.0,
+            668.0
+          ],
+          [
+            560.0,
+            668.0
+          ],
+          [
+            560.0,
+            705.0
+          ],
+          [
+            197.0,
+            705.0
+          ]
+        ],
+        "center": [
+          378.5,
+          686.5
+        ],
+        "page_order": 24
+      },
+      {
+        "line_id": 25,
+        "text": "부가세 1,874",
+        "confidence": 0.9589990675449371,
+        "bbox": [
+          [
+            195.0,
+            689.0
+          ],
+          [
+            559.0,
+            689.0
+          ],
+          [
+            559.0,
+            728.0
+          ],
+          [
+            195.0,
+            728.0
+          ]
+        ],
+        "center": [
+          377.0,
+          708.5
+        ],
+        "page_order": 25
+      },
+      {
+        "line_id": 26,
+        "text": "합신 24,090",
+        "confidence": 0.9423606991767883,
+        "bbox": [
+          [
+            196.0,
+            712.0
+          ],
+          [
+            559.0,
+            712.0
+          ],
+          [
+            559.0,
+            774.0
+          ],
+          [
+            196.0,
+            774.0
+          ]
+        ],
+        "center": [
+          377.5,
+          743.0
+        ],
+        "page_order": 26
+      },
+      {
+        "line_id": 27,
+        "text": "* 24,090",
+        "confidence": 0.9640983641147614,
+        "bbox": [
+          [
+            197.0,
+            740.0
+          ],
+          [
+            561.0,
+            740.0
+          ],
+          [
+            561.0,
+            786.0
+          ],
+          [
+            197.0,
+            786.0
+          ]
+        ],
+        "center": [
+          379.0,
+          763.0
+        ],
+        "page_order": 27
+      },
+      {
+        "line_id": 28,
+        "text": "신용카드 전표(고객용)",
+        "confidence": 0.9906352162361145,
+        "bbox": [
+          [
+            250.0,
+            806.0
+          ],
+          [
+            485.0,
+            806.0
+          ],
+          [
+            485.0,
+            839.0
+          ],
+          [
+            250.0,
+            839.0
+          ]
+        ],
+        "center": [
+          367.5,
+          822.5
+        ],
+        "page_order": 28
+      },
+      {
+        "line_id": 29,
+        "text": "사용금 24,090원",
+        "confidence": 0.9745550453662872,
+        "bbox": [
+          [
+            192.0,
+            856.0
+          ],
+          [
+            397.0,
+            856.0
+          ],
+          [
+            397.0,
+            884.0
+          ],
+          [
+            192.0,
+            884.0
+          ]
+        ],
+        "center": [
+          294.5,
+          870.0
+        ],
+        "page_order": 29
+      },
+      {
+        "line_id": 30,
+        "text": "부 (E:YD)",
+        "confidence": 0.8932446837425232,
+        "bbox": [
+          [
+            262.0,
+            875.0
+          ],
+          [
+            518.0,
+            875.0
+          ],
+          [
+            518.0,
+            913.0
+          ],
+          [
+            262.0,
+            913.0
+          ]
+        ],
+        "center": [
+          390.0,
+          894.0
+        ],
+        "page_order": 30
+      },
+      {
+        "line_id": 31,
+        "text": "증인번호 00735217",
+        "confidence": 0.9492611885070801,
+        "bbox": [
+          [
+            190.0,
+            897.0
+          ],
+          [
+            399.0,
+            897.0
+          ],
+          [
+            399.0,
+            934.0
+          ],
+          [
+            190.0,
+            934.0
+          ]
+        ],
+        "center": [
+          294.5,
+          915.5
+        ],
+        "page_order": 31
+      },
+      {
+        "line_id": 32,
+        "text": "23/11/2500:01:04",
+        "confidence": 0.9747233390808105,
+        "bbox": [
+          [
+            281.0,
+            919.0
+          ],
+          [
+            479.0,
+            919.0
+          ],
+          [
+            479.0,
+            957.0
+          ],
+          [
+            281.0,
+            957.0
+          ]
+        ],
+        "center": [
+          380.0,
+          938.0
+        ],
+        "page_order": 32
+      },
+      {
+        "line_id": 33,
+        "text": "일상 생활의,중심",
+        "confidence": 0.9042380452156067,
+        "bbox": [
+          [
+            190.0,
+            942.0
+          ],
+          [
+            376.0,
+            942.0
+          ],
+          [
+            376.0,
+            979.0
+          ],
+          [
+            190.0,
+            979.0
+          ]
+        ],
+        "center": [
+          283.0,
+          960.5
+        ],
+        "page_order": 33
+      },
+      {
+        "line_id": 34,
+        "text": "Lifestyle Platform GS25",
+        "confidence": 0.967799961566925,
+        "bbox": [
+          [
+            187.0,
+            967.0
+          ],
+          [
+            454.0,
+            967.0
+          ],
+          [
+            454.0,
+            1004.0
+          ],
+          [
+            187.0,
+            1004.0
+          ]
+        ],
+        "center": [
+          320.5,
+          985.5
+        ],
+        "page_order": 34
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "투썸딸기피치",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2800.0,
+        "confidence": 0.88,
+        "match_confidence": 0.8794,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          10
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "허쉬쿠키앤크림",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9597,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          11
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "어쉬밀크클릿 [",
+        "normalized_name": "우유",
+        "category": "dairy",
+        "storage_type": "refrigerated",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0,
+        "confidence": 0.79,
+        "match_confidence": 0.7924,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          12
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence"
+        ]
+      },
+      {
+        "raw_name": "허쉬쿠키앤초코",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null,
+        "confidence": 0.89,
+        "match_confidence": 0.8945,
+        "parse_pattern": "single_line_gift",
+        "source_line_ids": [
+          13
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "호가든캔330ml",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3500.0,
+        "confidence": 0.94,
+        "match_confidence": 0.9416,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          14
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "아몬드초코볼",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2000.0,
+        "confidence": 0.97,
+        "match_confidence": 0.9684,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          15
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "화이트빼빼로",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1700.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9563,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          17
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "초코빼빼로지암 L",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1700.0,
+        "confidence": 0.76,
+        "match_confidence": 0.7576,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          18
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "이에",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 4000.0,
+        "confidence": 0.77,
+        "match_confidence": 0.7698,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          19
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "total": 24090.0,
+      "tax": 1874.0,
+      "payment_amount": 24090.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "unresolved_items",
+      "total_mismatch"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.99,
+      "qwen_used": false,
+      "unresolved_groups": 3,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "header",
+        "3": "header",
+        "4": "header",
+        "5": "header",
+        "6": "header",
+        "7": "ignored",
+        "8": "header",
+        "9": "header",
+        "10": "items",
+        "11": "items",
+        "12": "items",
+        "13": "items",
+        "14": "items",
+        "15": "items",
+        "16": "items",
+        "17": "items",
+        "18": "items",
+        "19": "items",
+        "20": "ignored",
+        "21": "items",
+        "22": "totals",
+        "23": "totals",
+        "24": "ignored",
+        "25": "totals",
+        "26": "ignored",
+        "27": "ignored",
+        "28": "totals",
+        "29": "ignored",
+        "30": "ignored",
+        "31": "ignored",
+        "32": "header",
+        "33": "ignored",
+        "34": "ignored"
+      },
+      "consumed_line_ids": [
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        17,
+        18,
+        19
+      ],
+      "quality_score": 0.6151,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

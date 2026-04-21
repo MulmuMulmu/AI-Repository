@@ -26,6 +26,7 @@ def test_discover_receipt_images_filters_out_crops_and_non_image_artifacts(tmp_p
     result = discover_receipt_images(tmp_path)
 
     assert [path.name for path in result] == [
+        "OIP.webp",
         "SE-123.jpg",
         "img2.jpg",
         "img3.jpg",
@@ -172,3 +173,95 @@ def test_compare_silver_annotation_reports_core_regression_metrics() -> None:
     assert metrics["purchased_at_match"] is True
     assert metrics["payment_amount_match"] is True
     assert metrics["item_name_f1"] == 0.5
+
+
+def test_compare_silver_annotation_reports_quantity_amount_and_review_metrics() -> None:
+    metrics = compare_silver_annotation(
+        annotation={
+            "expected": {
+                "vendor_name": "GS25",
+                "purchased_at": "2023-11-25",
+                "items": [
+                    {"raw_name": "양파", "quantity": 2.0, "amount": 3000.0},
+                    {"raw_name": "대파", "quantity": 1.0, "amount": None},
+                ],
+                "totals": {"payment_amount": 3000.0},
+                "review_required": False,
+            }
+        },
+        parsed={
+            "vendor_name": "GS25",
+            "purchased_at": "2023-11-25",
+            "items": [
+                {"raw_name": "양파", "quantity": 2.0, "amount": 3000.0},
+                {"raw_name": "대파", "quantity": 3.0, "amount": None},
+            ],
+            "totals": {"payment_amount": 3000.0},
+            "review_required": True,
+        },
+    )
+
+    assert metrics["quantity_match_rate"] == 0.5
+    assert metrics["amount_match_rate"] == 1.0
+    assert metrics["review_required_match"] is False
+
+
+def test_compare_silver_annotation_treats_unmatched_name_as_quantity_and_amount_miss() -> None:
+    metrics = compare_silver_annotation(
+        annotation={
+            "expected": {
+                "items": [
+                    {"raw_name": "양파", "quantity": 2.0, "amount": 3000.0},
+                ],
+                "review_required": False,
+            }
+        },
+        parsed={
+            "items": [
+                {"raw_name": "감자", "quantity": 2.0, "amount": 3000.0},
+            ],
+            "review_required": False,
+        },
+    )
+
+    assert metrics["item_name_f1"] == 0.0
+    assert metrics["quantity_match_rate"] == 0.0
+    assert metrics["amount_match_rate"] == 0.0
+
+
+def test_compute_item_name_f1_treats_parenthetical_pack_count_as_same_item_name() -> None:
+    metrics = compute_item_name_f1(
+        expected_items=[
+            {"raw_name": "속이편한 누룽지(5입)"},
+            {"raw_name": "속이편한 누룽지(5입)"},
+        ],
+        actual_items=[
+            {"raw_name": "속이편한 누룽지"},
+            {"raw_name": "속이편한 누룽지"},
+        ],
+    )
+
+    assert metrics["tp"] == 2
+    assert metrics["fp"] == 0
+    assert metrics["fn"] == 0
+    assert metrics["precision"] == 1.0
+    assert metrics["recall"] == 1.0
+    assert metrics["f1"] == 1.0
+
+
+def test_compute_item_name_f1_does_not_collapse_real_size_variants() -> None:
+    metrics = compute_item_name_f1(
+        expected_items=[
+            {"raw_name": "코카콜라355ml"},
+        ],
+        actual_items=[
+            {"raw_name": "코카콜라500ml"},
+        ],
+    )
+
+    assert metrics["tp"] == 0
+    assert metrics["fp"] == 1
+    assert metrics["fn"] == 1
+    assert metrics["precision"] == 0.0
+    assert metrics["recall"] == 0.0
+    assert metrics["f1"] == 0.0

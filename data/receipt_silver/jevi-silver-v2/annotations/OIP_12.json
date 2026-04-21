@@ -1,0 +1,540 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:27:42Z",
+  "image": {
+    "file_name": "OIP (12).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (12).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2022-12-29",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "219-99-04129 2M-1- 우데체주 문비드 제안클렉스 B",
+        "confidence": 0.5169150978326797,
+        "bbox": [
+          [
+            42.0,
+            10.0
+          ],
+          [
+            166.0,
+            10.0
+          ],
+          [
+            166.0,
+            34.0
+          ],
+          [
+            42.0,
+            34.0
+          ]
+        ],
+        "center": [
+          104.0,
+          22.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "27육미지항시그천/원님넘가 2에 X2시2) xP",
+        "confidence": 0.42272812128067017,
+        "bbox": [
+          [
+            30.0,
+            31.0
+          ],
+          [
+            168.0,
+            31.0
+          ],
+          [
+            168.0,
+            58.0
+          ],
+          [
+            30.0,
+            58.0
+          ]
+        ],
+        "center": [
+          99.0,
+          44.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "그기드치소시 어급필리는 조마업 소브 [0.1 2022-12-29 22:19 P03: 0510-0253",
+        "confidence": 0.7000445425510406,
+        "bbox": [
+          [
+            31.0,
+            55.0
+          ],
+          [
+            169.0,
+            55.0
+          ],
+          [
+            169.0,
+            74.0
+          ],
+          [
+            31.0,
+            74.0
+          ]
+        ],
+        "center": [
+          100.0,
+          64.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "성원 얼스집아구니대 나 기수란 3×",
+        "confidence": 0.46463506668806076,
+        "bbox": [
+          [
+            30.0,
+            76.0
+          ],
+          [
+            170.0,
+            76.0
+          ],
+          [
+            170.0,
+            104.0
+          ],
+          [
+            30.0,
+            104.0
+          ]
+        ],
+        "center": [
+          100.0,
+          90.0
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "8 5,400 3,:001 :,0:0 :.450",
+        "confidence": 0.7615218043327332,
+        "bbox": [
+          [
+            33.0,
+            101.0
+          ],
+          [
+            170.0,
+            101.0
+          ],
+          [
+            170.0,
+            128.0
+          ],
+          [
+            33.0,
+            128.0
+          ]
+        ],
+        "center": [
+          101.5,
+          114.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "RRVEIn [0민+선)308 () IU02E'L.t -1,644 11.9:0 -4,750",
+        "confidence": 0.6861860496657235,
+        "bbox": [
+          [
+            33.0,
+            122.0
+          ],
+          [
+            171.0,
+            122.0
+          ],
+          [
+            171.0,
+            150.0
+          ],
+          [
+            33.0,
+            150.0
+          ]
+        ],
+        "center": [
+          102.0,
+          136.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "10인7리1 RINRO XR NRE 13.t07 .25 11,001",
+        "confidence": 0.57891965508461,
+        "bbox": [
+          [
+            34.0,
+            146.0
+          ],
+          [
+            170.0,
+            146.0
+          ],
+          [
+            170.0,
+            173.0
+          ],
+          [
+            34.0,
+            173.0
+          ]
+        ],
+        "center": [
+          102.0,
+          159.5
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "GP (472]918 1.59) 2,990 7.950 -897 1,550",
+        "confidence": 0.7748322912624904,
+        "bbox": [
+          [
+            33.0,
+            167.0
+          ],
+          [
+            171.0,
+            167.0
+          ],
+          [
+            171.0,
+            195.0
+          ],
+          [
+            33.0,
+            195.0
+          ]
+        ],
+        "center": [
+          102.0,
+          181.0
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "(472)38 (72]3 4.291 -1,287 4.,250 F-",
+        "confidence": 0.7531945705413818,
+        "bbox": [
+          [
+            34.0,
+            191.0
+          ],
+          [
+            170.0,
+            191.0
+          ],
+          [
+            170.0,
+            217.0
+          ],
+          [
+            34.0,
+            217.0
+          ]
+        ],
+        "center": [
+          102.0,
+          204.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "[5인2)31% P 민전은 니스 서미 버섯 2,99: 2,590 597",
+        "confidence": 0.6856553316116333,
+        "bbox": [
+          [
+            33.0,
+            215.0
+          ],
+          [
+            170.0,
+            215.0
+          ],
+          [
+            170.0,
+            240.0
+          ],
+          [
+            33.0,
+            240.0
+          ]
+        ],
+        "center": [
+          101.5,
+          227.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "방문도미도 XE(2] CE6'VVPE 7,99D -3.59 11,590 7.59:",
+        "confidence": 0.7023271407399859,
+        "bbox": [
+          [
+            33.0,
+            237.0
+          ],
+          [
+            171.0,
+            237.0
+          ],
+          [
+            171.0,
+            263.0
+          ],
+          [
+            33.0,
+            263.0
+          ]
+        ],
+        "center": [
+          102.0,
+          250.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "것는 전바구 NIE ZM (7)308 2,.090 -2.39 2,095 -621",
+        "confidence": 0.7093993851116726,
+        "bbox": [
+          [
+            34.0,
+            260.0
+          ],
+          [
+            169.0,
+            260.0
+          ],
+          [
+            169.0,
+            286.0
+          ],
+          [
+            34.0,
+            286.0
+          ]
+        ],
+        "center": [
+          101.5,
+          273.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "일3 (59+)105 먼4올문가대 4,950 -1.411 43,150 1.990",
+        "confidence": 0.6211486160755157,
+        "bbox": [
+          [
+            32.0,
+            282.0
+          ],
+          [
+            170.0,
+            282.0
+          ],
+          [
+            170.0,
+            308.0
+          ],
+          [
+            32.0,
+            308.0
+          ]
+        ],
+        "center": [
+          101.0,
+          295.0
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "0 과불가다 기계 72,107 5.215 621",
+        "confidence": 0.5994228149453799,
+        "bbox": [
+          [
+            64.0,
+            304.0
+          ],
+          [
+            172.0,
+            304.0
+          ],
+          [
+            172.0,
+            331.0
+          ],
+          [
+            64.0,
+            331.0
+          ]
+        ],
+        "center": [
+          118.0,
+          317.5
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "N BRIYY 발신 8시49 23,209 19,020",
+        "confidence": 0.576372558871905,
+        "bbox": [
+          [
+            62.0,
+            328.0
+          ],
+          [
+            171.0,
+            328.0
+          ],
+          [
+            171.0,
+            355.0
+          ],
+          [
+            62.0,
+            355.0
+          ]
+        ],
+        "center": [
+          116.5,
+          341.5
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "연누리 0수 -23.283",
+        "confidence": 0.5645270248254141,
+        "bbox": [
+          [
+            31.0,
+            349.0
+          ],
+          [
+            172.0,
+            349.0
+          ],
+          [
+            172.0,
+            372.0
+          ],
+          [
+            31.0,
+            372.0
+          ]
+        ],
+        "center": [
+          101.5,
+          360.5
+        ],
+        "page_order": 15
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "과불가다 기계",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 5.215,
+        "unit": "개",
+        "amount": 621.0,
+        "confidence": 0.6,
+        "match_confidence": 0.5994,
+        "parse_pattern": "pos_single_line",
+        "source_line_ids": [
+          13
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "unresolved_items",
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 1,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "header",
+        "3": "header",
+        "4": "header",
+        "5": "header",
+        "6": "header",
+        "7": "header",
+        "8": "ignored",
+        "9": "header",
+        "10": "header",
+        "11": "header",
+        "12": "items",
+        "13": "items",
+        "14": "items",
+        "15": "items"
+      },
+      "consumed_line_ids": [
+        13
+      ],
+      "quality_score": 0.9084,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

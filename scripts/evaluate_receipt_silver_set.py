@@ -63,6 +63,9 @@ def _summarize(results: list[dict]) -> dict:
             "purchased_at_accuracy": 0.0,
             "payment_amount_accuracy": 0.0,
             "item_name_f1_avg": 0.0,
+            "quantity_match_rate_avg": 0.0,
+            "amount_match_rate_avg": 0.0,
+            "review_required_accuracy": 0.0,
         }
 
     image_count = len(results)
@@ -72,6 +75,9 @@ def _summarize(results: list[dict]) -> dict:
         "purchased_at_accuracy": round(sum(1 for item in results if item["purchased_at_match"]) / image_count, 4),
         "payment_amount_accuracy": round(sum(1 for item in results if item["payment_amount_match"]) / image_count, 4),
         "item_name_f1_avg": round(sum(float(item["item_name_f1"]) for item in results) / image_count, 4),
+        "quantity_match_rate_avg": round(sum(float(item["quantity_match_rate"]) for item in results) / image_count, 4),
+        "amount_match_rate_avg": round(sum(float(item["amount_match_rate"]) for item in results) / image_count, 4),
+        "review_required_accuracy": round(sum(1 for item in results if item["review_required_match"]) / image_count, 4),
     }
 
 

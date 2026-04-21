@@ -1,0 +1,76 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:26Z",
+  "image": {
+    "file_name": "barcode_detail-0002.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0002.png"
+  },
+  "metadata": {
+    "layout_type": "barcode_detail",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "low",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "GS25",
+    "purchased_at": "2023-02-02",
+    "items": [
+      {
+        "raw_name": "호가든캔330ml",
+        "normalized_name": "호가든캔330ml",
+        "quantity": 2.0,
+        "unit": "캔",
+        "amount": 7000.0,
+        "unit_price": 3500.0,
+        "barcode": "8800001000123"
+      },
+      {
+        "raw_name": "아몬드초코볼",
+        "normalized_name": "아몬드초코볼",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 6000.0,
+        "unit_price": 2000.0,
+        "barcode": "8800001001123"
+      },
+      {
+        "raw_name": "양파",
+        "normalized_name": "양파",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 990.0,
+        "unit_price": 990.0,
+        "barcode": "8800001002123"
+      },
+      {
+        "raw_name": "대파",
+        "normalized_name": "대파",
+        "quantity": 1.0,
+        "unit": "단",
+        "amount": 2480.0,
+        "unit_price": 2480.0,
+        "barcode": "8800001003123"
+      }
+    ],
+    "totals": {
+      "subtotal": 16470.0,
+      "tax": 1647.0,
+      "total": 18117.0,
+      "payment_amount": 18117.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "barcode_detail"
+    }
+  }
+}

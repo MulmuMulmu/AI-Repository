@@ -173,6 +173,49 @@ def test_parser_recovers_vendor_from_7eleven_website_header_line() -> None:
     assert result.vendor_name == "7-ELEVEN"
 
 
+def test_parser_recovers_homeplus_vendor_from_website_header_line() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="Home plus 춤플러스", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="www.homeplus.co.kr", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="2014/07/03 13:29:53", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="크라운참쌀선과293G 4,320 1 4,320", confidence=0.95, line_id=3, page_order=3),
+        ]
+    )
+
+    assert result.vendor_name == "홈플러스"
+
+
+def test_parser_normalizes_punctuated_7eleven_vendor_line() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="7.-ELEVEN", confidence=0.82, line_id=0, page_order=0),
+            OcrLine(text="[주문]2023-01-01 18:59", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="허쉬쿠키앤크림 1 1,600", confidence=0.97, line_id=2, page_order=2),
+        ]
+    )
+
+    assert result.vendor_name == "7-ELEVEN"
+
+
+def test_parser_normalizes_comma_punctuated_7eleven_vendor_line() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="7,-ELEVEN", confidence=0.82, line_id=0, page_order=0),
+            OcrLine(text="[주문]2023-01-01 18:59", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="허쉬쿠키앤크림 1 1,600", confidence=0.97, line_id=2, page_order=2),
+        ]
+    )
+
+    assert result.vendor_name == "7-ELEVEN"
+
+
 def test_parser_extracts_purchase_amount_as_payment_total() -> None:
     parser = ReceiptParser()
 
@@ -185,6 +228,687 @@ def test_parser_extracts_purchase_amount_as_payment_total() -> None:
 
     assert result.totals["payment_amount"] == 49060.0
     assert result.totals["tax"] == 1232.0
+
+
+def test_parser_extracts_payment_amount_from_payment_target_amount_line() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="계 117,580", confidence=0.98, line_id=0, page_order=0),
+            OcrLine(text="결제대상금액 112,580", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert result.totals["total"] == 117580.0
+    assert result.totals["payment_amount"] == 112580.0
+
+
+def test_parser_parses_spaced_numeric_detail_rows_from_image_style_receipt() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단 가 수량 금 액", confidence=0.90, line_id=0, page_order=0),
+            OcrLine(text="양념등심돈까스", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="1500000141394 16, 980 1 16,980", confidence=0.98, line_id=2, page_order=2),
+            OcrLine(text="8801052993485 청정원 서해안 까나리", confidence=0.96, line_id=3, page_order=3),
+            OcrLine(text="6, 780 1 6,780", confidence=0.95, line_id=4, page_order=4),
+            OcrLine(text="하인즈유기농케찹90", confidence=0.85, line_id=5, page_order=5),
+            OcrLine(text="8801065000699 9, 980 1 9,980", confidence=0.98, line_id=6, page_order=6),
+            OcrLine(text="0738824102401 갈바니'리코타치느4", confidence=0.91, line_id=7, page_order=7),
+            OcrLine(text="6, 680 1 6, 680", confidence=0.94, line_id=8, page_order=8),
+        ]
+    )
+
+    assert [(item.raw_name, item.quantity, item.amount) for item in result.items] == [
+        ("양념등심돈까스", 1.0, 16980.0),
+        ("청정원 서해안 까나리", 1.0, 6780.0),
+        ("하인즈유기농케찹90", 1.0, 9980.0),
+        ("갈바니'리코타치느4", 1.0, 6680.0),
+    ]
+
+
+def test_parser_skips_summary_fragment_tail_rows_from_image_style_receipt() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단 가 수량 금 액", confidence=0.90, line_id=0, page_order=0),
+            OcrLine(text="품 2 11", confidence=0.78, line_id=1, page_order=1),
+            OcrLine(text="(*) 세 물물 27,740", confidence=0.90, line_id=2, page_order=2),
+            OcrLine(text="세 품품세 81, 673", confidence=0.97, line_id=3, page_order=3),
+            OcrLine(text="가 8,167", confidence=1.00, line_id=4, page_order=4),
+            OcrLine(text="계 117, 580", confidence=0.98, line_id=5, page_order=5),
+            OcrLine(text="결제대상금액 112,580", confidence=0.90, line_id=6, page_order=6),
+        ]
+    )
+
+    assert result.items == []
+    assert result.totals["total"] == 117580.0
+    assert result.totals["payment_amount"] == 112580.0
+
+
+def test_parser_normalizes_homeplus_snack_aliases_and_skips_domain_noise() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="크라우참쌀서과293G 4,320 1 4,320", confidence=0.95, line_id=1, page_order=1),
+            OcrLine(text="09 해태구문감자4 2 2,240", confidence=0.94, line_id=2, page_order=2),
+            OcrLine(text="13미니투셔바베큐4입( ㄷ120g TE.CO.KR 760 1 1,760", confidence=0.94, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "크라운참쌀선과293G",
+        "해태구운감자4",
+    ]
+
+
+def test_parser_strips_embedded_price_tail_from_single_line_name_amount_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="와이멘씨라이스퍼프1 3,980 ] 3,980", confidence=0.87, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "와이멘씨라이스퍼프"
+    assert result.items[0].amount == 3980.0
+    assert result.items[0].parse_pattern == "single_line_name_amount"
+
+
+def test_parser_does_not_accept_bracketed_alpha_noise_as_vendor() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="[NATT", confidence=0.90, line_id=0, page_order=0),
+            OcrLine(text="[판매] 2015-01-20 18:28", confidence=0.95, line_id=1, page_order=1),
+            OcrLine(text="속이면한 누룸지(5입)", confidence=0.92, line_id=2, page_order=2),
+            OcrLine(text="8801169770207 5,600 1 5,600", confidence=0.99, line_id=3, page_order=3),
+        ]
+    )
+
+    assert result.vendor_name is None
+
+
+def test_parser_strips_trailing_barcode_suffix_from_single_line_name_amount_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="스팀덱 64GB 0814585021752 589,000 589,000", confidence=0.97, line_id=1, page_order=1),
+            OcrLine(text="1", confidence=0.99, line_id=2, page_order=2),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "스팀덱 64GB"
+    assert result.items[0].amount == 589000.0
+
+
+def test_parser_keeps_legitimate_single_item_even_when_amount_matches_total() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="[구매] 2023-06-08 19:01", confidence=0.96, line_id=0, page_order=0),
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="스팀덱 64GB 0814585021752 589,000 589,000", confidence=0.97, line_id=2, page_order=2),
+            OcrLine(text="1", confidence=0.99, line_id=3, page_order=3),
+            OcrLine(text="결제대상금 589,000", confidence=0.99, line_id=4, page_order=4),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "스팀덱 64GB"
+
+
+def test_parser_keeps_explicit_payment_amount_over_later_card_split_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="결제대상금 589,000", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="카드결제(IC) 일시불7200,000", confidence=0.96, line_id=1, page_order=1),
+            OcrLine(text="0025신한 일시물/289,000", confidence=0.92, line_id=2, page_order=2),
+        ]
+    )
+
+    assert result.totals["payment_amount"] == 589000.0
+
+
+def test_parser_uses_exact_product_aliases_for_noisy_packaged_item_names() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="어쉬밀크클릿 [ 1,600", confidence=0.79, line_id=0, page_order=0),
+            OcrLine(text="초코빼빼로지암 L 1,700", confidence=0.76, line_id=1, page_order=1),
+            OcrLine(text="이에 2 4,000", confidence=0.77, line_id=2, page_order=2),
+            OcrLine(text="8801062639854 005 롯데앤디카페조릿 다크", confidence=0.92, line_id=3, page_order=3),
+            OcrLine(text="4,800 1 4,800", confidence=0.99, line_id=4, page_order=4),
+        ]
+    )
+
+    assert [item.normalized_name for item in result.items] == [
+        "허쉬밀크초콜릿",
+        "초코빼빼로",
+        "호레오화이트",
+        "롯데 앤디카페 초콜릿 다크빈",
+    ]
+
+
+def test_parser_does_not_use_approval_number_as_payment_amount() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="결제금액 11,517", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="카드결제 승인번호123456", confidence=0.98, line_id=1, page_order=1),
+        ]
+    )
+
+    assert result.totals["payment_amount"] == 11517.0
+
+
+def test_parser_does_not_mark_total_mismatch_when_subtotal_matches_items_and_tax_exists() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="GS25", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="[주문] 2023-11-24 18:59", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="호가든캔330ml 1 3,500", confidence=0.97, line_id=2, page_order=2),
+            OcrLine(text="아몬드초코볼 2 4,000", confidence=0.97, line_id=3, page_order=3),
+            OcrLine(text="양파 3 2,970", confidence=0.97, line_id=4, page_order=4),
+            OcrLine(text="과세물품 10,470", confidence=0.99, line_id=5, page_order=5),
+            OcrLine(text="부가세 1,047", confidence=0.99, line_id=6, page_order=6),
+            OcrLine(text="결제금액 11,517", confidence=0.99, line_id=7, page_order=7),
+        ]
+    )
+
+    assert "total_mismatch" not in result.review_reasons
+
+
+def test_parser_does_not_mark_total_mismatch_when_payment_minus_tax_matches_items() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="GS25", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="[주문] 2023-11-24 18:59", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="허쉬쿠키앤크림 1 1,600", confidence=0.97, line_id=2, page_order=2),
+            OcrLine(text="허쉬쿠키앤초코 2 3,200", confidence=0.97, line_id=3, page_order=3),
+            OcrLine(text="호가든캔330ml 3 10,500", confidence=0.97, line_id=4, page_order=4),
+            OcrLine(text="부가세 1,530", confidence=0.99, line_id=5, page_order=5),
+            OcrLine(text="결제금액 16,830", confidence=0.99, line_id=6, page_order=6),
+        ]
+    )
+
+    assert "total_mismatch" not in result.review_reasons
+
+
+def test_parser_does_not_require_review_only_for_unknown_item_when_structure_is_complete() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="GS25", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="[주문] 2023-11-24 18:59", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="희귀한상품A 1 2,800", confidence=0.95, line_id=2, page_order=2),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "희귀한상품A"
+    assert "unknown_item" in result.items[0].review_reason
+    assert result.items[0].needs_review is False
+    assert result.review_required is False
+
+
+def test_parser_parses_name_quantity_then_amount_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="아몬드초코볼 3", confidence=0.96, line_id=0, page_order=0),
+            OcrLine(text="6,000", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="대파 1", confidence=0.94, line_id=2, page_order=2),
+            OcrLine(text="2,480", confidence=0.99, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "아몬드초코볼",
+        "대파",
+    ]
+    assert [item.quantity for item in result.items] == [3.0, 1.0]
+    assert [item.amount for item in result.items] == [6000.0, 2480.0]
+    assert all(item.parse_pattern == "name_qty_then_amount" for item in result.items)
+
+
+def test_parser_parses_compact_name_quantity_then_amount_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="호가든캔330ml3", confidence=0.96, line_id=0, page_order=0),
+            OcrLine(text="10,500", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="양파1", confidence=0.97, line_id=2, page_order=2),
+            OcrLine(text="990", confidence=0.99, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["호가든캔330ml", "양파"]
+    assert [item.quantity for item in result.items] == [3.0, 1.0]
+    assert [item.amount for item in result.items] == [10500.0, 990.0]
+
+
+def test_parser_parses_compact_split_gift_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="양파1", confidence=0.96, line_id=0, page_order=0),
+            OcrLine(text="증정품", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "양파"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount is None
+
+
+def test_parser_parses_narrow_column_name_qty_amount_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="양파21,980", confidence=0.97, line_id=0, page_order=0),
+            OcrLine(text="속이편한 누룸지15,600", confidence=0.97, line_id=1, page_order=1),
+            OcrLine(text="롯데 앤디카페조릿 다크29,600", confidence=0.97, line_id=2, page_order=2),
+            OcrLine(text="닭주물럭2.2kg114,900", confidence=0.97, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "양파",
+        "속이편한 누룽지",
+        "롯데 앤디카페조릿 다크",
+        "닭주물럭2.2kg",
+    ]
+    assert [item.quantity for item in result.items] == [2.0, 1.0, 2.0, 1.0]
+    assert [item.amount for item in result.items] == [1980.0, 5600.0, 9600.0, 14900.0]
+
+
+def test_parser_parses_narrow_column_gift_rows_with_digit_suffix_names() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="허쉬쿠키앤크림1증정품", confidence=0.97, line_id=0, page_order=0),
+            OcrLine(text="계란10구1증정품", confidence=0.97, line_id=1, page_order=1),
+            OcrLine(text="맛밤42G*101증정품", confidence=0.97, line_id=2, page_order=2),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "허쉬쿠키앤크림",
+        "계란10구",
+        "맛밤42G*10",
+    ]
+    assert [item.quantity for item in result.items] == [1.0, 1.0, 1.0]
+    assert [item.amount for item in result.items] == [None, None, None]
+
+
+def test_parser_recovers_digit_suffix_name_from_compact_qty_amount_with_merged_unit_price() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="라라스윗 바닐라파인트4746,900213,800", confidence=0.98, line_id=0, page_order=0),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "라라스윗 바닐라파인트474"
+    assert result.items[0].quantity == 2.0
+    assert result.items[0].amount == 13800.0
+
+
+def test_parser_strips_barcode_detail_suffix_with_placeholder_before_quantity() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="닭주물럭2.2kg 14,900 )1 14,900", confidence=0.94, line_id=0, page_order=0),
+            OcrLine(text="8800299000123 14,900 1", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "닭주물럭2.2kg"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount == 14900.0
+
+
+def test_parser_parses_name_price_then_quantity_and_amount_stack() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="호가든캔330ml 3,500", confidence=0.97, line_id=0, page_order=0),
+            OcrLine(text="1", confidence=0.98, line_id=1, page_order=1),
+            OcrLine(text="3,500", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="아몬드초코볼 2,000", confidence=0.95, line_id=3, page_order=3),
+            OcrLine(text="2", confidence=0.98, line_id=4, page_order=4),
+            OcrLine(text="4,000", confidence=0.99, line_id=5, page_order=5),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "호가든캔330ml",
+        "아몬드초코볼",
+    ]
+    assert [item.quantity for item in result.items] == [1.0, 2.0]
+    assert [item.amount for item in result.items] == [3500.0, 4000.0]
+    assert all(item.parse_pattern == "name_price_then_qty_amount" for item in result.items)
+
+
+def test_parser_parses_split_gift_item_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="호가든캔330ml 1", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="증정품", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "호가든캔330ml"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount is None
+    assert result.items[0].parse_pattern == "split_gift"
+
+
+def test_parser_parses_compact_name_qty_amount_without_space() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="호가든캔330ml27,000", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="대파1 2,480", confidence=0.96, line_id=1, page_order=1),
+            OcrLine(text="계란10구1 4,590", confidence=0.98, line_id=2, page_order=2),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "호가든캔330ml",
+        "대파",
+        "계란10구",
+    ]
+    assert [item.quantity for item in result.items] == [2.0, 1.0, 1.0]
+    assert [item.amount for item in result.items] == [7000.0, 2480.0, 4590.0]
+
+
+def test_parser_parses_compact_unit_price_qty_amount_without_spaces() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="호가든캔330ml3,500310,500", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="라라스윗초코파인트474ml6,900213,800", confidence=0.95, line_id=1, page_order=1),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "호가든캔330ml",
+        "라라스윗초코파인트474ml",
+    ]
+    assert [item.quantity for item in result.items] == [3.0, 2.0]
+    assert [item.amount for item in result.items] == [10500.0, 13800.0]
+
+
+def test_parser_parses_compact_gift_with_merged_unit_price_and_quantity() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="허쉬쿠키앤크림 11,6001증정품", confidence=0.95, line_id=0, page_order=0),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "허쉬쿠키앤크림"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount is None
+
+
+def test_parser_prefers_following_barcode_detail_over_noisy_compact_single_line() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="라라스윗 초코파인트474ml6,9002 13,800", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="8800274000123 6,900 2", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "라라스윗 초코파인트474ml"
+    assert result.items[0].quantity == 2.0
+    assert result.items[0].amount == 13800.0
+
+
+def test_parser_prefers_following_barcode_detail_for_compact_gift_row() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="양파9901 증정품", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="8800282000123 990 1", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "양파"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount is None
+
+
+def test_parser_prefers_name_qty_then_amount_before_cross_item_columnar_stack() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="아몬드초코볼 3", confidence=0.96, line_id=0, page_order=0),
+            OcrLine(text="6,000", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="1", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="990", confidence=0.99, line_id=3, page_order=3),
+        ]
+    )
+
+    assert result.items[0].raw_name == "아몬드초코볼"
+    assert result.items[0].quantity == 3.0
+    assert result.items[0].amount == 6000.0
+    assert result.items[0].parse_pattern == "name_qty_then_amount"
+
+
+def test_parser_does_not_infer_amount_for_two_line_gift_barcode_detail() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="허쉬쿠키앤크림 11,6001증정품", confidence=0.97, line_id=0, page_order=0),
+            OcrLine(text="8800270000123 1,600 1", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "허쉬쿠키앤크림"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount is None
+
+
+def test_parser_parses_spaced_compact_unit_price_qty_amount_without_digit_in_name() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="허쉬쿠키앤초코 1,6002 3,200", confidence=0.96, line_id=0, page_order=0),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "허쉬쿠키앤초코"
+    assert result.items[0].quantity == 2.0
+    assert result.items[0].amount == 3200.0
+    assert result.items[0].parse_pattern == "compact_unit_price_qty_amount"
+
+
+def test_parser_parses_short_compact_name_qty_amount_without_space() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="양파32,970", confidence=0.96, line_id=0, page_order=0),
+            OcrLine(text="대파2,48012,480", confidence=0.96, line_id=1, page_order=1),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["양파", "대파"]
+    assert [item.quantity for item in result.items] == [3.0, 1.0]
+    assert [item.amount for item in result.items] == [2970.0, 2480.0]
+
+
+def test_parser_parses_compact_name_qty_amount_with_spaced_name_prefix() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="라라스윗 바닐라파인트474320,700", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="속이편한누륨지316,800", confidence=0.95, line_id=1, page_order=1),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "라라스윗 바닐라파인트474",
+        "속이편한누룽지",
+    ]
+    assert [item.quantity for item in result.items] == [3.0, 3.0]
+    assert [item.amount for item in result.items] == [20700.0, 16800.0]
+
+
+def test_parser_strips_redundant_unit_price_from_name_qty_amount_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="양파990 1 990", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="계란10구 4,590 1 4,590", confidence=0.95, line_id=1, page_order=1),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "양파",
+        "계란10구",
+    ]
+    assert [item.quantity for item in result.items] == [1.0, 1.0]
+    assert [item.amount for item in result.items] == [990.0, 4590.0]
+
+
+def test_parser_parses_spaced_compact_gift_rows_with_unit_price_suffix() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="계란 10구 4,5901 증정품", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="롯데 앤디카페조릿 다크 4,8001 증정품", confidence=0.95, line_id=1, page_order=1),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "계란 10구",
+        "롯데 앤디카페조릿 다크",
+    ]
+    assert [item.quantity for item in result.items] == [1.0, 1.0]
+    assert [item.amount for item in result.items] == [None, None]
+
+
+def test_parser_strips_unit_price_from_spaced_single_line_gift_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="계란 10구 4,590 1 증정품", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="허쉬쿠키앤초코 1,600 1 증정품", confidence=0.95, line_id=1, page_order=1),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "계란 10구",
+        "허쉬쿠키앤초코",
+    ]
+    assert [item.quantity for item in result.items] == [1.0, 1.0]
+    assert [item.amount for item in result.items] == [None, None]
+
+
+def test_parser_recovers_name_from_two_line_barcode_when_name_line_contains_price_and_total_tail() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="양파99032,970", confidence=0.98, line_id=0, page_order=0),
+            OcrLine(text="8800272000123 990 3", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "양파"
+    assert result.items[0].quantity == 3.0
+    assert result.items[0].amount == 2970.0
+
+
+def test_parser_normalizes_trailing_m_unit_to_ml() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="호가든캔330m 1 증정품", confidence=0.95, line_id=0, page_order=0),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "호가든캔330ml"
+
+
+def test_parser_does_not_keep_vendor_or_summary_line_as_item() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="이마트", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="호가든캔330ml 3,500", confidence=0.97, line_id=1, page_order=1),
+            OcrLine(text="1", confidence=0.98, line_id=2, page_order=2),
+            OcrLine(text="3,500", confidence=0.99, line_id=3, page_order=3),
+            OcrLine(text="묶롬Y 10,470", confidence=0.88, line_id=4, page_order=4),
+            OcrLine(text="부가세 1,047", confidence=0.98, line_id=5, page_order=5),
+            OcrLine(text="합계 11,517", confidence=0.99, line_id=6, page_order=6),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["호가든캔330ml"]
+    assert result.totals["total"] == 11517.0
 
 
 def test_parser_detects_name_and_short_code_detail_pairs_without_explicit_header() -> None:
@@ -329,6 +1053,21 @@ def test_parser_filters_non_food_household_and_electronics_items() -> None:
     )
 
     assert result.items == []
+
+
+def test_parser_filters_low_confidence_short_unknown_hangul_items() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="피그 1 2,480", confidence=0.75, line_id=0, page_order=0),
+            OcrLine(text="금루금", confidence=0.76, line_id=1, page_order=1),
+            OcrLine(text="은", confidence=0.78, line_id=2, page_order=2),
+            OcrLine(text="양파 1 990", confidence=0.76, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["피그", "양파"]
 
 
 def test_parser_keeps_food_product_rows_after_rule_updates() -> None:
@@ -482,3 +1221,28 @@ def test_parser_uses_injected_footer_keywords_to_stop_item_window() -> None:
 
     assert [item.raw_name for item in result.items] == ["라라스윗 바닐라파인트474"]
     assert result.totals["payment_amount"] == 24090.0
+def test_parser_filters_pack_size_single_line_without_amount() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="이클립스 페퍼민트향 34g 770 1 770", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="미클립스 피치향 34g", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="합계 770", confidence=0.99, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["이클립스 페퍼민트향 34g"]
+
+
+def test_parser_does_not_treat_trailing_pack_size_as_price() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="024 미클립스 피치향 34g", confidence=0.99, line_id=0, page_order=0),
+        ]
+    )
+
+    assert result.items == []

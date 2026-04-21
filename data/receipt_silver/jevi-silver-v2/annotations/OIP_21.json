@@ -1,0 +1,585 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:13Z",
+  "image": {
+    "file_name": "OIP (21).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (21).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "싱음 단가 수함 금격",
+        "confidence": 0.37455512086550397,
+        "bbox": [
+          [
+            2.0,
+            0.0
+          ],
+          [
+            155.0,
+            0.0
+          ],
+          [
+            155.0,
+            11.0
+          ],
+          [
+            2.0,
+            11.0
+          ]
+        ],
+        "center": [
+          78.5,
+          5.5
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "1205a7 시무 7EL L 781",
+        "confidence": 0.7506850004196167,
+        "bbox": [
+          [
+            1.0,
+            16.0
+          ],
+          [
+            155.0,
+            16.0
+          ],
+          [
+            155.0,
+            40.0
+          ],
+          [
+            1.0,
+            40.0
+          ]
+        ],
+        "center": [
+          78.0,
+          28.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "131002 022 MX SII 1.60",
+        "confidence": 0.6237526774406433,
+        "bbox": [
+          [
+            1.0,
+            34.0
+          ],
+          [
+            157.0,
+            34.0
+          ],
+          [
+            157.0,
+            63.0
+          ],
+          [
+            1.0,
+            63.0
+          ]
+        ],
+        "center": [
+          79.0,
+          48.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "16007 040/2154 013 프림급 OCAIO 1.16 1.150",
+        "confidence": 0.6994094103574753,
+        "bbox": [
+          [
+            1.0,
+            54.0
+          ],
+          [
+            159.0,
+            54.0
+          ],
+          [
+            159.0,
+            87.0
+          ],
+          [
+            1.0,
+            87.0
+          ]
+        ],
+        "center": [
+          80.0,
+          70.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "23045 05식 CE5 2 1.860",
+        "confidence": 0.7876490473747253,
+        "bbox": [
+          [
+            0.0,
+            72.0
+          ],
+          [
+            161.0,
+            72.0
+          ],
+          [
+            161.0,
+            106.0
+          ],
+          [
+            0.0,
+            106.0
+          ]
+        ],
+        "center": [
+          80.5,
+          89.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "G2351 TRIUHE SU 볼드터구 6 2,280",
+        "confidence": 0.6544189095497132,
+        "bbox": [
+          [
+            0.0,
+            94.0
+          ],
+          [
+            164.0,
+            94.0
+          ],
+          [
+            164.0,
+            123.0
+          ],
+          [
+            0.0,
+            123.0
+          ]
+        ],
+        "center": [
+          82.0,
+          108.5
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "233244 0코 와이트 요구르트 900 900",
+        "confidence": 0.8194787979125977,
+        "bbox": [
+          [
+            0.0,
+            114.0
+          ],
+          [
+            167.0,
+            114.0
+          ],
+          [
+            167.0,
+            144.0
+          ],
+          [
+            0.0,
+            144.0
+          ]
+        ],
+        "center": [
+          83.5,
+          129.0
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "140203 [08 속미안진미니많 400 400",
+        "confidence": 0.8779416382312775,
+        "bbox": [
+          [
+            0.0,
+            138.0
+          ],
+          [
+            169.0,
+            138.0
+          ],
+          [
+            169.0,
+            167.0
+          ],
+          [
+            0.0,
+            167.0
+          ]
+        ],
+        "center": [
+          84.5,
+          152.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "200036 ITAR260 1.050 2 2.100",
+        "confidence": 0.8759636044502258,
+        "bbox": [
+          [
+            0.0,
+            158.0
+          ],
+          [
+            172.0,
+            158.0
+          ],
+          [
+            172.0,
+            190.0
+          ],
+          [
+            0.0,
+            190.0
+          ]
+        ],
+        "center": [
+          86.0,
+          174.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "131020 920 1 920",
+        "confidence": 0.9237652570009232,
+        "bbox": [
+          [
+            0.0,
+            182.0
+          ],
+          [
+            175.0,
+            182.0
+          ],
+          [
+            175.0,
+            203.0
+          ],
+          [
+            0.0,
+            203.0
+          ]
+        ],
+        "center": [
+          87.5,
+          192.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "F 계 12.200",
+        "confidence": 0.9705692728360494,
+        "bbox": [
+          [
+            1.0,
+            206.0
+          ],
+          [
+            179.0,
+            206.0
+          ],
+          [
+            179.0,
+            224.0
+          ],
+          [
+            1.0,
+            224.0
+          ]
+        ],
+        "center": [
+          90.0,
+          215.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "받은금액: 12,200원1",
+        "confidence": 0.9078255295753479,
+        "bbox": [
+          [
+            0.0,
+            232.0
+          ],
+          [
+            181.0,
+            232.0
+          ],
+          [
+            181.0,
+            250.0
+          ],
+          [
+            0.0,
+            250.0
+          ]
+        ],
+        "center": [
+          90.5,
+          241.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "면 거스든: F공0 0원1",
+        "confidence": 0.7353247180581093,
+        "bbox": [
+          [
+            0.0,
+            260.0
+          ],
+          [
+            185.0,
+            260.0
+          ],
+          [
+            185.0,
+            287.0
+          ],
+          [
+            0.0,
+            287.0
+          ]
+        ],
+        "center": [
+          92.5,
+          273.5
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "N카드 승인번호:67174232 5461-120X*** YIY",
+        "confidence": 0.7052968442440033,
+        "bbox": [
+          [
+            0.0,
+            294.0
+          ],
+          [
+            188.0,
+            294.0
+          ],
+          [
+            188.0,
+            325.0
+          ],
+          [
+            0.0,
+            325.0
+          ]
+        ],
+        "center": [
+          94.0,
+          309.5
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "유요기간:XX/X 승인읽자:21210910 승민SED:0D000571",
+        "confidence": 0.7913444439570109,
+        "bbox": [
+          [
+            1.0,
+            321.0
+          ],
+          [
+            185.0,
+            321.0
+          ],
+          [
+            185.0,
+            350.0
+          ],
+          [
+            1.0,
+            350.0
+          ]
+        ],
+        "center": [
+          93.0,
+          335.5
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "합 단말기D 계 KNS7050004 12,200원",
+        "confidence": 0.7621375739574432,
+        "bbox": [
+          [
+            2.0,
+            347.0
+          ],
+          [
+            193.0,
+            347.0
+          ],
+          [
+            193.0,
+            376.0
+          ],
+          [
+            2.0,
+            376.0
+          ]
+        ],
+        "center": [
+          97.5,
+          361.5
+        ],
+        "page_order": 15
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "45 05식 CE5",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 1860.0,
+        "confidence": 0.79,
+        "match_confidence": 0.7876,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          4
+        ],
+        "needs_review": true,
+        "review_reason": [
+          "low_confidence",
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "244 0코 와이트 요구르트",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 900.0,
+        "unit": "개",
+        "amount": 900.0,
+        "confidence": 0.82,
+        "match_confidence": 0.8195,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      },
+      {
+        "raw_name": "203 [08 속미안진미니많",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 400.0,
+        "unit": "개",
+        "amount": 400.0,
+        "confidence": 0.88,
+        "match_confidence": 0.8779,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          7
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "missing_purchased_at",
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {},
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "missing_purchased_at",
+      "unresolved_items",
+      "small_image"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.7,
+      "qwen_used": false,
+      "unresolved_groups": 1,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "header",
+        "3": "items",
+        "4": "items",
+        "5": "items",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "items",
+        "10": "items",
+        "11": "header",
+        "12": "items",
+        "13": "totals",
+        "14": "totals",
+        "15": "ignored"
+      },
+      "consumed_line_ids": [
+        4,
+        6,
+        7,
+        10
+      ],
+      "quality_score": 0.799,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

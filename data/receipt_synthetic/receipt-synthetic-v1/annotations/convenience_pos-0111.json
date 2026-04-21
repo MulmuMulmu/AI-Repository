@@ -1,0 +1,85 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:31Z",
+  "image": {
+    "file_name": "convenience_pos-0111.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0111.png"
+  },
+  "metadata": {
+    "layout_type": "convenience_pos",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "low",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "세븐일레븐",
+    "purchased_at": "2023-03-03",
+    "items": [
+      {
+        "raw_name": "허쉬쿠키앤크림",
+        "normalized_name": "허쉬쿠키앤크림",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null,
+        "unit_price": 1600.0,
+        "barcode": "8800110000123"
+      },
+      {
+        "raw_name": "허쉬쿠키앤초코",
+        "normalized_name": "허쉬쿠키앤초코",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0,
+        "unit_price": 1600.0,
+        "barcode": "8800110001123"
+      },
+      {
+        "raw_name": "호가든캔330ml",
+        "normalized_name": "호가든캔330ml",
+        "quantity": 2.0,
+        "unit": "캔",
+        "amount": 7000.0,
+        "unit_price": 3500.0,
+        "barcode": "8800110002123"
+      },
+      {
+        "raw_name": "아몬드초코볼",
+        "normalized_name": "아몬드초코볼",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 6000.0,
+        "unit_price": 2000.0,
+        "barcode": "8800110003123"
+      },
+      {
+        "raw_name": "양파",
+        "normalized_name": "양파",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 990.0,
+        "unit_price": 990.0,
+        "barcode": "8800110004123"
+      }
+    ],
+    "totals": {
+      "subtotal": 15590.0,
+      "tax": 1559.0,
+      "total": 17149.0,
+      "payment_amount": 17149.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "convenience_pos"
+    }
+  }
+}

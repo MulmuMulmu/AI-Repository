@@ -1,0 +1,100 @@
+{
+  "dataset_name": "receipt-synthetic-v1-convenience-pos-narrow-columns",
+  "output_dir": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1",
+  "image_count": 22,
+  "total_item_count": null,
+  "layout_counts": {
+    "convenience_pos": 22
+  },
+  "images": [
+    {
+      "file_name": "convenience_pos-0093.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0093.png"
+    },
+    {
+      "file_name": "convenience_pos-0097.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0097.png"
+    },
+    {
+      "file_name": "convenience_pos-0101.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0101.png"
+    },
+    {
+      "file_name": "convenience_pos-0105.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0105.png"
+    },
+    {
+      "file_name": "convenience_pos-0109.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0109.png"
+    },
+    {
+      "file_name": "convenience_pos-0113.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0113.png"
+    },
+    {
+      "file_name": "convenience_pos-0117.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0117.png"
+    },
+    {
+      "file_name": "convenience_pos-0121.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0121.png"
+    },
+    {
+      "file_name": "convenience_pos-0125.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0125.png"
+    },
+    {
+      "file_name": "convenience_pos-0129.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0129.png"
+    },
+    {
+      "file_name": "convenience_pos-0133.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0133.png"
+    },
+    {
+      "file_name": "convenience_pos-0137.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0137.png"
+    },
+    {
+      "file_name": "convenience_pos-0141.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0141.png"
+    },
+    {
+      "file_name": "convenience_pos-0145.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0145.png"
+    },
+    {
+      "file_name": "convenience_pos-0149.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0149.png"
+    },
+    {
+      "file_name": "convenience_pos-0153.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0153.png"
+    },
+    {
+      "file_name": "convenience_pos-0157.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0157.png"
+    },
+    {
+      "file_name": "convenience_pos-0161.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0161.png"
+    },
+    {
+      "file_name": "convenience_pos-0165.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0165.png"
+    },
+    {
+      "file_name": "convenience_pos-0169.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0169.png"
+    },
+    {
+      "file_name": "convenience_pos-0173.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0173.png"
+    },
+    {
+      "file_name": "convenience_pos-0177.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0177.png"
+    }
+  ],
+  "target_count": 22
+}

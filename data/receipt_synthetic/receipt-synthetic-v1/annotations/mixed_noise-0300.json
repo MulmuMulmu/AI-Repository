@@ -1,0 +1,85 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:42Z",
+  "image": {
+    "file_name": "mixed_noise-0300.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0300.png"
+  },
+  "metadata": {
+    "layout_type": "mixed_noise",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "bottom_small",
+      "shadow": "low"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "GS25",
+    "purchased_at": "2025-12-03",
+    "items": [
+      {
+        "raw_name": "닭주물럭2.2kg",
+        "normalized_name": "닭주물럭",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 14900.0,
+        "unit_price": 14900.0,
+        "barcode": "8800299000123"
+      },
+      {
+        "raw_name": "토마토",
+        "normalized_name": "토마토",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 3980.0,
+        "unit_price": 3980.0,
+        "barcode": "8800299001123"
+      },
+      {
+        "raw_name": "허쉬쿠키앤크림",
+        "normalized_name": "허쉬쿠키앤크림",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 3200.0,
+        "unit_price": 1600.0,
+        "barcode": "8800299002123"
+      },
+      {
+        "raw_name": "허쉬쿠키앤초코",
+        "normalized_name": "허쉬쿠키앤초코",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null,
+        "unit_price": 1600.0,
+        "barcode": "8800299003123"
+      },
+      {
+        "raw_name": "호가든캔330ml",
+        "normalized_name": "호가든캔330ml",
+        "quantity": 1.0,
+        "unit": "캔",
+        "amount": 3500.0,
+        "unit_price": 3500.0,
+        "barcode": "8800299004123"
+      }
+    ],
+    "totals": {
+      "subtotal": 25580.0,
+      "tax": 2558.0,
+      "total": 28138.0,
+      "payment_amount": 28138.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "mixed_noise"
+    }
+  }
+}

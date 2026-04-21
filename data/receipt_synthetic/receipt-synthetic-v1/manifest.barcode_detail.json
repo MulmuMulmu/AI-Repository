@@ -1,0 +1,252 @@
+{
+  "dataset_name": "receipt-synthetic-v1-barcode-detail",
+  "output_dir": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1",
+  "image_count": 60,
+  "total_item_count": null,
+  "layout_counts": {
+    "barcode_detail": 60
+  },
+  "images": [
+    {
+      "file_name": "barcode_detail-0001.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0001.png"
+    },
+    {
+      "file_name": "barcode_detail-0002.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0002.png"
+    },
+    {
+      "file_name": "barcode_detail-0003.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0003.png"
+    },
+    {
+      "file_name": "barcode_detail-0004.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0004.png"
+    },
+    {
+      "file_name": "barcode_detail-0005.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0005.png"
+    },
+    {
+      "file_name": "barcode_detail-0006.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0006.png"
+    },
+    {
+      "file_name": "barcode_detail-0007.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0007.png"
+    },
+    {
+      "file_name": "barcode_detail-0008.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0008.png"
+    },
+    {
+      "file_name": "barcode_detail-0009.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0009.png"
+    },
+    {
+      "file_name": "barcode_detail-0010.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0010.png"
+    },
+    {
+      "file_name": "barcode_detail-0011.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0011.png"
+    },
+    {
+      "file_name": "barcode_detail-0012.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0012.png"
+    },
+    {
+      "file_name": "barcode_detail-0013.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0013.png"
+    },
+    {
+      "file_name": "barcode_detail-0014.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0014.png"
+    },
+    {
+      "file_name": "barcode_detail-0015.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0015.png"
+    },
+    {
+      "file_name": "barcode_detail-0016.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0016.png"
+    },
+    {
+      "file_name": "barcode_detail-0017.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0017.png"
+    },
+    {
+      "file_name": "barcode_detail-0018.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0018.png"
+    },
+    {
+      "file_name": "barcode_detail-0019.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0019.png"
+    },
+    {
+      "file_name": "barcode_detail-0020.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0020.png"
+    },
+    {
+      "file_name": "barcode_detail-0021.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0021.png"
+    },
+    {
+      "file_name": "barcode_detail-0022.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0022.png"
+    },
+    {
+      "file_name": "barcode_detail-0023.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0023.png"
+    },
+    {
+      "file_name": "barcode_detail-0024.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0024.png"
+    },
+    {
+      "file_name": "barcode_detail-0025.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0025.png"
+    },
+    {
+      "file_name": "barcode_detail-0026.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0026.png"
+    },
+    {
+      "file_name": "barcode_detail-0027.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0027.png"
+    },
+    {
+      "file_name": "barcode_detail-0028.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0028.png"
+    },
+    {
+      "file_name": "barcode_detail-0029.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0029.png"
+    },
+    {
+      "file_name": "barcode_detail-0030.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0030.png"
+    },
+    {
+      "file_name": "barcode_detail-0031.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0031.png"
+    },
+    {
+      "file_name": "barcode_detail-0032.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0032.png"
+    },
+    {
+      "file_name": "barcode_detail-0033.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0033.png"
+    },
+    {
+      "file_name": "barcode_detail-0034.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0034.png"
+    },
+    {
+      "file_name": "barcode_detail-0035.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0035.png"
+    },
+    {
+      "file_name": "barcode_detail-0036.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0036.png"
+    },
+    {
+      "file_name": "barcode_detail-0037.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0037.png"
+    },
+    {
+      "file_name": "barcode_detail-0038.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0038.png"
+    },
+    {
+      "file_name": "barcode_detail-0039.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0039.png"
+    },
+    {
+      "file_name": "barcode_detail-0040.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0040.png"
+    },
+    {
+      "file_name": "barcode_detail-0041.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0041.png"
+    },
+    {
+      "file_name": "barcode_detail-0042.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0042.png"
+    },
+    {
+      "file_name": "barcode_detail-0043.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0043.png"
+    },
+    {
+      "file_name": "barcode_detail-0044.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0044.png"
+    },
+    {
+      "file_name": "barcode_detail-0045.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0045.png"
+    },
+    {
+      "file_name": "barcode_detail-0046.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0046.png"
+    },
+    {
+      "file_name": "barcode_detail-0047.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0047.png"
+    },
+    {
+      "file_name": "barcode_detail-0048.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0048.png"
+    },
+    {
+      "file_name": "barcode_detail-0049.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0049.png"
+    },
+    {
+      "file_name": "barcode_detail-0050.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0050.png"
+    },
+    {
+      "file_name": "barcode_detail-0051.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0051.png"
+    },
+    {
+      "file_name": "barcode_detail-0052.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0052.png"
+    },
+    {
+      "file_name": "barcode_detail-0053.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0053.png"
+    },
+    {
+      "file_name": "barcode_detail-0054.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0054.png"
+    },
+    {
+      "file_name": "barcode_detail-0055.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0055.png"
+    },
+    {
+      "file_name": "barcode_detail-0056.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0056.png"
+    },
+    {
+      "file_name": "barcode_detail-0057.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0057.png"
+    },
+    {
+      "file_name": "barcode_detail-0058.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0058.png"
+    },
+    {
+      "file_name": "barcode_detail-0059.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0059.png"
+    },
+    {
+      "file_name": "barcode_detail-0060.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0060.png"
+    }
+  ],
+  "target_count": 60
+}

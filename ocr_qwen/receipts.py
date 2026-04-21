@@ -52,6 +52,11 @@ COMPACT_BARCODE_ITEM_PATTERN = re.compile(
     r"(?P<quantity>\d+(?:\.\d+)?)\s+"
     r"(?P<amount>\d{1,3}(?:,\d{3})+|\d+)$"
 )
+BARCODE_UNIT_PRICE_QTY_PATTERN = re.compile(
+    r"^(?P<barcode>\*?\d{8,})\s+"
+    r"(?P<unit_price>\d{1,3}(?:,\d{3})+|\d+)\s+"
+    r"(?P<quantity>\d+(?:\.\d+)?)$"
+)
 COMPACT_BARCODE_INFERRED_QTY_PATTERN = re.compile(
     r"^(?P<barcode>\*?\d{8,})\s+"
     r"(?P<unit_price>\d{1,3}(?:,\d{3})+|\d+)\s+"
@@ -63,6 +68,39 @@ NAME_QTY_AMOUNT_PATTERN = re.compile(
 )
 NAME_AMOUNT_PATTERN = re.compile(
     r"^(?P<name>.+?)\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
+)
+NAME_QTY_ONLY_PATTERN = re.compile(
+    r"^(?P<name>.+?)\s+(?P<quantity>\d+(?:\.\d+)?)$"
+)
+COMPACT_NAME_QTY_ONLY_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<quantity>\d)$"
+)
+COMPACT_NAME_QTY_AMOUNT_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<quantity>\d)\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+)$"
+)
+COMPACT_NAME_QTY_LARGE_AMOUNT_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<quantity>\d)(?P<amount>\d{2}[,.]\d{3})$"
+)
+COMPACT_NAME_QTY_AMOUNT_NO_SPACE_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<quantity>\d)(?P<amount>\d{1,3}(?:[,.]\d{3})+)$"
+)
+COMPACT_NAME_QTY_GIFT_NO_SPACE_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<quantity>\d)\s*증정품$"
+)
+COMPACT_NAME_QTY_PLAIN_AMOUNT_PATTERN = re.compile(
+    r"^(?P<name>[가-힣A-Za-z][가-힣A-Za-z\s]+?)(?P<quantity>\d)(?P<amount>\d{3,4})$"
+)
+COMPACT_UNIT_PRICE_QTY_AMOUNT_PATTERN = re.compile(
+    r"^(?P<name>.+?)\s+(?P<unit_price>\d{1,3}(?:[,.]\d{3})+)(?P<quantity>\d)\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+)$"
+)
+COMPACT_UNIT_PRICE_QTY_AMOUNT_NO_SPACE_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<unit_price>\d{1,3}(?:[,.]\d{3})+)(?P<quantity>\d)(?P<amount>\d{1,3}(?:[,.]\d{3})+)$"
+)
+COMPACT_UNIT_PRICE_QTY_AMOUNT_MIXED_SPACE_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<unit_price>\d{1,3}(?:[,.]\d{3})+)(?P<quantity>\d)\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+)$"
+)
+COMPACT_GIFT_PATTERN = re.compile(
+    r"^(?P<name>.+?)(?P<unit_price>\d{2,3}(?:[,.]\d{3})?)(?P<quantity>\d)\s*증정품$"
 )
 NAME_GIFT_PATTERN = re.compile(
     r"^(?P<name>.+?)\s+(?P<quantity>\d+(?:\.\d+)?)\s+증정품$"
@@ -94,10 +132,12 @@ DASH_PATTERN = re.compile(r"^[\-\_=]{3,}$")
 
 TOTAL_KEYWORDS = (
     "합계",
+    "계",
     "총계",
     "구매금액",
     "결제금액",
     "결제대상액",
+    "결제대상금액",
     "최종결제",
     "과세물품가액",
     "과세물품",
@@ -107,7 +147,7 @@ TOTAL_KEYWORDS = (
     "현금",
     "카드결제",
 )
-PAYMENT_KEYWORDS = ("구매금액", "결제금액", "결제대상액", "최종결제", "현금", "카드결제")
+PAYMENT_KEYWORDS = ("구매금액", "결제금액", "결제대상액", "결제대상금", "결제대상금액", "최종결제", "현금", "카드결제")
 DATE_HINT_KEYWORDS = ("판매일", "구매", "주문", "결제", "거래일")
 FOOTER_KEYWORDS = (
     "합계",
@@ -129,6 +169,7 @@ FOOTER_KEYWORDS = (
     "면세",
     "결제금액",
     "결제대상액",
+    "결제대상금액",
     "최종결제",
     "주문번호",
 )
@@ -205,6 +246,7 @@ CANONICAL_VENDOR_ALIASES = {
     "이마트": "이마트",
     "롯데마트": "롯데마트",
     "홈플러스": "홈플러스",
+    "homeplus": "홈플러스",
     "re-mart": "re-MART",
 }
 BRAND_TOKENS = ("서울우유", "비비고", "CJ", "농심", "오뚜기", "매일", "빙그레")
@@ -214,8 +256,12 @@ OCR_CANONICAL_ALIASES = {
     "바널라": "바닐라",
     "속이면한": "속이편한",
     "누룸지": "누룽지",
+    "누릉지": "누룽지",
+    "누륨지": "누룽지",
     "딸기피지": "딸기피치",
     "코볼": "초코볼",
+    "크라우참쌀서과": "크라운참쌀선과",
+    "해태구문감자": "해태구운감자",
 }
 ITEM_RULES = (
     (re.compile(r"우유|밀크"), "우유", "dairy"),
@@ -254,6 +300,7 @@ class ReceiptRules:
     ocr_canonical_aliases: dict[str, str]
     item_rules: tuple[tuple[str, str, str], ...]
     non_item_rules: tuple[NonItemCategoryRule, ...] = ()
+    product_alias_lookup: dict[str, str] = field(default_factory=dict)
     product_alias_replacements: tuple[tuple[str, str], ...] = ()
     product_to_ingredient: dict[str, str] = field(default_factory=dict)
     compiled_item_rules: tuple[tuple[re.Pattern[str], str, str], ...] = field(init=False, repr=False)
@@ -274,11 +321,13 @@ def build_default_receipt_rules() -> ReceiptRules:
         external_rules = None
 
     ocr_aliases = dict(OCR_CANONICAL_ALIASES)
+    product_alias_lookup: dict[str, str] = {}
     product_alias_replacements: tuple[tuple[str, str], ...] = ()
     non_item_rules: tuple[NonItemCategoryRule, ...] = ()
     product_to_ingredient: dict[str, str] = {}
     if external_rules is not None:
         non_item_rules = external_rules.non_item_rules
+        product_alias_lookup = dict(external_rules.product_aliases)
         product_alias_replacements = external_rules.product_alias_replacements
         product_to_ingredient = dict(external_rules.product_to_ingredient)
     return ReceiptRules(
@@ -296,6 +345,7 @@ def build_default_receipt_rules() -> ReceiptRules:
         ocr_canonical_aliases=ocr_aliases,
         item_rules=tuple((pattern.pattern, normalized_name, category) for pattern, normalized_name, category in ITEM_RULES),
         non_item_rules=non_item_rules,
+        product_alias_lookup=product_alias_lookup,
         product_alias_replacements=product_alias_replacements,
         product_to_ingredient=product_to_ingredient,
     )
@@ -370,6 +420,7 @@ class ReceiptParser:
 
         items, consumed_line_ids = self._parse_items(ordered_lines, sections, purchased_at)
         items = self._filter_parsed_items(items)
+        items = self._prune_summary_like_items(items, lines=ordered_lines, vendor_name=vendor_name, totals=totals)
 
         review_reasons = self._collect_global_review_reasons(
             items=items,
@@ -452,6 +503,8 @@ class ReceiptParser:
         if len(normalized) < 2:
             return False
         if self._looks_like_marketing_slogan(text):
+            return False
+        if any(char in normalized for char in "[](){}"):
             return False
         if any(char in normalized for char in ":;/\\"):
             return False
@@ -620,6 +673,30 @@ class ReceiptParser:
                 index += 1
                 continue
 
+            numeric_detail_item = self._parse_name_then_numeric_detail_item(lines, index, sections, purchased_at)
+            if numeric_detail_item is not None:
+                item, consumed_count = numeric_detail_item
+                items.append(item)
+                consumed_line_ids.update(item.source_line_ids)
+                index += consumed_count
+                continue
+
+            name_price_stack_item = self._parse_name_price_then_qty_amount_item(lines, index, sections, purchased_at)
+            if name_price_stack_item is not None:
+                item, consumed_count = name_price_stack_item
+                items.append(item)
+                consumed_line_ids.update(item.source_line_ids)
+                index += consumed_count
+                continue
+
+            name_qty_amount_item = self._parse_name_qty_then_amount_item(lines, index, sections, purchased_at)
+            if name_qty_amount_item is not None:
+                item, consumed_count = name_qty_amount_item
+                items.append(item)
+                consumed_line_ids.update(item.source_line_ids)
+                index += consumed_count
+                continue
+
             columnar_item = self._parse_columnar_item(lines, index, sections, purchased_at)
             if columnar_item is not None:
                 item, consumed_count = columnar_item
@@ -628,9 +705,9 @@ class ReceiptParser:
                 index += consumed_count
                 continue
 
-            numeric_detail_item = self._parse_name_then_numeric_detail_item(lines, index, sections, purchased_at)
-            if numeric_detail_item is not None:
-                item, consumed_count = numeric_detail_item
+            split_gift_item = self._parse_split_gift_item(lines, index, sections, purchased_at)
+            if split_gift_item is not None:
+                item, consumed_count = split_gift_item
                 items.append(item)
                 consumed_line_ids.update(item.source_line_ids)
                 index += consumed_count
@@ -656,6 +733,72 @@ class ReceiptParser:
                 candidates.append(item.normalized_name)
             if any(self._matches_non_item_category(candidate, excluded_categories) for candidate in candidates if candidate):
                 continue
+            if item.normalized_name is None and self._looks_like_summary_fragment_name(item.raw_name):
+                continue
+            if item.normalized_name is None and self._looks_like_domain_noise_name(item.raw_name):
+                continue
+            if item.normalized_name is None and self._looks_like_fragmented_token_noise(item.raw_name):
+                continue
+            if (
+                item.parse_pattern == "single_line"
+                and item.amount is None
+                and item.unit in {"g", "kg", "ml", "l", "L"}
+            ):
+                pack_match = re.search(r"(\d+)\s*(g|kg|ml|l|L)\b", item.raw_name)
+                if pack_match and item.quantity is not None and abs(float(pack_match.group(1)) - float(item.quantity)) < 0.001:
+                    continue
+            compact_raw_name = re.sub(r"\s+", "", item.raw_name or "")
+            if (
+                item.normalized_name is None
+                and (item.match_confidence < LOW_CONFIDENCE_THRESHOLD or item.confidence < LOW_CONFIDENCE_THRESHOLD)
+                and 1 <= len(compact_raw_name) <= 3
+                and all("가" <= char <= "힣" for char in compact_raw_name)
+                and (item.amount is None or item.quantity is None or item.parse_pattern == "single_line")
+            ):
+                continue
+            filtered.append(item)
+        return filtered
+
+    def _prune_summary_like_items(
+        self,
+        items: list[ReceiptItem],
+        *,
+        lines: list[OcrLine],
+        vendor_name: str | None,
+        totals: dict[str, float],
+    ) -> list[ReceiptItem]:
+        filtered: list[ReceiptItem] = []
+        total_values = {float(value) for value in totals.values()}
+        line_index_by_id = {
+            (line.line_id if line.line_id is not None else index): index
+            for index, line in enumerate(lines)
+        }
+        for item in items:
+            compact_name = re.sub(r"\s+", "", item.raw_name or "")
+            if vendor_name and compact_name == re.sub(r"\s+", "", vendor_name):
+                continue
+            if (
+                item.normalized_name is None
+                and item.amount is not None
+                and float(item.amount) in total_values
+                and item.parse_pattern in {
+                    "single_line_name_amount",
+                    "single_line",
+                    "compact_qty_amount",
+                    "compact_unit_price_qty_amount",
+                }
+            ):
+                compact_name = re.sub(r"\s+", "", item.raw_name or "")
+                if self._looks_like_footer(item.raw_name) or self._looks_like_summary_fragment_name(item.raw_name):
+                    continue
+                if len(compact_name) <= 4:
+                    continue
+            if item.normalized_name is None and item.parse_pattern in {"single_line_name_amount", "single_line"}:
+                last_source_line_id = item.source_line_ids[-1] if item.source_line_ids else None
+                source_index = line_index_by_id.get(last_source_line_id)
+                if source_index is not None and source_index + 1 < len(lines):
+                    if self._looks_like_footer(lines[source_index + 1].text):
+                        continue
             filtered.append(item)
         return filtered
 
@@ -728,6 +871,12 @@ class ReceiptParser:
             POS_ITEM_PATTERN.match(stripped)
             or NAME_QTY_AMOUNT_PATTERN.match(stripped)
             or NAME_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_NAME_QTY_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_NAME_QTY_AMOUNT_NO_SPACE_PATTERN.match(stripped)
+            or COMPACT_NAME_QTY_PLAIN_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_UNIT_PRICE_QTY_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_UNIT_PRICE_QTY_AMOUNT_NO_SPACE_PATTERN.match(stripped)
+            or COMPACT_GIFT_PATTERN.match(text.strip())
             or NAME_GIFT_PATTERN.match(text.strip())
             or re.search(r"[가-힣]{2,}", stripped)
         )
@@ -740,6 +889,12 @@ class ReceiptParser:
             POS_ITEM_PATTERN.match(stripped)
             or NAME_QTY_AMOUNT_PATTERN.match(stripped)
             or NAME_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_NAME_QTY_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_NAME_QTY_AMOUNT_NO_SPACE_PATTERN.match(stripped)
+            or COMPACT_NAME_QTY_PLAIN_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_UNIT_PRICE_QTY_AMOUNT_PATTERN.match(stripped)
+            or COMPACT_UNIT_PRICE_QTY_AMOUNT_NO_SPACE_PATTERN.match(stripped)
+            or COMPACT_GIFT_PATTERN.match(text.strip())
             or NAME_GIFT_PATTERN.match(text.strip())
             or COMPACT_BARCODE_ITEM_PATTERN.match(text.strip())
             or COMPACT_BARCODE_INFERRED_QTY_PATTERN.match(text.strip())
@@ -886,19 +1041,72 @@ class ReceiptParser:
 
         name_line = lines[index]
         compact_line = lines[index + 1]
-        compact_match = COMPACT_BARCODE_ITEM_PATTERN.match(compact_line.text.strip())
-        inferred_qty_match = COMPACT_BARCODE_INFERRED_QTY_PATTERN.match(compact_line.text.strip())
+        compact_line_text = self._normalize_spaced_numeric_text(compact_line.text.strip())
+        barcode_detail_match = BARCODE_UNIT_PRICE_QTY_PATTERN.match(compact_line_text)
+        compact_match = COMPACT_BARCODE_ITEM_PATTERN.match(compact_line_text)
+        inferred_qty_match = COMPACT_BARCODE_INFERRED_QTY_PATTERN.match(compact_line_text)
         cleaned_name = self._cleanup_noisy_item_name(name_line.text.strip())
+        compact_name = self._extract_compact_barcode_name(cleaned_name)
+        is_gift_row = "증정품" in re.sub(r"\s+", "", name_line.text)
+        stripped_barcode_name = compact_name
+        if (
+            barcode_detail_match is not None
+        ):
+            unit_price = self._extract_last_price(barcode_detail_match.group("unit_price"))
+            quantity = float(barcode_detail_match.group("quantity"))
+            amount = None if is_gift_row else self._extract_last_price(name_line.text)
+            expected_amount = (unit_price * quantity) if unit_price is not None else None
+            if (
+                not is_gift_row
+                and expected_amount is not None
+                and (amount is None or abs(amount - expected_amount) > 1.0)
+            ):
+                amount = expected_amount
+            if amount is None and not is_gift_row:
+                amount = unit_price
+                if amount is not None:
+                    amount = amount * quantity
+            compact_name = self._strip_known_barcode_suffix(
+                text=cleaned_name,
+                unit_price=unit_price,
+                quantity=quantity,
+                amount=amount,
+            )
+            stripped_barcode_name = compact_name
+            if not self._looks_like_item_candidate(stripped_barcode_name):
+                stripped_barcode_name = self._extract_compact_barcode_name(compact_name)
+            if not self._looks_like_item_candidate(stripped_barcode_name):
+                stripped_barcode_name = self._extract_compact_barcode_name(cleaned_name)
+            if (amount is not None or is_gift_row) and self._looks_like_item_candidate(stripped_barcode_name):
+                consumed_count = 2
+                if index + 2 < len(lines) and self._looks_like_pure_noise_line(lines[index + 2].text):
+                    consumed_count += 1
+                return (
+                    self._build_item(
+                        raw_name=stripped_barcode_name,
+                        confidence_lines=[name_line, compact_line],
+                        purchased_at=purchased_at,
+                        quantity=quantity,
+                        unit="개",
+                        amount=amount,
+                        parse_pattern="two_line_barcode_gift" if is_gift_row else "two_line_barcode_inferred_amount",
+                        source_line_ids=[
+                            name_line.line_id or 0,
+                            compact_line.line_id or 0,
+                        ],
+                    ),
+                    consumed_count,
+                )
         if (
             compact_match is not None
-            and self._looks_like_item_candidate(cleaned_name)
+            and self._looks_like_item_candidate(compact_name)
         ):
             consumed_count = 2
             if index + 2 < len(lines) and self._looks_like_pure_noise_line(lines[index + 2].text):
                 consumed_count += 1
             return (
                 self._build_item(
-                    raw_name=cleaned_name,
+                    raw_name=compact_name,
                     confidence_lines=[name_line, compact_line],
                     purchased_at=purchased_at,
                     quantity=float(compact_match.group("quantity")),
@@ -914,14 +1122,14 @@ class ReceiptParser:
             )
         if (
             inferred_qty_match is not None
-            and self._looks_like_item_candidate(cleaned_name)
+            and self._looks_like_item_candidate(compact_name)
         ):
             consumed_count = 2
             if index + 2 < len(lines) and self._looks_like_pure_noise_line(lines[index + 2].text):
                 consumed_count += 1
             return (
                 self._build_item(
-                    raw_name=cleaned_name,
+                    raw_name=compact_name,
                     confidence_lines=[name_line, compact_line],
                     purchased_at=purchased_at,
                     quantity=1.0,
@@ -977,6 +1185,23 @@ class ReceiptParser:
             ],
         )
         return item, consumed_count
+
+    def _extract_compact_barcode_name(self, text: str) -> str:
+        candidate = re.sub(r"\s+증정품$", "", text).strip()
+        compact_patterns = [
+            COMPACT_UNIT_PRICE_QTY_AMOUNT_PATTERN,
+            COMPACT_UNIT_PRICE_QTY_AMOUNT_MIXED_SPACE_PATTERN,
+            COMPACT_UNIT_PRICE_QTY_AMOUNT_NO_SPACE_PATTERN,
+            COMPACT_NAME_QTY_AMOUNT_PATTERN,
+            COMPACT_NAME_QTY_AMOUNT_NO_SPACE_PATTERN,
+            COMPACT_NAME_QTY_PLAIN_AMOUNT_PATTERN,
+            COMPACT_GIFT_PATTERN,
+        ]
+        for pattern in compact_patterns:
+            match = pattern.match(candidate)
+            if match is not None:
+                return match.group("name").strip()
+        return candidate
 
     def _parse_pos_single_line_item(self, line: OcrLine, purchased_at: str | None) -> ReceiptItem | None:
         text = line.text.strip()
@@ -1040,7 +1265,7 @@ class ReceiptParser:
         if preview_normalized_name is None and name_line.confidence < 0.75:
             return None
 
-        detail_text = detail_line.text.strip()
+        detail_text = self._normalize_spaced_numeric_text(detail_line.text.strip())
         match = NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
         parse_pattern = "name_then_numeric_detail"
         source_line_ids = [name_line.line_id or 0, detail_line.line_id or 0]
@@ -1080,6 +1305,136 @@ class ReceiptParser:
             2,
         )
 
+    def _parse_name_price_then_qty_amount_item(
+        self,
+        lines: list[OcrLine],
+        index: int,
+        sections: dict[int, str],
+        purchased_at: str | None,
+    ) -> tuple[ReceiptItem, int] | None:
+        if index + 2 >= len(lines):
+            return None
+
+        name_price_line = lines[index]
+        quantity_line = lines[index + 1]
+        amount_line = lines[index + 2]
+        if sections.get(name_price_line.line_id or index) != "items":
+            return None
+        if not COUNT_PATTERN.match(quantity_line.text.strip()):
+            return None
+        if not PRICE_PATTERN.match(amount_line.text.strip()):
+            return None
+
+        cleaned_name = self._cleanup_noisy_item_name(name_price_line.text.strip())
+        match = NAME_AMOUNT_PATTERN.match(cleaned_name)
+        if match is None:
+            return None
+        raw_name = match.group("name").strip()
+        if not self._looks_like_item_candidate(raw_name):
+            return None
+
+        amount = self._extract_last_price(amount_line.text)
+        if amount is None:
+            return None
+
+        return (
+            self._build_item(
+                raw_name=raw_name,
+                confidence_lines=[name_price_line, quantity_line, amount_line],
+                purchased_at=purchased_at,
+                quantity=float(quantity_line.text.strip()),
+                unit="개",
+                amount=amount,
+                parse_pattern="name_price_then_qty_amount",
+                source_line_ids=[
+                    name_price_line.line_id or 0,
+                    quantity_line.line_id or 0,
+                    amount_line.line_id or 0,
+                ],
+            ),
+            3,
+        )
+
+    def _parse_name_qty_then_amount_item(
+        self,
+        lines: list[OcrLine],
+        index: int,
+        sections: dict[int, str],
+        purchased_at: str | None,
+    ) -> tuple[ReceiptItem, int] | None:
+        if index + 1 >= len(lines):
+            return None
+
+        name_qty_line = lines[index]
+        amount_line = lines[index + 1]
+        if sections.get(name_qty_line.line_id or index) != "items":
+            return None
+        if not PRICE_PATTERN.match(amount_line.text.strip()):
+            return None
+
+        cleaned_name = self._cleanup_noisy_item_name(name_qty_line.text.strip())
+        parsed_name_qty = self._match_name_qty_only(cleaned_name)
+        if parsed_name_qty is None:
+            return None
+
+        raw_name, quantity = parsed_name_qty
+
+        amount = self._extract_last_price(amount_line.text)
+        if amount is None:
+            return None
+
+        return (
+            self._build_item(
+                raw_name=raw_name,
+                confidence_lines=[name_qty_line, amount_line],
+                purchased_at=purchased_at,
+                quantity=quantity,
+                unit="개",
+                amount=amount,
+                parse_pattern="name_qty_then_amount",
+                source_line_ids=[name_qty_line.line_id or 0, amount_line.line_id or 0],
+            ),
+            2,
+        )
+
+    def _parse_split_gift_item(
+        self,
+        lines: list[OcrLine],
+        index: int,
+        sections: dict[int, str],
+        purchased_at: str | None,
+    ) -> tuple[ReceiptItem, int] | None:
+        if index + 1 >= len(lines):
+            return None
+
+        name_qty_line = lines[index]
+        gift_line = lines[index + 1]
+        if sections.get(name_qty_line.line_id or index) != "items":
+            return None
+        if re.sub(r"\s+", "", gift_line.text) != "증정품":
+            return None
+
+        cleaned_name = self._cleanup_noisy_item_name(name_qty_line.text.strip())
+        parsed_name_qty = self._match_name_qty_only(cleaned_name)
+        if parsed_name_qty is None:
+            return None
+
+        raw_name, quantity = parsed_name_qty
+
+        return (
+            self._build_item(
+                raw_name=raw_name,
+                confidence_lines=[name_qty_line, gift_line],
+                purchased_at=purchased_at,
+                quantity=quantity,
+                unit="개",
+                amount=None,
+                parse_pattern="split_gift",
+                source_line_ids=[name_qty_line.line_id or 0, gift_line.line_id or 0],
+            ),
+            2,
+        )
+
     def _normalize_ocr_noisy_pos_text(self, text: str) -> str:
         normalized = text.strip()
         normalized = re.sub(r"([0-9])[\*\#\$]+", r"\1", normalized)
@@ -1087,11 +1442,16 @@ class ReceiptParser:
         normalized = re.sub(r"^\s+", "", normalized)
         return normalized
 
+    def _normalize_spaced_numeric_text(self, text: str) -> str:
+        normalized = text.strip()
+        normalized = re.sub(r"(?<=\d)([,.])\s+(?=\d)", r"\1", normalized)
+        return normalized
+
     def _cleanup_noisy_item_name(self, text: str) -> str:
         cleaned = text
         cleaned = re.sub(r"^\*?\d{8,}\s*", "", cleaned)
         cleaned = re.sub(r"^\d{1,3}\s*", "", cleaned)
-        cleaned = re.sub(r"\b(행사|증정품)\b", " ", cleaned)
+        cleaned = re.sub(r"(행사|증정품)", " ", cleaned)
         cleaned = re.sub(r"\s+행상$", "", cleaned)
         cleaned = re.sub(r"\b1[가-힣A-Za-z]{1,3}$", "", cleaned).strip()
         cleaned = re.sub(r"\([^)]*\)", " ", cleaned)
@@ -1101,13 +1461,195 @@ class ReceiptParser:
         cleaned = re.sub(r"^(?!\*)([가-힣A-Za-z]{2,6})\)\s*", r"\1 ", cleaned)
         cleaned = cleaned.replace("m]", "ml").replace("m1", "ml").replace("M]", "ML").replace("M1", "ML")
         cleaned = cleaned.replace("ML", "ml")
+        cleaned = re.sub(r"(?i)(\d+)m\b", r"\1ml", cleaned)
         cleaned = re.sub(r"(?i)(\d+ml)(?:\s*\1)+", r"\1", cleaned)
         cleaned = re.sub(r"[\]}]+", " ", cleaned)
         cleaned = re.sub(r"\s+", " ", cleaned).strip()
         cleaned = re.sub(r"^([가-힣A-Za-z]{2,4})\s+(?=\1)", "", cleaned)
         for source, target in self.rules.ocr_canonical_aliases.items():
-            cleaned = cleaned.replace(source, target)
+            cleaned = self._safe_alias_replace(cleaned, source, target)
         return cleaned
+
+    def _extract_tail_unit_price_match(self, prefix: str) -> re.Match[str] | None:
+        return re.search(r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d{2,5})\s*$", prefix)
+
+    def _strip_trailing_price_token(self, text: str, price: float | None) -> str | None:
+        if price is None:
+            return None
+        variants = [f"{int(price):,}", str(int(price))]
+        for variant in variants:
+            if text.endswith(variant):
+                candidate = self._cleanup_noisy_item_name(text[: -len(variant)].rstrip())
+                if candidate and self._looks_like_item_candidate(candidate):
+                    return candidate
+        return None
+
+    def _strip_trailing_barcode_token(self, text: str) -> str | None:
+        candidate = text.strip()
+        match = re.match(r"^(?P<name>.+?)\s+\*?\d{8,}\s*$", candidate)
+        if match is None:
+            return None
+        stripped = self._cleanup_noisy_item_name(match.group("name").strip())
+        if stripped and self._looks_like_item_candidate(stripped):
+            return stripped
+        return None
+
+    def _strip_trailing_orphan_digit(self, text: str) -> str | None:
+        candidate = text.strip()
+        if not candidate.endswith("1"):
+            return None
+        if len(re.findall(r"\d", candidate)) != 1:
+            return None
+        shortened = self._cleanup_noisy_item_name(candidate[:-1].rstrip())
+        if shortened and self._looks_like_item_candidate(shortened):
+            return shortened
+        return None
+
+    def _parse_tail_encoded_single_line_item(
+        self,
+        *,
+        line: OcrLine,
+        purchased_at: str | None,
+    ) -> ReceiptItem | None:
+        raw_text = line.text.strip()
+        compact = re.sub(r"\s+", "", raw_text)
+        is_gift = compact.endswith("증정품")
+        working = re.sub(r"\s*증정품\s*$", "", raw_text).rstrip() if is_gift else raw_text
+
+        quantity_match: re.Match[str] | None
+        amount_text: str | None = None
+        if is_gift:
+            quantity_match = re.search(r"(?P<quantity>\d)\s*$", working)
+            if quantity_match is None:
+                return None
+            prefix = working[: quantity_match.start("quantity")].rstrip()
+            price_suffix_match = re.search(r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d{3,5})\s*$", prefix)
+            stripped_name = None
+            if price_suffix_match is not None:
+                candidate = self._cleanup_noisy_item_name(prefix[: price_suffix_match.start()].rstrip())
+                if self._looks_like_item_candidate(candidate):
+                    stripped_name = candidate
+            raw_name = stripped_name or self._cleanup_noisy_item_name(prefix)
+            if not self._looks_like_item_candidate(raw_name):
+                unit_price_match = self._extract_tail_unit_price_match(prefix)
+                if unit_price_match is None:
+                    return None
+                raw_name = self._cleanup_noisy_item_name(prefix[: unit_price_match.start()].rstrip())
+            if not self._looks_like_item_candidate(raw_name):
+                return None
+            return self._build_item(
+                raw_name=raw_name,
+                confidence_lines=[line],
+                purchased_at=purchased_at,
+                quantity=float(quantity_match.group("quantity")),
+                unit="개",
+                amount=None,
+                parse_pattern="compact_gift",
+                source_line_ids=[line.line_id or 0],
+            )
+        else:
+            amount_candidates: list[tuple[int, str]] = []
+            for start in range(len(working)):
+                suffix = working[start:].strip()
+                if re.fullmatch(r"\d{1,3}(?:[,.]\d{3})+|\d{3,5}", suffix):
+                    amount_candidates.append((start, suffix))
+
+            fallback_item: ReceiptItem | None = None
+            for start, amount_text in sorted(amount_candidates, key=lambda value: value[0], reverse=True):
+                prefix_with_qty = working[:start].rstrip()
+                if not prefix_with_qty or not prefix_with_qty[-1].isdigit():
+                    continue
+                quantity = float(prefix_with_qty[-1])
+                if quantity <= 0:
+                    continue
+                prefix = prefix_with_qty[:-1].rstrip()
+                amount = self._extract_last_price(amount_text)
+                if amount is None:
+                    continue
+                unit_price = amount / quantity
+                raw_name = self._strip_trailing_price_token(prefix, unit_price)
+                if raw_name is not None:
+                    if (
+                        " " in raw_text
+                        and raw_name.count(" ") >= 2
+                        and quantity == 1.0
+                        and amount < 5000
+                        and not re.search(r"\d|(?:ml|kg|g|l|L)", raw_name)
+                    ):
+                        continue
+                    return self._build_item(
+                        raw_name=raw_name,
+                        confidence_lines=[line],
+                        purchased_at=purchased_at,
+                        quantity=quantity,
+                        unit="개",
+                        amount=amount,
+                        parse_pattern="compact_unit_price_qty_amount",
+                        source_line_ids=[line.line_id or 0],
+                    )
+
+                candidate_name = self._cleanup_noisy_item_name(prefix)
+                if not self._looks_like_item_candidate(candidate_name):
+                    continue
+                if (
+                    " " in raw_text
+                    and candidate_name.count(" ") >= 2
+                    and quantity == 1.0
+                    and amount < 5000
+                    and not re.search(r"\d|(?:ml|kg|g|l|L)", candidate_name)
+                ):
+                    continue
+
+                if fallback_item is None:
+                    fallback_item = self._build_item(
+                        raw_name=candidate_name,
+                        confidence_lines=[line],
+                        purchased_at=purchased_at,
+                        quantity=quantity,
+                        unit="개",
+                        amount=amount,
+                        parse_pattern="compact_unit_price_qty_amount",
+                        source_line_ids=[line.line_id or 0],
+                    )
+
+            if fallback_item is not None:
+                return fallback_item
+
+            return None
+
+    def _strip_known_barcode_suffix(
+        self,
+        *,
+        text: str,
+        unit_price: float | None,
+        quantity: float | None,
+        amount: float | None,
+    ) -> str:
+        candidate = text.strip()
+        if unit_price is None or quantity is None:
+            return candidate
+
+        qty_text = str(int(quantity)) if float(quantity).is_integer() else str(quantity)
+        unit_price_variants = {f"{int(unit_price):,}", str(int(unit_price))}
+        amount_variants = {""}
+        if amount is not None:
+            amount_variants |= {f"{int(amount):,}", str(int(amount))}
+
+        for unit_price_text in sorted(unit_price_variants, key=len, reverse=True):
+            for amount_text in sorted(amount_variants, key=len, reverse=True):
+                suffix = (
+                    rf"\s*(?:{re.escape(qty_text)}\s*)?{re.escape(unit_price_text)}"
+                    rf"\s*(?:[\)\]\|Il!]+\s*)?{re.escape(qty_text)}"
+                )
+                if amount_text:
+                    suffix += rf"\s*{re.escape(amount_text)}"
+                match = re.match(rf"^(?P<name>.+?){suffix}\s*$", candidate)
+                if match is None:
+                    continue
+                stripped = self._cleanup_noisy_item_name(match.group("name").strip())
+                if self._looks_like_item_candidate(stripped):
+                    return stripped
+        return candidate
 
     def _should_skip_single_line_candidate(
         self,
@@ -1138,13 +1680,37 @@ class ReceiptParser:
         gift_candidate = re.sub(r"^\d{1,3}\s*", "", gift_candidate)
         gift_candidate = re.sub(r"^\d{1,3}(?=[가-힣A-Za-z])", "", gift_candidate)
         cleaned_name = self._cleanup_noisy_item_name(line.text.strip())
+
+        if "증정품" in re.sub(r"\s+", "", line.text) and NAME_GIFT_PATTERN.match(gift_candidate) is None:
+            tail_encoded_item = self._parse_tail_encoded_single_line_item(
+                line=line,
+                purchased_at=purchased_at,
+            )
+            if tail_encoded_item is not None and tail_encoded_item.amount is None:
+                return tail_encoded_item
+
+        compact_item = self._parse_compact_merged_single_line_item(
+            line=line,
+            gift_candidate=gift_candidate,
+            cleaned_name=cleaned_name,
+            purchased_at=purchased_at,
+        )
+        if compact_item is not None:
+            return compact_item
+
         if not self._looks_like_item_candidate(cleaned_name):
             return None
 
         gift_match = NAME_GIFT_PATTERN.match(gift_candidate)
         if gift_match is not None:
+            raw_name = self._cleanup_noisy_item_name(gift_match.group("name").strip())
+            trailing_price_match = re.search(r"(?P<price>\d{1,3}(?:[,.]\d{3})+|\d{3,5})\s*$", raw_name)
+            if trailing_price_match is not None:
+                candidate_name = self._cleanup_noisy_item_name(raw_name[: trailing_price_match.start()].rstrip())
+                if self._looks_like_item_candidate(candidate_name):
+                    raw_name = candidate_name
             return self._build_item(
-                raw_name=gift_match.group("name").strip(),
+                raw_name=raw_name,
                 confidence_lines=[line],
                 purchased_at=purchased_at,
                 quantity=float(gift_match.group("quantity")),
@@ -1159,11 +1725,16 @@ class ReceiptParser:
             amount = self._extract_last_price(qty_amount_match.group("amount"))
             if amount is None:
                 return None
+            quantity = float(qty_amount_match.group("quantity"))
+            raw_name = qty_amount_match.group("name").strip()
+            stripped_name = self._strip_trailing_price_token(raw_name, amount / quantity if quantity > 0 else None)
+            if stripped_name is not None:
+                raw_name = stripped_name
             return self._build_item(
-                raw_name=qty_amount_match.group("name").strip(),
+                raw_name=raw_name,
                 confidence_lines=[line],
                 purchased_at=purchased_at,
-                quantity=float(qty_amount_match.group("quantity")),
+                quantity=quantity,
                 unit="개",
                 amount=amount,
                 parse_pattern="single_line_name_qty_amount",
@@ -1172,11 +1743,26 @@ class ReceiptParser:
 
         amount_match = NAME_AMOUNT_PATTERN.match(cleaned_name)
         if amount_match is not None:
+            amount_token = amount_match.group("amount")
+            compact_amount_token = amount_token.replace(",", "").replace(".", "")
+            if "," not in amount_token and len(compact_amount_token) < 3:
+                amount_match = None
+        if amount_match is not None:
             amount = self._extract_last_price(amount_match.group("amount"))
             if amount is None:
                 return None
+            raw_name = amount_match.group("name").strip()
+            stripped_name = self._strip_trailing_price_token(raw_name, amount)
+            if stripped_name is not None:
+                raw_name = stripped_name
+            stripped_barcode_name = self._strip_trailing_barcode_token(raw_name)
+            if stripped_barcode_name is not None:
+                raw_name = stripped_barcode_name
+            orphan_digit_name = self._strip_trailing_orphan_digit(raw_name)
+            if orphan_digit_name is not None:
+                raw_name = orphan_digit_name
             return self._build_item(
-                raw_name=amount_match.group("name").strip(),
+                raw_name=raw_name,
                 confidence_lines=[line],
                 purchased_at=purchased_at,
                 quantity=1.0,
@@ -1185,6 +1771,13 @@ class ReceiptParser:
                 parse_pattern="single_line_name_amount",
                 source_line_ids=[line.line_id or 0],
             )
+
+        tail_encoded_item = self._parse_tail_encoded_single_line_item(
+            line=line,
+            purchased_at=purchased_at,
+        )
+        if tail_encoded_item is not None:
+            return tail_encoded_item
 
         quantity, unit = self._extract_quantity(line.text)
         amount = self._extract_last_price(line.text)
@@ -1202,6 +1795,188 @@ class ReceiptParser:
             parse_pattern="single_line",
             source_line_ids=[line.line_id or 0],
         )
+
+    def _match_name_qty_only(self, cleaned_name: str) -> tuple[str, float] | None:
+        amount_match = NAME_AMOUNT_PATTERN.match(cleaned_name)
+        if NAME_QTY_AMOUNT_PATTERN.match(cleaned_name):
+            return None
+        if amount_match is not None:
+            amount_token = amount_match.group("amount")
+            compact_amount_token = amount_token.replace(",", "").replace(".", "")
+            if "," in amount_token or len(compact_amount_token) >= 3:
+                return None
+        match = NAME_QTY_ONLY_PATTERN.match(cleaned_name)
+        if match is not None:
+            raw_name = match.group("name").strip()
+            if self._looks_like_item_candidate(raw_name):
+                return raw_name, float(match.group("quantity"))
+
+        compact_match = COMPACT_NAME_QTY_ONLY_PATTERN.match(cleaned_name)
+        if compact_match is None:
+            return None
+
+        raw_name = compact_match.group("name").strip()
+        if not self._looks_like_item_candidate(raw_name):
+            return None
+        return raw_name, float(compact_match.group("quantity"))
+
+    def _parse_compact_merged_single_line_item(
+        self,
+        *,
+        line: OcrLine,
+        gift_candidate: str,
+        cleaned_name: str,
+        purchased_at: str | None,
+    ) -> ReceiptItem | None:
+        raw_text = line.text.strip()
+        if " " in raw_text:
+            numeric_tokens = re.findall(r"\d{1,3}(?:[,.]\d{3})+|\d+", cleaned_name)
+            if len(numeric_tokens) == 1 and NAME_AMOUNT_PATTERN.match(cleaned_name):
+                return None
+        compact_name_qty_gift_match = COMPACT_NAME_QTY_GIFT_NO_SPACE_PATTERN.match(gift_candidate)
+        if compact_name_qty_gift_match is not None:
+            raw_name = self._cleanup_noisy_item_name(compact_name_qty_gift_match.group("name").strip())
+            if re.search(r"\d{1,3}(?:[,.]\d{3})$", raw_name):
+                raw_name = ""
+            if self._looks_like_item_candidate(raw_name):
+                return self._build_item(
+                    raw_name=raw_name,
+                    confidence_lines=[line],
+                    purchased_at=purchased_at,
+                    quantity=float(compact_name_qty_gift_match.group("quantity")),
+                    unit="개",
+                    amount=None,
+                    parse_pattern="compact_gift",
+                    source_line_ids=[line.line_id or 0],
+                )
+        compact_gift_match = COMPACT_GIFT_PATTERN.match(gift_candidate)
+        if compact_gift_match is not None:
+            raw_name = self._cleanup_noisy_item_name(compact_gift_match.group("name").strip())
+            if self._looks_like_item_candidate(raw_name):
+                return self._build_item(
+                    raw_name=raw_name,
+                    confidence_lines=[line],
+                    purchased_at=purchased_at,
+                    quantity=float(compact_gift_match.group("quantity")),
+                    unit="개",
+                    amount=None,
+                    parse_pattern="compact_gift",
+                    source_line_ids=[line.line_id or 0],
+                )
+
+        ordered_compact_patterns = []
+        if " " in raw_text:
+            ordered_compact_patterns.extend(
+                [
+                    (COMPACT_UNIT_PRICE_QTY_AMOUNT_PATTERN, "compact_unit_price_qty_amount"),
+                    (COMPACT_UNIT_PRICE_QTY_AMOUNT_MIXED_SPACE_PATTERN, "compact_unit_price_qty_amount"),
+                    (COMPACT_NAME_QTY_LARGE_AMOUNT_PATTERN, "compact_qty_amount"),
+                    (COMPACT_NAME_QTY_AMOUNT_PATTERN, "compact_qty_amount"),
+                    (COMPACT_UNIT_PRICE_QTY_AMOUNT_NO_SPACE_PATTERN, "compact_unit_price_qty_amount"),
+                    (COMPACT_NAME_QTY_AMOUNT_NO_SPACE_PATTERN, "compact_qty_amount"),
+                ]
+            )
+        else:
+            ordered_compact_patterns.extend(
+                [
+                    (COMPACT_UNIT_PRICE_QTY_AMOUNT_NO_SPACE_PATTERN, "compact_unit_price_qty_amount"),
+                    (COMPACT_UNIT_PRICE_QTY_AMOUNT_MIXED_SPACE_PATTERN, "compact_unit_price_qty_amount"),
+                    (COMPACT_NAME_QTY_LARGE_AMOUNT_PATTERN, "compact_qty_amount"),
+                    (COMPACT_NAME_QTY_AMOUNT_NO_SPACE_PATTERN, "compact_qty_amount"),
+                ]
+            )
+        ordered_compact_patterns.extend(
+            [
+                (COMPACT_NAME_QTY_PLAIN_AMOUNT_PATTERN, "compact_qty_amount"),
+            ]
+        )
+
+        for pattern, parse_pattern in ordered_compact_patterns:
+            match = pattern.match(cleaned_name)
+            if match is None:
+                continue
+            raw_name = match.group("name").strip()
+            quantity = float(match.group("quantity"))
+            amount = self._extract_last_price(match.group("amount"))
+            if amount is None:
+                continue
+            if parse_pattern == "compact_unit_price_qty_amount":
+                parsed_unit_price = self._extract_last_price(match.group("unit_price"))
+                expected_unit_price = amount / quantity if quantity > 0 else None
+                if (
+                    parsed_unit_price is not None
+                    and expected_unit_price is not None
+                    and abs(parsed_unit_price - expected_unit_price) > 1.0
+                ):
+                    continue
+                allow_digitless_name = bool(re.fullmatch(r"[가-힣A-Za-z\s]{2,24}", raw_name))
+                require_digit_or_unit = " " not in raw_text and not allow_digitless_name
+                if not self._looks_like_plausible_compact_name(
+                    raw_name,
+                    allow_spaces=True,
+                    require_digit_or_unit=require_digit_or_unit,
+                ):
+                    continue
+            elif pattern is COMPACT_NAME_QTY_AMOUNT_NO_SPACE_PATTERN:
+                if (
+                    " " in raw_text
+                    and raw_name.count(" ") >= 2
+                    and quantity == 1.0
+                    and amount < 5000
+                    and not re.search(r"\d|(?:ml|kg|g|l|L)", raw_name)
+                ):
+                    continue
+                if not self._looks_like_plausible_compact_name(raw_name, allow_spaces=False, require_digit_or_unit=False):
+                    continue
+            elif pattern is COMPACT_NAME_QTY_AMOUNT_PATTERN:
+                if re.match(r"^.+\s+\d+\s+\d", raw_text):
+                    continue
+                if not self._looks_like_plausible_compact_name(raw_name, allow_spaces=True, require_digit_or_unit=False):
+                    continue
+            elif pattern is COMPACT_NAME_QTY_LARGE_AMOUNT_PATTERN:
+                if not self._looks_like_plausible_compact_name(raw_name, allow_spaces=True, require_digit_or_unit=False):
+                    continue
+            elif pattern is COMPACT_NAME_QTY_PLAIN_AMOUNT_PATTERN:
+                if not self._looks_like_plausible_compact_name(raw_name, allow_spaces=False, require_digit_or_unit=False):
+                    continue
+            else:
+                if not self._looks_like_plausible_compact_name(raw_name, allow_spaces=False, require_digit_or_unit=False):
+                    continue
+            if not self._looks_like_item_candidate(raw_name):
+                continue
+            expected_unit_price = amount / quantity if quantity > 0 else None
+            stripped_name = self._strip_trailing_price_token(raw_name, expected_unit_price)
+            if stripped_name is not None:
+                raw_name = stripped_name
+            return self._build_item(
+                raw_name=raw_name,
+                confidence_lines=[line],
+                purchased_at=purchased_at,
+                quantity=quantity,
+                unit="개",
+                amount=amount,
+                parse_pattern=parse_pattern,
+                source_line_ids=[line.line_id or 0],
+            )
+
+        return None
+
+    def _looks_like_plausible_compact_name(
+        self,
+        name: str,
+        *,
+        allow_spaces: bool,
+        require_digit_or_unit: bool,
+    ) -> bool:
+        if not allow_spaces and " " in name:
+            return False
+        if re.search(r"[^0-9A-Za-z가-힣\s.*]", name):
+            return False
+        if require_digit_or_unit and not (
+            re.search(r"\d", name) or re.search(r"(?:ml|kg|g|l|L)$", name)
+        ):
+            return False
+        return True
 
     def _build_item(
         self,
@@ -1227,6 +2002,7 @@ class ReceiptParser:
             review_reason.append("unknown_item")
         if quantity is None or unit is None:
             review_reason.append("missing_quantity_or_unit")
+        structural_review_reasons = [reason for reason in review_reason if reason != "unknown_item"]
 
         return ReceiptItem(
             raw_name=raw_name,
@@ -1240,7 +2016,7 @@ class ReceiptParser:
             match_confidence=match_confidence,
             parse_pattern=parse_pattern,
             source_line_ids=source_line_ids,
-            needs_review=bool(review_reason),
+            needs_review=bool(structural_review_reasons),
             review_reason=review_reason,
         )
 
@@ -1256,7 +2032,11 @@ class ReceiptParser:
             reasons.append("missing_purchased_at")
 
         item_sum = sum(item.amount or 0.0 for item in items)
-        known_total = totals.get("payment_amount") or totals.get("total")
+        known_total = totals.get("subtotal")
+        if known_total is None and totals.get("payment_amount") is not None and totals.get("tax") is not None:
+            known_total = float(totals["payment_amount"]) - float(totals["tax"])
+        if known_total is None:
+            known_total = totals.get("payment_amount") or totals.get("total")
         if known_total is not None and item_sum > 0 and abs(known_total - item_sum) > 1.0:
             reasons.append("total_mismatch")
 
@@ -1273,13 +2053,17 @@ class ReceiptParser:
     def _extract_totals(self, lines: list[OcrLine]) -> dict[str, float]:
         totals: dict[str, float] = {}
         for index, line in enumerate(lines):
-            text = line.text.strip()
+            text = self._normalize_spaced_numeric_text(line.text.strip())
             normalized = re.sub(r"\s+", "", text)
             total_key = self._classify_total_key(normalized)
             if total_key is None:
                 continue
 
-            next_text = lines[index + 1].text.strip() if index + 1 < len(lines) else ""
+            next_text = (
+                self._normalize_spaced_numeric_text(lines[index + 1].text.strip())
+                if index + 1 < len(lines)
+                else ""
+            )
             if total_key == "payment_amount" and not self._looks_like_total_amount_line(text):
                 if not (next_text and PRICE_PATTERN.match(next_text)):
                     continue
@@ -1289,6 +2073,12 @@ class ReceiptParser:
                 if PRICE_PATTERN.match(next_text):
                     amount = self._extract_last_price(next_text)
             if amount is not None:
+                if (
+                    total_key == "payment_amount"
+                    and total_key in totals
+                    and ("카드결제" in normalized or "일시불" in normalized)
+                ):
+                    continue
                 totals[total_key] = amount
 
         if "payment_amount" not in totals and "total" in totals:
@@ -1298,6 +2088,10 @@ class ReceiptParser:
     def _classify_total_key(self, normalized_text: str) -> str | None:
         if normalized_text.startswith("계:") or normalized_text == "계":
             return "total"
+        if re.fullmatch(r"계[:：]?(?:\d{1,3}(?:[,.]\d{3})+|\d+)(?:원)?", normalized_text):
+            return "total"
+        if "승인번호" in normalized_text:
+            return None
         if _contains_any(normalized_text, self.rules.payment_keywords):
             return "payment_amount"
         if "부가세" in normalized_text or "세액" in normalized_text:
@@ -1332,6 +2126,11 @@ class ReceiptParser:
     def _normalize_item_name(self, text: str) -> tuple[str | None, str, str | None]:
         candidates = self._candidate_item_names(text)
         for candidate in candidates:
+            aliased = self._lookup_exact_product_alias(candidate)
+            if aliased is not None:
+                return aliased, "other", None
+
+        for candidate in candidates:
             for pattern, normalized_name, category in self.rules.compiled_item_rules:
                 if pattern.search(candidate):
                     return normalized_name, category, None
@@ -1346,6 +2145,21 @@ class ReceiptParser:
                     return normalized_name, category, storage_type
 
         return None, "other", None
+
+    def _lookup_exact_product_alias(self, text: str) -> str | None:
+        candidate = str(text or "").strip()
+        if not candidate:
+            return None
+        keys = [
+            candidate,
+            re.sub(r"\s+", "", candidate),
+            re.sub(r"\s+", "", candidate).casefold(),
+        ]
+        for key in keys:
+            aliased = self.rules.product_alias_lookup.get(key)
+            if aliased and aliased != candidate:
+                return aliased
+        return None
 
     def _looks_like_date(self, text: str) -> bool:
         for pattern in DATE_PATTERNS:
@@ -1452,9 +2266,11 @@ class ReceiptParser:
 
     def _normalize_vendor_candidate(self, text: str) -> str | None:
         normalized = re.sub(r"\s+", "", text).lower()
-        for token, canonical in self.rules.canonical_vendor_aliases.items():
-            if token in normalized:
-                return canonical
+        normalized_compact = re.sub(r"[^0-9a-z가-힣]+", "", normalized)
+        for candidate in (normalized, normalized_compact):
+            for token, canonical in self.rules.canonical_vendor_aliases.items():
+                if token in candidate:
+                    return canonical
         return None
 
     def _looks_like_total_amount_line(self, text: str) -> bool:
@@ -1492,7 +2308,7 @@ class ReceiptParser:
         for candidate in list(candidates):
             for source, target in self.rules.ocr_canonical_aliases.items():
                 if source in candidate:
-                    replaced = candidate.replace(source, target)
+                    replaced = self._safe_alias_replace(candidate, source, target)
                     if replaced and replaced not in candidates:
                         candidates.append(replaced)
 
@@ -1509,12 +2325,36 @@ class ReceiptParser:
                 return True
         return False
 
+    def _looks_like_summary_fragment_name(self, text: str) -> bool:
+        compact = re.sub(r"[^가-힣]", "", text or "")
+        if not compact or len(compact) > 6:
+            return False
+        return set(compact) <= set("세품가액물부과합계총결제대상금액")
+
+    def _looks_like_domain_noise_name(self, text: str) -> bool:
+        candidate = text or ""
+        return bool(re.search(r"(?:www|[a-z0-9-]+\.(?:co\.kr|com|net|kr))", candidate, re.IGNORECASE))
+
+    def _looks_like_fragmented_token_noise(self, text: str) -> bool:
+        tokens = [token for token in re.split(r"\s+", text or "") if token]
+        if len(tokens) < 3:
+            return False
+        hangul_singletons = [token for token in tokens if re.fullmatch(r"[가-힣]", token)]
+        return len(hangul_singletons) >= 2 and any(re.fullmatch(r"\d+", token) for token in tokens)
+
     def _apply_product_aliases(self, text: str) -> str:
         updated = text
         for source, target in self.rules.product_alias_replacements:
             if source and source in updated:
-                updated = updated.replace(source, target)
+                updated = self._safe_alias_replace(updated, source, target)
         return updated
+
+    def _safe_alias_replace(self, text: str, source: str, target: str) -> str:
+        if not source or source not in text:
+            return text
+        if target in text:
+            return text
+        return text.replace(source, target)
 
 
 def _load_default_ingredient_lookup() -> dict[str, dict[str, str]]:

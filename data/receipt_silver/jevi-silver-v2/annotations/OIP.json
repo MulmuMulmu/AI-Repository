@@ -1,0 +1,369 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:28:45Z",
+  "image": {
+    "file_name": "OIP.webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP.webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2023-04-10",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "2023/04/101 31 수,층1 TM:000173 N0:0173",
+        "confidence": 0.8413944095373154,
+        "bbox": [
+          [
+            27.0,
+            0.0
+          ],
+          [
+            279.0,
+            0.0
+          ],
+          [
+            279.0,
+            36.0
+          ],
+          [
+            27.0,
+            36.0
+          ]
+        ],
+        "center": [
+          153.0,
+          18.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "상품명 단가 수량 금액",
+        "confidence": 0.9654008547465006,
+        "bbox": [
+          [
+            59.0,
+            31.0
+          ],
+          [
+            267.0,
+            31.0
+          ],
+          [
+            267.0,
+            59.0
+          ],
+          [
+            59.0,
+            59.0
+          ]
+        ],
+        "center": [
+          163.0,
+          45.0
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "이1ABC초코미니언즈 8801062864065 4,790",
+        "confidence": 0.9592756628990173,
+        "bbox": [
+          [
+            23.0,
+            53.0
+          ],
+          [
+            182.0,
+            53.0
+          ],
+          [
+            182.0,
+            90.0
+          ],
+          [
+            23.0,
+            90.0
+          ]
+        ],
+        "center": [
+          102.5,
+          71.5
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "에누리(쿠폰) 2604230015766 1 4,790 -820",
+        "confidence": 0.8745047390460968,
+        "bbox": [
+          [
+            39.0,
+            78.0
+          ],
+          [
+            278.0,
+            78.0
+          ],
+          [
+            278.0,
+            107.0
+          ],
+          [
+            39.0,
+            107.0
+          ]
+        ],
+        "center": [
+          158.5,
+          92.5
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "부 과세물품 가 세 3,609",
+        "confidence": 0.9753556966781616,
+        "bbox": [
+          [
+            98.0,
+            93.0
+          ],
+          [
+            271.0,
+            93.0
+          ],
+          [
+            271.0,
+            123.0
+          ],
+          [
+            98.0,
+            123.0
+          ]
+        ],
+        "center": [
+          184.5,
+          108.0
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "총합계 361",
+        "confidence": 0.8552761077880859,
+        "bbox": [
+          [
+            15.0,
+            112.0
+          ],
+          [
+            271.0,
+            112.0
+          ],
+          [
+            271.0,
+            142.0
+          ],
+          [
+            15.0,
+            142.0
+          ]
+        ],
+        "center": [
+          143.0,
+          127.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "10 할인계 할인(에누리) 4,790",
+        "confidence": 0.7745786905288696,
+        "bbox": [
+          [
+            0.0,
+            110.0
+          ],
+          [
+            276.0,
+            110.0
+          ],
+          [
+            276.0,
+            170.0
+          ],
+          [
+            0.0,
+            170.0
+          ]
+        ],
+        "center": [
+          138.0,
+          140.0
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "결제대상금액 -820 -820",
+        "confidence": 0.990750253200531,
+        "bbox": [
+          [
+            12.0,
+            151.0
+          ],
+          [
+            277.0,
+            151.0
+          ],
+          [
+            277.0,
+            180.0
+          ],
+          [
+            12.0,
+            180.0
+          ]
+        ],
+        "center": [
+          144.5,
+          165.5
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "2023년04월 10일 -3,970",
+        "confidence": 0.9768783450126648,
+        "bbox": [
+          [
+            11.0,
+            172.0
+          ],
+          [
+            276.0,
+            172.0
+          ],
+          [
+            276.0,
+            206.0
+          ],
+          [
+            11.0,
+            206.0
+          ]
+        ],
+        "center": [
+          143.5,
+          189.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "4자체발급BC일반 TM : 000411 NO : 0165",
+        "confidence": 0.9038962721824646,
+        "bbox": [
+          [
+            10.0,
+            192.0
+          ],
+          [
+            274.0,
+            192.0
+          ],
+          [
+            274.0,
+            217.0
+          ],
+          [
+            10.0,
+            217.0
+          ]
+        ],
+        "center": [
+          142.0,
+          204.5
+        ],
+        "page_order": 9
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "이1ABC초코미니언즈",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 8801062864065.0,
+        "unit": "개",
+        "amount": 4790.0,
+        "confidence": 0.96,
+        "match_confidence": 0.9593,
+        "parse_pattern": "single_line_name_qty_amount",
+        "source_line_ids": [
+          2
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "subtotal": 3609.0,
+      "total": 361.0,
+      "payment_amount": 361.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "small_image",
+      "total_mismatch"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.85,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "items",
+        "3": "ignored",
+        "4": "totals",
+        "5": "totals",
+        "6": "totals",
+        "7": "payment",
+        "8": "header",
+        "9": "ignored"
+      },
+      "consumed_line_ids": [
+        2
+      ],
+      "quality_score": 0.7908,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [
+        "small_image"
+      ],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": -820.0
+    }
+  }
+}

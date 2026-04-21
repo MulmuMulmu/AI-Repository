@@ -1,0 +1,76 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:39Z",
+  "image": {
+    "file_name": "mart_column-0239.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mart_column-0239.png"
+  },
+  "metadata": {
+    "layout_type": "mart_column",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "top_small",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "홈플러스",
+    "purchased_at": "2024-11-23",
+    "items": [
+      {
+        "raw_name": "맛밤42G*10",
+        "normalized_name": "맛밤42G*10",
+        "quantity": 2.0,
+        "unit": "봉",
+        "amount": 9980.0,
+        "unit_price": 4990.0,
+        "barcode": "8800238000123"
+      },
+      {
+        "raw_name": "오예스336g",
+        "normalized_name": "오예스336g",
+        "quantity": 1.0,
+        "unit": "박스",
+        "amount": 4980.0,
+        "unit_price": 4980.0,
+        "barcode": "8800238001123"
+      },
+      {
+        "raw_name": "닭주물럭2.2kg",
+        "normalized_name": "닭주물럭",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 14900.0,
+        "unit_price": 14900.0,
+        "barcode": "8800238002123"
+      },
+      {
+        "raw_name": "토마토",
+        "normalized_name": "토마토",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 3980.0,
+        "unit_price": 3980.0,
+        "barcode": "8800238003123"
+      }
+    ],
+    "totals": {
+      "subtotal": 33840.0,
+      "tax": 3384.0,
+      "total": 37224.0,
+      "payment_amount": 37224.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "mart_column"
+    }
+  }
+}

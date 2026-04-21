@@ -1,0 +1,132 @@
+{
+  "dataset_name": "receipt-synthetic-v1-mixed-noise",
+  "output_dir": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1",
+  "image_count": 30,
+  "total_item_count": null,
+  "layout_counts": {
+    "mixed_noise": 30
+  },
+  "images": [
+    {
+      "file_name": "mixed_noise-0271.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0271.png"
+    },
+    {
+      "file_name": "mixed_noise-0272.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0272.png"
+    },
+    {
+      "file_name": "mixed_noise-0273.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0273.png"
+    },
+    {
+      "file_name": "mixed_noise-0274.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0274.png"
+    },
+    {
+      "file_name": "mixed_noise-0275.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0275.png"
+    },
+    {
+      "file_name": "mixed_noise-0276.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0276.png"
+    },
+    {
+      "file_name": "mixed_noise-0277.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0277.png"
+    },
+    {
+      "file_name": "mixed_noise-0278.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0278.png"
+    },
+    {
+      "file_name": "mixed_noise-0279.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0279.png"
+    },
+    {
+      "file_name": "mixed_noise-0280.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0280.png"
+    },
+    {
+      "file_name": "mixed_noise-0281.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0281.png"
+    },
+    {
+      "file_name": "mixed_noise-0282.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0282.png"
+    },
+    {
+      "file_name": "mixed_noise-0283.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0283.png"
+    },
+    {
+      "file_name": "mixed_noise-0284.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0284.png"
+    },
+    {
+      "file_name": "mixed_noise-0285.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0285.png"
+    },
+    {
+      "file_name": "mixed_noise-0286.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0286.png"
+    },
+    {
+      "file_name": "mixed_noise-0287.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0287.png"
+    },
+    {
+      "file_name": "mixed_noise-0288.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0288.png"
+    },
+    {
+      "file_name": "mixed_noise-0289.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0289.png"
+    },
+    {
+      "file_name": "mixed_noise-0290.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0290.png"
+    },
+    {
+      "file_name": "mixed_noise-0291.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0291.png"
+    },
+    {
+      "file_name": "mixed_noise-0292.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0292.png"
+    },
+    {
+      "file_name": "mixed_noise-0293.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0293.png"
+    },
+    {
+      "file_name": "mixed_noise-0294.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0294.png"
+    },
+    {
+      "file_name": "mixed_noise-0295.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0295.png"
+    },
+    {
+      "file_name": "mixed_noise-0296.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0296.png"
+    },
+    {
+      "file_name": "mixed_noise-0297.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0297.png"
+    },
+    {
+      "file_name": "mixed_noise-0298.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0298.png"
+    },
+    {
+      "file_name": "mixed_noise-0299.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0299.png"
+    },
+    {
+      "file_name": "mixed_noise-0300.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0300.png"
+    }
+  ],
+  "target_count": 30
+}

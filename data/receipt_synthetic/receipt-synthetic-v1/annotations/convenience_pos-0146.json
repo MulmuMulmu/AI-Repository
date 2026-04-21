@@ -1,0 +1,76 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:34Z",
+  "image": {
+    "file_name": "convenience_pos-0146.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\convenience_pos-0146.png"
+  },
+  "metadata": {
+    "layout_type": "convenience_pos",
+    "variant": "split_rows",
+    "noise_profile": {
+      "blur": "low",
+      "contrast": "normal",
+      "skew": "none",
+      "crop": "none",
+      "shadow": "low"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "CU",
+    "purchased_at": "2024-02-11",
+    "items": [
+      {
+        "raw_name": "롯데 앤디카페조릿 다크",
+        "normalized_name": "롯데 앤디카페조릿 다크",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null,
+        "unit_price": 4800.0,
+        "barcode": "8800145000123"
+      },
+      {
+        "raw_name": "청양고추",
+        "normalized_name": "청양고추",
+        "quantity": 3.0,
+        "unit": "봉",
+        "amount": 5940.0,
+        "unit_price": 1980.0,
+        "barcode": "8800145001123"
+      },
+      {
+        "raw_name": "사과",
+        "normalized_name": "사과",
+        "quantity": 1.0,
+        "unit": "봉",
+        "amount": 5980.0,
+        "unit_price": 5980.0,
+        "barcode": "8800145002123"
+      },
+      {
+        "raw_name": "우유 1L",
+        "normalized_name": "우유",
+        "quantity": 1.0,
+        "unit": "팩",
+        "amount": 2980.0,
+        "unit_price": 2980.0,
+        "barcode": "8800145003123"
+      }
+    ],
+    "totals": {
+      "subtotal": 14900.0,
+      "tax": 1490.0,
+      "total": 16390.0,
+      "payment_amount": 16390.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "convenience_pos"
+    }
+  }
+}

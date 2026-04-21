@@ -1,0 +1,67 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:42Z",
+  "image": {
+    "file_name": "mixed_noise-0292.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\mixed_noise-0292.png"
+  },
+  "metadata": {
+    "layout_type": "mixed_noise",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "small",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "이마트",
+    "purchased_at": "2025-04-22",
+    "items": [
+      {
+        "raw_name": "호가든캔330ml",
+        "normalized_name": "호가든캔330ml",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": null,
+        "unit_price": 3500.0,
+        "barcode": "8800291000123"
+      },
+      {
+        "raw_name": "아몬드초코볼",
+        "normalized_name": "아몬드초코볼",
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 4000.0,
+        "unit_price": 2000.0,
+        "barcode": "8800291001123"
+      },
+      {
+        "raw_name": "양파",
+        "normalized_name": "양파",
+        "quantity": 3.0,
+        "unit": "개",
+        "amount": 2970.0,
+        "unit_price": 990.0,
+        "barcode": "8800291002123"
+      }
+    ],
+    "totals": {
+      "subtotal": 6970.0,
+      "tax": 697.0,
+      "total": 7667.0,
+      "payment_amount": 7667.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "mixed_noise"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-04-16",
+  "updated_at": "2026-04-21",
   "description": "Standard product name to ingredient name mappings.",
   "mappings": [
     {
@@ -134,6 +134,11 @@
       "reason": "sauce_to_ingredient"
     },
     {
+      "product": "양념닭주물럭2.2kg",
+      "ingredient": "닭고기",
+      "reason": "meat_to_ingredient"
+    },
+    {
       "product": "삼양 나가사끼짬뽕 컵",
       "ingredient": "라면",
       "reason": "brand_product_to_ingredient"
@@ -159,9 +164,34 @@
       "reason": "brand_product_to_ingredient"
     },
     {
+      "product": "청정원 서해안 까나리",
+      "ingredient": "까나리액젓",
+      "reason": "sauce_to_ingredient"
+    },
+    {
       "product": "갈바니 리코타치즈",
       "ingredient": "리코타 치즈",
       "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "갈바니 리코타 치즈",
+      "ingredient": "리코타 치즈",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "갈바니 리코타 치즈4",
+      "ingredient": "리코타 치즈",
+      "reason": "brand_product_to_ingredient"
+    },
+    {
+      "product": "하인즈 유기농케찹 90",
+      "ingredient": "케찹",
+      "reason": "sauce_to_ingredient"
+    },
+    {
+      "product": "멜오에이지 파마산분",
+      "ingredient": "파마산 치즈",
+      "reason": "dairy_to_ingredient"
     },
     {
       "product": "이클립스 페퍼민트향",
@@ -199,6 +229,11 @@
       "reason": "direct_ingredient"
     },
     {
+      "product": "*국내산 양상추 2입",
+      "ingredient": "양상추",
+      "reason": "direct_ingredient"
+    },
+    {
       "product": "볶음아몬드",
       "ingredient": "아몬드",
       "reason": "direct_ingredient"
@@ -224,6 +259,11 @@
       "reason": "dairy_to_ingredient"
     },
     {
+      "product": "블렌드 슈레드 치즈1kg",
+      "ingredient": "치즈",
+      "reason": "dairy_to_ingredient"
+    },
+    {
       "product": "맛밤",
       "ingredient": "밤",
       "reason": "direct_ingredient"
@@ -239,6 +279,16 @@
       "reason": "fruit_to_ingredient"
     },
     {
+      "product": "속이편한 누룽지(5입)",
+      "ingredient": "누룽지",
+      "reason": "grain_to_ingredient"
+    },
+    {
+      "product": "맥주 바이젠 미니",
+      "ingredient": "맥주",
+      "reason": "alcohol_to_ingredient"
+    },
+    {
       "product": "*한돈) 생목살",
       "ingredient": "돼지고기 목살",
       "reason": "meat_to_ingredient"
@@ -251,6 +301,11 @@
     {
       "product": "*청양고추",
       "ingredient": "청양고추",
+      "reason": "direct_ingredient"
+    },
+    {
+      "product": "*완숙토마토 4kg/박스",
+      "ingredient": "토마토",
       "reason": "direct_ingredient"
     },
     {

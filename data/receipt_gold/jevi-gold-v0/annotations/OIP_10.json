@@ -1,0 +1,38 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-21T12:55:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "OIP (10).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (10).webp"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2023-06-08",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "스팀덱 64GB",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 589000.0
+      }
+    ],
+    "uncertain_items": [],
+    "excluded_rows": [],
+    "totals": {
+      "subtotal": 535455.0,
+      "tax": 53545.0,
+      "total": 589000.0,
+      "payment_amount": 589000.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

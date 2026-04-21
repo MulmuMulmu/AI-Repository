@@ -1,0 +1,96 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v1",
+  "generated_at": "2026-04-21T11:40:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "R.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\R.jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": "홈플러스",
+    "purchased_at": "2014-07-03",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "크라운참쌀선과293G",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4320.0
+      },
+      {
+        "raw_name": "맛밤42G*10",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 12590.0
+      },
+      {
+        "raw_name": "로투스헬씨넛견과믹",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 10800.0
+      },
+      {
+        "raw_name": "쿠크다스커피144G",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2080.0
+      },
+      {
+        "raw_name": "오리온참붕어빵232G",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2890.0
+      },
+      {
+        "raw_name": "오예스336g",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3840.0
+      },
+      {
+        "raw_name": "해태구운감자4",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2240.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "와이멘씨라이스퍼프",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "부드러운쿠키블루베",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "자 2 하 퍼팩트",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "치 6 즈 샌 를 애 풀 b00",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "미니투셔바베큐4입",
+        "reason": "ocr_name_uncertain"
+      }
+    ],
+    "excluded_rows": [],
+    "totals": {},
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

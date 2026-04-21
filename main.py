@@ -10,6 +10,7 @@ import json
 import re
 import tempfile
 import threading
+import time
 import unicodedata
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -20,6 +21,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from recipe_recommender import RecipeRecommender
 
 # ═══════════════════════════════════════════════════════════════
 #  데이터 로드
@@ -53,6 +55,17 @@ INGR_NAME_INDEX: Dict[str, str] = {
     i["ingredientName"]: i["ingredientId"] for i in _ingredients_raw
 }
 
+
+def _build_recommendable_ingredient_ids(recipe_ingredients_raw: list[dict[str, Any]]) -> set[str]:
+    return {
+        str(ri["ingredientId"])
+        for ri in recipe_ingredients_raw
+        if isinstance(ri, dict) and ri.get("ingredientId")
+    }
+
+
+RECOMMENDABLE_INGREDIENT_IDS = _build_recommendable_ingredient_ids(_recipe_ingredients_raw)
+
 # ═══════════════════════════════════════════════════════════════
 #  FastAPI 앱
 # ═══════════════════════════════════════════════════════════════
@@ -77,6 +90,10 @@ _RECEIPT_SERVICE_NOOP = None
 _RECEIPT_SERVICE_QWEN = None
 _RECEIPT_REFINEMENT_STORE = None
 _RECEIPT_RULES = None
+_SHARING_FILTER = None
+_EXPIRY_CALCULATOR = None
+_QUALITY_MONITOR = None
+_RECIPE_RECOMMENDER = None
 
 # ═══════════════════════════════════════════════════════════════
 #  Pydantic 스키마
@@ -90,6 +107,24 @@ class RecommendRequest(BaseModel):
     top_k: int = Field(default=10, ge=1, le=100)
     category: Optional[str] = None
     min_match_rate: float = Field(default=0.0, ge=0.0, le=1.0)
+    preferredIngredientIds: List[str] = Field(default_factory=list)
+    dislikedIngredientIds: List[str] = Field(default_factory=list)
+    allergyIngredientIds: List[str] = Field(default_factory=list)
+    preferredCategories: List[str] = Field(default_factory=list)
+    excludedCategories: List[str] = Field(default_factory=list)
+    preferredKeywords: List[str] = Field(default_factory=list)
+    excludedKeywords: List[str] = Field(default_factory=list)
+
+
+class SharingCheckRequest(BaseModel):
+    item_names: List[str] = Field(..., min_length=1)
+
+
+class ExpiryRequest(BaseModel):
+    item_name: str
+    purchase_date: str
+    storage_method: str = "냉장"
+    category: Optional[str] = None
 
 class ApiResponse(BaseModel):
     success: bool
@@ -179,6 +214,46 @@ def _get_receipt_rules():
 
         _RECEIPT_RULES = ReceiptRules.load_default()
     return _RECEIPT_RULES
+
+
+def _get_sharing_filter():
+    global _SHARING_FILTER
+    if _SHARING_FILTER is None:
+        from sharing_filter import SharingFilter
+
+        _SHARING_FILTER = SharingFilter()
+    return _SHARING_FILTER
+
+
+def _get_expiry_calculator():
+    global _EXPIRY_CALCULATOR
+    if _EXPIRY_CALCULATOR is None:
+        from expiry_calculator import ExpiryCalculator
+
+        _EXPIRY_CALCULATOR = ExpiryCalculator()
+    return _EXPIRY_CALCULATOR
+
+
+def _get_quality_monitor():
+    global _QUALITY_MONITOR
+    if _QUALITY_MONITOR is None:
+        from quality_monitor import QualityMonitor
+
+        _QUALITY_MONITOR = QualityMonitor()
+    return _QUALITY_MONITOR
+
+
+def _log_endpoint_request(endpoint: str, started_at: float, *, status_code: int = 200, error: str | None = None) -> None:
+    try:
+        elapsed_ms = (time.perf_counter() - started_at) * 1000.0
+        _get_quality_monitor().log_request(
+            endpoint=endpoint,
+            elapsed_ms=elapsed_ms,
+            status_code=status_code,
+            error=error,
+        )
+    except Exception:
+        pass
 
 
 def _find_ingredient_by_name(candidate_name: str) -> dict[str, Any] | None:
@@ -538,6 +613,45 @@ def _get_receipt_refinement_store() -> ReceiptRefinementStore:
     return _RECEIPT_REFINEMENT_STORE
 
 
+def _get_recipe_recommender() -> RecipeRecommender:
+    global _RECIPE_RECOMMENDER
+    if _RECIPE_RECOMMENDER is None:
+        _RECIPE_RECOMMENDER = RecipeRecommender(
+            recipes=RECIPES,
+            ingredients=INGREDIENTS,
+            recipe_ingredients=RECIPE_INGR,
+        )
+    return _RECIPE_RECOMMENDER
+
+
+def _normalize_distinct_string_list(values: List[str] | None) -> List[str]:
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for value in values or []:
+        cleaned = str(value or "").strip()
+        if not cleaned:
+            continue
+        key = cleaned.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        normalized.append(cleaned)
+    return normalized
+
+
+def _filter_valid_ingredient_ids(values: List[str] | None) -> List[str]:
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for value in values or []:
+        if value not in INGREDIENTS:
+            continue
+        if value in seen:
+            continue
+        seen.add(value)
+        normalized.append(value)
+    return normalized
+
+
 def _run_receipt_refinement(trace_id: str, temp_path: str) -> None:
     store = _get_receipt_refinement_store()
     try:
@@ -580,63 +694,63 @@ def recommend_recipes(
     top_k: int = 10,
     category: Optional[str] = None,
     min_match_rate: float = 0.0,
+    preferred_ingredient_ids: Optional[List[str]] = None,
+    blocked_ingredient_ids: Optional[List[str]] = None,
+    preferred_categories: Optional[List[str]] = None,
+    excluded_categories: Optional[List[str]] = None,
+    preferred_keywords: Optional[List[str]] = None,
+    excluded_keywords: Optional[List[str]] = None,
 ) -> List[dict]:
     """
     보유 재료 ID 목록으로 레시피를 추천.
     일부 재료만 있어도 matchRate(일치율) 기준으로 정렬하여 반환.
     """
-    owned = set(ingredient_ids)
-    results = []
+    recommendable_ids = [
+        ingredient_id
+        for ingredient_id in ingredient_ids
+        if ingredient_id in RECOMMENDABLE_INGREDIENT_IDS
+    ]
+    if not recommendable_ids:
+        return []
 
-    for recipe_id, recipe in RECIPES.items():
-        if category and recipe["category"] != category:
-            continue
+    recommendations = _get_recipe_recommender().recommend(
+        recommendable_ids,
+        top_k=top_k,
+        category=category,
+        min_match_rate=min_match_rate,
+        preferred_ingredient_ids=_filter_valid_ingredient_ids(preferred_ingredient_ids),
+        blocked_ingredient_ids=_filter_valid_ingredient_ids(blocked_ingredient_ids),
+        preferred_categories=_normalize_distinct_string_list(preferred_categories),
+        excluded_categories=_normalize_distinct_string_list(excluded_categories),
+        preferred_keywords=_normalize_distinct_string_list(preferred_keywords),
+        excluded_keywords=_normalize_distinct_string_list(excluded_keywords),
+    )
 
-        ri_list = RECIPE_INGR.get(recipe_id, [])
-        if not ri_list:
-            continue
-
-        recipe_ingr_ids = {ri["ingredientId"] for ri in ri_list}
-        matched_ids = owned & recipe_ingr_ids
-        missing_ids = recipe_ingr_ids - owned
-
-        match_rate = len(matched_ids) / len(recipe_ingr_ids)
-        if match_rate < min_match_rate:
-            continue
-        if not matched_ids:
-            continue
-
-        matched_list = []
-        for iid in matched_ids:
-            ingr = INGREDIENTS.get(iid)
-            if ingr:
-                matched_list.append({
-                    "ingredientId": iid,
-                    "ingredientName": ingr["ingredientName"],
-                })
-
-        missing_list = []
-        for iid in missing_ids:
-            ingr = INGREDIENTS.get(iid)
-            if ingr:
-                missing_list.append({
-                    "ingredientId": iid,
-                    "ingredientName": ingr["ingredientName"],
-                })
-
-        results.append({
-            "recipeId": recipe_id,
-            "name": recipe["name"],
-            "category": recipe["category"],
-            "imageUrl": recipe.get("imageUrl", ""),
-            "matchedIngredients": matched_list,
-            "missingIngredients": missing_list,
-            "matchRate": round(match_rate, 4),
-            "totalIngredientCount": len(recipe_ingr_ids),
-        })
-
-    results.sort(key=lambda r: (-r["matchRate"], -len(r["matchedIngredients"])))
-    return results[:top_k]
+    return [
+        {
+            "recipeId": recommendation["recipeId"],
+            "name": recommendation["name"],
+            "category": recommendation["category"],
+            "imageUrl": recommendation.get("imageUrl", ""),
+            "matchedIngredients": [
+                {
+                    "ingredientId": ingredient["ingredientId"],
+                    "ingredientName": ingredient["ingredientName"],
+                }
+                for ingredient in recommendation.get("matchedIngredients", [])
+            ],
+            "missingIngredients": [
+                {
+                    "ingredientId": ingredient["ingredientId"],
+                    "ingredientName": ingredient["ingredientName"],
+                }
+                for ingredient in recommendation.get("missingIngredients", [])
+            ],
+            "matchRate": recommendation["matchRate"],
+            "totalIngredientCount": recommendation["totalIngredientCount"],
+        }
+        for recommendation in recommendations
+    ]
 
 # ═══════════════════════════════════════════════════════════════
 #  API 엔드포인트
@@ -731,6 +845,7 @@ async def get_ocr_refinement(trace_id: str):
 @app.post("/ai/ingredient/prediction")
 async def match_ingredients(req: MatchRequest):
     """OCR 추출 상품명 → DB Ingredient 매칭."""
+    started_at = time.perf_counter()
     matched = []
     unmatched = []
 
@@ -741,7 +856,7 @@ async def match_ingredients(req: MatchRequest):
         else:
             unmatched.append(_build_unmatched_prediction(name))
 
-    return ApiResponse(
+    response = ApiResponse(
         success=True,
         data={
             "matched": matched,
@@ -750,11 +865,52 @@ async def match_ingredients(req: MatchRequest):
             "unmatched_count": len(unmatched),
         },
     )
+    _log_endpoint_request("/ai/ingredient/prediction", started_at, status_code=200)
+    return response
 
+
+@app.post("/ai/sharing/check")
+async def check_sharing_items(req: SharingCheckRequest):
+    """나눔 금지/검수/허용 품목을 1차 분류한다."""
+    started_at = time.perf_counter()
+    result = _get_sharing_filter().check(req.item_names)
+    response = ApiResponse(success=True, data=result)
+    _log_endpoint_request("/ai/sharing/check", started_at, status_code=200)
+    return response
+
+
+@app.post("/ai/expiry/calculate")
+async def calculate_expiry(req: ExpiryRequest):
+    """식품 1건의 소비기한을 계산한다."""
+    started_at = time.perf_counter()
+    result = _get_expiry_calculator().calculate(
+        item_name=req.item_name,
+        purchase_date=req.purchase_date,
+        storage_method=req.storage_method,
+        category=req.category,
+    )
+    response = ApiResponse(success=True, data=result)
+    _log_endpoint_request("/ai/expiry/calculate", started_at, status_code=200)
+    return response
+
+
+@app.get("/ai/quality/metrics")
+async def get_quality_metrics(window: str = Query("1h", description="조회 윈도우. 예: 1h, 24h, 7d")):
+    """현재 AI 서버 품질 지표 스냅샷을 반환한다."""
+    started_at = time.perf_counter()
+    result = _get_quality_monitor().get_metrics(window=window)
+    response = ApiResponse(success=True, data=result)
+    _log_endpoint_request("/ai/quality/metrics", started_at, status_code=200)
+    return response
+
+
+@app.post("/ai/recommend")
 async def recommend(req: RecommendRequest):
     """보유 재료 기반 레시피 추천. 일부 재료만 있어도 추천 가능."""
+    started_at = time.perf_counter()
     valid_ids = [iid for iid in req.ingredientIds if iid in INGREDIENTS]
     if not valid_ids:
+        _log_endpoint_request("/ai/recommend", started_at, status_code=400, error="INVALID_REQUEST")
         raise HTTPException(
             status_code=400,
             detail={
@@ -768,9 +924,22 @@ async def recommend(req: RecommendRequest):
         top_k=req.top_k,
         category=req.category,
         min_match_rate=req.min_match_rate,
+        preferred_ingredient_ids=req.preferredIngredientIds,
+        blocked_ingredient_ids=[
+            *_filter_valid_ingredient_ids(req.dislikedIngredientIds),
+            *[
+                ingredient_id
+                for ingredient_id in _filter_valid_ingredient_ids(req.allergyIngredientIds)
+                if ingredient_id not in set(_filter_valid_ingredient_ids(req.dislikedIngredientIds))
+            ],
+        ],
+        preferred_categories=req.preferredCategories,
+        excluded_categories=req.excludedCategories,
+        preferred_keywords=req.preferredKeywords,
+        excluded_keywords=req.excludedKeywords,
     )
 
-    return ApiResponse(
+    response = ApiResponse(
         success=True,
         data={
             "recommendations": recommendations,
@@ -778,11 +947,17 @@ async def recommend(req: RecommendRequest):
             "input_ingredient_count": len(valid_ids),
         },
     )
+    _log_endpoint_request("/ai/recommend", started_at, status_code=200)
+    return response
 
+
+@app.get("/ai/recipes/{recipe_id}")
 async def get_recipe(recipe_id: str):
     """레시피 상세 조회 (재료 + 조리 단계)."""
+    started_at = time.perf_counter()
     recipe = RECIPES.get(recipe_id)
     if not recipe:
+        _log_endpoint_request("/ai/recipes/{recipe_id}", started_at, status_code=404, error="RECIPE_NOT_FOUND")
         raise HTTPException(
             status_code=404,
             detail={
@@ -814,7 +989,7 @@ async def get_recipe(recipe_id: str):
         for s in RECIPE_STEPS.get(recipe_id, [])
     ]
 
-    return ApiResponse(
+    response = ApiResponse(
         success=True,
         data={
             "recipeId": recipe_id,
@@ -827,13 +1002,18 @@ async def get_recipe(recipe_id: str):
             "step_count": len(steps),
         },
     )
+    _log_endpoint_request("/ai/recipes/{recipe_id}", started_at, status_code=200)
+    return response
 
+
+@app.get("/ai/ingredients/search")
 async def search_ingredients(
     q: str = Query(..., min_length=1, description="검색 키워드"),
     category: Optional[str] = Query(None, description="카테고리 필터"),
     limit: int = Query(20, ge=1, le=100, description="최대 반환 개수"),
 ):
     """키워드로 재료 검색."""
+    started_at = time.perf_counter()
     q_norm = _normalize_name(q)
     results = []
 
@@ -849,7 +1029,7 @@ async def search_ingredients(
             if len(results) >= limit:
                 break
 
-    return ApiResponse(
+    response = ApiResponse(
         success=True,
         data={
             "results": results,
@@ -857,3 +1037,5 @@ async def search_ingredients(
             "query": q,
         },
     )
+    _log_endpoint_request("/ai/ingredients/search", started_at, status_code=200)
+    return response

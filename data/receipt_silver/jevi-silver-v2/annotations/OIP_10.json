@@ -1,0 +1,770 @@
+{
+  "dataset_name": "jevi-silver-v2",
+  "label_source": "silver-current-engine",
+  "generated_at": "2026-04-21T12:27:31Z",
+  "image": {
+    "file_name": "OIP (10).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (10).webp"
+  },
+  "parser": {
+    "engine_version": "receipt-engine-v2"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2023-06-08",
+    "ocr_texts": [
+      {
+        "line_id": 0,
+        "text": "EIEGTAO 208-86-60013214 이마째가5형(02)411-1207",
+        "confidence": 0.7922915617624918,
+        "bbox": [
+          [
+            85.0,
+            1.0
+          ],
+          [
+            359.0,
+            1.0
+          ],
+          [
+            359.0,
+            37.0
+          ],
+          [
+            85.0,
+            37.0
+          ]
+        ],
+        "center": [
+          222.0,
+          19.0
+        ],
+        "page_order": 0
+      },
+      {
+        "line_id": 1,
+        "text": "AARI 서울 총파구 중민 10,81",
+        "confidence": 0.7638159990310669,
+        "bbox": [
+          [
+            97.0,
+            29.0
+          ],
+          [
+            346.0,
+            29.0
+          ],
+          [
+            346.0,
+            48.0
+          ],
+          [
+            97.0,
+            48.0
+          ]
+        ],
+        "center": [
+          221.5,
+          38.5
+        ],
+        "page_order": 1
+      },
+      {
+        "line_id": 2,
+        "text": "영수증 미지참시 교환/환불 불가",
+        "confidence": 0.9250988960266113,
+        "bbox": [
+          [
+            25.0,
+            80.0
+          ],
+          [
+            297.0,
+            80.0
+          ],
+          [
+            297.0,
+            104.0
+          ],
+          [
+            25.0,
+            104.0
+          ]
+        ],
+        "center": [
+          161.0,
+          92.0
+        ],
+        "page_order": 2
+      },
+      {
+        "line_id": 3,
+        "text": "※일부브랜드매장 제외 (매창 고지물참조) 교환/환불구매점에서가능(결제카트지참)",
+        "confidence": 0.914215087890625,
+        "bbox": [
+          [
+            25.0,
+            116.0
+          ],
+          [
+            385.0,
+            116.0
+          ],
+          [
+            385.0,
+            158.0
+          ],
+          [
+            25.0,
+            158.0
+          ]
+        ],
+        "center": [
+          205.0,
+          137.0
+        ],
+        "page_order": 3
+      },
+      {
+        "line_id": 4,
+        "text": "[구 0H]2023-06-08 19:01 P0S:0052-2096",
+        "confidence": 0.9625219106674194,
+        "bbox": [
+          [
+            26.0,
+            157.0
+          ],
+          [
+            448.0,
+            157.0
+          ],
+          [
+            448.0,
+            184.0
+          ],
+          [
+            26.0,
+            184.0
+          ]
+        ],
+        "center": [
+          237.0,
+          170.5
+        ],
+        "page_order": 4
+      },
+      {
+        "line_id": 5,
+        "text": "몸 단 가 수량 금 액",
+        "confidence": 0.7832473888993263,
+        "bbox": [
+          [
+            51.0,
+            194.0
+          ],
+          [
+            438.0,
+            194.0
+          ],
+          [
+            438.0,
+            222.0
+          ],
+          [
+            51.0,
+            222.0
+          ]
+        ],
+        "center": [
+          244.5,
+          208.0
+        ],
+        "page_order": 5
+      },
+      {
+        "line_id": 6,
+        "text": "스팀덱 64GB 0814585021752 589,000 589,000",
+        "confidence": 0.9703796058893204,
+        "bbox": [
+          [
+            42.0,
+            235.0
+          ],
+          [
+            449.0,
+            235.0
+          ],
+          [
+            449.0,
+            275.0
+          ],
+          [
+            42.0,
+            275.0
+          ]
+        ],
+        "center": [
+          245.5,
+          255.0
+        ],
+        "page_order": 6
+      },
+      {
+        "line_id": 7,
+        "text": "1",
+        "confidence": 0.9997687935829163,
+        "bbox": [
+          [
+            433.0,
+            278.0
+          ],
+          [
+            448.0,
+            278.0
+          ],
+          [
+            448.0,
+            298.0
+          ],
+          [
+            433.0,
+            298.0
+          ]
+        ],
+        "center": [
+          440.5,
+          288.0
+        ],
+        "page_order": 7
+      },
+      {
+        "line_id": 8,
+        "text": "롤 량품세계 535, 455",
+        "confidence": 0.7204911907513937,
+        "bbox": [
+          [
+            225.0,
+            279.0
+          ],
+          [
+            449.0,
+            279.0
+          ],
+          [
+            449.0,
+            357.0
+          ],
+          [
+            225.0,
+            357.0
+          ]
+        ],
+        "center": [
+          337.0,
+          318.0
+        ],
+        "page_order": 8
+      },
+      {
+        "line_id": 9,
+        "text": "총과부합액 HC 53,545",
+        "confidence": 0.8782923817634583,
+        "bbox": [
+          [
+            159.0,
+            281.0
+          ],
+          [
+            448.0,
+            281.0
+          ],
+          [
+            448.0,
+            374.0
+          ],
+          [
+            159.0,
+            374.0
+          ]
+        ],
+        "center": [
+          303.5,
+          327.5
+        ],
+        "page_order": 9
+      },
+      {
+        "line_id": 10,
+        "text": "589,000",
+        "confidence": 0.998313307762146,
+        "bbox": [
+          [
+            378.0,
+            333.0
+          ],
+          [
+            449.0,
+            333.0
+          ],
+          [
+            449.0,
+            355.0
+          ],
+          [
+            378.0,
+            355.0
+          ]
+        ],
+        "center": [
+          413.5,
+          344.0
+        ],
+        "page_order": 10
+      },
+      {
+        "line_id": 11,
+        "text": "결제대상금 589,000",
+        "confidence": 0.9986245632171631,
+        "bbox": [
+          [
+            23.0,
+            351.0
+          ],
+          [
+            449.0,
+            351.0
+          ],
+          [
+            449.0,
+            379.0
+          ],
+          [
+            23.0,
+            379.0
+          ]
+        ],
+        "center": [
+          236.0,
+          365.0
+        ],
+        "page_order": 11
+      },
+      {
+        "line_id": 12,
+        "text": "0010 KB국민 94454200**270*/30057563",
+        "confidence": 0.9811862707138062,
+        "bbox": [
+          [
+            23.0,
+            387.0
+          ],
+          [
+            448.0,
+            387.0
+          ],
+          [
+            448.0,
+            414.0
+          ],
+          [
+            23.0,
+            414.0
+          ]
+        ],
+        "center": [
+          235.5,
+          400.5
+        ],
+        "page_order": 12
+      },
+      {
+        "line_id": 13,
+        "text": "카드결제(IC) 일시불7200,000",
+        "confidence": 0.9622832536697388,
+        "bbox": [
+          [
+            22.0,
+            404.0
+          ],
+          [
+            448.0,
+            404.0
+          ],
+          [
+            448.0,
+            434.0
+          ],
+          [
+            22.0,
+            434.0
+          ]
+        ],
+        "center": [
+          235.0,
+          419.0
+        ],
+        "page_order": 13
+      },
+      {
+        "line_id": 14,
+        "text": "0010 KB국민 52361200**304*/30057572",
+        "confidence": 0.9825654327869415,
+        "bbox": [
+          [
+            24.0,
+            423.0
+          ],
+          [
+            449.0,
+            423.0
+          ],
+          [
+            449.0,
+            450.0
+          ],
+          [
+            24.0,
+            450.0
+          ]
+        ],
+        "center": [
+          236.5,
+          436.5
+        ],
+        "page_order": 14
+      },
+      {
+        "line_id": 15,
+        "text": "카드결제(IC) 37998500***80*/25554632 일시물7100,000",
+        "confidence": 0.951416552066803,
+        "bbox": [
+          [
+            23.0,
+            440.0
+          ],
+          [
+            449.0,
+            440.0
+          ],
+          [
+            449.0,
+            485.0
+          ],
+          [
+            23.0,
+            485.0
+          ]
+        ],
+        "center": [
+          236.0,
+          462.5
+        ],
+        "page_order": 15
+      },
+      {
+        "line_id": 16,
+        "text": "0025신한 일시물/289,000",
+        "confidence": 0.9153533577919006,
+        "bbox": [
+          [
+            23.0,
+            460.0
+          ],
+          [
+            450.0,
+            460.0
+          ],
+          [
+            450.0,
+            504.0
+          ],
+          [
+            23.0,
+            504.0
+          ]
+        ],
+        "center": [
+          236.5,
+          482.0
+        ],
+        "page_order": 16
+      },
+      {
+        "line_id": 17,
+        "text": "카드체(IC)",
+        "confidence": 0.9170024991035461,
+        "bbox": [
+          [
+            23.0,
+            478.0
+          ],
+          [
+            136.0,
+            478.0
+          ],
+          [
+            136.0,
+            507.0
+          ],
+          [
+            23.0,
+            507.0
+          ]
+        ],
+        "center": [
+          79.5,
+          492.5
+        ],
+        "page_order": 17
+      },
+      {
+        "line_id": 18,
+        "text": "[ HIIY]",
+        "confidence": 0.6201995015144348,
+        "bbox": [
+          [
+            152.0,
+            515.0
+          ],
+          [
+            326.0,
+            515.0
+          ],
+          [
+            326.0,
+            537.0
+          ],
+          [
+            152.0,
+            537.0
+          ]
+        ],
+        "center": [
+          239.0,
+          526.0
+        ],
+        "page_order": 18
+      },
+      {
+        "line_id": 19,
+        "text": "이연지 T9350**658* 589",
+        "confidence": 0.7354106108347574,
+        "bbox": [
+          [
+            25.0,
+            534.0
+          ],
+          [
+            450.0,
+            534.0
+          ],
+          [
+            450.0,
+            575.0
+          ],
+          [
+            25.0,
+            575.0
+          ]
+        ],
+        "center": [
+          237.5,
+          554.5
+        ],
+        "page_order": 19
+      },
+      {
+        "line_id": 20,
+        "text": "임김정연영정장 두계(가용)포인트 50,953( 50,364)",
+        "confidence": 0.7989873513579369,
+        "bbox": [
+          [
+            24.0,
+            551.0
+          ],
+          [
+            447.0,
+            551.0
+          ],
+          [
+            447.0,
+            596.0
+          ],
+          [
+            24.0,
+            596.0
+          ]
+        ],
+        "center": [
+          235.5,
+          573.5
+        ],
+        "page_order": 20
+      },
+      {
+        "line_id": 21,
+        "text": "*신세계포인트 휴효기간은2년입니다.",
+        "confidence": 0.8976239562034607,
+        "bbox": [
+          [
+            25.0,
+            585.0
+          ],
+          [
+            341.0,
+            585.0
+          ],
+          [
+            341.0,
+            614.0
+          ],
+          [
+            25.0,
+            614.0
+          ]
+        ],
+        "center": [
+          183.0,
+          599.5
+        ],
+        "page_order": 21
+      },
+      {
+        "line_id": 22,
+        "text": "*영수중 재발행*※",
+        "confidence": 0.8523933291435242,
+        "bbox": [
+          [
+            99.0,
+            633.0
+          ],
+          [
+            374.0,
+            633.0
+          ],
+          [
+            374.0,
+            655.0
+          ],
+          [
+            99.0,
+            655.0
+          ]
+        ],
+        "center": [
+          236.5,
+          644.0
+        ],
+        "page_order": 22
+      },
+      {
+        "line_id": 23,
+        "text": "캐셔:113544허00 2310",
+        "confidence": 0.9948868751525879,
+        "bbox": [
+          [
+            23.0,
+            659.0
+          ],
+          [
+            449.0,
+            659.0
+          ],
+          [
+            449.0,
+            689.0
+          ],
+          [
+            23.0,
+            689.0
+          ]
+        ],
+        "center": [
+          236.0,
+          674.0
+        ],
+        "page_order": 23
+      }
+    ],
+    "items": [
+      {
+        "raw_name": "스팀덱 64GB 0814585021752",
+        "normalized_name": null,
+        "category": "other",
+        "storage_type": "room",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 589000.0,
+        "confidence": 0.97,
+        "match_confidence": 0.9704,
+        "parse_pattern": "single_line_name_amount",
+        "source_line_ids": [
+          6
+        ],
+        "needs_review": false,
+        "review_reason": [
+          "unknown_item"
+        ]
+      }
+    ],
+    "totals": {
+      "payment_amount": 0.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name"
+    ],
+    "diagnostics": {
+      "section_confidence": 0.85,
+      "qwen_used": false,
+      "unresolved_groups": 0,
+      "section_map": {
+        "0": "header",
+        "1": "header",
+        "2": "ignored",
+        "3": "ignored",
+        "4": "ignored",
+        "5": "header",
+        "6": "items",
+        "7": "items",
+        "8": "items",
+        "9": "items",
+        "10": "items",
+        "11": "totals",
+        "12": "ignored",
+        "13": "payment",
+        "14": "ignored",
+        "15": "payment",
+        "16": "ignored",
+        "17": "totals",
+        "18": "ignored",
+        "19": "ignored",
+        "20": "ignored",
+        "21": "ignored",
+        "22": "ignored",
+        "23": "ignored"
+      },
+      "consumed_line_ids": [
+        6,
+        9
+      ],
+      "quality_score": 0.6118,
+      "rotation_applied": 0,
+      "perspective_corrected": false,
+      "low_quality_reasons": [],
+      "date_fallback_used": false,
+      "vendor_fallback_used": false,
+      "qwen_header_attempted": false,
+      "qwen_header_used": false,
+      "qwen_header_fallback_reason": "provider_missing",
+      "qwen_item_attempted": false,
+      "qwen_item_used": false,
+      "qwen_item_fallback_reason": "provider_missing",
+      "qwen_attempted": false,
+      "qwen_mode": "disabled",
+      "qwen_fallback_reason": "provider_missing",
+      "partial_receipt": false,
+      "discount_adjustment_total": 0.0
+    }
+  }
+}

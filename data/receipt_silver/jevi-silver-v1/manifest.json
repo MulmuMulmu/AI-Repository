@@ -1,0 +1,55 @@
+{
+  "dataset_name": "jevi-silver-v1",
+  "input_dir": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비",
+  "image_count": 11,
+  "total_item_count": 100,
+  "review_required_count": 10,
+  "images": [
+    {
+      "file_name": "1652882389756.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\1652882389756.jpg"
+    },
+    {
+      "file_name": "2a4dd3c18f06cec1571dc9ca52dc5946.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\2a4dd3c18f06cec1571dc9ca52dc5946.jpg"
+    },
+    {
+      "file_name": "R (1).jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\R (1).jpg"
+    },
+    {
+      "file_name": "R (2).jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\R (2).jpg"
+    },
+    {
+      "file_name": "R (3).jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\R (3).jpg"
+    },
+    {
+      "file_name": "R.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\R.jpg"
+    },
+    {
+      "file_name": "SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg"
+    },
+    {
+      "file_name": "b5cfea0f38a019d94cdb2ac2b434f87f_res.jpeg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\b5cfea0f38a019d94cdb2ac2b434f87f_res.jpeg"
+    },
+    {
+      "file_name": "image.png",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\image.png"
+    },
+    {
+      "file_name": "img2.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img2.jpg"
+    },
+    {
+      "file_name": "img3.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img3.jpg"
+    }
+  ],
+  "failures": [],
+  "use_qwen": false
+}

@@ -1,0 +1,67 @@
+{
+  "dataset_name": "receipt-synthetic-v1",
+  "label_source": "synthetic-template-v1",
+  "generated_at": "2026-04-19T08:10:28Z",
+  "image": {
+    "file_name": "barcode_detail-0046.png",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.cache\\AI-Repository-fresh\\data\\receipt_synthetic\\receipt-synthetic-v1\\images\\barcode_detail-0046.png"
+  },
+  "metadata": {
+    "layout_type": "barcode_detail",
+    "variant": "default",
+    "noise_profile": {
+      "blur": "none",
+      "contrast": "normal",
+      "skew": "small",
+      "crop": "none",
+      "shadow": "none"
+    },
+    "source_type": "synthetic",
+    "version": "v1"
+  },
+  "expected": {
+    "vendor_name": "GS25",
+    "purchased_at": "2023-10-19",
+    "items": [
+      {
+        "raw_name": "롯데 앤디카페조릿 다크",
+        "normalized_name": "롯데 앤디카페조릿 다크",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4800.0,
+        "unit_price": 4800.0,
+        "barcode": "8800045000123"
+      },
+      {
+        "raw_name": "청양고추",
+        "normalized_name": "청양고추",
+        "quantity": 2.0,
+        "unit": "봉",
+        "amount": 3960.0,
+        "unit_price": 1980.0,
+        "barcode": "8800045001123"
+      },
+      {
+        "raw_name": "사과",
+        "normalized_name": "사과",
+        "quantity": 3.0,
+        "unit": "봉",
+        "amount": 17940.0,
+        "unit_price": 5980.0,
+        "barcode": "8800045002123"
+      }
+    ],
+    "totals": {
+      "subtotal": 26700.0,
+      "tax": 2670.0,
+      "total": 29370.0,
+      "payment_amount": 29370.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {
+      "synthetic": true,
+      "layout_type": "barcode_detail"
+    }
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v1",
+  "generated_at": "2026-04-21T11:40:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "2a4dd3c18f06cec1571dc9ca52dc5946.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\2a4dd3c18f06cec1571dc9ca52dc5946.jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "오뚜기 백도",
+        "normalized_name": null,
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 1580.0
+      },
+      {
+        "raw_name": "오뚜기 황도",
+        "normalized_name": null,
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 3200.0
+      },
+      {
+        "raw_name": "볶음아몬드",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 5210.0
+      },
+      {
+        "raw_name": "45도 과일잼 딸기",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3050.0
+      },
+      {
+        "raw_name": "프로틴 초코스틱 아몬드맛",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2750.0
+      },
+      {
+        "raw_name": "오뚜기 백도",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 790.0
+      },
+      {
+        "raw_name": "오뚜기 황도",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0
+      },
+      {
+        "raw_name": "볶음아몬드",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 5210.0
+      },
+      {
+        "raw_name": "게리치즈크래커",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1990.0
+      },
+      {
+        "raw_name": "이클립스 페퍼민트향 34g",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 770.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "오뚜기 진진파라",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "프림글스 잇앤스파이시",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "아미스브레미커스 베리스플래시양&딸",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "미클립스 피치향 34g",
+        "reason": "ocr_name_uncertain"
+      }
+    ],
+    "excluded_rows": [
+      {
+        "raw_name": "시스테마스텐다드칫속",
+        "reason": "non_food_supply"
+      }
+    ],
+    "totals": {
+      "payment_amount": 80220.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

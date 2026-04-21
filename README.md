@@ -9,6 +9,13 @@
 
 이 저장소의 핵심은 단순 OCR이 아니라, 영수증 파싱 파이프라인을 실제 영수증 구조에 맞게 고도화한 점입니다.
 
+문서 진입점:
+
+- [docs/INDEX.md](docs/INDEX.md)
+- [docs/guides/NORMAL_INPUT_CRITERIA.md](docs/guides/NORMAL_INPUT_CRITERIA.md)
+- [docs/guides/RECAPTURE_GUIDELINES.md](docs/guides/RECAPTURE_GUIDELINES.md)
+- [docs/specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md](docs/specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md)
+
 ## 1. 현재 시스템이 하는 일
 
 ### `POST /ai/ocr/analyze`

@@ -6,7 +6,7 @@ import re
 from typing import Any
 
 
-VALID_RECEIPT_EXTENSIONS = {".jpg", ".jpeg", ".png"}
+VALID_RECEIPT_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 EXCLUDED_NAME_MARKERS = ("items-crop",)
 
 
@@ -101,19 +101,12 @@ def compute_item_name_f1(
     expected_items: list[dict[str, Any]],
     actual_items: list[dict[str, Any]],
 ) -> dict[str, float | int]:
-    expected_name_groups = _extract_item_name_groups(expected_items)
-    actual_name_groups = _extract_item_name_groups(actual_items)
+    expected_name_groups, actual_name_groups, matched_pairs = _match_item_name_groups(
+        expected_items=expected_items,
+        actual_items=actual_items,
+    )
 
-    matched_actual_indices: set[int] = set()
-    tp = 0
-    for expected_names in expected_name_groups:
-        for actual_index, actual_names in enumerate(actual_name_groups):
-            if actual_index in matched_actual_indices:
-                continue
-            if expected_names & actual_names:
-                matched_actual_indices.add(actual_index)
-                tp += 1
-                break
+    tp = len(matched_pairs)
 
     fp = len(actual_name_groups) - tp
     fn = len(expected_name_groups) - tp
@@ -132,6 +125,51 @@ def compute_item_name_f1(
     }
 
 
+def compute_item_field_match_rates(
+    *,
+    expected_items: list[dict[str, Any]],
+    actual_items: list[dict[str, Any]],
+) -> dict[str, float | int]:
+    _, _, matched_pairs = _match_item_name_groups(
+        expected_items=expected_items,
+        actual_items=actual_items,
+    )
+
+    quantity_expected = 0
+    quantity_matches = 0
+    amount_expected = 0
+    amount_matches = 0
+
+    for expected_index, expected_item in enumerate(expected_items):
+        if not isinstance(expected_item, dict):
+            continue
+        matched_actual_index = matched_pairs.get(expected_index)
+        actual_item = actual_items[matched_actual_index] if matched_actual_index is not None else None
+
+        expected_quantity = _coerce_number(expected_item.get("quantity"))
+        if expected_quantity is not None:
+            quantity_expected += 1
+            actual_quantity = _coerce_number(actual_item.get("quantity")) if isinstance(actual_item, dict) else None
+            if actual_quantity is not None and abs(expected_quantity - actual_quantity) < 0.001:
+                quantity_matches += 1
+
+        expected_amount = _coerce_number(expected_item.get("amount"))
+        if expected_amount is not None:
+            amount_expected += 1
+            actual_amount = _coerce_number(actual_item.get("amount")) if isinstance(actual_item, dict) else None
+            if actual_amount is not None and abs(expected_amount - actual_amount) < 0.001:
+                amount_matches += 1
+
+    return {
+        "quantity_match_count": quantity_matches,
+        "quantity_expected_count": quantity_expected,
+        "quantity_match_rate": round(quantity_matches / quantity_expected, 4) if quantity_expected else 0.0,
+        "amount_match_count": amount_matches,
+        "amount_expected_count": amount_expected,
+        "amount_match_rate": round(amount_matches / amount_expected, 4) if amount_expected else 0.0,
+    }
+
+
 def compare_silver_annotation(
     *,
     annotation: dict[str, Any],
@@ -145,9 +183,15 @@ def compare_silver_annotation(
         expected_items=expected.get("items", []) if isinstance(expected, dict) else [],
         actual_items=parsed.get("items", []) if isinstance(parsed, dict) else [],
     )
+    field_metrics = compute_item_field_match_rates(
+        expected_items=expected.get("items", []) if isinstance(expected, dict) else [],
+        actual_items=parsed.get("items", []) if isinstance(parsed, dict) else [],
+    )
 
     expected_payment_amount = expected_totals.get("payment_amount")
     actual_payment_amount = parsed_totals.get("payment_amount")
+    expected_review_required = bool(expected.get("review_required", False)) if isinstance(expected, dict) else False
+    actual_review_required = bool(parsed.get("review_required", False)) if isinstance(parsed, dict) else False
 
     return {
         "vendor_name_match": expected.get("vendor_name") == parsed.get("vendor_name"),
@@ -159,6 +203,13 @@ def compare_silver_annotation(
         "tp": item_metrics["tp"],
         "fp": item_metrics["fp"],
         "fn": item_metrics["fn"],
+        "quantity_match_count": field_metrics["quantity_match_count"],
+        "quantity_expected_count": field_metrics["quantity_expected_count"],
+        "quantity_match_rate": field_metrics["quantity_match_rate"],
+        "amount_match_count": field_metrics["amount_match_count"],
+        "amount_expected_count": field_metrics["amount_expected_count"],
+        "amount_match_rate": field_metrics["amount_match_rate"],
+        "review_required_match": expected_review_required == actual_review_required,
     }
 
 
@@ -181,7 +232,38 @@ def _extract_item_name_groups(items: list[dict[str, Any]]) -> list[set[str]]:
 
 
 def _normalize_item_name_for_compare(value: str) -> str:
-    return re.sub(r"\s+", "", value).strip().lower()
+    normalized = re.sub(r"\s+", "", value).strip().lower()
+    normalized = re.sub(r"\((?:\d+입|\d+개)\)", "", normalized)
+    return normalized
+
+
+def _match_item_name_groups(
+    *,
+    expected_items: list[dict[str, Any]],
+    actual_items: list[dict[str, Any]],
+) -> tuple[list[set[str]], list[set[str]], dict[int, int]]:
+    expected_name_groups = _extract_item_name_groups(expected_items)
+    actual_name_groups = _extract_item_name_groups(actual_items)
+
+    matched_actual_indices: set[int] = set()
+    matched_pairs: dict[int, int] = {}
+    for expected_index, expected_names in enumerate(expected_name_groups):
+        for actual_index, actual_names in enumerate(actual_name_groups):
+            if actual_index in matched_actual_indices:
+                continue
+            if expected_names & actual_names:
+                matched_actual_indices.add(actual_index)
+                matched_pairs[expected_index] = actual_index
+                break
+    return expected_name_groups, actual_name_groups, matched_pairs
+
+
+def _coerce_number(value: Any) -> float | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    return None
 
 
 def _utc_now_isoformat() -> str:
