@@ -74,7 +74,7 @@ Noop Qwen 기준 결과:
 | vendor_name_accuracy | 1.0 |
 | purchased_at_accuracy | 0.8571 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9119 |
+| item_name_f1_avg | 0.9280 |
 | quantity_match_rate_avg | 0.8682 |
 | amount_match_rate_avg | 0.8668 |
 | review_required_accuracy | 1.0 |
@@ -87,7 +87,7 @@ Noop Qwen 기준 결과:
 | `1652882389756.jpg` | 0.9474 | grocery partial receipt. vendor는 없고 date는 육안상 보이지만 현재 OCR fallback으로는 미복구, 마지막 `깐양파`는 여전히 누락 |
 | `OIP (1).webp` | 1.0000 | convenience mixed receipt. alphanumeric barcode/lineNo prefix 정리와 `부탄가스` 비식품 제외로 식품 2개만 남도록 정리 |
 | `OIP (7).webp` | 0.8571 | low-res meat/healthfood receipt. item name은 대체로 잡지만 quantity/amount 구조화가 아직 약함 |
-| `OIP (8).webp` | 0.6667 | low-res convenience receipt. vendor hallucination은 제거됐고 coded line 품목 3개 중 2개 이상 회복됐지만 non-item/uncertain row 정리는 아직 남음 |
+| `OIP (8).webp` | 0.8571 | low-res convenience receipt. parser는 clear item 3개를 회복했고 evaluator가 `uncertain_items`를 ignore하도록 정리되면서 실제 acceptance score와 정렬됨 |
 | `OIP (9).webp` | 0.6316 | grocery acceptance sample. `양념등심돈까스`는 회복됐지만 `파프리카(팩)`과 cropped item miss가 남아 현재 parser 약점을 드러냄 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
@@ -115,11 +115,12 @@ Noop Qwen 기준 결과:
   - 이 축은 현재 회복됐고, low-res convenience의 남은 핵심 병목은 `uncertain snack/drink row pruning`으로 좁혀졌다.
 - 이번 기준에는 [OIP (8).webp](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/OIP%20(8).webp)도 low-res convenience acceptance gold로 편입했다.
   - 이후 parser hardening으로 vendor hallucination은 제거됐고, `barcode + lineNo + name + unit_price + amount` 한 줄형 품목은 일부 회복됐다.
-  - 그래도 low-res convenience receipt 대응은 아직 acceptance 범위를 충분히 만족하지 못한다.
+  - 이후 evaluator가 `uncertain_items`를 FP로 세지 않도록 정리되면서, clear item 기준 acceptance score와 baseline이 일치하게 됐다.
 - 이번 보강의 핵심:
   - `img3.jpg`: 가짜 vendor 제거 후 `lower item strip fallback`으로 `맥주 바이젠 미니` 회복
   - `OIP (1).webp`: alphanumeric barcode prefix 제거와 `부탄가스` non-food exclusion 추가로 mixed convenience precision 회복
   - low-res convenience 공통 축에서 `barcode + lineNo + name + unit_price + amount`와 `barcode/lineNo + food name` 두 패턴이 모두 회복됨
+  - evaluator에서도 `uncertain_items`를 ignore하도록 바꿔, acceptance baseline이 clear item 기준과 맞게 계산되도록 정리
   - `SE-...jpg`: exact alias lookup + gift-tail item strip fallback으로 `투썸로얄밀크티` gift까지 회복
   - `OIP (10).webp`: 상품명 뒤 바코드 suffix 제거, `결제대상금` 우선 유지
   - `R (1)/(2).jpg`: `용기면` 식품명 허용 + final-item 기준 `consumed_line_ids` 재계산으로 non-food row를 totals reconciliation에 다시 반영

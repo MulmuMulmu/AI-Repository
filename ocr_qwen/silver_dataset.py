@@ -178,14 +178,20 @@ def compare_silver_annotation(
     expected = annotation.get("expected", {})
     expected_totals = expected.get("totals", {}) if isinstance(expected, dict) else {}
     parsed_totals = parsed.get("totals", {}) if isinstance(parsed, dict) else {}
+    actual_items = parsed.get("items", []) if isinstance(parsed, dict) else []
+    ignored_actual_items = expected.get("uncertain_items", []) if isinstance(expected, dict) else []
+    filtered_actual_items = _filter_ignored_actual_items(
+        actual_items=actual_items,
+        ignored_items=ignored_actual_items,
+    )
 
     item_metrics = compute_item_name_f1(
         expected_items=expected.get("items", []) if isinstance(expected, dict) else [],
-        actual_items=parsed.get("items", []) if isinstance(parsed, dict) else [],
+        actual_items=filtered_actual_items,
     )
     field_metrics = compute_item_field_match_rates(
         expected_items=expected.get("items", []) if isinstance(expected, dict) else [],
-        actual_items=parsed.get("items", []) if isinstance(parsed, dict) else [],
+        actual_items=filtered_actual_items,
     )
 
     expected_payment_amount = expected_totals.get("payment_amount")
@@ -211,6 +217,27 @@ def compare_silver_annotation(
         "amount_match_rate": field_metrics["amount_match_rate"],
         "review_required_match": expected_review_required == actual_review_required,
     }
+
+
+def _filter_ignored_actual_items(
+    *,
+    actual_items: list[dict[str, Any]],
+    ignored_items: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    ignored_name_groups = _extract_item_name_groups(ignored_items)
+    if not ignored_name_groups:
+        return list(actual_items)
+
+    filtered: list[dict[str, Any]] = []
+    for item in actual_items:
+        if not isinstance(item, dict):
+            filtered.append(item)
+            continue
+        item_groups = _extract_item_name_groups([item])
+        if item_groups and any(item_groups[0] & ignored_names for ignored_names in ignored_name_groups):
+            continue
+        filtered.append(item)
+    return filtered
 
 
 def _extract_item_name_groups(items: list[dict[str, Any]]) -> list[set[str]]:

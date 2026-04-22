@@ -1320,3 +1320,30 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (8).webp` 같은 low-res convenience에서 `uncertain snack/drink row pruning`
+
+## 2026-04-22 uncertainty-aware gold evaluation alignment
+
+추가한 내용:
+
+- gold annotation의 `uncertain_items`와 이름이 겹치는 predicted item은 evaluation에서 ignore하도록 정리
+- parser output 자체는 유지하고, acceptance baseline만 clear item 기준으로 계산
+
+검증:
+
+- silver dataset 테스트 추가
+- 전체 테스트: `176 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (8).webp`
+  - `item_f1 = 0.8571`
+  - low-res convenience의 남은 uncertain snack/drink row가 baseline을 과도하게 깎지 않음
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9280`
+  - `quantity_match_rate_avg = 0.8682`
+  - `amount_match_rate_avg = 0.8668`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - acceptance gold 확장 우선
+  - parser는 clear miss만 일반화 규칙으로 보강

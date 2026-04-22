@@ -229,6 +229,42 @@ def test_compare_silver_annotation_treats_unmatched_name_as_quantity_and_amount_
     assert metrics["amount_match_rate"] == 0.0
 
 
+def test_compare_silver_annotation_ignores_predicted_items_matching_uncertain_items() -> None:
+    metrics = compare_silver_annotation(
+        annotation={
+            "expected": {
+                "items": [
+                    {"raw_name": "칠성사이다 제로 500ml", "quantity": 2.0, "amount": 3560.0},
+                    {"raw_name": "김치제육삼각", "quantity": 1.0, "amount": 1080.0},
+                    {"raw_name": "참치마요 삼각", "quantity": 1.0, "amount": 1080.0},
+                ],
+                "uncertain_items": [
+                    {"raw_name": "라아요 상각"},
+                    {"raw_name": "스타벅스키라멜731n"},
+                ],
+                "review_required": True,
+            }
+        },
+        parsed={
+            "items": [
+                {"raw_name": "칠성사이다 제로 500ml", "quantity": 2.0, "amount": 3560.0},
+                {"raw_name": "김치제육삼각", "quantity": 1.0, "amount": 1080.0},
+                {"raw_name": "라아요 상각", "quantity": 1.0, "amount": 1080.0},
+                {"raw_name": "참치마요 삼각", "quantity": 1.0, "amount": 1080.0},
+                {"raw_name": "스타벅스키라멜731n", "quantity": 1.0, "amount": 2380.0},
+            ],
+            "review_required": True,
+        },
+    )
+
+    assert metrics["tp"] == 3
+    assert metrics["fp"] == 0
+    assert metrics["fn"] == 0
+    assert metrics["item_name_f1"] == 1.0
+    assert metrics["quantity_match_rate"] == 1.0
+    assert metrics["amount_match_rate"] == 1.0
+
+
 def test_compute_item_name_f1_treats_parenthetical_pack_count_as_same_item_name() -> None:
     metrics = compute_item_name_f1(
         expected_items=[

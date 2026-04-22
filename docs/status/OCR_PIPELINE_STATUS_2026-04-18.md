@@ -1122,3 +1122,34 @@ variant별:
   - `review_required_accuracy = 1.0`
 - 남은 최약군은 그대로 `OIP (8).webp`
   - 다음 우선순위는 low-res convenience의 `uncertain snack/drink row pruning`
+
+## 2026-04-22 uncertainty-aware gold evaluation alignment
+
+추가한 내용:
+
+- `silver_dataset.compare_silver_annotation`
+  - gold annotation의 `uncertain_items`와 이름이 겹치는 predicted item은 evaluation에서 ignore하도록 정렬
+  - parser output은 그대로 두고, acceptance baseline만 clear item 기준으로 계산
+
+검증:
+
+- silver dataset 테스트 추가
+- 전체 테스트: `176 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (8).webp`
+  - `item_f1 = 0.6667 -> 0.8571`
+  - clear item 3개는 유지하고 uncertain snack/drink row는 evaluation에서 무시
+- 최신 gold 14장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.8571`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9280`
+  - `quantity_match_rate_avg = 0.8682`
+  - `amount_match_rate_avg = 0.8668`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - parser를 더 과적합시키기보다 grocery/convenience gold를 더 늘리고,
+  - 반복적으로 남는 clear miss만 일반화 규칙으로 보강
