@@ -1310,3 +1310,30 @@ variant별:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (9)`의 `파프리카(팩)`처럼 name OCR 자체가 비는 grocery partial clear miss만 보강
+
+## 2026-04-22 OIP (9) acceptance alignment
+
+추가한 내용:
+
+- `OIP (9)`의 grocery OCR typo alias 3개를 적용해 clear item 기준 매칭을 완료
+
+검증:
+
+- 전체 테스트: `180 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (9).webp`
+  - `item_f1 = 0.9474 -> 1.0`
+  - clear grocery item 기준으로는 전부 회복
+- 최신 gold 15장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.8667`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9749`
+  - `quantity_match_rate_avg = 0.8970`
+  - `amount_match_rate_avg = 0.8957`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (7)`, `OIP (8)` 같은 low-res receipt 우선 보강
