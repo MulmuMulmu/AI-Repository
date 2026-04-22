@@ -1106,3 +1106,37 @@ barcode_detail 60장 subset 평가:
   - `quantity_match_rate_avg = 0.9740`
   - `amount_match_rate_avg = 0.9718`
   - `review_required_accuracy = 1.0`
+
+## 2026-04-22 165288 grocery partial gold promotion
+
+추가한 내용:
+
+- `1652882389756.jpg`를 gold draft에 편입
+  - item 10개
+  - excluded row 1개(재사용봉투)
+  - vendor는 `null`, purchased_at은 visual 기준 `2022-04-30`
+- `ReceiptParseService._looks_like_partial_receipt()`
+  - noisy row 1~2개 뒤에 item header가 나오는 grocery partial receipt를 허용
+  - early-header 분기에서 `code + amount` row를 partial 구조 신호로 포함
+
+검증:
+
+- 신규 service 테스트 1개 추가
+- 전체 테스트: `167 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `1652882389756.jpg`
+  - `review_required = false`
+  - `partial_receipt = true`
+  - `item_f1 = 0.9474`
+  - 아직 `purchased_at`, `깐양파`는 miss
+- 최신 gold 10장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9723`
+  - `quantity_match_rate_avg = 0.9666`
+  - `amount_match_rate_avg = 0.9646`
+  - `review_required_accuracy = 1.0`

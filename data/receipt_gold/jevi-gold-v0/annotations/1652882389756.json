@@ -1,0 +1,105 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-22T08:20:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "1652882389756.jpg",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\1652882389756.jpg"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2022-04-30",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "*한돈) 생목살",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 13450.0
+      },
+      {
+        "raw_name": "*한돈)벌집 삼겹살",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 15970.0
+      },
+      {
+        "raw_name": "*청양고추",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1390.0
+      },
+      {
+        "raw_name": "*적상추",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1900.0
+      },
+      {
+        "raw_name": "큰사각햇반300g",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2500.0
+      },
+      {
+        "raw_name": "햇반200g",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1600.0
+      },
+      {
+        "raw_name": "콤비부어스트4가지맛285g",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6300.0
+      },
+      {
+        "raw_name": "코카콜라350ml",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1500.0
+      },
+      {
+        "raw_name": "진로 소주 360ml",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1650.0
+      },
+      {
+        "raw_name": "*깐양파",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2620.0
+      }
+    ],
+    "uncertain_items": [],
+    "excluded_rows": [
+      {
+        "raw_name": "*종량10L(재사용봉투날장)",
+        "reason": "non_food_supply"
+      }
+    ],
+    "totals": {
+      "tax": 1232.0,
+      "total": 49060.0,
+      "payment_amount": 49060.0
+    },
+    "review_required": false,
+    "review_reasons": [],
+    "diagnostics": {}
+  }
+}

@@ -230,7 +230,7 @@ Qwen은 현재 메인 파서가 아니다.
 - 아직 남은 미편입 자산은 crop image 위주다.
 
 즉, 현재는 실사 검증 경로가 전혀 없는 상태는 아니고,  
-`gold 9장 + silver 35장 + 추가 gold 후보 shortlist` 구조까지는 확보된 상태다.
+`gold 10장 + silver 35장 + 추가 gold 후보 shortlist` 구조까지는 확보된 상태다.
 
 현재 추가 gold 후보로 볼 만한 샘플:
 
@@ -862,7 +862,41 @@ variant별:
   - `review_required = false`
   - `item_f1 = 1.0`
 - 최신 gold 9장 baseline:
-  - `item_name_f1_avg = 0.9750`
-  - `quantity_match_rate_avg = 0.9740`
-  - `amount_match_rate_avg = 0.9718`
+- `item_name_f1_avg = 0.9750`
+- `quantity_match_rate_avg = 0.9740`
+- `amount_match_rate_avg = 0.9718`
+- `review_required_accuracy = 1.0`
+
+## 2026-04-22 grocery partial gold promotion
+
+추가한 내용:
+
+- [1652882389756.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/1652882389756.json)
+  - grocery partial receipt를 gold draft로 편입
+  - clear item 10개, 봉투 1개 제외
+- `ReceiptParseService`
+  - noisy preamble 뒤 item header가 나오는 grocery partial receipt를 `partial_receipt=true`로 인정하도록 보강
+  - early-header branch에서 `code + amount` row도 partial 구조 신호로 계산
+
+검증:
+
+- 신규 service 회귀 테스트 1개 추가
+- 전체 테스트: `167 passed`
+
+효과:
+
+- [1652882389756.jpg](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/1652882389756.jpg)
+  - `review_required = false`
+  - `partial_receipt = true`
+  - `item_f1 = 0.9474`
+  - 남은 miss:
+    - `purchased_at`
+    - 마지막 `깐양파`
+- 최신 gold 10장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9723`
+  - `quantity_match_rate_avg = 0.9666`
+  - `amount_match_rate_avg = 0.9646`
   - `review_required_accuracy = 1.0`

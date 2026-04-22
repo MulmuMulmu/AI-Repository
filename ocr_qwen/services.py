@@ -1351,17 +1351,37 @@ class ReceiptParseService:
         if not rows or not parsed.get("items"):
             return False
         first_row = rows[0]
-        if not self.parser._looks_like_item_header(first_row):
+        if not self._looks_like_partial_item_header_row(first_row):
             if parsed.get("vendor_name") is not None or parsed.get("purchased_at") is not None:
                 return False
             if not parsed.get("totals"):
                 return False
+            early_item_header_index = next(
+                (index for index, row in enumerate(rows[:4]) if self._looks_like_partial_item_header_row(row)),
+                None,
+            )
+            if early_item_header_index is not None:
+                post_header_rows = rows[early_item_header_index + 1 : early_item_header_index + 7]
+                item_like_rows = sum(
+                    1
+                    for row in post_header_rows
+                    if self._looks_like_partial_item_row(row) or self._looks_like_item_strip_gap_row(row)
+                )
+                return len(parsed.get("items", [])) >= 6 and item_like_rows >= min(3, len(post_header_rows))
             leading_rows = rows[: min(len(rows), 6)]
             item_like_rows = sum(1 for row in leading_rows if self._looks_like_partial_item_row(row))
             return len(parsed.get("items", [])) >= 4 and item_like_rows >= min(3, len(leading_rows))
         if parsed.get("vendor_name") is not None or parsed.get("purchased_at") is not None:
             return False
         return True
+
+    def _looks_like_partial_item_header_row(self, text: str) -> bool:
+        if self.parser._looks_like_item_header(text):
+            return True
+        compact = re.sub(r"\s+", "", text or "")
+        if "상품" not in compact or "수량" not in compact:
+            return False
+        return any(token in compact for token in ("금액", "단가", "금", "가격"))
 
     def _looks_like_partial_item_row(self, text: str) -> bool:
         if self.parser._looks_like_item_candidate(text):

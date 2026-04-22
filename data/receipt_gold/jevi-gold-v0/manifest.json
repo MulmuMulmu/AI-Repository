@@ -1,8 +1,8 @@
 {
   "dataset_name": "jevi-gold-v0",
   "input_dir": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비",
-  "image_count": 9,
-  "total_item_count": 80,
+  "image_count": 10,
+  "total_item_count": 90,
   "review_required_count": 0,
   "images": [
     {
@@ -40,6 +40,10 @@
     {
       "file_name": "img2.jpg",
       "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\img2.jpg"
+    },
+    {
+      "file_name": "1652882389756.jpg",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\1652882389756.jpg"
     }
   ],
   "label_policy": {

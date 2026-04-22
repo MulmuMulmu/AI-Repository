@@ -282,6 +282,53 @@ def test_service_finalize_parse_result_allows_partial_receipt_without_item_heade
     assert "missing_purchased_at" not in parsed["review_reasons"]
 
 
+def test_service_finalize_parse_result_allows_partial_receipt_with_noisy_rows_before_item_header() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": None,
+        "purchased_at": None,
+        "items": [
+            {"raw_name": "*한돈) 생목살", "quantity": 1.0, "unit": "개", "amount": 13450.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "*한돈)벌집 삼겹살", "quantity": 1.0, "unit": "개", "amount": 15970.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "*청양고추", "normalized_name": "고추", "quantity": 1.0, "unit": "개", "amount": 1390.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "*적상추", "quantity": 1.0, "unit": "개", "amount": 1900.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "큰사각햇반300g", "quantity": 1.0, "unit": "개", "amount": 2500.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "햇반200g", "normalized_name": "햇반", "quantity": 1.0, "unit": "개", "amount": 1600.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "콤비부어스트4가지맛285g", "quantity": 1.0, "unit": "개", "amount": 6300.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "코카콜라350ml", "quantity": 1.0, "unit": "개", "amount": 1500.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "진로 소주 360ml", "quantity": 1.0, "unit": "개", "amount": 1650.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {
+            "payment_amount": 49060.0,
+            "tax": 1232.0,
+        },
+        "ocr_texts": [
+            {"line_id": 0, "text": "Co:z01e1(5 108-t0-z707"},
+            {"line_id": 1, "text": "Ra"},
+            {"line_id": 2, "text": "상품 1C금 수량"},
+            {"line_id": 3, "text": "*한돈) 생목살(구이용)"},
+            {"line_id": 4, "text": "200078 13,450 - 13,450"},
+            {"line_id": 5, "text": "*종량10L(재사용봉투날장)"},
+            {"line_id": 6, "text": "2908144263092 180 I 180"},
+            {"line_id": 7, "text": "*한돈)벌집 삼겹살(암태지)"},
+            {"line_id": 8, "text": "200074 15,970 | 15,970"},
+            {"line_id": 24, "text": "구매금액 49,060"},
+            {"line_id": 30, "text": "부 가 세 1,232"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {"quality_score": 0.4194},
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert parsed["diagnostics"]["partial_receipt"] is True
+    assert parsed["review_required"] is False
+    assert "missing_vendor_name" not in parsed["review_reasons"]
+    assert "missing_purchased_at" not in parsed["review_reasons"]
+    assert "total_mismatch" not in parsed["review_reasons"]
+
+
 def test_service_finalize_parse_result_uses_unconsumed_item_amount_to_avoid_total_mismatch() -> None:
     service = ReceiptParseService(ocr_backend=object())
     parsed = {

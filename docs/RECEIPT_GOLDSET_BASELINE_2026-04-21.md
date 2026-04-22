@@ -16,6 +16,7 @@
 - 매니페스트: [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
 - 정답 라벨:
   - [2a4dd3c18f06cec1571dc9ca52dc5946.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/2a4dd3c18f06cec1571dc9ca52dc5946.json)
+  - [1652882389756.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/1652882389756.json)
   - [image.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/image.json)
   - [R_1.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/R_1.json)
   - [R.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/R.json)
@@ -32,13 +33,14 @@
 
 | 항목 | 값 |
 |---|---:|
-| image_count | 9 |
-| total_item_count | 78 |
+| image_count | 10 |
+| total_item_count | 90 |
 | review_required_count | 0 |
 
 포함 이미지:
 
 - `2a4dd3c18f06cec1571dc9ca52dc5946.jpg`
+- `1652882389756.jpg`
 - `image.png`
 - `R (1).jpg`
 - `R.jpg`
@@ -60,13 +62,13 @@ Noop Qwen 기준 결과:
 
 | 지표 | 값 |
 |---|---:|
-| image_count | 9 |
+| image_count | 10 |
 | vendor_name_accuracy | 1.0 |
-| purchased_at_accuracy | 1.0 |
+| purchased_at_accuracy | 0.9 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9750 |
-| quantity_match_rate_avg | 0.9740 |
-| amount_match_rate_avg | 0.9718 |
+| item_name_f1_avg | 0.9723 |
+| quantity_match_rate_avg | 0.9666 |
+| amount_match_rate_avg | 0.9646 |
 | review_required_accuracy | 1.0 |
 
 이미지별:
@@ -74,6 +76,7 @@ Noop Qwen 기준 결과:
 | file | item_f1 | 메모 |
 |---|---:|---|
 | `2a4dd3c18f06cec1571dc9ca52dc5946.jpg` | 0.9655 | visual review로 clear item 4개 승격, dense fallback 억제로 duplicate 제거 |
+| `1652882389756.jpg` | 0.9474 | grocery partial receipt. vendor는 없고 date는 육안상 보이지만 현재 OCR fallback으로는 미복구, 마지막 `깐양파`는 여전히 누락 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
 | `R.jpg` | 1.0000 | visual review로 `와이멘씨라이스퍼프`, `부드러운쿠키블루베`를 gold 승격 후 정렬 완료 |
@@ -86,6 +89,9 @@ Noop Qwen 기준 결과:
 ## 해석
 
 - 기존 4장 core baseline보다 더 어려운 hard-case 4장을 넣었지만, 후속 parser 보강으로 평균을 다시 끌어올렸다.
+- 이번 기준에는 grocery partial receipt [1652882389756.jpg](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/1652882389756.jpg)도 정식 gold로 편입했다.
+  - 서비스는 이제 noisy preamble 뒤 item header가 나오는 grocery partial receipt를 `partial_receipt=true`로 판정한다.
+  - 그 결과 이 샘플은 `review_required=false`로 내려오지만, `purchased_at`과 마지막 `깐양파`는 아직 miss로 남는다.
 - 이번 보강의 핵심:
   - `img3.jpg`: 가짜 vendor 제거 후 `lower item strip fallback`으로 `맥주 바이젠 미니` 회복
   - `SE-...jpg`: exact alias lookup + gift-tail item strip fallback으로 `투썸로얄밀크티` gift까지 회복
@@ -101,11 +107,11 @@ Noop Qwen 기준 결과:
   - `quantity_match_rate_avg`
   - `amount_match_rate_avg`
   - `review_required_accuracy`
-- 현재 실사 gold 9장 기준 review 축도 정렬됐다.
+- 현재 실사 gold 10장 기준 review 축도 정렬됐다.
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 현재 최약군은 `R (1)/(2).jpg (0.9286)`이며, `2a4dd3...jpg`는 `0.9655`, `R.jpg`, `img2.jpg`는 `1.0`까지 회복됐다.
+  - 현재 최약군은 `R (1)/(2).jpg (0.9286)`와 `1652882389756.jpg (0.9474)`이며, 후자는 grocery partial receipt에서 `date/last item` 회복이 아직 남아 있다는 뜻이다.
 
 ## 다음 우선순위
 
