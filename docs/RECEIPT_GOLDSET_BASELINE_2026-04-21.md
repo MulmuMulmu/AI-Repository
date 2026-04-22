@@ -79,9 +79,9 @@ Noop Qwen 기준 결과:
 | vendor_name_accuracy | 1.0 |
 | purchased_at_accuracy | 0.9412 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9845 |
-| quantity_match_rate_avg | 0.9764 |
-| amount_match_rate_avg | 0.9556 |
+| item_name_f1_avg | 0.9910 |
+| quantity_match_rate_avg | 0.9829 |
+| amount_match_rate_avg | 0.9621 |
 | review_required_accuracy | 1.0 |
 
 이미지별:
@@ -99,7 +99,7 @@ Noop Qwen 기준 결과:
 | `OIP.webp` | 1.0000 | small convenience one-item crop. `상품명 + barcode + amount` 한 줄형과 `할인계 + 결제대상금액 + 날짜줄 최종금액` discount summary crop을 회복해 item/totals를 정렬함 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 1.0000 | late `상품 합계 4,480` footer가 total을 덮어쓰지 않도록 정리했고, `오징어짧뽕/삼양나가사끼짬뽕` exact alias까지 반영돼 fully aligned |
-| `R.jpg` | 1.0000 | visual review로 `와이멘씨라이스퍼프`, `부드러운쿠키블루베`를 gold 승격 후 정렬 완료 |
+| `R.jpg` | 1.0000 | `맛밤42G*10 -> 맛밤` pack-size 축약 alias를 exact product 유지로 되돌려 fully aligned |
 | `R (2).jpg` | 1.0000 | `R (1)`과 동일 계열. late footer total overwrite 방지와 exact alias 정리까지 반영돼 fully aligned |
 | `img3.jpg` | 1.0000 | lower item strip fallback으로 `맥주 바이젠 미니` 회복, `(5입)` pack-count 비교 정규화 반영 |
 | `SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg` | 0.9524 | gift-tail item strip fallback으로 `투썸로얄밀크티` gift 복구 |
@@ -144,6 +144,7 @@ Noop Qwen 기준 결과:
   - low-res convenience 공통 축에서 `barcode + lineNo + name + unit_price + amount`와 `barcode/lineNo + food name` 두 패턴이 모두 회복됨
   - evaluator에서도 `uncertain_items`를 ignore하도록 바꿔, acceptance baseline이 clear item 기준과 맞게 계산되도록 정리
   - `R (1)/(2).jpg`: `상품 합계 4,480` 같은 late footer total은 기존 `payment_amount`보다 작으면 `total`을 덮어쓰지 않도록 정리했고, `농심 오징어짧뽕 컵`, `삼양나가사끼짬뽕 컵` exact alias를 추가해 fully aligned
+  - `R.jpg`: `맛밤42G*10 -> 맛밤` pack-size cleanup alias를 exact product 유지로 되돌려 gold 기준과 정렬
   - `OIP (20).webp`: grocery partial receipt에 `6-digit PLU code` 제거, embedded barcode noise tail cleanup, grocery OCR typo alias를 넣고 ambiguous rows를 uncertain으로 정리해 acceptance baseline과 정렬
   - `SE-...jpg`: exact alias lookup + gift-tail item strip fallback으로 `투썸로얄밀크티` gift까지 회복
   - `OIP (10).webp`: 상품명 뒤 바코드 suffix 제거, `결제대상금` 우선 유지
@@ -162,7 +163,7 @@ Noop Qwen 기준 결과:
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 현재 최약군은 `R.jpg (0.8889)`이고, 다음이 `SE-...jpg (0.9524)`, `OIP (9).webp (0.9474)`, `1652882389756.jpg (0.9474)`다.
+  - 현재 최약군은 `SE-...jpg (0.9524)`이고, 다음이 `OIP (9).webp (0.9474)`, `1652882389756.jpg (0.9474)`다.
   - grocery 축에서는 clear miss보다 OCR collapse hard-case와 crop/date 누락이 남아 있다.
   - 이건 품질 후퇴가 아니라 grocery acceptance set을 넓힌 결과다.
 

@@ -1625,3 +1625,29 @@ barcode_detail 60장 subset 평가:
 - 다음 우선순위:
   - 남은 실제 최약군 `R.jpg`
   - 그 다음은 `SE-...jpg`, `OIP (9).webp`, `1652882389756.jpg`
+
+## 2026-04-22 R.jpg exact pack-size preservation
+
+추가한 내용:
+
+- `맛밤42G*10 -> 맛밤` pack-size cleanup alias를 제거하고 exact product 유지로 전환
+- 회귀 테스트 1개 추가
+
+검증:
+
+- 전체 테스트: `190 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `R.jpg`
+  - `item_f1 = 1.0`
+  - `맛밤42G*10`이 그대로 유지됨
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9910`
+  - `quantity_match_rate_avg = 0.9829`
+  - `amount_match_rate_avg = 0.9621`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - 남은 실제 최약군 `SE-...jpg`
+  - 그 다음은 `OIP (9).webp`, `1652882389756.jpg`

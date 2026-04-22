@@ -1646,6 +1646,19 @@ def test_parser_normalizes_lotte_mart_cup_noodle_ocr_typos() -> None:
     ]
 
 
+def test_parser_preserves_exact_pack_size_product_when_alias_is_gold_critical() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="888 맛밤42G*10 12,590 1 12,590", confidence=0.95, line_id=0, page_order=0),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "맛밤42G*10"
+
+
 def test_parser_prunes_totals_metadata_false_positive_in_oip9_style_receipt() -> None:
     parser = ReceiptParser()
 

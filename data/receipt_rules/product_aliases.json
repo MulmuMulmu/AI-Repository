@@ -240,8 +240,8 @@
     },
     {
       "raw": "맛밤42G*10",
-      "standard": "맛밤",
-      "reason": "pack_size_cleanup"
+      "standard": "맛밤42G*10",
+      "reason": "exact_product_preservation"
     },
     {
       "raw": "속이면한",
