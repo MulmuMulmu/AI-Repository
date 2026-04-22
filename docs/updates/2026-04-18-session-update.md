@@ -270,6 +270,8 @@
 - 이 rescue는 `diagnostics.qwen_item_rescue_count`로 몇 개 item이 실제 추가됐는지 남긴다.
 - 또 rescue된 item의 `source_line_ids`는 후속 `unconsumed / collapsed / total` 검증에서 consumed로 간주해, 성공한 rescue 때문에 review가 계속 남지 않도록 정리했다.
 - provider 품질을 높이기 위해 `collapsed_item_name_rows` payload에도 주변 `context_lines`를 같이 실어, `()2 + 2500000007828 6,480 1 6,480` 같은 붕괴 행을 더 좁게 해석할 수 있게 했다.
+- 실제 local Qwen 1.5B 실험에서는 `OIP (9)`에 대해 `raw_name=()2`, `unit=1` 같은 bogus rescue를 생성하는 경우를 확인했다.
+- 그래서 rescue 경로에는 최소 validator를 넣어, `collapsed token` 그대로이거나 숫자 unit만 가진 `rescued_item`은 append하지 않도록 막았다.
 
 - 합성데이터 기반 고도화가 실제로 수치 개선으로 이어졌다고 말할 수 있다.
 - 특히 `mixed_noise`는 대폭 개선되었고 더 이상 최약군이 아니다.

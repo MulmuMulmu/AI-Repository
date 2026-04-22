@@ -1209,6 +1209,11 @@ class ReceiptParseService:
             if isinstance(value, int) and not isinstance(value, bool)
         ] if isinstance(rescued.get("source_line_ids"), list) else []
 
+        if self._looks_like_collapsed_item_name_row(display_name):
+            return None
+        if re.fullmatch(r"\d+(?:\.\d+)?", unit):
+            return None
+
         item = {
             "raw_name": display_name,
             "normalized_name": normalized_name or display_name,

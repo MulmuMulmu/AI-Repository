@@ -234,6 +234,36 @@ def test_receipt_service_allows_qwen_to_append_rescued_item() -> None:
     assert parsed["diagnostics"]["qwen_item_rescue_count"] == 1
 
 
+def test_receipt_service_rejects_implausible_qwen_rescued_item() -> None:
+    service = ReceiptParseService(qwen_provider=NoopQwenProvider())
+
+    parsed = {
+        "purchased_at": "2023-11-24",
+        "diagnostics": {},
+        "items": [],
+    }
+
+    applied = service._apply_qwen_item_normalization(
+        parsed,
+        {
+            "rescued_items": [
+                {
+                    "raw_name": "()2",
+                    "normalized_name": "",
+                    "quantity": 2.0,
+                    "unit": "1",
+                    "amount": 6480.0,
+                    "source_line_ids": [4],
+                }
+            ]
+        },
+    )
+
+    assert applied is False
+    assert parsed["items"] == []
+    assert parsed["diagnostics"]["qwen_item_rescue_count"] == 0
+
+
 def test_local_qwen_item_prompt_instructs_model_to_use_source_and_context_lines() -> None:
     provider = LocalTransformersQwenProvider(enabled=False)
 
