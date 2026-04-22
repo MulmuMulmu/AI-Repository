@@ -348,6 +348,23 @@ def test_parser_strips_embedded_barcode_tail_from_single_line_qty_amount_row() -
     assert result.items[0].amount == 1650.0
 
 
+def test_parser_normalizes_grocery_partial_ocr_typos_via_exact_aliases() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 금액", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="200078 한은) 생목심(구이용) 13,450 13,450", confidence=0.90, line_id=1, page_order=1),
+            OcrLine(text="202240 ·청양고수 1,390 1,390", confidence=0.89, line_id=2, page_order=2),
+        ]
+    )
+
+    assert [item.normalized_name for item in result.items] == [
+        "생목심(구이용)",
+        "청양고추",
+    ]
+
+
 def test_parser_parses_spaced_numeric_detail_rows_from_image_style_receipt() -> None:
     parser = ReceiptParser()
 

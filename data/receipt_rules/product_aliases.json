@@ -249,6 +249,16 @@
       "reason": "ocr_typo"
     },
     {
+      "raw": "한은 생목심",
+      "standard": "생목심(구이용)",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "청양고수",
+      "standard": "청양고추",
+      "reason": "ocr_typo"
+    },
+    {
       "raw": "L맥주바이젠미니",
       "standard": "맥주 바이젠 미니",
       "reason": "manual_receipt_alias"

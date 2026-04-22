@@ -1396,3 +1396,28 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - grocery partial clear miss만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP (20) grocery partial normalization pass
+
+추가한 내용:
+
+- `한은 생목심 -> 생목심(구이용)`
+- `청양고수 -> 청양고추`
+- grocery partial receipt clear miss 2개를 exact alias 기반 normalized_name 회복으로 연결
+
+검증:
+
+- 전체 테스트: `180 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (20).webp`
+  - `item_f1 = 0.6667`
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9106`
+  - `quantity_match_rate_avg = 0.8770`
+  - `amount_match_rate_avg = 0.8757`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - grocery partial receipt의 남은 clear miss만 일반화 규칙으로 보강
