@@ -1023,3 +1023,36 @@ variant별:
 - `OIP (1).webp`
   - `item_f1 = 0.4`
   - parser가 비식품 `애니파워부탄가스`를 item으로 유지하고 있어 acceptance baseline이 더 현실적으로 내려감
+
+## 2026-04-22 OIP (8) gold promotion
+
+추가한 내용:
+
+- [OIP_8.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_8.json)
+  - low-res convenience acceptance sample을 gold draft로 편입
+  - clear item 3개
+  - uncertain item 2개
+  - `review_required=true` 유지
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `image_count = 14`
+  - `total_item_count = 108`
+  - `review_required_count = 4`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- 최신 gold 14장 baseline:
+  - `vendor_name_accuracy = 0.9286`
+  - `purchased_at_accuracy = 0.8571`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.8294`
+  - `quantity_match_rate_avg = 0.7690`
+  - `amount_match_rate_avg = 0.7676`
+  - `review_required_accuracy = 1.0`
+- `OIP (8).webp`
+  - `item_f1 = 0.0`
+  - vendor/date hallucination과 low-res convenience item parsing 취약점이 acceptance baseline에 직접 반영됨

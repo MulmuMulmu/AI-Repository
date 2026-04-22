@@ -1241,3 +1241,29 @@ barcode_detail 60장 subset 평가:
 - 해석:
   - non-food filtering과 convenience mixed receipt 대응이 acceptance 기준의 실제 병목으로 드러남
   - 지금은 수치를 방어하는 것보다 acceptance 분포를 더 넓히는 방향이 맞다
+
+## 2026-04-22 OIP (8) gold promotion
+
+추가한 내용:
+
+- `OIP (8).webp`를 low-res convenience acceptance gold로 편입
+  - clear item 3개
+  - uncertain item 2개
+  - `review_required=true`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- latest gold baseline이 `13장 -> 14장`으로 확장
+- metrics:
+  - `item_name_f1_avg = 0.8294`
+  - `quantity_match_rate_avg = 0.7690`
+  - `amount_match_rate_avg = 0.7676`
+  - `review_required_accuracy = 1.0`
+- 해석:
+  - low-res convenience는 아직 acceptance 범위에서 가장 약한 축이다
+  - 다음 parser 작업은 grocery보다 convenience low-res 대응을 우선 보는 것이 더 맞다
