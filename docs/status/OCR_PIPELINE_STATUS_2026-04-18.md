@@ -93,6 +93,7 @@
 - `diagnostics.unresolved_groups`
 - `diagnostics.collapsed_item_name_count`
 - `diagnostics.collapsed_item_name_rows`
+- `diagnostics.qwen_item_rescue_count`
 
 현재 item 단위 review 이유 예시:
 

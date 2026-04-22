@@ -563,6 +563,7 @@ def test_receipt_service_attempts_qwen_item_rescue_for_collapsed_rows_without_re
 
     assert parsed["diagnostics"]["qwen_item_attempted"] is True
     assert parsed["diagnostics"]["qwen_item_used"] is True
+    assert parsed["diagnostics"]["qwen_item_rescue_count"] == 1
     assert qwen.payloads
     assert qwen.payloads[0]["review_items"] == []
     assert len(qwen.payloads[0]["collapsed_item_name_rows"]) == 1

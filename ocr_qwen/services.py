@@ -1070,6 +1070,7 @@ class ReceiptParseService:
         return {"items": merged_items} if merged_items else None
 
     def _apply_qwen_item_normalization(self, parsed: dict, normalization: dict) -> bool:
+        diagnostics = parsed.setdefault("diagnostics", {})
         corrections = normalization.get("items")
         rescued_items = normalization.get("rescued_items")
         if not isinstance(corrections, list):
@@ -1077,9 +1078,11 @@ class ReceiptParseService:
         if not isinstance(rescued_items, list):
             rescued_items = []
         if not corrections and not rescued_items:
+            diagnostics.setdefault("qwen_item_rescue_count", 0)
             return False
 
         applied = False
+        rescue_count = 0
         for correction in corrections:
             if not isinstance(correction, dict):
                 continue
@@ -1139,8 +1142,10 @@ class ReceiptParseService:
             if duplicate:
                 continue
             parsed["items"].append(rescued_item)
+            rescue_count += 1
             applied = True
 
+        diagnostics["qwen_item_rescue_count"] = rescue_count
         return applied
 
     def _build_qwen_rescued_item(self, rescued: dict, *, purchased_at: str | None) -> dict | None:

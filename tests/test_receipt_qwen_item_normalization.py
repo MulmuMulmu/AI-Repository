@@ -191,6 +191,7 @@ def test_receipt_service_allows_qwen_to_append_rescued_item() -> None:
 
     parsed = {
         "purchased_at": "2023-11-24",
+        "diagnostics": {},
         "items": [
             {
                 "raw_name": "양념등심돈까스",
@@ -225,6 +226,7 @@ def test_receipt_service_allows_qwen_to_append_rescued_item() -> None:
     assert len(parsed["items"]) == 2
     assert parsed["items"][1]["raw_name"] == "파프리카(팩)"
     assert parsed["items"][1]["parse_pattern"] == "qwen_collapsed_rescue"
+    assert parsed["diagnostics"]["qwen_item_rescue_count"] == 1
 
 
 def test_local_qwen_item_prompt_instructs_model_to_use_source_and_context_lines() -> None:
