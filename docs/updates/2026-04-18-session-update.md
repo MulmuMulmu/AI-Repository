@@ -1444,3 +1444,28 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (9)` 계열 grocery partial clear miss 보강
+
+## 2026-04-22 OIP (9) grocery typo normalization
+
+추가한 내용:
+
+- `하인즈유기농케참90 -> 하인즈 유기농케찹90`
+- `갈바니리코타치츠4 -> 갈바니 리코타 치즈4`
+- `블렌드슈레드치즈1k9 -> 블렌드 슈레드치즈1kg`
+
+검증:
+
+- 전체 테스트: `180 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (9).webp`
+  - `item_f1 = 0.9474`
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9538`
+  - `quantity_match_rate_avg = 0.8970`
+  - `amount_match_rate_avg = 0.8957`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `파프리카(팩)`처럼 name OCR 자체가 비는 grocery partial clear miss 보강

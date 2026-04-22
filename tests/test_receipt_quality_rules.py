@@ -365,6 +365,28 @@ def test_parser_normalizes_grocery_partial_ocr_typos_via_exact_aliases() -> None
     ]
 
 
+def test_parser_normalizes_oip9_style_grocery_ocr_typos_via_exact_aliases() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 금액", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="하인즈유기농케참90", confidence=0.83, line_id=1, page_order=1),
+            OcrLine(text="8801065000699 9,980 - 9,980", confidence=0.89, line_id=2, page_order=2),
+            OcrLine(text="갈바니리코타치츠4", confidence=0.89, line_id=3, page_order=3),
+            OcrLine(text="0738824102401 6,680 1 6,680", confidence=0.98, line_id=4, page_order=4),
+            OcrLine(text="블렌드슈레드치즈1k9", confidence=0.95, line_id=5, page_order=5),
+            OcrLine(text="8809234660309 11,980 1 11,980", confidence=0.99, line_id=6, page_order=6),
+        ]
+    )
+
+    assert [item.normalized_name for item in result.items] == [
+        "하인즈 유기농케찹90",
+        "갈바니 리코타 치즈4",
+        "블렌드 슈레드치즈1kg",
+    ]
+
+
 def test_parser_parses_spaced_numeric_detail_rows_from_image_style_receipt() -> None:
     parser = ReceiptParser()
 

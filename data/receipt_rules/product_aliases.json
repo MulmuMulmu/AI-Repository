@@ -259,6 +259,21 @@
       "reason": "ocr_typo"
     },
     {
+      "raw": "하인즈유기농케참90",
+      "standard": "하인즈 유기농케찹90",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "갈바니리코타치츠4",
+      "standard": "갈바니 리코타 치즈4",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "블렌드슈레드치즈1k9",
+      "standard": "블렌드 슈레드치즈1kg",
+      "reason": "ocr_typo"
+    },
+    {
       "raw": "L맥주바이젠미니",
       "standard": "맥주 바이젠 미니",
       "reason": "manual_receipt_alias"

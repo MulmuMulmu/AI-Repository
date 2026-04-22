@@ -76,7 +76,7 @@ Noop Qwen 기준 결과:
 | vendor_name_accuracy | 1.0 |
 | purchased_at_accuracy | 0.8667 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9328 |
+| item_name_f1_avg | 0.9538 |
 | quantity_match_rate_avg | 0.8770 |
 | amount_match_rate_avg | 0.8757 |
 | review_required_accuracy | 1.0 |
@@ -90,7 +90,7 @@ Noop Qwen 기준 결과:
 | `OIP (1).webp` | 1.0000 | convenience mixed receipt. alphanumeric barcode/lineNo prefix 정리와 `부탄가스` 비식품 제외로 식품 2개만 남도록 정리 |
 | `OIP (7).webp` | 0.8571 | low-res meat/healthfood receipt. item name은 대체로 잡지만 quantity/amount 구조화가 아직 약함 |
 | `OIP (8).webp` | 0.8571 | low-res convenience receipt. parser는 clear item 3개를 회복했고 evaluator가 `uncertain_items`를 ignore하도록 정리되면서 실제 acceptance score와 정렬됨 |
-| `OIP (9).webp` | 0.6316 | grocery acceptance sample. `양념등심돈까스`는 회복됐지만 `파프리카(팩)`과 cropped item miss가 남아 현재 parser 약점을 드러냄 |
+| `OIP (9).webp` | 0.9474 | grocery acceptance sample. `하인즈유기농케참90`, `갈바니리코타치츠4`, `블렌드슈레드치즈1k9` OCR typo가 exact alias로 정리되어 남은 clear miss가 `파프리카(팩)` 축으로 좁혀짐 |
 | `OIP (20).webp` | 1.0000 | grocery partial receipt. clear grocery item 4개는 모두 회복됐고, ambiguous product rows는 gold의 `uncertain_items`로 정리되어 acceptance score와 정렬됨 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
@@ -109,7 +109,8 @@ Noop Qwen 기준 결과:
   - 그 결과 이 샘플은 `review_required=false`로 내려오지만, `purchased_at`과 마지막 `깐양파`는 아직 miss로 남는다.
 - 이번 기준에는 [OIP (9).webp](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/OIP%20(9).webp)도 grocery acceptance gold로 편입했다.
   - parser가 이미 `양념등심돈까스`, `payment_amount`, `subtotal`, `tax`를 회복한 상태를 반영했다.
-  - 반면 `파프리카(팩)`과 마지막 cropped grocery item이 아직 누락되어, baseline이 더 현실적인 acceptance 기준으로 내려왔다.
+  - 이후 `하인즈유기농케참90 -> 하인즈 유기농케찹90`, `갈바니리코타치츠4 -> 갈바니 리코타 치즈4`, `블렌드슈레드치즈1k9 -> 블렌드 슈레드치즈1kg` exact alias를 넣어 clear grocery item 3개를 더 회복했다.
+  - 현재 남은 clear miss는 사실상 `파프리카(팩)` 한 축이다.
 - 이번 기준에는 [OIP (7).webp](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/OIP%20(7).webp)도 low-res grocery acceptance gold로 편입했다.
   - current parser는 이름은 일부 잡지만 `quantity/amount` 구조화가 약하고 `review_required=true` 상태다.
   - 이 샘플을 넣으면서 quantity/amount rate가 크게 내려가 현재 acceptance 기준의 약점이 더 명확해졌다.
@@ -146,12 +147,12 @@ Noop Qwen 기준 결과:
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 현재 최약군은 `OIP (9).webp (0.6316)`이고, 다음이 `OIP (7).webp (0.8571)`, `OIP (8).webp (0.8571)`이다.
+  - 현재 최약군은 `OIP (7).webp (0.8571)`, `OIP (8).webp (0.8571)`이고, grocery 축에서는 `OIP (9).webp`의 `파프리카(팩)` miss가 마지막 clear miss다.
   - 이건 품질 후퇴가 아니라 grocery acceptance set을 넓힌 결과다.
 
 ## 다음 우선순위
 
 1. grocery/convenience gold를 16장 이상으로 확장
-2. `OIP (20)`처럼 grocery partial receipt에서 `raw item cleanup + normalization`이 반복적으로 무너지는 패턴만 일반화 규칙으로 보강
+2. `OIP (9)`의 `파프리카(팩)`처럼 grocery partial receipt에서 이름 OCR 자체가 비는 clear miss만 일반화 규칙으로 보강
 3. gold 16장 기준 baseline 재측정
 4. 그 뒤에도 남는 item-name 붕괴 케이스에만 제한적 crop/Qwen rescue 검토
