@@ -809,6 +809,20 @@ class ReceiptParser:
                     continue
                 if len(compact_name) <= 4:
                     continue
+                last_source_line_id = item.source_line_ids[-1] if item.source_line_ids else None
+                source_index = line_index_by_id.get(last_source_line_id)
+                if source_index is not None:
+                    hangul_only = re.sub(r"[^가-힣]", "", item.raw_name or "")
+                    has_digit = bool(re.search(r"\d", item.raw_name or ""))
+                    nearby_total_line = any(
+                        self._classify_total_key(
+                            re.sub(r"\s+", "", self._normalize_spaced_numeric_text(lines[neighbor_index].text.strip()))
+                        )
+                        is not None
+                        for neighbor_index in range(source_index + 1, min(len(lines), source_index + 3))
+                    )
+                    if nearby_total_line and not has_digit and 1 <= len(hangul_only) <= 6:
+                        continue
             if item.normalized_name is None and item.parse_pattern in {"single_line_name_amount", "single_line"}:
                 last_source_line_id = item.source_line_ids[-1] if item.source_line_ids else None
                 source_index = line_index_by_id.get(last_source_line_id)
@@ -1082,6 +1096,12 @@ class ReceiptParser:
                 amount = unit_price
                 if amount is not None:
                     amount = amount * quantity
+            quantity = self._coerce_pack_count_quantity(
+                raw_name=cleaned_name,
+                quantity=quantity,
+                unit_price=unit_price,
+                amount=amount,
+            )
             compact_name = self._strip_known_barcode_suffix(
                 text=cleaned_name,
                 unit_price=unit_price,
@@ -1117,6 +1137,14 @@ class ReceiptParser:
             compact_match is not None
             and self._looks_like_item_candidate(compact_name)
         ):
+            quantity = float(compact_match.group("quantity"))
+            amount = self._extract_last_price(compact_match.group("amount"))
+            quantity = self._coerce_pack_count_quantity(
+                raw_name=compact_name,
+                quantity=quantity,
+                unit_price=amount,
+                amount=amount,
+            )
             consumed_count = 2
             if index + 2 < len(lines) and self._looks_like_pure_noise_line(lines[index + 2].text):
                 consumed_count += 1
@@ -1125,9 +1153,9 @@ class ReceiptParser:
                     raw_name=compact_name,
                     confidence_lines=[name_line, compact_line],
                     purchased_at=purchased_at,
-                    quantity=float(compact_match.group("quantity")),
+                    quantity=quantity,
                     unit="개",
-                    amount=self._extract_last_price(compact_match.group("amount")),
+                    amount=amount,
                     parse_pattern="two_line_barcode",
                     source_line_ids=[
                         name_line.line_id or 0,
@@ -1180,6 +1208,14 @@ class ReceiptParser:
         amount = self._extract_last_price(amount_line.text)
         if amount is None:
             return None
+        unit_price = self._extract_last_price(barcode_line.text)
+        quantity = float(quantity_line.text.strip())
+        quantity = self._coerce_pack_count_quantity(
+            raw_name=name_line.text.strip(),
+            quantity=quantity,
+            unit_price=unit_price,
+            amount=amount,
+        )
 
         consumed_count = 4
         if index + 4 < len(lines) and self._looks_like_pure_noise_line(lines[index + 4].text):
@@ -1189,7 +1225,7 @@ class ReceiptParser:
             raw_name=name_line.text.strip(),
             confidence_lines=[name_line, barcode_line, quantity_line, amount_line],
             purchased_at=purchased_at,
-            quantity=float(quantity_line.text.strip()),
+            quantity=quantity,
             unit="개",
             amount=amount,
             parse_pattern="two_line_barcode",
@@ -1306,6 +1342,13 @@ class ReceiptParser:
         amount = self._extract_last_price(match.group("amount"))
         if amount is None:
             return None
+        unit_price = self._extract_last_price(detail_text)
+        quantity = self._coerce_pack_count_quantity(
+            raw_name=cleaned_name,
+            quantity=quantity,
+            unit_price=unit_price,
+            amount=amount,
+        )
 
         return (
             self._build_item(
@@ -2098,9 +2141,80 @@ class ReceiptParser:
                     continue
                 totals[total_key] = amount
 
+        self._infer_vertical_totals_block(lines, totals)
+        discounted_payment_amount = self._extract_discount_adjusted_payment_amount(lines, totals=totals)
+        if discounted_payment_amount is not None:
+            totals["payment_amount"] = discounted_payment_amount
         if "payment_amount" not in totals and "total" in totals:
             totals["payment_amount"] = totals["total"]
         return totals
+
+    def _infer_vertical_totals_block(self, lines: list[OcrLine], totals: dict[str, float]) -> None:
+        total_amount = totals.get("total")
+        if total_amount is None:
+            return
+        amount_rows: list[tuple[int, float]] = []
+        total_index: int | None = None
+        for index, line in enumerate(lines):
+            text = self._normalize_spaced_numeric_text(line.text.strip())
+            normalized = re.sub(r"\s+", "", text)
+            total_key = self._classify_total_key(normalized)
+            amount = self._extract_last_price(text)
+            if total_key == "total":
+                total_index = index
+            if amount is None or amount <= 0:
+                continue
+            if total_key == "payment_amount":
+                continue
+            amount_rows.append((index, amount))
+        if total_index is None:
+            return
+        preceding_rows = [(index, amount) for index, amount in amount_rows if index < total_index]
+        if len(preceding_rows) < 2:
+            return
+        trailing_candidates = preceding_rows[-4:]
+        for length in range(min(4, len(trailing_candidates)), 1, -1):
+            window = trailing_candidates[-length:]
+            amounts = [amount for _, amount in window]
+            if abs(sum(amounts) - float(total_amount)) > 1.0:
+                continue
+            tax_candidate = min(amounts)
+            if tax_candidate >= float(total_amount) * 0.2:
+                continue
+            subtotal_candidate = max(amounts)
+            if "tax" not in totals:
+                totals["tax"] = tax_candidate
+            if "subtotal" not in totals:
+                totals["subtotal"] = subtotal_candidate
+            return
+
+    def _extract_discount_adjusted_payment_amount(self, lines: list[OcrLine], *, totals: dict[str, float]) -> float | None:
+        total_amount = totals.get("total")
+        if total_amount is None:
+            return None
+        for index, line in enumerate(lines):
+            text = self._normalize_spaced_numeric_text(line.text.strip())
+            normalized = re.sub(r"\s+", "", text)
+            if self._classify_total_key(normalized) != "total":
+                continue
+            if index + 2 >= len(lines):
+                continue
+            discount_text = self._normalize_spaced_numeric_text(lines[index + 1].text.strip())
+            final_text = self._normalize_spaced_numeric_text(lines[index + 2].text.strip())
+            discount_amount = self._extract_signed_last_price(discount_text)
+            final_amount = self._extract_last_price(final_text)
+            if discount_amount is None or final_amount is None:
+                continue
+            if discount_amount >= 0:
+                continue
+            if not (
+                re.fullmatch(r"\d{1,3}(?:[,.]\d{3})+|\d+", re.sub(r"\s+", "", final_text))
+                or "결제대상금액" in re.sub(r"\s+", "", final_text)
+            ):
+                continue
+            if abs((float(total_amount) + discount_amount) - final_amount) <= 1.0:
+                return final_amount
+        return None
 
     def _classify_total_key(self, normalized_text: str) -> str | None:
         hangul_only = re.sub(r"[^가-힣]", "", normalized_text)
@@ -2140,6 +2254,37 @@ class ReceiptParser:
             return float(candidate)
         except ValueError:
             return None
+
+    def _extract_signed_last_price(self, text: str) -> float | None:
+        matches = re.findall(r"-\d{1,3}(?:[,.]\d{3})+|-\d+|\d{1,3}(?:[,.]\d{3})+|\d+", text)
+        if not matches:
+            return None
+        token = matches[-1]
+        sign = -1.0 if token.startswith("-") else 1.0
+        candidate = token.lstrip("-").replace(",", "").replace(".", "")
+        try:
+            return sign * float(candidate)
+        except ValueError:
+            return None
+
+    def _coerce_pack_count_quantity(
+        self,
+        *,
+        raw_name: str,
+        quantity: float | None,
+        unit_price: float | None,
+        amount: float | None,
+    ) -> float | None:
+        if quantity is None or unit_price is None or amount is None:
+            return quantity
+        compact_name = re.sub(r"\s+", "", raw_name or "")
+        if quantity <= 1.0:
+            return quantity
+        if not re.search(r"\d+\s*입\b", compact_name):
+            return quantity
+        if abs(unit_price - amount) > 1.0:
+            return quantity
+        return 1.0
 
     def _normalize_item_name(self, text: str) -> tuple[str | None, str, str | None]:
         raw_candidates = [

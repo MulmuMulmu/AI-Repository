@@ -900,3 +900,30 @@ variant별:
   - `quantity_match_rate_avg = 0.9666`
   - `amount_match_rate_avg = 0.9646`
   - `review_required_accuracy = 1.0`
+
+## 2026-04-22 OIP (9) grocery parser hardening
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `n입` pack-count가 상품명에 포함되고 `unit_price == amount`인 경우 수량을 `1`로 보정
+  - `계 -> 할인(-) -> 무라벨 최종금액` 패턴에서 최종 금액을 `payment_amount`로 우선 인식
+  - vertical totals block에서 `subtotal + tax + 면세`가 `total`과 일치하면 `subtotal/tax`를 추론
+  - inferred `subtotal`/`tax`와 인접 total row를 근거로 metadata false positive item을 prune
+
+검증:
+
+- 신규 parser 회귀 테스트 3개 추가
+- 전체 테스트: `170 passed`
+
+효과:
+
+- `OIP (9).webp`
+  - `국내산 양상추2입` 수량: `7 -> 1`
+  - `payment_amount`: `117,580 -> 112,580`
+  - false positive item `JY 물 손어머` 제거
+  - `subtotal=81,673`, `tax=8,167` 회복
+- 아직 남은 miss:
+  - `양념등심돈까스`
+  - `파프리카(팩)`
+  - `missing_vendor_name`, `missing_purchased_at`, `total_mismatch`

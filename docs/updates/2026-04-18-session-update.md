@@ -1140,3 +1140,26 @@ barcode_detail 60장 subset 평가:
   - `quantity_match_rate_avg = 0.9666`
   - `amount_match_rate_avg = 0.9646`
   - `review_required_accuracy = 1.0`
+
+## 2026-04-22 OIP (9) parser hardening
+
+추가한 내용:
+
+- `n입` pack-count 상품의 quantity OCR 오독 보정
+- `계 -> 할인(-) -> 무라벨 최종금액`에서 `payment_amount` 복구
+- vertical totals block amount sequence로 `subtotal/tax` 추론
+- totals metadata false positive item prune 보강
+
+검증:
+
+- 신규 parser 테스트 3개 추가
+- 전체 테스트: `170 passed`
+
+효과:
+
+- `OIP (9).webp`
+  - `국내산 양상추2입`: `quantity 7 -> 1`
+  - `payment_amount`: `112,580` 회복
+  - `subtotal=81,673`, `tax=8,167` 회복
+  - false positive `JY 물 손어머` 제거
+- 이 샘플은 아직 `양념등심돈까스`, `파프리카(팩)` miss 때문에 `total_mismatch`가 남아서 gold 승격은 보류

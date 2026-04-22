@@ -1337,3 +1337,60 @@ def test_parser_extracts_tax_from_punctuated_bugae_line() -> None:
 
     assert result.totals["subtotal"] == 12545.0
     assert result.totals["tax"] == 1255.0
+
+
+def test_parser_corrects_pack_count_quantity_when_unit_price_matches_amount() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.90, line_id=0, page_order=0),
+            OcrLine(text="* 국내산 양상추2입", confidence=0.89, line_id=1, page_order=1),
+            OcrLine(text="2500000006425 4,780 7 4,780", confidence=0.89, line_id=2, page_order=2),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "국내산 양상추2입"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount == 4780.0
+
+
+def test_parser_prefers_discount_adjusted_unlabeled_final_amount_after_total() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="계 117,580", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="삼성카드할인 -5,000", confidence=0.98, line_id=1, page_order=1),
+            OcrLine(text="112,580", confidence=0.99, line_id=2, page_order=2),
+        ]
+    )
+
+    assert result.totals["total"] == 117580.0
+    assert result.totals["payment_amount"] == 112580.0
+
+
+def test_parser_prunes_totals_metadata_false_positive_in_oip9_style_receipt() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.90, line_id=0, page_order=0),
+            OcrLine(text="* 완숙토마토 4kg/박스", confidence=0.93, line_id=1, page_order=1),
+            OcrLine(text="2500000013522 17,980 1 17,980", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="() IY 27,740", confidence=0.98, line_id=3, page_order=3),
+            OcrLine(text="JY 물 손어머 81,673", confidence=0.78, line_id=4, page_order=4),
+            OcrLine(text="가 8,167", confidence=0.99, line_id=5, page_order=5),
+            OcrLine(text="계 117,580", confidence=0.96, line_id=6, page_order=6),
+            OcrLine(text="삼성카드할인 -5,000", confidence=0.98, line_id=7, page_order=7),
+            OcrLine(text="112,580", confidence=0.99, line_id=8, page_order=8),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["완숙토마토 4kg/박스"]
+    assert result.totals["subtotal"] == 81673.0
+    assert result.totals["tax"] == 8167.0
+    assert result.totals["total"] == 117580.0
+    assert result.totals["payment_amount"] == 112580.0
+    assert result.totals["payment_amount"] == 112580.0
