@@ -39,9 +39,9 @@
 
 | 항목 | 값 |
 |---|---:|
-| image_count | 16 |
-| total_item_count | 113 |
-| review_required_count | 6 |
+| image_count | 17 |
+| total_item_count | 114 |
+| review_required_count | 7 |
 
 포함 이미지:
 
@@ -53,6 +53,7 @@
 - `OIP (9).webp`
 - `OIP (20).webp`
 - `OIP (4).webp`
+- `OIP.webp`
 - `image.png`
 - `R (1).jpg`
 - `R.jpg`
@@ -74,13 +75,13 @@ Noop Qwen 기준 결과:
 
 | 지표 | 값 |
 |---|---:|
-| image_count | 16 |
+| image_count | 17 |
 | vendor_name_accuracy | 1.0 |
-| purchased_at_accuracy | 0.9375 |
+| purchased_at_accuracy | 0.9412 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9746 |
-| quantity_match_rate_avg | 0.9660 |
-| amount_match_rate_avg | 0.9439 |
+| item_name_f1_avg | 0.9761 |
+| quantity_match_rate_avg | 0.9680 |
+| amount_match_rate_avg | 0.9472 |
 | review_required_accuracy | 1.0 |
 
 이미지별:
@@ -95,6 +96,7 @@ Noop Qwen 기준 결과:
 | `OIP (9).webp` | 0.9474 | grocery acceptance sample. clear grocery item은 대부분 회복됐고, 남은 miss는 `파프리카(팩)`처럼 OCR line 자체가 붕괴한 hard-case다 |
 | `OIP (20).webp` | 1.0000 | grocery partial receipt. clear grocery item 4개는 모두 회복됐고, ambiguous product rows는 gold의 `uncertain_items`로 정리되어 acceptance score와 정렬됨 |
 | `OIP (4).webp` | 1.0000 | partial grocery crop. `name + unit_price + X + quantity + amount` 한 줄형과 `총합계 + 할인 + 할인총금액` crop totals를 일반화해서 item/totals를 모두 회복함 |
+| `OIP.webp` | 1.0000 | small convenience one-item crop. `상품명 + barcode + amount` 한 줄형과 `할인계 + 결제대상금액 + 날짜줄 최종금액` discount summary crop을 회복해 item/totals를 정렬함 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
 | `R.jpg` | 1.0000 | visual review로 `와이멘씨라이스퍼프`, `부드러운쿠키블루베`를 gold 승격 후 정렬 완료 |
@@ -132,6 +134,10 @@ Noop Qwen 기준 결과:
   - 이후 `name + unit_price + X + quantity + amount` 한 줄 패턴을 별도로 파싱하고, `총합계 49,850원 -9,960원`처럼 discount가 같이 붙은 total line에서는 첫 양수 금액을 total로 채택하도록 보강했다.
   - 또 `할인총금액 39,89021` 같은 payment line은 첫 금액 후보를 우선 사용하고, 이미 더 total에 가까운 payment_amount가 있으면 `현금 ... 400,000,0002` 같은 footer 노이즈가 덮어쓰지 않도록 정리했다.
   - 현재는 clear item과 totals 모두 회복되어 acceptance 기준 `item_f1 = 1.0`이다.
+- 이번 기준에는 [OIP.webp](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/OIP.webp)도 small convenience acceptance gold로 편입했다.
+  - clear item은 `ABC초코미니언즈` 1개만 잡고, `에누리(쿠폰)` 줄은 `excluded_rows.discount`로 분리했다.
+  - 이후 `상품명 + barcode + amount` 한 줄형을 `quantity=1`로 직접 해석하고, `이1ABC초코미니언즈 -> ABC초코미니언즈` exact alias를 추가해 acceptance score를 정렬했다.
+  - 또 `할인계 4,790 -> 결제대상금액 -820 -> 날짜줄 -3,970` discount summary crop도 처리해 `payment_amount=3,970`까지 회복했다.
 - 이번 보강의 핵심:
   - `img3.jpg`: 가짜 vendor 제거 후 `lower item strip fallback`으로 `맥주 바이젠 미니` 회복
   - `OIP (1).webp`: alphanumeric barcode prefix 제거와 `부탄가스` non-food exclusion 추가로 mixed convenience precision 회복
@@ -155,7 +161,7 @@ Noop Qwen 기준 결과:
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 현재 최약군은 `R.jpg (0.8889)`이고, 다음이 `R (1)/(2).jpg (0.9286)`, `SE-...jpg (0.9524)`, `OIP (9).webp (0.9474)`다.
+  - 현재 최약군은 `R.jpg (0.8889)`이고, 다음이 `R (1)/(2).jpg (0.9286)`, `SE-...jpg (0.9524)`, `OIP (9).webp (0.9474)`, `1652882389756.jpg (0.9474)`다.
   - grocery 축에서는 clear miss보다 OCR collapse hard-case와 crop/date 누락이 남아 있다.
   - 이건 품질 후퇴가 아니라 grocery acceptance set을 넓힌 결과다.
 

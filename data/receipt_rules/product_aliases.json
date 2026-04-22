@@ -104,6 +104,11 @@
       "reason": "ocr_symbol_cleanup"
     },
     {
+      "raw": "이1ABC초코미니언즈",
+      "standard": "ABC초코미니언즈",
+      "reason": "ocr_prefix_cleanup"
+    },
+    {
       "raw": "칠성사이다 제로 500m",
       "standard": "칠성사이다 제로 500ml",
       "reason": "unit_completion"

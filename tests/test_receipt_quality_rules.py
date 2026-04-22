@@ -1581,6 +1581,36 @@ def test_parser_extracts_crop_totals_when_total_line_contains_discount_amount() 
     assert result.totals["payment_amount"] == 39890.0
 
 
+def test_parser_parses_single_line_name_barcode_amount_rows_as_single_item() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="이1ABC초코미니언즈 8801062864065 4,790", confidence=0.95, line_id=0, page_order=0),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].normalized_name == "ABC초코미니언즈"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount == 4790.0
+
+
+def test_parser_extracts_discount_adjusted_payment_from_signed_date_line() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="10 할인계 할인(에누리) 4,790", confidence=0.77, line_id=0, page_order=0),
+            OcrLine(text="결제대상금액 -820 -820", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="2023년04월 10일 -3,970", confidence=0.98, line_id=2, page_order=2),
+        ]
+    )
+
+    assert result.totals["total"] == 4790.0
+    assert result.totals["payment_amount"] == 3970.0
+
+
 def test_parser_prunes_totals_metadata_false_positive_in_oip9_style_receipt() -> None:
     parser = ReceiptParser()
 

@@ -1,0 +1,45 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-22T12:00:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "OIP.webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP.webp"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": "2023-04-10",
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "ABC초코미니언즈",
+        "normalized_name": "ABC초코미니언즈",
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4790.0
+      }
+    ],
+    "uncertain_items": [],
+    "excluded_rows": [
+      {
+        "raw_name": "에누리(쿠폰) 2604230015766 1 4,790 -820",
+        "reason": "discount"
+      }
+    ],
+    "totals": {
+      "subtotal": 3609.0,
+      "tax": 361.0,
+      "total": 4790.0,
+      "payment_amount": 3970.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "small_image"
+    ],
+    "diagnostics": {}
+  }
+}

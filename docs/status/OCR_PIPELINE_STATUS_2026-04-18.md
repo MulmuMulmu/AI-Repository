@@ -1436,3 +1436,38 @@ variant별:
 - 다음 우선순위:
   - 같은 샘플 미세튜닝보다 acceptance gold 확장
   - 반복적으로 남는 `OCR collapse hard-case`와 `date rescue`만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP.webp small convenience crop recovery
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `name + barcode + amount` single-line parser 추가
+  - `할인계` 줄에서 base total 추출
+  - `할인계 + 결제대상금액 + 날짜줄 최종금액` crop summary에서 discount-adjusted payment_amount 복구
+- `product_aliases`
+  - `이1ABC초코미니언즈 -> ABC초코미니언즈` exact alias 추가
+- acceptance gold 확장
+  - [OIP.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP.json)
+
+검증:
+
+- 전체 테스트: `187 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP.webp`
+  - `item_f1 = 1.0`
+  - `ABC초코미니언즈`, `quantity=1`, `amount=4,790`, `payment_amount=3,970`까지 회복
+- 최신 gold 17장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9412`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9761`
+  - `quantity_match_rate_avg = 0.9680`
+  - `amount_match_rate_avg = 0.9472`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - acceptance gold를 계속 확장하되 제품 범위 밖 샘플은 제외
+  - 남은 실제 약점은 `R.jpg`, `R (1)/(2).jpg`, `OIP (9).webp`, `1652882389756.jpg` 축

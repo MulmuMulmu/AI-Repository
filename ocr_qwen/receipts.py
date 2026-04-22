@@ -79,6 +79,9 @@ NAME_UNIT_PRICE_TIMES_QTY_AMOUNT_PATTERN = re.compile(
     r"(?P<quantity>\d+(?:\.\d+)?)\s+"
     r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
 )
+NAME_BARCODE_AMOUNT_PATTERN = re.compile(
+    r"^(?P<name>.+?)\s+(?P<barcode>\*?\d{8,})\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
+)
 NAME_AMOUNT_PATTERN = re.compile(
     r"^(?P<name>.+?)\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
 )
@@ -1890,6 +1893,7 @@ class ReceiptParser:
             )
 
         qty_amount_match = NAME_QTY_AMOUNT_PATTERN.match(cleaned_name)
+        name_barcode_amount_match = NAME_BARCODE_AMOUNT_PATTERN.match(cleaned_name)
         times_qty_amount_match = NAME_UNIT_PRICE_TIMES_QTY_AMOUNT_PATTERN.match(cleaned_name)
         if times_qty_amount_match is not None:
             amount = self._extract_last_price(times_qty_amount_match.group("amount"))
@@ -1904,6 +1908,22 @@ class ReceiptParser:
                 unit="개",
                 amount=amount,
                 parse_pattern="single_line_unit_price_times_qty_amount",
+                source_line_ids=[line.line_id or 0],
+            )
+
+        if name_barcode_amount_match is not None:
+            amount = self._extract_last_price(name_barcode_amount_match.group("amount"))
+            if amount is None:
+                return None
+            raw_name = self._cleanup_noisy_item_name(name_barcode_amount_match.group("name").strip())
+            return self._build_item(
+                raw_name=raw_name,
+                confidence_lines=[line],
+                purchased_at=purchased_at,
+                quantity=1.0,
+                unit="개",
+                amount=amount,
+                parse_pattern="single_line_name_barcode_amount",
                 source_line_ids=[line.line_id or 0],
             )
 
@@ -2275,6 +2295,11 @@ class ReceiptParser:
                 totals[total_key] = amount
 
         self._infer_vertical_totals_block(lines, totals)
+        discount_base_total = self._extract_discount_base_total(lines)
+        if discount_base_total is not None:
+            current_total = totals.get("total")
+            if current_total is None or abs(float(current_total) - discount_base_total) > 1.0:
+                totals["total"] = discount_base_total
         discounted_payment_amount = self._extract_discount_adjusted_payment_amount(lines, totals=totals)
         if discounted_payment_amount is not None:
             totals["payment_amount"] = discounted_payment_amount
@@ -2323,30 +2348,47 @@ class ReceiptParser:
 
     def _extract_discount_adjusted_payment_amount(self, lines: list[OcrLine], *, totals: dict[str, float]) -> float | None:
         total_amount = totals.get("total")
-        if total_amount is None:
-            return None
         for index, line in enumerate(lines):
             text = self._normalize_spaced_numeric_text(line.text.strip())
             normalized = re.sub(r"\s+", "", text)
-            if self._classify_total_key(normalized) != "total":
+            is_total_anchor = self._classify_total_key(normalized) == "total" or "할인계" in normalized
+            if not is_total_anchor:
+                continue
+            base_amount = self._extract_preferred_total_amount(text, total_key="total")
+            if base_amount is None:
                 continue
             if index + 2 >= len(lines):
                 continue
             discount_text = self._normalize_spaced_numeric_text(lines[index + 1].text.strip())
             final_text = self._normalize_spaced_numeric_text(lines[index + 2].text.strip())
             discount_amount = self._extract_signed_last_price(discount_text)
-            final_amount = self._extract_last_price(final_text)
+            final_amount = self._extract_signed_last_price(final_text)
             if discount_amount is None or final_amount is None:
                 continue
             if discount_amount >= 0:
                 continue
+            final_compact = re.sub(r"\s+", "", final_text)
             if not (
-                re.fullmatch(r"\d{1,3}(?:[,.]\d{3})+|\d+", re.sub(r"\s+", "", final_text))
-                or "결제대상금액" in re.sub(r"\s+", "", final_text)
+                re.fullmatch(r"-?\d{1,3}(?:[,.]\d{3})+|-?\d+", final_compact)
+                or "결제대상금액" in final_compact
+                or self._looks_like_date(final_text)
             ):
                 continue
-            if abs((float(total_amount) + discount_amount) - final_amount) <= 1.0:
-                return final_amount
+            resolved_final_amount = abs(float(final_amount))
+            if abs((float(base_amount) + discount_amount) - resolved_final_amount) <= 1.0:
+                return resolved_final_amount
+        return None
+
+    def _extract_discount_base_total(self, lines: list[OcrLine]) -> float | None:
+        for line in lines:
+            text = self._normalize_spaced_numeric_text(line.text.strip())
+            normalized = re.sub(r"\s+", "", text)
+            if "할인계" not in normalized:
+                continue
+            amount = self._extract_max_price(text)
+            if amount is None or amount <= 0:
+                continue
+            return amount
         return None
 
     def _classify_total_key(self, normalized_text: str) -> str | None:
@@ -2397,6 +2439,18 @@ class ReceiptParser:
             return float(candidate)
         except ValueError:
             return None
+
+    def _extract_max_price(self, text: str) -> float | None:
+        matches = re.findall(r"\d{1,3}(?:[,.]\d{3})+|\d+", text)
+        if not matches:
+            return None
+        prices: list[float] = []
+        for token in matches:
+            try:
+                prices.append(float(token.replace(",", "").replace(".", "")))
+            except ValueError:
+                continue
+        return max(prices) if prices else None
 
     def _extract_preferred_total_amount(self, text: str, *, total_key: str) -> float | None:
         signed_matches = re.findall(r"-\d{1,3}(?:[,.]\d{3})+|-\d+|\d{1,3}(?:[,.]\d{3})+|\d+", text)
