@@ -1527,8 +1527,14 @@ class ReceiptParser:
     def _cleanup_noisy_item_name(self, text: str) -> str:
         cleaned = text
         cleaned = re.sub(r"^(?:\*\s+|[×•·※]+\s*)", "", cleaned)
-        cleaned = re.sub(r"^\*?\d{8,}\s*", "", cleaned)
-        cleaned = re.sub(r"^\d{1,3}\s*", "", cleaned)
+        while True:
+            updated = re.sub(r"^(?:0\d{2}|\d{3})\s+(?=\*?[A-Z0-9]{8,}\b)", "", cleaned)
+            updated = re.sub(r"^\*?[A-Z0-9]{8,}\s*", "", updated)
+            updated = re.sub(r"^(?:0\d{2}|\d{3})\s+(?=(?:\d{1,3}[가-힣A-Za-z]|[가-힣A-Za-z]))", "", updated)
+            updated = re.sub(r"^(?:0\d{2}|\d{3})(?=[가-힣A-Za-z])", "", updated)
+            if updated == cleaned:
+                break
+            cleaned = updated
         cleaned = re.sub(r"(행사|증정품)", " ", cleaned)
         cleaned = re.sub(r"\s+행상$", "", cleaned)
         cleaned = re.sub(r"\b1[가-힣A-Za-z]{1,3}$", "", cleaned).strip()

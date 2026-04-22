@@ -281,6 +281,37 @@ def test_parser_parses_lowres_coded_convenience_rows_with_alnum_barcode_prefix()
     assert [item.amount for item in result.items] == [3560.0, 1080.0, 1080.0]
 
 
+def test_parser_strips_barcode_and_line_number_prefixes_from_lowres_food_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 금액", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="*8B01075007602 016사조고추참치100g*3 2,220 1 2,220", confidence=0.98, line_id=1, page_order=1),
+            OcrLine(text="017 *8801047815594 동원야채참치100g*3 4,480 4,480", confidence=0.99, line_id=2, page_order=2),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "사조고추참치100g*3",
+        "동원야채참치100g*3",
+    ]
+    assert [item.amount for item in result.items] == [2220.0, 4480.0]
+
+
+def test_parser_filters_butane_gas_as_non_food_item() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 금액", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="*8801551402013 015애니파워부탄가스 3,280 1 3,280", confidence=0.92, line_id=1, page_order=1),
+        ]
+    )
+
+    assert result.items == []
+
+
 def test_parser_parses_spaced_numeric_detail_rows_from_image_style_receipt() -> None:
     parser = ReceiptParser()
 

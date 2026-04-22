@@ -1090,3 +1090,35 @@ variant별:
   - `quantity_match_rate_avg = 0.8325`
   - `amount_match_rate_avg = 0.8311`
   - `review_required_accuracy = 1.0`
+
+## 2026-04-22 OIP (1) mixed convenience cleanup
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `alphanumeric barcode + 3-digit lineNo` prefix 제거를 일반화
+  - `3-digit lineNo + barcode + food name` 순서도 반복적으로 정리되도록 cleanup loop 보강
+- `non_item_exclusions`
+  - `부탄가스`, `건전지`, `배터리` non-food keyword 추가
+
+검증:
+
+- 신규 parser 회귀 테스트 2개 추가
+- 전체 테스트: `176 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (1).webp`
+  - `item_f1 = 0.4 -> 1.0`
+  - `애니파워부탄가스`가 제외되고 `사조고추참치100g*3`, `동원야채참치100g*3`만 남음
+- 최신 gold 14장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.8571`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9119`
+  - `quantity_match_rate_avg = 0.8682`
+  - `amount_match_rate_avg = 0.8668`
+  - `review_required_accuracy = 1.0`
+- 남은 최약군은 그대로 `OIP (8).webp`
+  - 다음 우선순위는 low-res convenience의 `uncertain snack/drink row pruning`

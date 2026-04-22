@@ -1294,3 +1294,29 @@ barcode_detail 60장 subset 평가:
   - `quantity_match_rate_avg = 0.8325`
   - `amount_match_rate_avg = 0.8311`
   - `review_required_accuracy = 1.0`
+
+## 2026-04-22 OIP (1) mixed convenience cleanup
+
+추가한 내용:
+
+- `alphanumeric barcode + 3-digit lineNo` prefix 제거를 일반화
+- `부탄가스`, `건전지`, `배터리` non-food keyword 추가
+
+검증:
+
+- 신규 parser 테스트 2개 추가
+- 전체 테스트: `176 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (1).webp`
+  - `item_f1 = 0.4 -> 1.0`
+  - `사조고추참치100g*3`, `동원야채참치100g*3`만 남고 `애니파워부탄가스`는 제외
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9119`
+  - `quantity_match_rate_avg = 0.8682`
+  - `amount_match_rate_avg = 0.8668`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (8).webp` 같은 low-res convenience에서 `uncertain snack/drink row pruning`
