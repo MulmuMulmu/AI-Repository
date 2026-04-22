@@ -79,11 +79,39 @@
         "amount": 1990.0
       },
       {
+        "raw_name": "바베큐 조미 오징어",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 9420.0
+      },
+      {
+        "raw_name": "마늘빵아몬드",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3500.0
+      },
+      {
+        "raw_name": "유기농 바나나콘",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1670.0
+      },
+      {
         "raw_name": "이클립스 페퍼민트향 34g",
         "normalized_name": null,
         "quantity": 1.0,
         "unit": "개",
         "amount": 770.0
+      },
+      {
+        "raw_name": "미클립스 피치향 34g",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 790.0
       }
     ],
     "uncertain_items": [
@@ -97,10 +125,6 @@
       },
       {
         "raw_name": "아미스브레미커스 베리스플래시양&딸",
-        "reason": "ocr_name_uncertain"
-      },
-      {
-        "raw_name": "미클립스 피치향 34g",
         "reason": "ocr_name_uncertain"
       }
     ],

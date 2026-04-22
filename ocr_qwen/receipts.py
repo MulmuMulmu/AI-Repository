@@ -119,7 +119,7 @@ CODE_NUMERIC_DETAIL_ROW_PATTERN = re.compile(
 CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN = re.compile(
     r"^(?P<code>\d{6,})\s+"
     r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d+)\s+"
-    r"(?P<placeholder>[-_!|Il—–−]+)\s+"
+    r"(?P<placeholder>[-_!|IlTt—–−]+)\s+"
     r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
 )
 INCOMPLETE_CODE_DETAIL_ROW_PATTERN = re.compile(

@@ -1034,3 +1034,29 @@ barcode_detail 60장 subset 평가:
   - `quantity_match_rate_avg = 0.9708`
   - `amount_match_rate_avg = 0.9683`
   - `review_required_accuracy = 1.0`
+
+## 2026-04-22 2a4dd3 visual review promotion
+
+추가한 내용:
+
+- `210032 790 T 790` 같은 row에서 `T`를 quantity placeholder로 인정
+- `2a4dd3...jpg` visual review 후 clear item 4개를 gold expected로 승격
+  - `바베큐 조미 오징어`
+  - `마늘빵아몬드`
+  - `유기농 바나나콘`
+  - `미클립스 피치향 34g`
+
+검증:
+
+- 신규 parser 테스트 1개 추가
+- 전체 테스트: `164 passed`
+
+효과:
+
+- `2a4dd3...jpg`
+  - `item_f1 = 0.9655`
+- 최신 gold 8장 baseline:
+  - `item_name_f1_avg = 0.9563`
+  - `quantity_match_rate_avg = 0.9708`
+  - `amount_match_rate_avg = 0.9683`
+  - `review_required_accuracy = 1.0`

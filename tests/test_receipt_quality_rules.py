@@ -1306,3 +1306,20 @@ def test_parser_strips_leading_receipt_markers_from_item_raw_names() -> None:
     )
 
     assert [item.raw_name for item in result.items] == ["파프리카", "국내산 양상추 2입"]
+
+
+def test_parser_infers_quantity_from_t_placeholder_code_detail_row() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="024 미클립스 피치향 34g", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="210032 790 T 790", confidence=0.99, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "미클립스 피치향 34g"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount == 790.0
+    assert result.items[0].parse_pattern == "name_then_code_amount_inferred_qty"

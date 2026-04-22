@@ -245,7 +245,7 @@ Qwen은 현재 메인 파서가 아니다.
 
 2026-04-18 기준 전체 테스트 결과:
 
-- `163 passed`
+- `164 passed`
 
 집중 검증 테스트:
 
@@ -772,6 +772,41 @@ variant별:
   - `purchased_at_accuracy = 1.0`
   - `payment_amount_accuracy = 1.0`
   - `item_name_f1_avg = 0.9397`
+  - `quantity_match_rate_avg = 0.9708`
+  - `amount_match_rate_avg = 0.9683`
+  - `review_required_accuracy = 1.0`
+
+## 2026-04-22 2a4dd3 visual review promotion + T placeholder recovery
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `name_then_code_amount_inferred_qty` 경로에서 `T/t`를 quantity placeholder로 인정
+  - `210032 790 T 790` 같은 row를 `quantity=1, amount=790`으로 복구
+- gold annotation 보강
+  - [2a4dd3c18f06cec1571dc9ca52dc5946.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/2a4dd3c18f06cec1571dc9ca52dc5946.json)
+  - visual review로 clear item 4개를 `expected.items`로 승격
+    - `바베큐 조미 오징어`
+    - `마늘빵아몬드`
+    - `유기농 바나나콘`
+    - `미클립스 피치향 34g`
+
+검증:
+
+- 신규 parser 회귀 테스트 1개 추가
+- 전체 테스트: `164 passed`
+
+효과:
+
+- `2a4dd3...jpg`
+  - `미클립스 피치향 34g` 복구
+  - gold expected 확장 반영
+  - `item_f1 = 0.8333 -> 0.9655`
+- 최신 gold 8장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 1.0`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9563`
   - `quantity_match_rate_avg = 0.9708`
   - `amount_match_rate_avg = 0.9683`
   - `review_required_accuracy = 1.0`

@@ -33,7 +33,7 @@
 | 항목 | 값 |
 |---|---:|
 | image_count | 8 |
-| total_item_count | 72 |
+| total_item_count | 76 |
 | review_required_count | 0 |
 
 포함 이미지:
@@ -63,7 +63,7 @@ Noop Qwen 기준 결과:
 | vendor_name_accuracy | 1.0 |
 | purchased_at_accuracy | 1.0 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9397 |
+| item_name_f1_avg | 0.9563 |
 | quantity_match_rate_avg | 0.9708 |
 | amount_match_rate_avg | 0.9683 |
 | review_required_accuracy | 1.0 |
@@ -72,7 +72,7 @@ Noop Qwen 기준 결과:
 
 | file | item_f1 | 메모 |
 |---|---:|---|
-| `2a4dd3c18f06cec1571dc9ca52dc5946.jpg` | 0.8000 | snack 품목 일부 과검출 |
+| `2a4dd3c18f06cec1571dc9ca52dc5946.jpg` | 0.9655 | visual review로 clear item 4개 승격, dense fallback 억제로 duplicate 제거 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
 | `R.jpg` | 0.8750 | Homeplus/snack alias 보정 후 남은 불확실 snack 일부만 잔존 |
@@ -90,7 +90,7 @@ Noop Qwen 기준 결과:
   - `OIP (10).webp`: 상품명 뒤 바코드 suffix 제거, `결제대상금` 우선 유지
   - `R (1)/(2).jpg`: `용기면` 식품명 허용 + final-item 기준 `consumed_line_ids` 재계산으로 non-food row를 totals reconciliation에 다시 반영
   - `image.png`: `×`, `* ` marker 제거와 raw alias prior lookup으로 `파프리카`, `완숙토마토 4kg/박스`, `국내산 양상추 2입`, `갈바니 리코타 치즈4` 정렬
-  - `2a4dd3...jpg`: dense receipt에서는 `placeholder_barcode` item-strip fallback을 막아 duplicate hallucination 제거
+  - `2a4dd3...jpg`: dense receipt에서는 `placeholder_barcode` item-strip fallback을 막아 duplicate hallucination 제거, `T` quantity placeholder 복구와 clear item 4개 gold 승격 반영
 - 평가 스크립트도 좁게 보정했다.
   - `(5입)`, `(2개)` 같은 parenthetical pack-count 표기는 동일 품목으로 본다.
   - `355ml`, `500ml` 같은 실제 용량 차이는 그대로 다른 품목으로 유지한다.
@@ -102,11 +102,11 @@ Noop Qwen 기준 결과:
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 남은 최약군은 `2a4dd3...jpg`이고, 현재는 duplicate fallback 제거 후 `0.8333`까지 올라온 상태다.
+  - 현재 최약군은 `R.jpg (0.8750)`이며, `2a4dd3...jpg`는 `0.9655`까지 회복됐다.
 
 ## 다음 우선순위
 
-1. `2a4dd3...jpg`의 실제 clear item을 gold expected에 승격할지 검토
+1. `R.jpg` snack alias 추가 보강
 2. gold 다음 8장 승격
 3. gold 16장 기준 baseline 재측정
 4. 필요 시 Qwen rescue를 hard-case subset에만 제한 적용
