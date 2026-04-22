@@ -92,6 +92,16 @@ def test_receipt_service_builds_item_qwen_payload_for_low_confidence_and_missing
         "vendor_name": "GS25",
         "purchased_at": "2023-11-24",
         "totals": {"payment_amount": 24090.0},
+        "diagnostics": {
+            "collapsed_item_name_rows": [
+                {
+                    "name_line_id": 3,
+                    "name_text": "()2",
+                    "detail_line_id": 4,
+                    "detail_text": "2500000007828 6,480 1 6,480",
+                }
+            ]
+        },
         "items": [
             {
                 "raw_name": "투썸딸기피지",
@@ -131,6 +141,14 @@ def test_receipt_service_builds_item_qwen_payload_for_low_confidence_and_missing
         "1 2,800",
         "허쉬쿠키앤초코 1 증정품",
     ]
+    assert payload["collapsed_item_name_rows"] == [
+        {
+            "name_line_id": 3,
+            "name_text": "()2",
+            "detail_line_id": 4,
+            "detail_text": "2500000007828 6,480 1 6,480",
+        }
+    ]
 
 
 def test_receipt_service_allows_qwen_to_replace_normalized_name_for_low_confidence_item() -> None:
@@ -166,6 +184,47 @@ def test_receipt_service_allows_qwen_to_replace_normalized_name_for_low_confiden
 
     assert applied is True
     assert parsed["items"][0]["normalized_name"] == "허쉬밀크초콜릿"
+
+
+def test_receipt_service_allows_qwen_to_append_rescued_item() -> None:
+    service = ReceiptParseService(qwen_provider=NoopQwenProvider())
+
+    parsed = {
+        "purchased_at": "2023-11-24",
+        "items": [
+            {
+                "raw_name": "양념등심돈까스",
+                "normalized_name": "양념등심돈까스",
+                "quantity": 1.0,
+                "unit": "개",
+                "amount": 16980.0,
+                "needs_review": False,
+                "review_reason": [],
+                "source_line_ids": [1, 2],
+            }
+        ],
+    }
+
+    applied = service._apply_qwen_item_normalization(
+        parsed,
+        {
+            "rescued_items": [
+                {
+                    "raw_name": "파프리카(팩)",
+                    "normalized_name": "파프리카(팩)",
+                    "quantity": 1.0,
+                    "unit": "개",
+                    "amount": 6480.0,
+                    "source_line_ids": [3, 4],
+                }
+            ]
+        },
+    )
+
+    assert applied is True
+    assert len(parsed["items"]) == 2
+    assert parsed["items"][1]["raw_name"] == "파프리카(팩)"
+    assert parsed["items"][1]["parse_pattern"] == "qwen_collapsed_rescue"
 
 
 def test_local_qwen_item_prompt_instructs_model_to_use_source_and_context_lines() -> None:

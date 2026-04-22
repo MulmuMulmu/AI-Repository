@@ -167,7 +167,12 @@ def _filter_receipt_item_normalization_payload(payload: object) -> dict | None:
         return None
 
     items = payload.get("items")
+    rescued_items = payload.get("rescued_items")
     if not isinstance(items, list):
+        items = []
+    if not isinstance(rescued_items, list):
+        rescued_items = []
+    if not items and not rescued_items:
         return None
 
     filtered_items = []
@@ -193,7 +198,37 @@ def _filter_receipt_item_normalization_payload(payload: object) -> dict | None:
         if cleaned:
             filtered_items.append(cleaned)
 
-    return {"items": filtered_items} if filtered_items else None
+    filtered_rescued_items = []
+    for item in rescued_items:
+        if not isinstance(item, dict):
+            continue
+
+        cleaned: dict = {}
+        for key in ("raw_name", "normalized_name", "unit"):
+            value = item.get(key)
+            if isinstance(value, str) and value.strip():
+                cleaned[key] = value.strip()
+
+        for key in ("quantity", "amount"):
+            value = item.get(key)
+            if isinstance(value, (int, float)) and not isinstance(value, bool):
+                cleaned[key] = value
+
+        source_line_ids = item.get("source_line_ids")
+        if isinstance(source_line_ids, list):
+            cleaned_line_ids = [value for value in source_line_ids if isinstance(value, int) and not isinstance(value, bool)]
+            if cleaned_line_ids:
+                cleaned["source_line_ids"] = cleaned_line_ids
+
+        if cleaned:
+            filtered_rescued_items.append(cleaned)
+
+    filtered: dict[str, object] = {}
+    if filtered_items:
+        filtered["items"] = filtered_items
+    if filtered_rescued_items:
+        filtered["rescued_items"] = filtered_rescued_items
+    return filtered or None
 
 
 def _filter_recipe_explanation_payload(payload: object) -> dict | None:
@@ -345,10 +380,11 @@ class LocalTransformersQwenProvider:
         return (
             "receipt item normalization\n"
             "Return one-line minified JSON only.\n"
-            "Schema: {\"items\":[{\"index\":0,\"normalized_name\":\"\",\"quantity\":0,\"unit\":\"\",\"amount\":0}]}\n"
+            "Schema: {\"items\":[{\"index\":0,\"normalized_name\":\"\",\"quantity\":0,\"unit\":\"\",\"amount\":0}],\"rescued_items\":[{\"raw_name\":\"\",\"normalized_name\":\"\",\"quantity\":0,\"unit\":\"\",\"amount\":0,\"source_line_ids\":[0,1]}]}\n"
             "Use source_lines first, then context_lines if source_lines are incomplete.\n"
+            "If collapsed_item_name_rows are provided, you may return rescued_items only when the OCR detail row clearly supports a missing product.\n"
             "You may correct OCR typos in normalized_name when review_reasons include low_confidence.\n"
-            "Prefer current numeric values unless a field is missing. Do not invent extra items.\n"
+            "Prefer current numeric values unless a field is missing. Do not invent extra items beyond collapsed_item_name_rows.\n"
             "Use only OCR rows. No English slugs, product codes, or unrelated guesses.\n"
             f"{json.dumps(payload, ensure_ascii=False, separators=(',', ':'))}"
         )
@@ -544,10 +580,13 @@ class OpenAICompatibleQwenProvider:
         return (
             "receipt item normalization\n"
             "Return strict JSON only with key items.\n"
+            "Return strict JSON only with keys items and optional rescued_items.\n"
             "Each item must include index and may include normalized_name, quantity, unit, amount.\n"
+            "Each rescued_item may include raw_name, normalized_name, quantity, unit, amount, source_line_ids.\n"
             "Use source_lines first, then context_lines if source_lines are incomplete.\n"
+            "If collapsed_item_name_rows are provided, only rescue a missing item when the OCR detail row clearly supports it.\n"
             "You may correct OCR typos in normalized_name when review_reasons include low_confidence.\n"
-            "Prefer current numeric values unless a field is missing. Do not invent extra items.\n"
+            "Prefer current numeric values unless a field is missing. Do not invent extra items beyond collapsed_item_name_rows.\n"
             "Use only the provided OCR rows. Do not invent English slugs, product codes, or unrelated guesses.\n"
             f"{json.dumps(payload, ensure_ascii=False, separators=(',', ':'))}"
         )

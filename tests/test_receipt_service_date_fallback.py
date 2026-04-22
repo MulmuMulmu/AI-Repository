@@ -329,6 +329,52 @@ class StubPerItemRetryQwenProvider:
         return None
 
 
+class StubCollapsedRescueBackend:
+    def __init__(self) -> None:
+        self.calls: list[str] = []
+
+    def extract(self, source: str, source_type: str = "receipt_image_url") -> OcrExtraction:
+        self.calls.append(source)
+        return OcrExtraction(
+            lines=[
+                OcrLine(text="상품명 단가 수량 금액", confidence=0.95, line_id=0, page_order=0),
+                OcrLine(text="양념등심돈까스 16,980 1 16,980", confidence=0.97, line_id=1, page_order=1),
+                OcrLine(text="()2", confidence=0.42, line_id=2, page_order=2),
+                OcrLine(text="2500000007828 6,480 1 6,480", confidence=0.95, line_id=3, page_order=3),
+                OcrLine(text="계 23,460", confidence=0.95, line_id=4, page_order=4),
+            ],
+            raw_tokens=[],
+            quality_score=0.84,
+            low_quality_reasons=[],
+        )
+
+
+class StubCollapsedRescueQwenProvider:
+    def __init__(self) -> None:
+        self.payloads: list[dict] = []
+
+    def normalize_receipt_items(self, payload: dict) -> dict | None:
+        self.payloads.append(payload)
+        collapsed_rows = payload.get("collapsed_item_name_rows", [])
+        if not collapsed_rows:
+            return None
+        return {
+            "rescued_items": [
+                {
+                    "raw_name": "파프리카(팩)",
+                    "normalized_name": "파프리카(팩)",
+                    "quantity": 1.0,
+                    "unit": "개",
+                    "amount": 6480.0,
+                    "source_line_ids": [collapsed_rows[0]["name_line_id"], collapsed_rows[0]["detail_line_id"]],
+                }
+            ]
+        }
+
+    def rescue_receipt_header(self, payload: dict) -> dict | None:
+        return None
+
+
 def test_receipt_service_uses_top_strip_date_fallback_when_main_ocr_misses_date(tmp_path: Path) -> None:
     image_path = tmp_path / "receipt.png"
     Image.new("RGB", (400, 1200), color="white").save(image_path)
@@ -503,3 +549,21 @@ def test_receipt_service_retries_item_qwen_as_single_item_when_batch_returns_emp
     assert len(qwen.payloads) >= 2
     assert len(qwen.payloads[0]["review_items"]) > 1
     assert any(len(payload["review_items"]) == 1 for payload in qwen.payloads[1:])
+
+
+def test_receipt_service_attempts_qwen_item_rescue_for_collapsed_rows_without_review_items(tmp_path: Path) -> None:
+    image_path = tmp_path / "receipt.png"
+    Image.new("RGB", (400, 1200), color="white").save(image_path)
+
+    backend = StubCollapsedRescueBackend()
+    qwen = StubCollapsedRescueQwenProvider()
+    service = ReceiptParseService(ocr_backend=backend, qwen_provider=qwen)
+
+    parsed = service.parse({"receipt_image_url": str(image_path)})
+
+    assert parsed["diagnostics"]["qwen_item_attempted"] is True
+    assert parsed["diagnostics"]["qwen_item_used"] is True
+    assert qwen.payloads
+    assert qwen.payloads[0]["review_items"] == []
+    assert len(qwen.payloads[0]["collapsed_item_name_rows"]) == 1
+    assert any(item.get("raw_name") == "파프리카(팩)" for item in parsed["items"])

@@ -121,11 +121,13 @@ Qwen은 현재 메인 파서가 아니다.
   - vendor/date 보정
 - item normalization
   - 저신뢰/의심 품목만 선택 보정
+  - `collapsed_item_name_rows`가 있을 때는 제한적으로 missing item rescue 가능
 
 현재 정책:
 
 - OCR + rule-based가 1차 결과를 만든다.
 - review item이 있을 때만 Qwen payload를 만든다.
+- 단, item review가 없어도 `collapsed_item_name_rows`가 있으면 item rescue payload는 만들 수 있다.
 - Qwen 실패 시 전체 응답은 fallback 유지한다.
 
 ### 7. 합성 영수증 데이터셋 생성기

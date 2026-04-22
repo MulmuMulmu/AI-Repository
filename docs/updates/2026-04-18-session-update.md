@@ -266,6 +266,7 @@
 - 서비스 레이어에 `ocr_collapse_item_name` review reason과 `diagnostics.collapsed_item_name_count`를 추가했다.
 - 서비스 레이어에 `diagnostics.collapsed_item_name_rows`도 추가해서, 어떤 name row와 detail row가 짝으로 붕괴했는지 그대로 남기도록 했다.
 - 즉, 현재 방향은 `PaddleOCR + rule parser + 제한적 rescue`를 유지하되, 복구 불가능 hard-case는 정직하게 review로 올리는 쪽이다.
+- 추가로 item Qwen normalization payload가 `collapsed_item_name_rows`를 함께 싣고, provider가 있으면 `rescued_items`를 반환해 missing item을 append할 수 있는 제한적 rescue 경로를 열었다.
 
 - 합성데이터 기반 고도화가 실제로 수치 개선으로 이어졌다고 말할 수 있다.
 - 특히 `mixed_noise`는 대폭 개선되었고 더 이상 최약군이 아니다.

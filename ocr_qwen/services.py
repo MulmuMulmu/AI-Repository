@@ -332,6 +332,9 @@ class ReceiptParseService:
                 gap=item_strip_gap,
             )
         self._apply_item_strip_fallback(parsed, item_strip_extraction=item_strip_extraction, gap=item_strip_gap)
+        collapsed_item_name_rows = self._collect_collapsed_item_name_rows(parsed)
+        parsed["diagnostics"]["collapsed_item_name_rows"] = collapsed_item_name_rows
+        parsed["diagnostics"]["collapsed_item_name_count"] = len(collapsed_item_name_rows)
 
         header_qwen_attempted = False
         header_qwen_used = False
@@ -373,7 +376,7 @@ class ReceiptParseService:
                 item_qwen_fallback_reason = "disabled_sync_local_qwen"
             else:
                 qwen_payload = self._build_qwen_item_normalization_payload(parsed=parsed, lines=extraction.lines)
-                if qwen_payload["review_items"]:
+                if qwen_payload["review_items"] or qwen_payload.get("collapsed_item_name_rows"):
                     item_qwen_attempted = True
                     try:
                         qwen_result = self._invoke_qwen_item_normalizer(qwen_payload)
@@ -386,7 +389,7 @@ class ReceiptParseService:
                         else:
                             item_qwen_fallback_reason = "empty_response"
                 else:
-                    item_qwen_fallback_reason = "no_review_items"
+                    item_qwen_fallback_reason = "no_review_targets"
 
         parsed["diagnostics"]["qwen_header_attempted"] = header_qwen_attempted
         parsed["diagnostics"]["qwen_header_used"] = header_qwen_used
@@ -967,6 +970,7 @@ class ReceiptParseService:
             "current_purchased_at": parsed.get("purchased_at"),
             "known_totals": dict(parsed.get("totals", {})),
             "review_items": review_items[:QWEN_ITEM_MAX_REVIEW_ITEMS],
+            "collapsed_item_name_rows": list(parsed.get("diagnostics", {}).get("collapsed_item_name_rows", [])),
         }
 
     def _build_qwen_item_context_lines(
@@ -1067,7 +1071,12 @@ class ReceiptParseService:
 
     def _apply_qwen_item_normalization(self, parsed: dict, normalization: dict) -> bool:
         corrections = normalization.get("items")
+        rescued_items = normalization.get("rescued_items")
         if not isinstance(corrections, list):
+            corrections = []
+        if not isinstance(rescued_items, list):
+            rescued_items = []
+        if not corrections and not rescued_items:
             return False
 
         applied = False
@@ -1114,7 +1123,62 @@ class ReceiptParseService:
 
             self._recalculate_review_state(item, parsed["purchased_at"])
 
+        for rescued in rescued_items:
+            if not isinstance(rescued, dict):
+                continue
+            rescued_item = self._build_qwen_rescued_item(rescued, purchased_at=parsed.get("purchased_at"))
+            if rescued_item is None:
+                continue
+            duplicate = any(
+                existing.get("raw_name") == rescued_item["raw_name"]
+                and existing.get("amount") == rescued_item["amount"]
+                and existing.get("quantity") == rescued_item["quantity"]
+                for existing in parsed["items"]
+                if isinstance(existing, dict)
+            )
+            if duplicate:
+                continue
+            parsed["items"].append(rescued_item)
+            applied = True
+
         return applied
+
+    def _build_qwen_rescued_item(self, rescued: dict, *, purchased_at: str | None) -> dict | None:
+        raw_name = self._clean_string(rescued.get("raw_name"))
+        normalized_name = self._clean_string(rescued.get("normalized_name"))
+        display_name = raw_name or normalized_name
+        if display_name is None:
+            return None
+
+        quantity = self._coerce_float(rescued.get("quantity"))
+        unit = self._clean_string(rescued.get("unit"))
+        amount = self._coerce_float(rescued.get("amount"))
+        if quantity is None or unit is None or amount is None:
+            return None
+
+        source_line_ids = [
+            value
+            for value in rescued.get("source_line_ids", [])
+            if isinstance(value, int) and not isinstance(value, bool)
+        ] if isinstance(rescued.get("source_line_ids"), list) else []
+
+        item = {
+            "raw_name": display_name,
+            "normalized_name": normalized_name or display_name,
+            "category": "other",
+            "storage_type": "room",
+            "quantity": quantity,
+            "unit": unit,
+            "amount": amount,
+            "confidence": 0.0,
+            "match_confidence": 0.0,
+            "parse_pattern": "qwen_collapsed_rescue",
+            "source_line_ids": source_line_ids,
+            "review_reason": [],
+            "needs_review": False,
+        }
+        self._recalculate_review_state(item, purchased_at)
+        return item
 
     def _should_accept_qwen_normalized_name(self, item: dict, normalized_name: str) -> bool:
         if not self._is_plausible_normalized_name(item["raw_name"], normalized_name):
@@ -1556,7 +1620,7 @@ class ReceiptParseService:
             line_id = int(row["line_id"])
             if line_id in consumed_ids:
                 continue
-            if section_map.get(str(line_id)) != "items":
+            if section_map.get(str(line_id)) == "ignored":
                 continue
             text = self._clean_string(row.get("text"))
             if text is None:
@@ -1614,7 +1678,7 @@ class ReceiptParseService:
             line_id = int(row["line_id"])
             if line_id in consumed_ids:
                 continue
-            if section_map.get(str(line_id)) != "items":
+            if section_map.get(str(line_id)) == "ignored":
                 continue
             text = self._clean_string(row.get("text"))
             if text is None:
@@ -1628,7 +1692,7 @@ class ReceiptParseService:
             previous_line_id = int(previous_row["line_id"]) if previous_row is not None else None
             if previous_line_id is None or previous_line_id in consumed_ids:
                 continue
-            if section_map.get(str(previous_line_id)) != "items":
+            if section_map.get(str(previous_line_id)) == "ignored":
                 continue
             if previous_text is None:
                 continue
