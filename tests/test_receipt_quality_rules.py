@@ -1551,6 +1551,36 @@ def test_parser_prefers_discount_adjusted_unlabeled_final_amount_after_total() -
     assert result.totals["payment_amount"] == 112580.0
 
 
+def test_parser_strips_unit_price_times_tail_from_single_line_item() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="아현미밥210g*3 4,980 X 2 9,960", confidence=0.90, line_id=0, page_order=0),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "아현미밥210g*3"
+    assert result.items[0].quantity == 2.0
+    assert result.items[0].amount == 9960.0
+
+
+def test_parser_extracts_crop_totals_when_total_line_contains_discount_amount() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="총 합 계 49,850원 -9,960원", confidence=0.90, line_id=0, page_order=0),
+            OcrLine(text="계 할인총금액 39,89021", confidence=0.93, line_id=1, page_order=1),
+            OcrLine(text="현금 400,000,000원 400,000,0002", confidence=0.98, line_id=2, page_order=2),
+        ]
+    )
+
+    assert result.totals["total"] == 49850.0
+    assert result.totals["payment_amount"] == 39890.0
+
+
 def test_parser_prunes_totals_metadata_false_positive_in_oip9_style_receipt() -> None:
     parser = ReceiptParser()
 

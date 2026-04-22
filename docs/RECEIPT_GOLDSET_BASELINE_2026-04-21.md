@@ -77,10 +77,10 @@ Noop Qwen 기준 결과:
 | image_count | 16 |
 | vendor_name_accuracy | 1.0 |
 | purchased_at_accuracy | 0.9375 |
-| payment_amount_accuracy | 0.9375 |
-| item_name_f1_avg | 0.9121 |
-| quantity_match_rate_avg | 0.9637 |
-| amount_match_rate_avg | 0.8814 |
+| payment_amount_accuracy | 1.0 |
+| item_name_f1_avg | 0.9746 |
+| quantity_match_rate_avg | 0.9660 |
+| amount_match_rate_avg | 0.9439 |
 | review_required_accuracy | 1.0 |
 
 이미지별:
@@ -91,10 +91,10 @@ Noop Qwen 기준 결과:
 | `1652882389756.jpg` | 0.9474 | grocery partial receipt. vendor는 없고 date는 육안상 보이지만 현재 OCR fallback으로는 미복구, 마지막 `깐양파`는 여전히 누락 |
 | `OIP (1).webp` | 1.0000 | convenience mixed receipt. alphanumeric barcode/lineNo prefix 정리와 `부탄가스` 비식품 제외로 식품 2개만 남도록 정리 |
 | `OIP (7).webp` | 1.0000 | low-res meat/healthfood receipt. `code + 1× + unit_price + amount` detail row를 일반화해서 quantity/amount까지 회복됨 |
-| `OIP (8).webp` | 0.8571 | low-res convenience receipt. parser는 clear item 3개를 회복했고 evaluator가 `uncertain_items`를 ignore하도록 정리되면서 실제 acceptance score와 정렬됨 |
-| `OIP (9).webp` | 1.0000 | grocery acceptance sample. `하인즈유기농케참90`, `갈바니리코타치츠4`, `블렌드슈레드치즈1k9` OCR typo가 exact alias로 정리됐고, `파프리카(팩)`은 name OCR collapse hard-case로 남음 |
+| `OIP (8).webp` | 1.0000 | low-res convenience receipt. parser가 clear item 3개를 회복했고 gold의 `uncertain_items`와 scoring 정책도 정렬됐다 |
+| `OIP (9).webp` | 0.9474 | grocery acceptance sample. clear grocery item은 대부분 회복됐고, 남은 miss는 `파프리카(팩)`처럼 OCR line 자체가 붕괴한 hard-case다 |
 | `OIP (20).webp` | 1.0000 | grocery partial receipt. clear grocery item 4개는 모두 회복됐고, ambiguous product rows는 gold의 `uncertain_items`로 정리되어 acceptance score와 정렬됨 |
-| `OIP (4).webp` | 0.0000 | partial grocery crop. `아현미밥210g*3` 한 줄과 결제 요약 일부만 보이는 케이스로, parser가 이름 tail과 payment_amount를 아직 잘못 해석함 |
+| `OIP (4).webp` | 1.0000 | partial grocery crop. `name + unit_price + X + quantity + amount` 한 줄형과 `총합계 + 할인 + 할인총금액` crop totals를 일반화해서 item/totals를 모두 회복함 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
 | `R.jpg` | 1.0000 | visual review로 `와이멘씨라이스퍼프`, `부드러운쿠키블루베`를 gold 승격 후 정렬 완료 |
@@ -129,8 +129,9 @@ Noop Qwen 기준 결과:
   - 이후 ambiguous product rows도 `uncertain_items`로 정리해 acceptance score를 clear item 기준과 맞췄고, 현재 `item_f1 = 1.0`이다.
 - 이번 기준에는 [OIP (4).webp](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/OIP%20(4).webp)도 partial grocery acceptance gold로 편입했다.
   - `아현미밥210g*3`, `quantity=2`, `amount=9,960`은 시각적으로 명확해서 clear item으로 잡았다.
-  - parser는 아직 raw_name에 `4,980 X` tail을 끌고 오고 `payment_amount=2.0` 같은 오해석이 남아 있다.
-  - 이 샘플을 넣으면서 acceptance baseline은 내려갔지만, partial crop 영수증의 실제 약점이 더 정확히 드러났다.
+  - 이후 `name + unit_price + X + quantity + amount` 한 줄 패턴을 별도로 파싱하고, `총합계 49,850원 -9,960원`처럼 discount가 같이 붙은 total line에서는 첫 양수 금액을 total로 채택하도록 보강했다.
+  - 또 `할인총금액 39,89021` 같은 payment line은 첫 금액 후보를 우선 사용하고, 이미 더 total에 가까운 payment_amount가 있으면 `현금 ... 400,000,0002` 같은 footer 노이즈가 덮어쓰지 않도록 정리했다.
+  - 현재는 clear item과 totals 모두 회복되어 acceptance 기준 `item_f1 = 1.0`이다.
 - 이번 보강의 핵심:
   - `img3.jpg`: 가짜 vendor 제거 후 `lower item strip fallback`으로 `맥주 바이젠 미니` 회복
   - `OIP (1).webp`: alphanumeric barcode prefix 제거와 `부탄가스` non-food exclusion 추가로 mixed convenience precision 회복
@@ -154,13 +155,13 @@ Noop Qwen 기준 결과:
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 현재 최약군은 `OIP (4).webp (0.0000)`이고, 다음이 `R.jpg (0.8889)`, `R (1)/(2).jpg (0.9286)`이다.
-  - grocery 축에서는 clear miss보다 partial crop과 OCR collapse hard-case가 남아 있다.
+  - 현재 최약군은 `R.jpg (0.8889)`이고, 다음이 `R (1)/(2).jpg (0.9286)`, `SE-...jpg (0.9524)`, `OIP (9).webp (0.9474)`다.
+  - grocery 축에서는 clear miss보다 OCR collapse hard-case와 crop/date 누락이 남아 있다.
   - 이건 품질 후퇴가 아니라 grocery acceptance set을 넓힌 결과다.
 
 ## 다음 우선순위
 
-1. grocery/convenience gold를 16장 이상으로 확장
-2. `OIP (4)` 같은 partial grocery crop 우선 보강
-3. gold 16장 기준 baseline 재측정
+1. grocery/convenience acceptance gold를 16장 이상에서 더 확장
+2. 반복적으로 남는 `OCR collapse hard-case`와 `date rescue`만 일반화 규칙으로 보강
+3. 확장된 gold 기준 baseline 재측정
 4. 그 뒤에도 남는 item-name 붕괴 케이스에만 제한적 crop/Qwen rescue 검토

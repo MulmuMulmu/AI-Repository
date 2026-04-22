@@ -73,6 +73,12 @@ COMPACT_BARCODE_INFERRED_QTY_PATTERN = re.compile(
 NAME_QTY_AMOUNT_PATTERN = re.compile(
     r"^(?P<name>.+?)\s+(?P<quantity>\d+(?:\.\d+)?)\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
 )
+NAME_UNIT_PRICE_TIMES_QTY_AMOUNT_PATTERN = re.compile(
+    r"^(?P<name>.+?)\s+"
+    r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+)\s*[x×X]\s+"
+    r"(?P<quantity>\d+(?:\.\d+)?)\s+"
+    r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
+)
 NAME_AMOUNT_PATTERN = re.compile(
     r"^(?P<name>.+?)\s+(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
 )
@@ -161,7 +167,7 @@ TOTAL_KEYWORDS = (
     "현금",
     "카드결제",
 )
-PAYMENT_KEYWORDS = ("구매금액", "결제금액", "결제대상액", "결제대상금", "결제대상금액", "최종결제", "현금", "카드결제")
+PAYMENT_KEYWORDS = ("구매금액", "결제금액", "결제대상액", "결제대상금", "결제대상금액", "최종결제", "할인총금액", "현금", "카드결제")
 DATE_HINT_KEYWORDS = ("판매일", "구매", "주문", "결제", "거래일")
 FOOTER_KEYWORDS = (
     "합계",
@@ -1884,6 +1890,23 @@ class ReceiptParser:
             )
 
         qty_amount_match = NAME_QTY_AMOUNT_PATTERN.match(cleaned_name)
+        times_qty_amount_match = NAME_UNIT_PRICE_TIMES_QTY_AMOUNT_PATTERN.match(cleaned_name)
+        if times_qty_amount_match is not None:
+            amount = self._extract_last_price(times_qty_amount_match.group("amount"))
+            if amount is None:
+                return None
+            raw_name = self._cleanup_noisy_item_name(times_qty_amount_match.group("name").strip())
+            return self._build_item(
+                raw_name=raw_name,
+                confidence_lines=[line],
+                purchased_at=purchased_at,
+                quantity=float(times_qty_amount_match.group("quantity")),
+                unit="개",
+                amount=amount,
+                parse_pattern="single_line_unit_price_times_qty_amount",
+                source_line_ids=[line.line_id or 0],
+            )
+
         if qty_amount_match is not None:
             amount = self._extract_last_price(qty_amount_match.group("amount"))
             if amount is None:
@@ -2234,17 +2257,21 @@ class ReceiptParser:
                 if not (next_text and PRICE_PATTERN.match(next_text)):
                     continue
 
-            amount = self._extract_last_price(text)
+            amount = self._extract_preferred_total_amount(text, total_key=total_key)
             if amount is None and next_text:
                 if PRICE_PATTERN.match(next_text):
-                    amount = self._extract_last_price(next_text)
+                    amount = self._extract_preferred_total_amount(next_text, total_key=total_key)
             if amount is not None:
                 if (
                     total_key == "payment_amount"
                     and total_key in totals
-                    and ("카드결제" in normalized or "일시불" in normalized)
                 ):
-                    continue
+                    if "카드결제" in normalized or "일시불" in normalized:
+                        continue
+                    total_amount = totals.get("total")
+                    existing_amount = float(totals[total_key])
+                    if total_amount is not None and abs(existing_amount - float(total_amount)) <= abs(float(amount) - float(total_amount)):
+                        continue
                 totals[total_key] = amount
 
         self._infer_vertical_totals_block(lines, totals)
@@ -2360,6 +2387,35 @@ class ReceiptParser:
             return float(candidate)
         except ValueError:
             return None
+
+    def _extract_first_price(self, text: str) -> float | None:
+        matches = re.findall(r"\d{1,3}(?:[,.]\d{3})+|\d+", text)
+        if not matches:
+            return None
+        candidate = matches[0].replace(",", "").replace(".", "")
+        try:
+            return float(candidate)
+        except ValueError:
+            return None
+
+    def _extract_preferred_total_amount(self, text: str, *, total_key: str) -> float | None:
+        signed_matches = re.findall(r"-\d{1,3}(?:[,.]\d{3})+|-\d+|\d{1,3}(?:[,.]\d{3})+|\d+", text)
+        if total_key == "total" and any(token.startswith("-") for token in signed_matches):
+            for token in signed_matches:
+                if token.startswith("-"):
+                    continue
+                candidate = token.replace(",", "").replace(".", "")
+                try:
+                    return float(candidate)
+                except ValueError:
+                    continue
+        if total_key == "payment_amount":
+            compact = re.sub(r"\s+", "", text)
+            if any(keyword in compact for keyword in ("할인총금액", "결제대상금액", "결제금액", "구매금액", "최종결제")):
+                first_price = self._extract_first_price(text)
+                if first_price is not None:
+                    return first_price
+        return self._extract_last_price(text)
 
     def _extract_signed_last_price(self, text: str) -> float | None:
         matches = re.findall(r"-\d{1,3}(?:[,.]\d{3})+|-\d+|\d{1,3}(?:[,.]\d{3})+|\d+", text)

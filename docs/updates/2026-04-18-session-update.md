@@ -1541,3 +1541,31 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (4)` partial grocery crop 보강
+
+## 2026-04-22 OIP (4) partial grocery crop recovery
+
+추가한 내용:
+
+- `name + unit_price + X + quantity + amount` single-line parser 추가
+- total line에 discount가 함께 붙은 crop totals 해석 보강
+- `할인총금액` payment line에서 첫 금액 후보를 우선 사용하도록 보강
+- 기존 `payment_amount`가 `total`에 더 가까우면 `현금 ... 400,000,0002` 같은 footer 노이즈가 덮어쓰지 않도록 조정
+
+검증:
+
+- 전체 테스트: `185 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (4).webp`
+  - `item_f1 = 1.0`
+  - `아현미밥210g*3`, `quantity=2`, `amount=9,960`, `payment_amount=39,890`까지 회복
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9746`
+  - `quantity_match_rate_avg = 0.9660`
+  - `amount_match_rate_avg = 0.9439`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - acceptance gold 추가 확장
+  - 반복되는 `OCR collapse hard-case`와 `date rescue`만 일반화 규칙으로 보강

@@ -1403,3 +1403,36 @@ variant별:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (4)` partial grocery crop 보강
+
+## 2026-04-22 OIP (4) partial grocery crop recovery
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `name + unit_price + X + quantity + amount` 한 줄형 파싱 추가
+  - total line에 discount가 같이 붙은 경우 첫 양수 금액을 `total`로 채택
+  - `할인총금액` payment line은 첫 금액 후보를 우선 사용
+  - 이미 더 `total`에 가까운 `payment_amount`가 있으면 `현금 ... 400,000,0002` 같은 footer 노이즈로 덮어쓰지 않도록 정리
+- 회귀 테스트 2개 추가
+
+검증:
+
+- 전체 테스트: `185 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (4).webp`
+  - `item_f1 = 0.0 -> 1.0`
+  - `raw_name tail`과 `payment_amount=2.0` 오해석이 제거됨
+- 최신 gold 16장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9375`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9746`
+  - `quantity_match_rate_avg = 0.9660`
+  - `amount_match_rate_avg = 0.9439`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - 같은 샘플 미세튜닝보다 acceptance gold 확장
+  - 반복적으로 남는 `OCR collapse hard-case`와 `date rescue`만 일반화 규칙으로 보강
