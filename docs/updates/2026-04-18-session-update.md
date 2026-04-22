@@ -1267,3 +1267,30 @@ barcode_detail 60장 subset 평가:
 - 해석:
   - low-res convenience는 아직 acceptance 범위에서 가장 약한 축이다
   - 다음 parser 작업은 grocery보다 convenience low-res 대응을 우선 보는 것이 더 맞다
+
+## 2026-04-22 OIP (8) low-res convenience parser hardening
+
+추가한 내용:
+
+- gibberish english vendor fallback 차단
+- `barcode + lineNo + name + unit_price + amount` 한 줄형 low-res convenience parser 추가
+- `ocr_noisy_pos` residual barcode/lineNo 제거
+- convenience low-res alias 3개 추가
+
+검증:
+
+- 신규 parser 테스트 2개 추가
+- 전체 테스트: `174 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (8).webp`
+  - `item_f1 = 0.6667`
+  - `vendor hallucination` 제거
+  - `칠성사이다 제로 500ml`, `김치제육삼각`, `참치마요 삼각` 회복
+- latest gold baseline:
+  - `item_name_f1_avg = 0.8691`
+  - `quantity_match_rate_avg = 0.8325`
+  - `amount_match_rate_avg = 0.8311`
+  - `review_required_accuracy = 1.0`

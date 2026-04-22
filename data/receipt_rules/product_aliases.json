@@ -104,6 +104,21 @@
       "reason": "ocr_symbol_cleanup"
     },
     {
+      "raw": "칠성사이다 제로 500m",
+      "standard": "칠성사이다 제로 500ml",
+      "reason": "unit_completion"
+    },
+    {
+      "raw": "김치제육심각",
+      "standard": "김치제육삼각",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "뉴 스명참치마요 삼각",
+      "standard": "참치마요 삼각",
+      "reason": "ocr_cleanup"
+    },
+    {
       "raw": "라라스윗 바닐라파인트474",
       "standard": "라라스윗 바닐라파인트474ml",
       "reason": "unit_completion"

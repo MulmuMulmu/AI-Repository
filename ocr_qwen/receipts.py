@@ -46,6 +46,13 @@ OCR_NOISY_POS_INFERRED_QTY_PATTERN = re.compile(
     r"(?P<unit_price>\d{1,3}(?:,\d{3})+|\d+)\s+"
     r"(?P<amount>\d{1,3}(?:,\d{3})+|\d+)$"
 )
+LOWRES_CODED_ITEM_PATTERN = re.compile(
+    r"^(?P<barcode_prefix>\*?[A-Z0-9]{8,})\s+"
+    r"(?P<line_no>\d{1,2})\s+"
+    r"(?P<name>.+?)\s+"
+    r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d+)\s+"
+    r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
+)
 COMPACT_BARCODE_ITEM_PATTERN = re.compile(
     r"^(?P<barcode>\*?\d{8,})\s+"
     r"(?:(?P<unit_price>\d{1,3}(?:,\d{3})+|\d+)\s+)?"
@@ -518,7 +525,7 @@ class ReceiptParser:
         punct_count = sum(not char.isalnum() for char in normalized)
         hangul_count = sum("가" <= char <= "힣" for char in normalized)
         alpha_count = sum(char.isalpha() for char in normalized)
-        if hangul_count < 2 and alpha_count < 3:
+        if hangul_count < 2:
             return False
         if digit_count > max(3, len(normalized) // 4):
             return False
@@ -1286,6 +1293,11 @@ class ReceiptParser:
             text = match.group("name").strip()
             quantity = float(match.group("quantity"))
 
+        if parse_pattern.startswith("ocr_noisy_pos"):
+            text = re.sub(r"^(?:\*?[A-Z0-9]{8,}\s+)?\d{1,2}\s+", "", text).strip()
+            cleaned_text = self._cleanup_noisy_item_name(text)
+            text = self._lookup_exact_product_alias(cleaned_text) or cleaned_text
+
         amount = self._extract_last_price(match.group("amount"))
         if amount is None:
             return None
@@ -1746,6 +1758,31 @@ class ReceiptParser:
         gift_candidate = re.sub(r"^\d{1,3}\s*", "", gift_candidate)
         gift_candidate = re.sub(r"^\d{1,3}(?=[가-힣A-Za-z])", "", gift_candidate)
         cleaned_name = self._cleanup_noisy_item_name(line.text.strip())
+        normalized_line = self._normalize_spaced_numeric_text(line.text.strip())
+
+        lowres_match = LOWRES_CODED_ITEM_PATTERN.match(normalized_line)
+        if lowres_match is not None:
+            raw_name = self._cleanup_noisy_item_name(lowres_match.group("name").strip())
+            raw_name = self._lookup_exact_product_alias(raw_name) or raw_name
+            unit_price = self._extract_last_price(lowres_match.group("unit_price"))
+            amount = self._extract_last_price(lowres_match.group("amount"))
+            if amount is not None:
+                quantity = 1.0
+                if unit_price is not None and unit_price > 0:
+                    ratio = amount / unit_price
+                    rounded_ratio = round(ratio)
+                    if 1 <= rounded_ratio <= 9 and abs(ratio - rounded_ratio) <= 0.05:
+                        quantity = float(rounded_ratio)
+                return self._build_item(
+                    raw_name=raw_name,
+                    confidence_lines=[line],
+                    purchased_at=purchased_at,
+                    quantity=quantity,
+                    unit="개",
+                    amount=amount,
+                    parse_pattern="lowres_coded_single_line",
+                    source_line_ids=[line.line_id or 0],
+                )
 
         if "증정품" in re.sub(r"\s+", "", line.text) and NAME_GIFT_PATTERN.match(gift_candidate) is None:
             tail_encoded_item = self._parse_tail_encoded_single_line_item(

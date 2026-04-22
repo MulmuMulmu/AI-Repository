@@ -244,6 +244,43 @@ def test_parser_extracts_payment_amount_from_payment_target_amount_line() -> Non
     assert result.totals["payment_amount"] == 112580.0
 
 
+def test_parser_rejects_gibberish_vendor_fallback_without_store_hint() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="CDL Frlo.DDHa RERR", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="[P 03 2023-08-11 12:46", confidence=0.86, line_id=1, page_order=1),
+            OcrLine(text="상품명 금액", confidence=0.90, line_id=2, page_order=2),
+            OcrLine(text="칠성사이다 제로 500ml 3,560", confidence=0.90, line_id=3, page_order=3),
+        ]
+    )
+
+    assert result.vendor_name is None
+    assert result.purchased_at == "2023-08-11"
+
+
+def test_parser_parses_lowres_coded_convenience_rows_with_alnum_barcode_prefix() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 금액", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="B301056177584 01 칠성사이다 제로 500m 1,780 3,560", confidence=0.88, line_id=1, page_order=1),
+            OcrLine(text="250C003172533 02 김치제육심각 1,080 1,080", confidence=0.87, line_id=2, page_order=2),
+            OcrLine(text="2500000172496 04 뉴 스명참치마요 삼각 1,080 1,080", confidence=0.91, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "칠성사이다 제로 500ml",
+        "김치제육삼각",
+        "참치마요 삼각",
+    ]
+    assert [item.quantity for item in result.items] == [2.0, 1.0, 1.0]
+    assert [item.amount for item in result.items] == [3560.0, 1080.0, 1080.0]
+
+
 def test_parser_parses_spaced_numeric_detail_rows_from_image_style_receipt() -> None:
     parser = ReceiptParser()
 

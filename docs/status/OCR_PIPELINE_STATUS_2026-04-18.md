@@ -1056,3 +1056,37 @@ variant별:
 - `OIP (8).webp`
   - `item_f1 = 0.0`
   - vendor/date hallucination과 low-res convenience item parsing 취약점이 acceptance baseline에 직접 반영됨
+
+## 2026-04-22 OIP (8) low-res convenience parser hardening
+
+추가한 내용:
+
+- `ReceiptParser`
+  - gibberish 영문 header는 generic vendor fallback으로 인정하지 않도록 좁힘
+  - `barcode + lineNo + name + unit_price + amount` low-res convenience 한 줄형 parser 추가
+  - `ocr_noisy_pos` 경로에서 residual `barcode + lineNo`를 제거하고 exact alias를 적용
+- `product_aliases`
+  - `칠성사이다 제로 500m -> 칠성사이다 제로 500ml`
+  - `김치제육심각 -> 김치제육삼각`
+  - `뉴 스명참치마요 삼각 -> 참치마요 삼각`
+
+검증:
+
+- 신규 parser 회귀 테스트 2개 추가
+- 전체 테스트: `174 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (8).webp`
+  - `vendor_name`: hallucinated english string -> `null`
+  - `purchased_at`: `2023-08-11` 유지
+  - `item_f1 = 0.0 -> 0.6667`
+- 최신 gold 14장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.8571`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.8691`
+  - `quantity_match_rate_avg = 0.8325`
+  - `amount_match_rate_avg = 0.8311`
+  - `review_required_accuracy = 1.0`
