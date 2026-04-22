@@ -1,0 +1,125 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-22T09:15:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "OIP (9).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (9).webp"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "양념등심돈까스",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 16980.0
+      },
+      {
+        "raw_name": "파프리카(팩)",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6480.0
+      },
+      {
+        "raw_name": "완숙토마토 4kg/박스",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 17980.0
+      },
+      {
+        "raw_name": "양념닭주물럭2.2kg",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 27980.0
+      },
+      {
+        "raw_name": "청정원 서해안 까나리",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6780.0
+      },
+      {
+        "raw_name": "하인즈 유기농케찹90",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 9980.0
+      },
+      {
+        "raw_name": "갈바니 리코타 치즈4",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 6680.0
+      },
+      {
+        "raw_name": "Koukakis 그릭요거트",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 8480.0
+      },
+      {
+        "raw_name": "블렌드 슈레드치즈1kg",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 11980.0
+      },
+      {
+        "raw_name": "국내산 양상추 2입",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4780.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "멜오에이지 파마산분",
+        "reason": "ocr_name_uncertain"
+      }
+    ],
+    "excluded_rows": [
+      {
+        "raw_name": "2021채소 S-POINT",
+        "reason": "discount"
+      },
+      {
+        "raw_name": "푸드엔에누리행사",
+        "reason": "discount"
+      },
+      {
+        "raw_name": "가공에누리(전점)",
+        "reason": "discount"
+      },
+      {
+        "raw_name": "삼성카드할인",
+        "reason": "discount"
+      }
+    ],
+    "totals": {
+      "subtotal": 81673.0,
+      "tax": 8167.0,
+      "total": 117580.0,
+      "payment_amount": 112580.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "total_mismatch"
+    ],
+    "diagnostics": {}
+  }
+}

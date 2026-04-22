@@ -1163,4 +1163,30 @@ barcode_detail 60장 subset 평가:
   - `payment_amount`: `112,580` 회복
   - `subtotal=81,673`, `tax=8,167` 회복
   - false positive `JY 물 손어머` 제거
-- 이 샘플은 아직 `파프리카(팩)` miss 때문에 `total_mismatch`가 남아서 gold 승격은 보류
+- 이 샘플은 아직 `파프리카(팩)` miss 때문에 `total_mismatch`가 남지만, acceptance gold로는 편입 가치가 있다고 판단
+
+## 2026-04-22 OIP (9) gold promotion
+
+추가한 내용:
+
+- `OIP (9).webp`를 grocery acceptance gold로 편입
+  - clear item 10개
+  - uncertain item 1개
+  - `review_required=true`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- latest gold baseline이 `10장 -> 11장`으로 확장
+- metrics:
+  - `item_name_f1_avg = 0.9413`
+  - `quantity_match_rate_avg = 0.9333`
+  - `amount_match_rate_avg = 0.9315`
+  - `review_required_accuracy = 1.0`
+- 해석:
+  - baseline이 내려간 건 품질 후퇴가 아니라 acceptance set이 더 현실화됐다는 뜻
+  - 지금부터는 같은 샘플 미세튜닝보다 grocery/convenience gold 확장이 우선

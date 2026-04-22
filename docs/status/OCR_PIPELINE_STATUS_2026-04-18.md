@@ -927,3 +927,35 @@ variant별:
 - 아직 남은 miss:
   - `파프리카(팩)`
   - `missing_vendor_name`, `missing_purchased_at`, `total_mismatch`
+
+## 2026-04-22 OIP (9) gold promotion
+
+추가한 내용:
+
+- [OIP_9.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_9.json)
+  - grocery acceptance sample을 gold draft로 편입
+  - clear item 10개 + uncertain item 1개
+  - `review_required=true`로 고정해 current parser miss를 드러내도록 구성
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `image_count = 11`
+  - `total_item_count = 100`
+  - `review_required_count = 1`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- 최신 gold 11장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9091`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9413`
+  - `quantity_match_rate_avg = 0.9333`
+  - `amount_match_rate_avg = 0.9315`
+  - `review_required_accuracy = 1.0`
+- `OIP (9).webp`
+  - `item_f1 = 0.6316`
+  - `양념등심돈까스`는 회복됐지만 `파프리카(팩)`과 cropped grocery item miss가 남아 baseline이 더 현실적으로 바뀜
