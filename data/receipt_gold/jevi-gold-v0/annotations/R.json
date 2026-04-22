@@ -63,17 +63,23 @@
         "quantity": 1.0,
         "unit": "개",
         "amount": 2240.0
-      }
-    ],
-    "uncertain_items": [
+      },
       {
         "raw_name": "와이멘씨라이스퍼프",
-        "reason": "ocr_name_uncertain"
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3980.0
       },
       {
         "raw_name": "부드러운쿠키블루베",
-        "reason": "ocr_name_uncertain"
-      },
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 3980.0
+      }
+    ],
+    "uncertain_items": [
       {
         "raw_name": "자 2 하 퍼팩트",
         "reason": "ocr_name_uncertain"

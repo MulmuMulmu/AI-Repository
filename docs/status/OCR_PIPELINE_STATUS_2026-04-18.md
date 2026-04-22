@@ -806,7 +806,63 @@ variant별:
   - `vendor_name_accuracy = 1.0`
   - `purchased_at_accuracy = 1.0`
   - `payment_amount_accuracy = 1.0`
-  - `item_name_f1_avg = 0.9563`
-  - `quantity_match_rate_avg = 0.9708`
-  - `amount_match_rate_avg = 0.9683`
+  - `item_name_f1_avg = 0.9750`
+  - `quantity_match_rate_avg = 0.9740`
+  - `amount_match_rate_avg = 0.9718`
+  - `review_required_accuracy = 1.0`
+
+## 2026-04-22 R visual review promotion
+
+추가한 내용:
+
+- [R.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/R.json)
+  - visual review로 clear했던 item 2개를 `expected.items`로 승격
+    - `와이멘씨라이스퍼프`
+    - `부드러운쿠키블루베`
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `total_item_count = 78`로 갱신
+
+검증:
+
+- gold baseline 재측정 완료
+
+효과:
+
+- `R.jpg`
+  - `item_f1 = 0.8750 -> 1.0`
+- 최신 gold 8장 baseline:
+  - `item_name_f1_avg = 0.9750`
+  - `quantity_match_rate_avg = 0.9740`
+  - `amount_match_rate_avg = 0.9718`
+  - `review_required_accuracy = 1.0`
+
+## 2026-04-22 img2 gold promotion + subtotal+tax fallback
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `부 "가 세 1,255` 같은 punctuated tax line도 `tax`로 분류
+- `ReceiptParseService`
+  - totals reconciliation에서 `subtotal + tax`도 known total 후보로 사용
+- gold annotation 추가
+  - [img2.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/img2.json)
+  - vendor/date + 품목 2개 + `subtotal/tax` 기준으로 gold draft 편입
+- gold manifest 갱신
+  - `image_count = 9`
+  - `total_item_count = 80`
+
+검증:
+
+- 신규 parser/service 회귀 테스트 2개 추가
+- 전체 테스트: `166 passed`
+
+효과:
+
+- `img2.jpg`
+  - `review_required = false`
+  - `item_f1 = 1.0`
+- 최신 gold 9장 baseline:
+  - `item_name_f1_avg = 0.9750`
+  - `quantity_match_rate_avg = 0.9740`
+  - `amount_match_rate_avg = 0.9718`
   - `review_required_accuracy = 1.0`

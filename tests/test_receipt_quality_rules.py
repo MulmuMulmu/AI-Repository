@@ -1323,3 +1323,17 @@ def test_parser_infers_quantity_from_t_placeholder_code_detail_row() -> None:
     assert result.items[0].quantity == 1.0
     assert result.items[0].amount == 790.0
     assert result.items[0].parse_pattern == "name_then_code_amount_inferred_qty"
+
+
+def test_parser_extracts_tax_from_punctuated_bugae_line() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text='과세물품가액 12,545', confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text='부 "가 세 1,255', confidence=0.95, line_id=1, page_order=1),
+        ]
+    )
+
+    assert result.totals["subtotal"] == 12545.0
+    assert result.totals["tax"] == 1255.0

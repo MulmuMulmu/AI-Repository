@@ -130,6 +130,30 @@ def test_service_finalize_parse_result_uses_payment_minus_tax_fallback() -> None
     assert parsed["review_required"] is False
 
 
+def test_service_finalize_parse_result_uses_subtotal_plus_tax_fallback() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "purchased_at": "2020-06-09",
+        "vendor_name": "7-ELEVEN",
+        "items": [
+            {"normalized_name": "라라스윗 바닐라파인트474ml", "quantity": 1.0, "unit": "개", "amount": 6900.0, "needs_review": False},
+            {"normalized_name": "라라스윗 초코파인트474ml", "quantity": 1.0, "unit": "개", "amount": 6900.0, "needs_review": False},
+        ],
+        "totals": {
+            "subtotal": 12545.0,
+            "tax": 1255.0,
+        },
+        "review_reasons": [],
+        "diagnostics": {"quality_score": 1.0},
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert "total_mismatch" not in parsed["review_reasons"]
+    assert parsed["review_required"] is False
+
+
 def test_service_finalize_parse_result_marks_missing_vendor_name_for_review() -> None:
     service = ReceiptParseService(ocr_backend=object())
     parsed = {

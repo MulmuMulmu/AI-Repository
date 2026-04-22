@@ -2103,6 +2103,7 @@ class ReceiptParser:
         return totals
 
     def _classify_total_key(self, normalized_text: str) -> str | None:
+        hangul_only = re.sub(r"[^가-힣]", "", normalized_text)
         if normalized_text.startswith("계:") or normalized_text == "계":
             return "total"
         if re.fullmatch(r"계[:：]?(?:\d{1,3}(?:[,.]\d{3})+|\d+)(?:원)?", normalized_text):
@@ -2111,7 +2112,7 @@ class ReceiptParser:
             return None
         if _contains_any(normalized_text, self.rules.payment_keywords):
             return "payment_amount"
-        if "부가세" in normalized_text or "세액" in normalized_text:
+        if "부가세" in normalized_text or "세액" in normalized_text or "부가세" in hangul_only or "세액" in hangul_only:
             return "tax"
         if "과세물품가액" in normalized_text or "과세물품" in normalized_text or "공급가액" in normalized_text:
             return "subtotal"

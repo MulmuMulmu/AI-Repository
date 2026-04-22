@@ -1056,7 +1056,53 @@ barcode_detail 60장 subset 평가:
 - `2a4dd3...jpg`
   - `item_f1 = 0.9655`
 - 최신 gold 8장 baseline:
-  - `item_name_f1_avg = 0.9563`
-  - `quantity_match_rate_avg = 0.9708`
-  - `amount_match_rate_avg = 0.9683`
+  - `item_name_f1_avg = 0.9750`
+  - `quantity_match_rate_avg = 0.9740`
+  - `amount_match_rate_avg = 0.9718`
+  - `review_required_accuracy = 1.0`
+
+## 2026-04-22 R visual review promotion
+
+추가한 내용:
+
+- `R.jpg` visual review 후 clear item 2개를 gold expected로 승격
+  - `와이멘씨라이스퍼프`
+  - `부드러운쿠키블루베`
+- gold manifest의 `total_item_count`를 `78`로 갱신
+
+효과:
+
+- `R.jpg`
+  - `item_f1 = 1.0`
+- 최신 gold 8장 baseline:
+  - `item_name_f1_avg = 0.9750`
+  - `quantity_match_rate_avg = 0.9740`
+  - `amount_match_rate_avg = 0.9718`
+  - `review_required_accuracy = 1.0`
+
+## 2026-04-22 img2 gold promotion
+
+추가한 내용:
+
+- `부 "가 세` OCR 노이즈를 tax로 인식하도록 parser 보강
+- service totals reconciliation에서 `subtotal + tax` 후보 추가
+- `img2.jpg`를 gold draft에 편입
+  - vendor/date
+  - 품목 2개
+  - `subtotal/tax`
+
+검증:
+
+- 신규 parser/service 테스트 2개 추가
+- 전체 테스트: `166 passed`
+
+효과:
+
+- `img2.jpg`
+  - `review_required = false`
+  - `item_f1 = 1.0`
+- 최신 gold 9장 baseline:
+  - `item_name_f1_avg = 0.9750`
+  - `quantity_match_rate_avg = 0.9740`
+  - `amount_match_rate_avg = 0.9718`
   - `review_required_accuracy = 1.0`

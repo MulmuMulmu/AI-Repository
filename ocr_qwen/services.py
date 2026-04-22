@@ -1530,6 +1530,8 @@ class ReceiptParseService:
         subtotal = parsed["totals"].get("subtotal")
         if subtotal is not None:
             known_total_candidates.append(float(subtotal))
+        if subtotal is not None and parsed["totals"].get("tax") is not None:
+            known_total_candidates.append(float(subtotal) + float(parsed["totals"]["tax"]))
         if parsed["totals"].get("payment_amount") is not None and parsed["totals"].get("tax") is not None:
             known_total_candidates.append(float(parsed["totals"]["payment_amount"]) - float(parsed["totals"]["tax"]))
         total = parsed["totals"].get("total")
