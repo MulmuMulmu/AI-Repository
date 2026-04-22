@@ -17,7 +17,16 @@ os.environ.setdefault("PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK", "True")
 from .expiry import ExpiryEvaluator, InventoryItem
 from .preprocess import ReceiptPreprocessor, preprocess_receipt
 from .qwen import LocalTransformersQwenProvider, NoopQwenProvider
-from .receipts import CATEGORY_STORAGE, OcrLine, ReceiptParser
+from .receipts import (
+    CATEGORY_STORAGE,
+    CODE_NUMERIC_DETAIL_ROW_PATTERN,
+    CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN,
+    CODE_TIMES_AMOUNT_ROW_PATTERN,
+    INCOMPLETE_CODE_DETAIL_ROW_PATTERN,
+    NUMERIC_DETAIL_ROW_PATTERN,
+    OcrLine,
+    ReceiptParser,
+)
 from .recommendations import (
     InventorySnapshot,
     RecipeEngine,
@@ -1524,6 +1533,51 @@ class ReceiptParseService:
             total += amount
         return total
 
+    def _count_orphan_item_detail_rows(self, parsed: dict) -> int:
+        diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
+        section_map = diagnostics.get("section_map", {})
+        consumed_ids = {int(value) for value in diagnostics.get("consumed_line_ids", [])}
+        rows = [
+            row
+            for row in parsed.get("ocr_texts", [])
+            if isinstance(row, dict) and isinstance(row.get("line_id"), int) and self._clean_string(row.get("text"))
+        ]
+        rows.sort(key=lambda value: value["line_id"])
+        detail_patterns = (
+            NUMERIC_DETAIL_ROW_PATTERN,
+            CODE_NUMERIC_DETAIL_ROW_PATTERN,
+            CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN,
+            CODE_TIMES_AMOUNT_ROW_PATTERN,
+            INCOMPLETE_CODE_DETAIL_ROW_PATTERN,
+        )
+
+        orphan_count = 0
+        for index, row in enumerate(rows):
+            line_id = int(row["line_id"])
+            if line_id in consumed_ids:
+                continue
+            if section_map.get(str(line_id)) != "items":
+                continue
+            text = self._clean_string(row.get("text"))
+            if text is None:
+                continue
+            normalized_text = self.parser._normalize_spaced_numeric_text(text)
+            if not any(pattern.match(normalized_text) for pattern in detail_patterns):
+                continue
+
+            previous_row = rows[index - 1] if index > 0 else None
+            previous_text = self._clean_string(previous_row.get("text")) if previous_row is not None else None
+            previous_line_id = int(previous_row["line_id"]) if previous_row is not None else None
+            if previous_line_id is None or previous_line_id not in consumed_ids:
+                continue
+            if previous_text is not None:
+                if self.parser._matches_non_item_category(previous_text, {"packaging", "non_food", "discount", "metadata"}):
+                    continue
+
+            orphan_count += 1
+
+        return orphan_count
+
     def _finalize_parse_result(self, parsed: dict, low_quality_reasons: list[str]) -> None:
         diagnostics = parsed.setdefault("diagnostics", {})
         partial_receipt = self._looks_like_partial_receipt(parsed)
@@ -1564,8 +1618,12 @@ class ReceiptParseService:
         item_sum = sum(float(item["amount"]) for item in parsed["items"] if item.get("amount") is not None)
         discount_adjustment_total = self._extract_discount_adjustment_total(parsed)
         unconsumed_item_amount_total = self._extract_unconsumed_item_amount_total(parsed)
+        orphan_item_detail_count = self._count_orphan_item_detail_rows(parsed)
         diagnostics["discount_adjustment_total"] = discount_adjustment_total
         diagnostics["unconsumed_item_amount_total"] = unconsumed_item_amount_total
+        diagnostics["orphan_item_detail_count"] = orphan_item_detail_count
+        if orphan_item_detail_count > 0 and "orphan_item_detail" not in review_reasons:
+            review_reasons.append("orphan_item_detail")
         if known_total_candidates and item_sum > 0:
             adjusted_item_sum = item_sum + discount_adjustment_total
             fully_adjusted_item_sum = adjusted_item_sum + unconsumed_item_amount_total

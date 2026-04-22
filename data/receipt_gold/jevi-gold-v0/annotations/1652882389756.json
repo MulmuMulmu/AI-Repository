@@ -98,8 +98,10 @@
       "total": 49060.0,
       "payment_amount": 49060.0
     },
-    "review_required": false,
-    "review_reasons": [],
+    "review_required": true,
+    "review_reasons": [
+      "orphan_item_detail"
+    ],
     "diagnostics": {}
   }
 }

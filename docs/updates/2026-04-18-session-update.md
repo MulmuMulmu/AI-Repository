@@ -1674,3 +1674,30 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - 남은 실제 최약군 `OIP (9).webp`, `1652882389756.jpg`
+
+## 2026-04-22 orphan item detail review policy
+
+추가한 내용:
+
+- partial receipt에서도 이름 없는 orphan detail row는 `orphan_item_detail`로 review에 올리도록 추가
+- 다만 바로 앞줄이 이미 소비된 경우에만 orphan으로 인정해서 `2a4...`, `img3` false positive는 제외
+- `1652882389756` gold도 `review_required=true`로 정렬
+
+검증:
+
+- 전체 테스트: `191 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `1652882389756.jpg`
+  - `review_required = true`
+  - `orphan_item_detail_count = 1`
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9938`
+  - `quantity_match_rate_avg = 0.9882`
+  - `amount_match_rate_avg = 0.9686`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - 남은 실제 최약군 `OIP (9).webp`
+  - 그다음은 OCR collapse hard-case rescue 전략 자체를 정할지 여부

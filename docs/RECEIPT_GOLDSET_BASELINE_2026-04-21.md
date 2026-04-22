@@ -89,7 +89,7 @@ Noop Qwen 기준 결과:
 | file | item_f1 | 메모 |
 |---|---:|---|
 | `2a4dd3c18f06cec1571dc9ca52dc5946.jpg` | 0.9655 | visual review로 clear item 4개 승격, dense fallback 억제로 duplicate 제거 |
-| `1652882389756.jpg` | 0.9474 | grocery partial receipt. vendor는 없고 date는 육안상 보이지만 현재 OCR fallback으로는 미복구, 마지막 `깐양파`는 여전히 누락 |
+| `1652882389756.jpg` | 0.9474 | grocery partial receipt. 마지막 `*깐양파` 이름줄은 OCR이 끝내 복구하지 못하므로, 이제 `orphan_item_detail`로 review에 확실히 걸리게 정리함 |
 | `OIP (1).webp` | 1.0000 | convenience mixed receipt. alphanumeric barcode/lineNo prefix 정리와 `부탄가스` 비식품 제외로 식품 2개만 남도록 정리 |
 | `OIP (7).webp` | 1.0000 | low-res meat/healthfood receipt. `code + 1× + unit_price + amount` detail row를 일반화해서 quantity/amount까지 회복됨 |
 | `OIP (8).webp` | 1.0000 | low-res convenience receipt. parser가 clear item 3개를 회복했고 gold의 `uncertain_items`와 scoring 정책도 정렬됐다 |
@@ -145,6 +145,7 @@ Noop Qwen 기준 결과:
   - evaluator에서도 `uncertain_items`를 ignore하도록 바꿔, acceptance baseline이 clear item 기준과 맞게 계산되도록 정리
   - `R (1)/(2).jpg`: `상품 합계 4,480` 같은 late footer total은 기존 `payment_amount`보다 작으면 `total`을 덮어쓰지 않도록 정리했고, `농심 오징어짧뽕 컵`, `삼양나가사끼짬뽕 컵` exact alias를 추가해 fully aligned
   - `R.jpg`: `맛밤42G*10 -> 맛밤` pack-size cleanup alias를 exact product 유지로 되돌려 gold 기준과 정렬
+  - `1652882389756.jpg`: 마지막 `202037 2,620 1 2,620`처럼 이름 없이 남은 tail detail row는 `orphan_item_detail`로 review에 올려, partial receipt에서도 조용히 통과하지 않게 정리
   - `OIP (20).webp`: grocery partial receipt에 `6-digit PLU code` 제거, embedded barcode noise tail cleanup, grocery OCR typo alias를 넣고 ambiguous rows를 uncertain으로 정리해 acceptance baseline과 정렬
   - `SE-...jpg`: exact alias lookup + gift-tail item strip fallback으로 `투썸로얄밀크티` gift까지 회복
   - `OIP (10).webp`: 상품명 뒤 바코드 suffix 제거, `결제대상금` 우선 유지
@@ -165,6 +166,7 @@ Noop Qwen 기준 결과:
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
   - 현재 최약군은 `OIP (9).webp (0.9474)`와 `1652882389756.jpg (0.9474)`다.
   - grocery 축에서는 clear miss보다 OCR collapse hard-case와 crop/date 누락이 남아 있다.
+  - `1652882389756.jpg`는 이제 miss를 숨기지 않고 `review_required=true`로 올린다.
   - 이건 품질 후퇴가 아니라 grocery acceptance set을 넓힌 결과다.
 
 ## 다음 우선순위

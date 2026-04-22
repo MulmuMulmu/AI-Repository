@@ -329,6 +329,58 @@ def test_service_finalize_parse_result_allows_partial_receipt_with_noisy_rows_be
     assert "total_mismatch" not in parsed["review_reasons"]
 
 
+def test_service_finalize_parse_result_marks_orphan_item_detail_in_partial_receipt() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": None,
+        "purchased_at": "2022-04-30",
+        "items": [
+            {"raw_name": "*한돈) 생목살", "quantity": 1.0, "unit": "개", "amount": 13450.0, "needs_review": False, "review_reason": []},
+            {"raw_name": "진로 소주 360ml", "quantity": 1.0, "unit": "개", "amount": 1650.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {
+            "payment_amount": 49060.0,
+            "tax": 1232.0,
+        },
+        "ocr_texts": [
+            {"line_id": 2, "text": "상품명 단 가 수량 금 액"},
+            {"line_id": 3, "text": "*한돈) 생목살(구이용)"},
+            {"line_id": 4, "text": "200078 13,450 - 13,450"},
+            {"line_id": 5, "text": "*종량10L(재사용봉투날장)"},
+            {"line_id": 6, "text": "2908144263092 180 I 180"},
+            {"line_id": 21, "text": "^진로)(뉴트로)소주(병)360m]"},
+            {"line_id": 22, "text": "8801048101023 1,650 - 1,650"},
+            {"line_id": 23, "text": "202037 2,620 1 2,620"},
+            {"line_id": 24, "text": "구매금액 49,060"},
+            {"line_id": 30, "text": "부 가 세 1,232"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {
+            "quality_score": 0.4194,
+            "section_map": {
+                "2": "header",
+                "3": "items",
+                "4": "items",
+                "5": "ignored",
+                "6": "items",
+                "21": "items",
+                "22": "items",
+                "23": "items",
+                "24": "payment",
+                "30": "totals",
+            },
+            "consumed_line_ids": [3, 4, 21, 22],
+        },
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert parsed["diagnostics"]["orphan_item_detail_count"] == 1
+    assert "orphan_item_detail" in parsed["review_reasons"]
+    assert parsed["review_required"] is True
+
+
 def test_service_finalize_parse_result_uses_unconsumed_item_amount_to_avoid_total_mismatch() -> None:
     service = ReceiptParseService(ocr_backend=object())
     parsed = {
