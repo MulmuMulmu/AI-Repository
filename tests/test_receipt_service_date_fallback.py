@@ -568,3 +568,6 @@ def test_receipt_service_attempts_qwen_item_rescue_for_collapsed_rows_without_re
     assert qwen.payloads[0]["review_items"] == []
     assert len(qwen.payloads[0]["collapsed_item_name_rows"]) == 1
     assert any(item.get("raw_name") == "파프리카(팩)" for item in parsed["items"])
+    assert "ocr_collapse_item_name" not in parsed["review_reasons"]
+    assert "total_mismatch" not in parsed["review_reasons"]
+    assert parsed["review_required"] is False

@@ -95,6 +95,11 @@
 - `diagnostics.collapsed_item_name_rows`
 - `diagnostics.qwen_item_rescue_count`
 
+제한적 rescue 정책:
+
+- `qwen_collapsed_rescue`로 추가된 item의 `source_line_ids`는 후속 검증에서도 consumed로 본다.
+- 따라서 rescue가 성공하면 같은 줄로 인한 `ocr_collapse_item_name`, `total_mismatch`가 해소될 수 있다.
+
 현재 item 단위 review 이유 예시:
 
 - `low_confidence`

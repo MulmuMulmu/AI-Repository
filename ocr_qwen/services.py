@@ -1520,7 +1520,7 @@ class ReceiptParseService:
     def _extract_unconsumed_item_amount_total(self, parsed: dict) -> float:
         diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
         section_map = diagnostics.get("section_map", {})
-        consumed_ids = {int(value) for value in diagnostics.get("consumed_line_ids", [])}
+        consumed_ids = self._effective_consumed_line_ids(parsed)
         item_header_line_id: int | None = None
         item_line_ids: list[int] = []
         inferred_item_like_line_ids: list[int] = []
@@ -1605,7 +1605,7 @@ class ReceiptParseService:
     def _count_orphan_item_detail_rows(self, parsed: dict) -> int:
         diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
         section_map = diagnostics.get("section_map", {})
-        consumed_ids = {int(value) for value in diagnostics.get("consumed_line_ids", [])}
+        consumed_ids = self._effective_consumed_line_ids(parsed)
         rows = [
             row
             for row in parsed.get("ocr_texts", [])
@@ -1662,7 +1662,7 @@ class ReceiptParseService:
     def _collect_collapsed_item_name_rows(self, parsed: dict) -> list[dict[str, object]]:
         diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
         section_map = diagnostics.get("section_map", {})
-        consumed_ids = {int(value) for value in diagnostics.get("consumed_line_ids", [])}
+        consumed_ids = self._effective_consumed_line_ids(parsed)
         rows = [
             row
             for row in parsed.get("ocr_texts", [])
@@ -1717,6 +1717,21 @@ class ReceiptParseService:
             )
 
         return collapsed_rows
+
+    def _effective_consumed_line_ids(self, parsed: dict) -> set[int]:
+        diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
+        consumed_ids = {
+            int(value)
+            for value in diagnostics.get("consumed_line_ids", [])
+            if isinstance(value, int) and not isinstance(value, bool)
+        }
+        for item in parsed.get("items", []):
+            if not isinstance(item, dict):
+                continue
+            for line_id in item.get("source_line_ids", []):
+                if isinstance(line_id, int) and not isinstance(line_id, bool):
+                    consumed_ids.add(line_id)
+        return consumed_ids
 
     def _finalize_parse_result(self, parsed: dict, low_quality_reasons: list[str]) -> None:
         diagnostics = parsed.setdefault("diagnostics", {})
