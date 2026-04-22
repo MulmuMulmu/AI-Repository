@@ -239,6 +239,16 @@
       "reason": "pack_size_cleanup"
     },
     {
+      "raw": "사각햇번300g",
+      "standard": "사각햇반300g",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "깐양과",
+      "standard": "깐양파",
+      "reason": "ocr_typo"
+    },
+    {
       "raw": "L맥주바이젠미니",
       "standard": "맥주 바이젠 미니",
       "reason": "manual_receipt_alias"

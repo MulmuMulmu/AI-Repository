@@ -1186,3 +1186,36 @@ variant별:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (20)` 계열의 grocery partial receipt에서 `raw item cleanup + normalization` 반복 miss만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP (20) grocery partial cleanup
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `6-digit PLU code + item name + amount` grocery row cleanup 추가
+  - embedded barcode noise tail이 붙은 single-line qty/amount row를 정리
+- `product_aliases`
+  - `사각햇번300g -> 사각햇반300g`
+  - `깐양과 -> 깐양파`
+- 회귀 테스트 2개 추가
+
+검증:
+
+- 전체 테스트: `179 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (20).webp`
+  - `item_f1 = 0.0 -> 0.3333`
+  - `사각햇반300g`, `깐양파` 축 일부 회복
+- 최신 gold 15장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.8667`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.8883`
+  - `quantity_match_rate_avg = 0.8437`
+  - `amount_match_rate_avg = 0.8423`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (20)`의 남은 `생목심/청양고추` 정규화처럼 grocery partial clear miss만 일반화 규칙으로 보강

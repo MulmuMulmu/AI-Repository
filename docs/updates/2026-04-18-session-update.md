@@ -1371,3 +1371,28 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (20)` 계열 grocery partial receipt의 clear miss만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP (20) grocery partial cleanup
+
+추가한 내용:
+
+- `6-digit PLU code` 제거
+- embedded barcode noise tail cleanup
+- `사각햇번300g -> 사각햇반300g`, `깐양과 -> 깐양파` alias 추가
+
+검증:
+
+- 전체 테스트: `179 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (20).webp`
+  - `item_f1 = 0.3333`
+- latest gold baseline:
+  - `item_name_f1_avg = 0.8883`
+  - `quantity_match_rate_avg = 0.8437`
+  - `amount_match_rate_avg = 0.8423`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - grocery partial clear miss만 일반화 규칙으로 보강

@@ -1335,6 +1335,14 @@ class ReceiptParser:
         if preview_normalized_name is None and name_line.confidence < 0.75:
             return None
 
+        standalone_item = self._build_single_line_item(name_line, purchased_at)
+        if (
+            standalone_item is not None
+            and standalone_item.amount is not None
+            and self._strip_embedded_barcode_noise_tail(name_line.text) is not None
+        ):
+            return standalone_item, 1
+
         detail_text = self._normalize_spaced_numeric_text(detail_line.text.strip())
         match = NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
         parse_pattern = "name_then_numeric_detail"
@@ -1526,9 +1534,10 @@ class ReceiptParser:
 
     def _cleanup_noisy_item_name(self, text: str) -> str:
         cleaned = text
-        cleaned = re.sub(r"^(?:\*\s+|[×•·※]+\s*)", "", cleaned)
         while True:
-            updated = re.sub(r"^(?:0\d{2}|\d{3})\s+(?=\*?[A-Z0-9]{8,}\b)", "", cleaned)
+            updated = re.sub(r"^(?:\*\s+|[×•·※]+\s*)", "", cleaned)
+            updated = re.sub(r"^\d{6}\s+(?=[×•·※]?\(?[가-힣A-Za-z])", "", updated)
+            updated = re.sub(r"^(?:0\d{2}|\d{3})\s+(?=\*?[A-Z0-9]{8,}\b)", "", updated)
             updated = re.sub(r"^\*?[A-Z0-9]{8,}\s*", "", updated)
             updated = re.sub(r"^(?:0\d{2}|\d{3})\s+(?=(?:\d{1,3}[가-힣A-Za-z]|[가-힣A-Za-z]))", "", updated)
             updated = re.sub(r"^(?:0\d{2}|\d{3})(?=[가-힣A-Za-z])", "", updated)
@@ -1549,10 +1558,38 @@ class ReceiptParser:
         cleaned = re.sub(r"(?i)(\d+ml)(?:\s*\1)+", r"\1", cleaned)
         cleaned = re.sub(r"[\]}]+", " ", cleaned)
         cleaned = re.sub(r"\s+", " ", cleaned).strip()
+        cleaned = self._strip_leading_short_marker_prefix(cleaned)
         cleaned = re.sub(r"^([가-힣A-Za-z]{2,4})\s+(?=\1)", "", cleaned)
         for source, target in self.rules.ocr_canonical_aliases.items():
             cleaned = self._safe_alias_replace(cleaned, source, target)
         return cleaned
+
+    def _strip_leading_short_marker_prefix(self, text: str) -> str:
+        candidate = text.strip()
+        if not candidate or candidate.startswith("*"):
+            return candidate
+        stripped = re.sub(r"^\(?[가-힣A-Za-z]{1,4}\)\s*", "", candidate).strip()
+        if (
+            stripped
+            and stripped != candidate
+            and any("가" <= char <= "힣" for char in stripped)
+            and len(re.sub(r"[^가-힣A-Za-z0-9]", "", stripped)) >= 2
+        ):
+            return stripped
+        return candidate
+
+    def _strip_embedded_barcode_noise_tail(self, text: str) -> str | None:
+        candidate = text.strip()
+        match = re.match(
+            r"^(?P<name>.+?)\s+\*?[A-Z0-9]{8,}(?:\s+[\dA-Z,.\-EIl]+){1,4}\s*$",
+            candidate,
+        )
+        if match is None:
+            return None
+        stripped = self._cleanup_noisy_item_name(match.group("name").strip())
+        if stripped and self._looks_like_item_candidate(stripped):
+            return stripped
+        return None
 
     def _extract_tail_unit_price_match(self, prefix: str) -> re.Match[str] | None:
         return re.search(r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d{2,5})\s*$", prefix)
@@ -1836,6 +1873,9 @@ class ReceiptParser:
                 return None
             quantity = float(qty_amount_match.group("quantity"))
             raw_name = qty_amount_match.group("name").strip()
+            embedded_barcode_name = self._strip_embedded_barcode_noise_tail(raw_name)
+            if embedded_barcode_name is not None:
+                raw_name = embedded_barcode_name
             stripped_name = self._strip_trailing_price_token(raw_name, amount / quantity if quantity > 0 else None)
             if stripped_name is not None:
                 raw_name = stripped_name

@@ -312,6 +312,42 @@ def test_parser_filters_butane_gas_as_non_food_item() -> None:
     assert result.items == []
 
 
+def test_parser_strips_leading_plu_codes_and_short_markers_from_grocery_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 금액", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="200078 한은) 생목심(구이용) 13,450 13,450", confidence=0.90, line_id=1, page_order=1),
+            OcrLine(text="202240 ·청양고추 1,390 1,390", confidence=0.89, line_id=2, page_order=2),
+            OcrLine(text="202210 (CJ)사각햇번300g 1,900 1,900", confidence=0.91, line_id=3, page_order=3),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "한은 생목심",
+        "청양고추",
+        "사각햇번300g",
+    ]
+    assert [item.amount for item in result.items] == [13450.0, 1390.0, 1900.0]
+
+
+def test_parser_strips_embedded_barcode_tail_from_single_line_qty_amount_row() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 금액", confidence=0.88, line_id=0, page_order=0),
+            OcrLine(text="*깐양과 8601048101023 1,E50 1 1,650", confidence=0.90, line_id=1, page_order=1),
+        ]
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].raw_name == "*깐양과"
+    assert result.items[0].quantity == 1.0
+    assert result.items[0].amount == 1650.0
+
+
 def test_parser_parses_spaced_numeric_detail_rows_from_image_style_receipt() -> None:
     parser = ReceiptParser()
 
