@@ -101,7 +101,7 @@ Noop Qwen 기준 결과:
   - `quantity_match_rate_avg`
   - `amount_match_rate_avg`
   - `review_required_accuracy`
-- 현재 실사 gold 8장 기준 review 축도 정렬됐다.
+- 현재 실사 gold 9장 기준 review 축도 정렬됐다.
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.

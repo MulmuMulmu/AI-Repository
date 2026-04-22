@@ -230,7 +230,7 @@ Qwen은 현재 메인 파서가 아니다.
 - 아직 남은 미편입 자산은 crop image 위주다.
 
 즉, 현재는 실사 검증 경로가 전혀 없는 상태는 아니고,  
-`gold 8장 + silver 35장 + 추가 gold 후보 shortlist` 구조까지는 확보된 상태다.
+`gold 9장 + silver 35장 + 추가 gold 후보 shortlist` 구조까지는 확보된 상태다.
 
 현재 추가 gold 후보로 볼 만한 샘플:
 
