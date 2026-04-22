@@ -129,6 +129,13 @@ CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN = re.compile(
     r"(?P<placeholder>[-_!|IlTt—–−]+)\s+"
     r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)$"
 )
+CODE_TIMES_AMOUNT_ROW_PATTERN = re.compile(
+    r"^(?P<code>\d{6,})\s+"
+    r"1\s*[x×]\s*/?\s*"
+    r"(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d+)\s+"
+    r"(?P<amount>\d{1,3}(?:[,.]\d{3})+|\d+)"
+    r"(?:\s+(?P<placeholder>[-_!|IlTt—–−]+))?$"
+)
 INCOMPLETE_CODE_DETAIL_ROW_PATTERN = re.compile(
     r"^(?P<code>\d{6,})\s+(?P<unit_price>\d{1,3}(?:[,.]\d{3})+|\d{1,5})\s+(?P<quantity>\d+(?:\.\d+)?)$"
 )
@@ -1351,12 +1358,18 @@ class ReceiptParser:
         if match is None:
             code_match = CODE_NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
             if code_match is None:
-                code_placeholder_match = CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN.match(detail_text)
-                if code_placeholder_match is None:
-                    return None
-                match = code_placeholder_match
-                parse_pattern = "name_then_code_amount_inferred_qty"
-                quantity = 1.0
+                code_times_match = CODE_TIMES_AMOUNT_ROW_PATTERN.match(detail_text)
+                if code_times_match is not None:
+                    match = code_times_match
+                    parse_pattern = "name_then_code_times_amount"
+                    quantity = 1.0
+                else:
+                    code_placeholder_match = CODE_PLACEHOLDER_AMOUNT_ROW_PATTERN.match(detail_text)
+                    if code_placeholder_match is None:
+                        return None
+                    match = code_placeholder_match
+                    parse_pattern = "name_then_code_amount_inferred_qty"
+                    quantity = 1.0
             else:
                 match = code_match
                 parse_pattern = "name_then_code_numeric_detail"
@@ -1368,7 +1381,10 @@ class ReceiptParser:
         amount = self._extract_last_price(match.group("amount"))
         if amount is None:
             return None
-        unit_price = self._extract_last_price(detail_text)
+        unit_price = self._extract_last_price(match.group("unit_price")) if "unit_price" in match.groupdict() else None
+        if parse_pattern == "name_then_code_times_amount" and quantity == 1.0 and unit_price is not None:
+            if abs(amount - unit_price) > 1.0:
+                amount = unit_price
         quantity = self._coerce_pack_count_quantity(
             raw_name=cleaned_name,
             quantity=quantity,
@@ -1530,6 +1546,7 @@ class ReceiptParser:
     def _normalize_spaced_numeric_text(self, text: str) -> str:
         normalized = text.strip()
         normalized = re.sub(r"(?<=\d)([,.])\s+(?=\d)", r"\1", normalized)
+        normalized = re.sub(r"(?<=\d)['’`´](?=[,\d])", "", normalized)
         return normalized
 
     def _cleanup_noisy_item_name(self, text: str) -> str:

@@ -1184,6 +1184,29 @@ def test_parser_inferrs_quantity_from_code_price_unicode_dash_amount_rows() -> N
     assert result.items[0].parse_pattern == "name_then_code_amount_inferred_qty"
 
 
+def test_parser_inferrs_quantity_from_code_times_price_amount_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="드시모네2500억", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="680577 1× 89,900 89,900 T", confidence=0.92, line_id=1, page_order=1),
+            OcrLine(text="국산한우채끝1+", confidence=0.98, line_id=2, page_order=2),
+            OcrLine(text="618911 1×121,670 12',670", confidence=0.95, line_id=3, page_order=3),
+            OcrLine(text="미국부채스테이크", confidence=0.98, line_id=4, page_order=4),
+            OcrLine(text="534759 1×/50,810 50,810", confidence=0.97, line_id=5, page_order=5),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == [
+        "드시모네2500억",
+        "국산한우채끝1+",
+        "미국부채스테이크",
+    ]
+    assert [item.quantity for item in result.items] == [1.0, 1.0, 1.0]
+    assert [item.amount for item in result.items] == [89900.0, 121670.0, 50810.0]
+
+
 def test_parser_filters_non_food_household_and_electronics_items() -> None:
     parser = ReceiptParser()
 
@@ -1196,6 +1219,20 @@ def test_parser_filters_non_food_household_and_electronics_items() -> None:
     )
 
     assert result.items == []
+
+
+def test_parser_filters_member_expiry_metadata_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="회원만료일:2026-06", confidence=0.96, line_id=0, page_order=0),
+            OcrLine(text="드시모네2500억", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="680577 1× 89,900 89,900 T", confidence=0.92, line_id=2, page_order=2),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["드시모네2500억"]
 
 
 def test_parser_filters_low_confidence_short_unknown_hangul_items() -> None:

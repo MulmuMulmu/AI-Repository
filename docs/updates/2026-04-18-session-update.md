@@ -1492,3 +1492,28 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (7)`, `OIP (8)` 같은 low-res receipt 우선 보강
+
+## 2026-04-22 OIP (7) low-res detail-row recovery
+
+추가한 내용:
+
+- `code + 1× + unit_price + amount` detail row pattern 추가
+- 숫자 OCR artifact(`12',670`) 정규화
+- `회원만료일` metadata 제외
+
+검증:
+
+- 전체 테스트: `183 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (7).webp`
+  - `item_f1 = 1.0`
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9634`
+  - `quantity_match_rate_avg = 0.9637`
+  - `amount_match_rate_avg = 0.9401`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (8)` low-res convenience 보강
