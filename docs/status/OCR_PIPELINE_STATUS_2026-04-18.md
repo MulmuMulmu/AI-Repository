@@ -959,3 +959,35 @@ variant별:
 - `OIP (9).webp`
   - `item_f1 = 0.6316`
   - `양념등심돈까스`는 회복됐지만 `파프리카(팩)`과 cropped grocery item miss가 남아 baseline이 더 현실적으로 바뀜
+
+## 2026-04-22 OIP (7) gold promotion
+
+추가한 내용:
+
+- [OIP_7.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_7.json)
+  - low-res grocery acceptance sample을 gold draft로 편입
+  - clear item 3개
+  - `review_required=true` 유지
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `image_count = 12`
+  - `total_item_count = 103`
+  - `review_required_count = 2`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- 최신 gold 12장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9167`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9343`
+  - `quantity_match_rate_avg = 0.8555`
+  - `amount_match_rate_avg = 0.8538`
+  - `review_required_accuracy = 1.0`
+- `OIP (7).webp`
+  - `item_f1 = 0.8571`
+  - 이름 인식은 어느 정도 되지만 quantity/amount 구조화가 아직 약하다는 점이 acceptance baseline에 반영됨

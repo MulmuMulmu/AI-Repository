@@ -1190,3 +1190,28 @@ barcode_detail 60장 subset 평가:
 - 해석:
   - baseline이 내려간 건 품질 후퇴가 아니라 acceptance set이 더 현실화됐다는 뜻
   - 지금부터는 같은 샘플 미세튜닝보다 grocery/convenience gold 확장이 우선
+
+## 2026-04-22 OIP (7) gold promotion
+
+추가한 내용:
+
+- `OIP (7).webp`를 low-res grocery acceptance gold로 편입
+  - clear item 3개
+  - `review_required=true`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- latest gold baseline이 `11장 -> 12장`으로 확장
+- metrics:
+  - `item_name_f1_avg = 0.9343`
+  - `quantity_match_rate_avg = 0.8555`
+  - `amount_match_rate_avg = 0.8538`
+  - `review_required_accuracy = 1.0`
+- 해석:
+  - quantity/amount가 acceptance set의 실제 병목이라는 점이 더 선명해졌다
+  - 다음 우선순위는 gold 추가 확장과 `name line + detail row` 계열 parser 일반화다

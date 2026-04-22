@@ -1,0 +1,67 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-22T09:40:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "OIP (7).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (7).webp"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "드시모네2500억",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 89900.0
+      },
+      {
+        "raw_name": "국산한우채끝1+",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 121670.0
+      },
+      {
+        "raw_name": "미국부채스테이크",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 50810.0
+      }
+    ],
+    "uncertain_items": [],
+    "excluded_rows": [
+      {
+        "raw_name": "회원만료일:2026-06",
+        "reason": "member_metadata"
+      },
+      {
+        "raw_name": "*L02510251792012",
+        "reason": "barcode_only"
+      },
+      {
+        "raw_name": "*IMP 803131002300",
+        "reason": "barcode_only"
+      }
+    ],
+    "totals": {
+      "tax": 8173.0,
+      "total": 262380.0,
+      "payment_amount": 262380.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "small_image",
+      "unresolved_items"
+    ],
+    "diagnostics": {}
+  }
+}
