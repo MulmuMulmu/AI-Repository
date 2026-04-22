@@ -413,6 +413,14 @@ def test_service_finalize_parse_result_marks_collapsed_item_name_row_for_review(
     service._finalize_parse_result(parsed, low_quality_reasons=[])
 
     assert parsed["diagnostics"]["collapsed_item_name_count"] == 1
+    assert parsed["diagnostics"]["collapsed_item_name_rows"] == [
+        {
+            "name_line_id": 2,
+            "name_text": "()2",
+            "detail_line_id": 3,
+            "detail_text": "2500000007828 6,480 1 6,480",
+        }
+    ]
     assert "ocr_collapse_item_name" in parsed["review_reasons"]
     assert parsed["review_required"] is True
 

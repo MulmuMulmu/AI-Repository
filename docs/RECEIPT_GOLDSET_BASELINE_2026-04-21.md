@@ -117,6 +117,7 @@ Noop Qwen 기준 결과:
   - 이후 `하인즈유기농케참90 -> 하인즈 유기농케찹90`, `갈바니리코타치츠4 -> 갈바니 리코타 치즈4`, `블렌드슈레드치즈1k9 -> 블렌드 슈레드치즈1kg` exact alias를 넣어 clear grocery item 3개를 더 회복했다.
   - 현재는 clear grocery item 기준으로 전부 맞고, `파프리카(팩)`은 OCR line 자체가 `()2`로 붕괴하는 hard-case로 남는다.
   - 따라서 이 축은 parser가 억지 복구를 시도하지 않고, `ocr_collapse_item_name` review reason으로 명시적으로 올리도록 정리했다.
+  - 현재 diagnostics에는 붕괴된 `name row/detail row` 쌍도 그대로 남겨서, 이후 UI review나 제한적 rescue 입력으로 바로 사용할 수 있다.
 - 이번 기준에는 [OIP (7).webp](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/OIP%20(7).webp)도 low-res grocery acceptance gold로 편입했다.
   - 이후 `code + 1× + unit_price + amount` detail row를 일반화하고 `회원만료일` metadata를 제외하면서 clear item 3개를 quantity/amount까지 회복했다.
   - 이 축은 now acceptance 기준에서 정렬됐다.

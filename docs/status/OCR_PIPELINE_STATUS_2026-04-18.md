@@ -91,6 +91,8 @@
 - `review_required`
 - `review_reasons`
 - `diagnostics.unresolved_groups`
+- `diagnostics.collapsed_item_name_count`
+- `diagnostics.collapsed_item_name_rows`
 
 현재 item 단위 review 이유 예시:
 

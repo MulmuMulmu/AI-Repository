@@ -1590,7 +1590,7 @@ class ReceiptParseService:
             return False
         return True
 
-    def _count_collapsed_item_name_rows(self, parsed: dict) -> int:
+    def _collect_collapsed_item_name_rows(self, parsed: dict) -> list[dict[str, object]]:
         diagnostics = parsed.get("diagnostics", {}) if isinstance(parsed, dict) else {}
         section_map = diagnostics.get("section_map", {})
         consumed_ids = {int(value) for value in diagnostics.get("consumed_line_ids", [])}
@@ -1609,6 +1609,7 @@ class ReceiptParseService:
         )
 
         collapsed_count = 0
+        collapsed_rows: list[dict[str, object]] = []
         for index, row in enumerate(rows):
             line_id = int(row["line_id"])
             if line_id in consumed_ids:
@@ -1637,8 +1638,16 @@ class ReceiptParseService:
                 continue
 
             collapsed_count += 1
+            collapsed_rows.append(
+                {
+                    "name_line_id": previous_line_id,
+                    "name_text": previous_text,
+                    "detail_line_id": line_id,
+                    "detail_text": text,
+                }
+            )
 
-        return collapsed_count
+        return collapsed_rows
 
     def _finalize_parse_result(self, parsed: dict, low_quality_reasons: list[str]) -> None:
         diagnostics = parsed.setdefault("diagnostics", {})
@@ -1681,11 +1690,13 @@ class ReceiptParseService:
         discount_adjustment_total = self._extract_discount_adjustment_total(parsed)
         unconsumed_item_amount_total = self._extract_unconsumed_item_amount_total(parsed)
         orphan_item_detail_count = self._count_orphan_item_detail_rows(parsed)
-        collapsed_item_name_count = self._count_collapsed_item_name_rows(parsed)
+        collapsed_item_name_rows = self._collect_collapsed_item_name_rows(parsed)
+        collapsed_item_name_count = len(collapsed_item_name_rows)
         diagnostics["discount_adjustment_total"] = discount_adjustment_total
         diagnostics["unconsumed_item_amount_total"] = unconsumed_item_amount_total
         diagnostics["orphan_item_detail_count"] = orphan_item_detail_count
         diagnostics["collapsed_item_name_count"] = collapsed_item_name_count
+        diagnostics["collapsed_item_name_rows"] = collapsed_item_name_rows
         if orphan_item_detail_count > 0 and "orphan_item_detail" not in review_reasons:
             review_reasons.append("orphan_item_detail")
         if collapsed_item_name_count > 0 and "ocr_collapse_item_name" not in review_reasons:
