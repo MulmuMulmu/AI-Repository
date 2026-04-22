@@ -2283,6 +2283,13 @@ class ReceiptParser:
                     amount = self._extract_preferred_total_amount(next_text, total_key=total_key)
             if amount is not None:
                 if (
+                    total_key == "total"
+                    and total_key in totals
+                    and "payment_amount" in totals
+                    and float(amount) < float(totals["payment_amount"])
+                ):
+                    continue
+                if (
                     total_key == "payment_amount"
                     and total_key in totals
                 ):

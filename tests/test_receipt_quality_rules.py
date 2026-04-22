@@ -1611,6 +1611,41 @@ def test_parser_extracts_discount_adjusted_payment_from_signed_date_line() -> No
     assert result.totals["payment_amount"] == 3970.0
 
 
+def test_parser_does_not_overwrite_total_with_late_product_summary_footer() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="과세 물품가액 78,191", confidence=0.98, line_id=0, page_order=0),
+            OcrLine(text="부 I 가 세 7,819", confidence=0.98, line_id=1, page_order=1),
+            OcrLine(text="합계 86,010", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="결제금액 86,010", confidence=0.99, line_id=3, page_order=3),
+            OcrLine(text="수상품 합 계 4,480", confidence=0.90, line_id=4, page_order=4),
+        ]
+    )
+
+    assert result.totals["subtotal"] == 78191.0
+    assert result.totals["tax"] == 7819.0
+    assert result.totals["total"] == 86010.0
+    assert result.totals["payment_amount"] == 86010.0
+
+
+def test_parser_normalizes_lotte_mart_cup_noodle_ocr_typos() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="농심 오징어짧뽕 컵 3,750 1 3,750", confidence=0.95, line_id=0, page_order=0),
+            OcrLine(text="삼양나가사끼짬뽕 컵5,040 1 5,040", confidence=0.95, line_id=1, page_order=1),
+        ]
+    )
+
+    assert [item.normalized_name for item in result.items] == [
+        "농심 오징어짬뽕 컵",
+        "삼양 나가사끼짬뽕 컵",
+    ]
+
+
 def test_parser_prunes_totals_metadata_false_positive_in_oip9_style_receipt() -> None:
     parser = ReceiptParser()
 

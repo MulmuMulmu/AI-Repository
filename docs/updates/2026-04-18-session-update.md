@@ -1599,3 +1599,29 @@ barcode_detail 60장 subset 평가:
   - acceptance gold 계속 확장
   - 제품 범위 밖 샘플은 제외
   - 남은 실제 약점은 `R.jpg`, `R (1)/(2).jpg`, `OIP (9).webp`, `1652882389756.jpg`
+
+## 2026-04-22 R (1)/(2) late-footer total overwrite recovery
+
+추가한 내용:
+
+- `payment_amount`가 이미 있는 상태에서 더 작은 late `total` 후보가 `total`을 덮어쓰지 않도록 정리
+- `농심 오징어짧뽕 컵`, `삼양나가사끼짬뽕 컵` exact alias 추가
+
+검증:
+
+- 전체 테스트: `189 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `R (1).jpg`, `R (2).jpg`
+  - 둘 다 `item_f1 = 1.0`
+  - `total = 86,010`, `payment_amount = 86,010` 유지
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9845`
+  - `quantity_match_rate_avg = 0.9764`
+  - `amount_match_rate_avg = 0.9556`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - 남은 실제 최약군 `R.jpg`
+  - 그 다음은 `SE-...jpg`, `OIP (9).webp`, `1652882389756.jpg`

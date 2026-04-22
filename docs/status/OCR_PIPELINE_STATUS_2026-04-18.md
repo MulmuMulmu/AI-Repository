@@ -1471,3 +1471,38 @@ variant별:
 - 다음 우선순위:
   - acceptance gold를 계속 확장하되 제품 범위 밖 샘플은 제외
   - 남은 실제 약점은 `R.jpg`, `R (1)/(2).jpg`, `OIP (9).webp`, `1652882389756.jpg` 축
+
+## 2026-04-22 R (1)/(2) late-footer total overwrite recovery
+
+추가한 내용:
+
+- `ReceiptParser`
+  - `payment_amount`가 이미 존재하는 상태에서 더 작은 late `total` 후보가 오면 덮어쓰지 않도록 정리
+- `product_aliases`
+  - `농심 오징어짧뽕 컵 -> 농심 오징어짬뽕 컵`
+  - `삼양나가사끼짬뽕 컵 -> 삼양 나가사끼짬뽕 컵`
+- 회귀 테스트 2개 추가
+
+검증:
+
+- 전체 테스트: `189 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `R (1).jpg`
+  - `item_f1 = 1.0`
+  - `total = 86,010` 유지, `payment_amount = 86,010` 유지
+- `R (2).jpg`
+  - `item_f1 = 1.0`
+- 최신 gold 17장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9412`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9845`
+  - `quantity_match_rate_avg = 0.9764`
+  - `amount_match_rate_avg = 0.9556`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - 남은 실제 최약군 `R.jpg`
+  - 그 다음은 `SE-...jpg`, `OIP (9).webp`, `1652882389756.jpg`

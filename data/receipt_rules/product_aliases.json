@@ -69,6 +69,16 @@
       "reason": "standard"
     },
     {
+      "raw": "농심 오징어짧뽕 컵",
+      "standard": "농심 오징어짬뽕 컵",
+      "reason": "ocr_typo"
+    },
+    {
+      "raw": "삼양나가사끼짬뽕 컵",
+      "standard": "삼양 나가사끼짬뽕 컵",
+      "reason": "spacing_cleanup"
+    },
+    {
       "raw": "호가든캔330ML",
       "standard": "호가든캔330ml",
       "reason": "unit_normalization"
