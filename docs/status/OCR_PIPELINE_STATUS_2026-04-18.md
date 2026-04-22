@@ -1153,3 +1153,36 @@ variant별:
 - 다음 우선순위:
   - parser를 더 과적합시키기보다 grocery/convenience gold를 더 늘리고,
   - 반복적으로 남는 clear miss만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP (20) grocery partial gold promotion
+
+추가한 내용:
+
+- [OIP_20.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_20.json)
+  - grocery partial receipt를 acceptance gold로 편입
+  - clear grocery item 4개만 `expected.items`
+  - 나머지는 `uncertain_items` / `excluded_rows`로 분리
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `image_count = 15`
+  - `total_item_count = 112`
+  - `review_required_count = 5`
+
+검증:
+
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (20).webp`
+  - `item_f1 = 0.0`
+  - parser가 번호/노이즈가 섞인 raw row 수준에 머물러 있고, grocery normalization miss가 acceptance baseline에 직접 반영됨
+- 최신 gold 15장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.8667`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.8661`
+  - `quantity_match_rate_avg = 0.8103`
+  - `amount_match_rate_avg = 0.8090`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (20)` 계열의 grocery partial receipt에서 `raw item cleanup + normalization` 반복 miss만 일반화 규칙으로 보강

@@ -1347,3 +1347,27 @@ barcode_detail 60장 subset 평가:
 - 다음 우선순위:
   - acceptance gold 확장 우선
   - parser는 clear miss만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP (20) grocery partial gold promotion
+
+추가한 내용:
+
+- `OIP (20).webp`를 grocery partial acceptance gold로 편입
+- clear grocery item 4개만 `expected.items`로 두고 나머지는 uncertain/excluded로 분리
+
+검증:
+
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (20).webp`
+  - `item_f1 = 0.0`
+  - grocery partial receipt에서 raw item cleanup과 normalization이 아직 약하다는 점이 acceptance baseline에 직접 반영됨
+- latest gold baseline:
+  - `item_name_f1_avg = 0.8661`
+  - `quantity_match_rate_avg = 0.8103`
+  - `amount_match_rate_avg = 0.8090`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (20)` 계열 grocery partial receipt의 clear miss만 일반화 규칙으로 보강

@@ -1,0 +1,77 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-22T10:25:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "OIP (20).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (20).webp"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "생목심(구이용)",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 13450.0
+      },
+      {
+        "raw_name": "청양고추",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1390.0
+      },
+      {
+        "raw_name": "사각햇반300g",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1900.0
+      },
+      {
+        "raw_name": "깐양파",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 1650.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "삼겹살(구이용)",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "(CJ) 미상 품목",
+        "reason": "name_missing_or_truncated"
+      },
+      {
+        "raw_name": "진로(병)",
+        "reason": "ocr_name_uncertain"
+      }
+    ],
+    "excluded_rows": [
+      {
+        "raw_name": "재사용봉투",
+        "reason": "packaging"
+      }
+    ],
+    "totals": {
+      "payment_amount": 49060.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "unresolved_items",
+      "small_image"
+    ],
+    "diagnostics": {}
+  }
+}
