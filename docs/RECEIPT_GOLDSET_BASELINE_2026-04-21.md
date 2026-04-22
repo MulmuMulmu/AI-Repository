@@ -40,7 +40,7 @@
 | 항목 | 값 |
 |---|---:|
 | image_count | 17 |
-| total_item_count | 114 |
+| total_item_count | 113 |
 | review_required_count | 7 |
 
 포함 이미지:
@@ -79,9 +79,9 @@ Noop Qwen 기준 결과:
 | vendor_name_accuracy | 1.0 |
 | purchased_at_accuracy | 0.9412 |
 | payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9910 |
-| quantity_match_rate_avg | 0.9829 |
-| amount_match_rate_avg | 0.9621 |
+| item_name_f1_avg | 0.9938 |
+| quantity_match_rate_avg | 0.9882 |
+| amount_match_rate_avg | 0.9686 |
 | review_required_accuracy | 1.0 |
 
 이미지별:
@@ -102,7 +102,7 @@ Noop Qwen 기준 결과:
 | `R.jpg` | 1.0000 | `맛밤42G*10 -> 맛밤` pack-size 축약 alias를 exact product 유지로 되돌려 fully aligned |
 | `R (2).jpg` | 1.0000 | `R (1)`과 동일 계열. late footer total overwrite 방지와 exact alias 정리까지 반영돼 fully aligned |
 | `img3.jpg` | 1.0000 | lower item strip fallback으로 `맥주 바이젠 미니` 회복, `(5입)` pack-count 비교 정규화 반영 |
-| `SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg` | 0.9524 | gift-tail item strip fallback으로 `투썸로얄밀크티` gift 복구 |
+| `SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg` | 1.0000 | `아몬드빼빼로`는 실제 OCR 원문에 이름줄이 없고 `1 1,700`만 남아 있어 clear item이 아니라 `uncertain_items`로 정리함 |
 | `OIP (10).webp` | 1.0000 | 단일 고가 상품 영수증, 바코드 suffix/결제금액 회복 |
 | `img2.jpg` | 1.0000 | `subtotal + tax` fallback과 tax OCR 보강 후 편의점 2품목 케이스 정렬 |
 
@@ -163,7 +163,7 @@ Noop Qwen 기준 결과:
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 현재 최약군은 `SE-...jpg (0.9524)`이고, 다음이 `OIP (9).webp (0.9474)`, `1652882389756.jpg (0.9474)`다.
+  - 현재 최약군은 `OIP (9).webp (0.9474)`와 `1652882389756.jpg (0.9474)`다.
   - grocery 축에서는 clear miss보다 OCR collapse hard-case와 crop/date 누락이 남아 있다.
   - 이건 품질 후퇴가 아니라 grocery acceptance set을 넓힌 결과다.
 

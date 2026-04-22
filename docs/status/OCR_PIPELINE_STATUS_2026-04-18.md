@@ -1536,3 +1536,32 @@ variant별:
 - 다음 우선순위:
   - 남은 실제 최약군 `SE-...jpg`
   - 그 다음은 `OIP (9).webp`, `1652882389756.jpg`
+
+## 2026-04-22 SE gold alignment
+
+추가한 내용:
+
+- [SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.json)
+  - `아몬드빼빼로`를 clear item에서 `uncertain_items`로 이동
+  - 이유: OCR 원문에는 이름줄이 없고 `1 1,700`만 남아 있어서 acceptance gold 기준에 맞지 않음
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `total_item_count = 113`으로 갱신
+
+검증:
+
+- gold baseline 재측정 완료
+
+효과:
+
+- `SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg`
+  - `item_f1 = 1.0`
+- 최신 gold 17장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9412`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9938`
+  - `quantity_match_rate_avg = 0.9882`
+  - `amount_match_rate_avg = 0.9686`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - 남은 실제 최약군 `OIP (9).webp`, `1652882389756.jpg`

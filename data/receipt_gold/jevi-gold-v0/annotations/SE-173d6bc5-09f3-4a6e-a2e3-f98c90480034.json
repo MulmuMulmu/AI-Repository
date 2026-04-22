@@ -65,13 +65,6 @@
         "amount": 2000.0
       },
       {
-        "raw_name": "아몬드빼빼로",
-        "normalized_name": null,
-        "quantity": 1.0,
-        "unit": "개",
-        "amount": 1700.0
-      },
-      {
         "raw_name": "화이트빼빼로",
         "normalized_name": null,
         "quantity": 1.0,
@@ -94,6 +87,10 @@
       }
     ],
     "uncertain_items": [
+      {
+        "raw_name": "아몬드빼빼로",
+        "reason": "ocr_name_missing_only_amount_row_visible"
+      },
       {
         "raw_name": "*3L(국물)",
         "reason": "item_name_uncertain"
