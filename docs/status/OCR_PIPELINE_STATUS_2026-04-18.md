@@ -991,3 +991,35 @@ variant별:
 - `OIP (7).webp`
   - `item_f1 = 0.8571`
   - 이름 인식은 어느 정도 되지만 quantity/amount 구조화가 아직 약하다는 점이 acceptance baseline에 반영됨
+
+## 2026-04-22 OIP (1) gold promotion
+
+추가한 내용:
+
+- [OIP_1.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_1.json)
+  - convenience mixed acceptance sample을 gold draft로 편입
+  - 식품 2개를 expected item으로 고정
+  - `애니파워부탄가스`는 `excluded_rows.non_food`로 분리
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `image_count = 13`
+  - `total_item_count = 105`
+  - `review_required_count = 3`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- 최신 gold 13장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9231`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.8932`
+  - `quantity_match_rate_avg = 0.8282`
+  - `amount_match_rate_avg = 0.8266`
+  - `review_required_accuracy = 1.0`
+- `OIP (1).webp`
+  - `item_f1 = 0.4`
+  - parser가 비식품 `애니파워부탄가스`를 item으로 유지하고 있어 acceptance baseline이 더 현실적으로 내려감

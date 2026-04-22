@@ -1215,3 +1215,29 @@ barcode_detail 60장 subset 평가:
 - 해석:
   - quantity/amount가 acceptance set의 실제 병목이라는 점이 더 선명해졌다
   - 다음 우선순위는 gold 추가 확장과 `name line + detail row` 계열 parser 일반화다
+
+## 2026-04-22 OIP (1) gold promotion
+
+추가한 내용:
+
+- `OIP (1).webp`를 convenience mixed acceptance gold로 편입
+  - 식품 2개
+  - non-food 1개는 excluded row
+  - `review_required=true`
+
+검증:
+
+- gold baseline 재측정 완료
+- 전체 테스트: `172 passed`
+
+효과:
+
+- latest gold baseline이 `12장 -> 13장`으로 확장
+- metrics:
+  - `item_name_f1_avg = 0.8932`
+  - `quantity_match_rate_avg = 0.8282`
+  - `amount_match_rate_avg = 0.8266`
+  - `review_required_accuracy = 1.0`
+- 해석:
+  - non-food filtering과 convenience mixed receipt 대응이 acceptance 기준의 실제 병목으로 드러남
+  - 지금은 수치를 방어하는 것보다 acceptance 분포를 더 넓히는 방향이 맞다

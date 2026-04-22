@@ -1,9 +1,9 @@
 {
   "dataset_name": "jevi-gold-v0",
   "input_dir": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비",
-  "image_count": 12,
-  "total_item_count": 103,
-  "review_required_count": 2,
+  "image_count": 13,
+  "total_item_count": 105,
+  "review_required_count": 3,
   "images": [
     {
       "file_name": "2a4dd3c18f06cec1571dc9ca52dc5946.jpg",
@@ -52,6 +52,10 @@
     {
       "file_name": "OIP (7).webp",
       "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (7).webp"
+    },
+    {
+      "file_name": "OIP (1).webp",
+      "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (1).webp"
     }
   ],
   "label_policy": {

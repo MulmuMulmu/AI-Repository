@@ -1,0 +1,52 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-22T09:55:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "OIP (1).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (1).webp"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "사조고추참치100g*3",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 2220.0
+      },
+      {
+        "raw_name": "동원야채참치100g*3",
+        "normalized_name": null,
+        "quantity": 1.0,
+        "unit": "개",
+        "amount": 4480.0
+      }
+    ],
+    "uncertain_items": [],
+    "excluded_rows": [
+      {
+        "raw_name": "애니파워부탄가스",
+        "reason": "non_food"
+      }
+    ],
+    "totals": {
+      "tax": 9541.0,
+      "total": 107540.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "missing_purchased_at",
+      "small_image"
+    ],
+    "diagnostics": {}
+  }
+}
