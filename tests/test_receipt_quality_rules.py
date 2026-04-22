@@ -1393,4 +1393,54 @@ def test_parser_prunes_totals_metadata_false_positive_in_oip9_style_receipt() ->
     assert result.totals["tax"] == 8167.0
     assert result.totals["total"] == 117580.0
     assert result.totals["payment_amount"] == 112580.0
-    assert result.totals["payment_amount"] == 112580.0
+
+
+def test_parser_recovers_leading_item_before_broken_second_item_in_oip9_style_receipt() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="B몸 B 가 수량 문 Ho", confidence=0.66, line_id=0, page_order=0),
+            OcrLine(text="양념등심돈까스", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="1500000141394 16, 980 - 16,980", confidence=0.94, line_id=2, page_order=2),
+            OcrLine(text="()2", confidence=0.63, line_id=3, page_order=3),
+            OcrLine(text="2500000007828 6,480 1 6,480", confidence=0.99, line_id=4, page_order=4),
+            OcrLine(text="2021채소S-POINT -1,500", confidence=0.97, line_id=5, page_order=5),
+            OcrLine(text="* 완숙토마토 4kg/박스", confidence=0.93, line_id=6, page_order=6),
+            OcrLine(text="2500000013522 17,980 1 17,980", confidence=0.99, line_id=7, page_order=7),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items][:2] == [
+        "양념등심돈까스",
+        "완숙토마토 4kg/박스",
+    ]
+    assert result.items[0].amount == 16980.0
+
+
+def test_parser_keeps_leading_item_when_full_oip9_style_receipt_contains_broken_following_rows() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="B몸 B 가 수량 문 Ho", confidence=0.66, line_id=0, page_order=0),
+            OcrLine(text="양념등심돈까스", confidence=0.99, line_id=1, page_order=1),
+            OcrLine(text="1500000141394 16, 980 - 16,980", confidence=0.94, line_id=2, page_order=2),
+            OcrLine(text="()2", confidence=0.63, line_id=3, page_order=3),
+            OcrLine(text="2500000007828 6,480 1 6,480", confidence=0.99, line_id=4, page_order=4),
+            OcrLine(text="2021채소S-POINT -1,500", confidence=0.97, line_id=5, page_order=5),
+            OcrLine(text="* 완숙토마토 4kg/박스", confidence=0.93, line_id=6, page_order=6),
+            OcrLine(text="2500000013522 17,980 1 17,980", confidence=0.99, line_id=7, page_order=7),
+            OcrLine(text="양념닭주물럭2.2kg", confidence=0.94, line_id=8, page_order=8),
+            OcrLine(text="2500000284861 27,980 1 27,980", confidence=0.99, line_id=9, page_order=9),
+            OcrLine(text="-2,500", confidence=0.99, line_id=10, page_order=10),
+            OcrLine(text="청정원서해안까나리", confidence=0.89, line_id=11, page_order=11),
+            OcrLine(text="8801052993485 6,780 1 6,780", confidence=0.99, line_id=12, page_order=12),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items][:3] == [
+        "양념등심돈까스",
+        "완숙토마토 4kg/박스",
+        "양념닭주물럭2.2kg",
+    ]

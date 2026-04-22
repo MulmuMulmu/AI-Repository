@@ -1158,8 +1158,9 @@ barcode_detail 60장 subset 평가:
 효과:
 
 - `OIP (9).webp`
+  - `양념등심돈까스` 회복
   - `국내산 양상추2입`: `quantity 7 -> 1`
   - `payment_amount`: `112,580` 회복
   - `subtotal=81,673`, `tax=8,167` 회복
   - false positive `JY 물 손어머` 제거
-- 이 샘플은 아직 `양념등심돈까스`, `파프리카(팩)` miss 때문에 `total_mismatch`가 남아서 gold 승격은 보류
+- 이 샘플은 아직 `파프리카(팩)` miss 때문에 `total_mismatch`가 남아서 gold 승격은 보류

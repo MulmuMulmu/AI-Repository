@@ -919,11 +919,11 @@ variant별:
 효과:
 
 - `OIP (9).webp`
+  - `양념등심돈까스` 선두 품목 회복
   - `국내산 양상추2입` 수량: `7 -> 1`
   - `payment_amount`: `117,580 -> 112,580`
   - false positive item `JY 물 손어머` 제거
   - `subtotal=81,673`, `tax=8,167` 회복
 - 아직 남은 miss:
-  - `양념등심돈까스`
   - `파프리카(팩)`
   - `missing_vendor_name`, `missing_purchased_at`, `total_mismatch`

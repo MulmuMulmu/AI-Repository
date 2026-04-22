@@ -861,6 +861,12 @@ class ReceiptParser:
             if len(pair_offsets) >= 2:
                 first_pair_index = start + pair_offsets[0]
                 return lines[first_pair_index].page_order if lines[first_pair_index].page_order is not None else first_pair_index
+            if len(pair_offsets) == 1:
+                first_pair_offset = pair_offsets[0]
+                trailing_window = window[first_pair_offset + 2 :]
+                if any(self._looks_like_item_candidate(candidate.text) for candidate in trailing_window):
+                    first_pair_index = start + first_pair_offset
+                    return lines[first_pair_index].page_order if lines[first_pair_index].page_order is not None else first_pair_index
 
             score = 0
             first_structured_index: int | None = None
@@ -884,7 +890,7 @@ class ReceiptParser:
         detail_line = lines[offset + 1]
         if not self._looks_like_item_candidate(name_line.text):
             return False
-        detail_text = detail_line.text.strip()
+        detail_text = self._normalize_spaced_numeric_text(detail_line.text.strip())
         return bool(
             NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
             or CODE_NUMERIC_DETAIL_ROW_PATTERN.match(detail_text)
