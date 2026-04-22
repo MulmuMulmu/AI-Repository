@@ -1421,3 +1421,26 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - grocery partial receipt의 남은 clear miss만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP (20) uncertainty alignment
+
+추가한 내용:
+
+- `OIP_20.json`의 ambiguous product rows를 `uncertain_items`에 더 정확히 반영
+
+검증:
+
+- 전체 테스트: `180 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (20).webp`
+  - `item_f1 = 1.0`
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9328`
+  - `quantity_match_rate_avg = 0.8770`
+  - `amount_match_rate_avg = 0.8757`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (9)` 계열 grocery partial clear miss 보강

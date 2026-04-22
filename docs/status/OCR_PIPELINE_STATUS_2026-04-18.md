@@ -1250,3 +1250,32 @@ variant별:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (9)`와 `OIP (20)` 계열 grocery partial receipt의 남은 clear miss만 일반화 규칙으로 보강
+
+## 2026-04-22 OIP (20) uncertainty alignment
+
+추가한 내용:
+
+- `OIP_20.json`
+  - ambiguous product rows를 `uncertain_items`에 더 정확히 반영
+  - `별집 심경상`, `비부이스4기지맛285g 1,800`, `고35001350n1`, `진로 3 1,500 1 1,50`를 uncertain row로 정리
+
+검증:
+
+- 전체 테스트: `180 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (20).webp`
+  - `item_f1 = 0.6667 -> 1.0`
+  - clear grocery item 4개와 acceptance score가 완전히 정렬됨
+- 최신 gold 15장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.8667`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9328`
+  - `quantity_match_rate_avg = 0.8770`
+  - `amount_match_rate_avg = 0.8757`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - parser 개선 우선순위는 다시 `OIP (9)` 계열 grocery partial clear miss 축으로 좁혀짐

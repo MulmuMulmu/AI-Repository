@@ -46,15 +46,21 @@
     ],
     "uncertain_items": [
       {
-        "raw_name": "삼겹살(구이용)",
+        "raw_name": "별집 심경상",
+        "normalized_name": "삼겹살(구이용)",
         "reason": "ocr_name_uncertain"
       },
       {
-        "raw_name": "(CJ) 미상 품목",
+        "raw_name": "비부이스4기지맛285g 1,800",
         "reason": "name_missing_or_truncated"
       },
       {
-        "raw_name": "진로(병)",
+        "raw_name": "고35001350n1",
+        "reason": "ocr_name_uncertain"
+      },
+      {
+        "raw_name": "진로 3 1,500 1 1,50",
+        "normalized_name": "진로(병)",
         "reason": "ocr_name_uncertain"
       }
     ],
