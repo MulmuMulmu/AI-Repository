@@ -1,0 +1,50 @@
+{
+  "dataset_name": "jevi-gold-v0",
+  "label_source": "assistant-curated-from-silver-v2",
+  "generated_at": "2026-04-22T11:00:00Z",
+  "verification_status": "assistant_labeled_unverified",
+  "image": {
+    "file_name": "OIP (4).webp",
+    "source_path": "C:\\Users\\USER-PC\\Desktop\\jp\\.worktrees\\codex-hwpx-proposal-patch\\output\\제비\\OIP (4).webp"
+  },
+  "parser": {
+    "engine_version": "assistant-curated-v0"
+  },
+  "expected": {
+    "vendor_name": null,
+    "purchased_at": null,
+    "ocr_texts": [],
+    "items": [
+      {
+        "raw_name": "아현미밥210g*3",
+        "normalized_name": null,
+        "quantity": 2.0,
+        "unit": "개",
+        "amount": 9960.0
+      }
+    ],
+    "uncertain_items": [
+      {
+        "raw_name": "1069219028 KBABR 470 X 3",
+        "reason": "cropped_previous_item"
+      }
+    ],
+    "excluded_rows": [
+      {
+        "raw_name": "행사일인 -9,960 0",
+        "reason": "discount"
+      }
+    ],
+    "totals": {
+      "total": 49850.0,
+      "payment_amount": 39890.0
+    },
+    "review_required": true,
+    "review_reasons": [
+      "missing_vendor_name",
+      "missing_purchased_at",
+      "small_image"
+    ],
+    "diagnostics": {}
+  }
+}

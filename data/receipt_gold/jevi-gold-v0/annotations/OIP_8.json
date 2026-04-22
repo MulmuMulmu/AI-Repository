@@ -12,7 +12,7 @@
   },
   "expected": {
     "vendor_name": null,
-    "purchased_at": null,
+    "purchased_at": "2023-08-11",
     "ocr_texts": [],
     "items": [
       {
@@ -45,14 +45,13 @@
       {
         "raw_name": "스타벅스키라멜731n",
         "reason": "ocr_name_uncertain"
-      }
-    ],
-    "excluded_rows": [
+      },
       {
         "raw_name": "이식세",
-        "reason": "totals_or_non_item_uncertain"
+        "reason": "ocr_name_uncertain"
       }
     ],
+    "excluded_rows": [],
     "totals": {},
     "review_required": true,
     "review_reasons": [

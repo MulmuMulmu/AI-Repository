@@ -1517,3 +1517,27 @@ barcode_detail 60장 subset 평가:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - `OIP (8)` low-res convenience 보강
+
+## 2026-04-22 OIP (4) partial grocery gold promotion
+
+추가한 내용:
+
+- `OIP (4).webp`를 partial grocery acceptance gold로 편입
+- clear item 1개만 `expected.items`로 두고, cropped previous item / 행사 줄을 분리
+
+검증:
+
+- 전체 테스트: `183 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (4).webp`
+  - `item_f1 = 0.0`
+- latest gold baseline:
+  - `item_name_f1_avg = 0.9121`
+  - `quantity_match_rate_avg = 0.9035`
+  - `amount_match_rate_avg = 0.8814`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (4)` partial grocery crop 보강

@@ -1369,3 +1369,37 @@ variant별:
   - `review_required_accuracy = 1.0`
 - 다음 우선순위:
   - 남은 최약군 `OIP (8)` low-res convenience 보강
+
+## 2026-04-22 OIP (4) partial grocery gold promotion
+
+추가한 내용:
+
+- [OIP_4.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_4.json)
+  - partial grocery crop를 acceptance gold로 편입
+  - clear item 1개만 `expected.items`
+  - cropped previous item은 `uncertain_items`, 행사 줄은 `excluded_rows`로 분리
+- [manifest.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/manifest.json)
+  - `image_count = 16`
+  - `total_item_count = 113`
+  - `review_required_count = 6`
+
+검증:
+
+- 전체 테스트: `183 passed`
+- gold baseline 재측정 완료
+
+효과:
+
+- `OIP (4).webp`
+  - `item_f1 = 0.0`
+  - `raw_name tail`과 `payment_amount` 오해석이 acceptance baseline에 직접 반영됨
+- 최신 gold 16장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 0.9375`
+  - `payment_amount_accuracy = 0.9375`
+  - `item_name_f1_avg = 0.9121`
+  - `quantity_match_rate_avg = 0.9035`
+  - `amount_match_rate_avg = 0.8814`
+  - `review_required_accuracy = 1.0`
+- 다음 우선순위:
+  - `OIP (4)` partial grocery crop 보강

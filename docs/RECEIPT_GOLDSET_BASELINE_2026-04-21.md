@@ -22,6 +22,7 @@
   - [OIP_8.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_8.json)
   - [OIP_9.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_9.json)
   - [OIP_20.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_20.json)
+  - [OIP_4.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/OIP_4.json)
   - [image.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/image.json)
   - [R_1.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/R_1.json)
   - [R.json](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/data/receipt_gold/jevi-gold-v0/annotations/R.json)
@@ -38,9 +39,9 @@
 
 | 항목 | 값 |
 |---|---:|
-| image_count | 15 |
-| total_item_count | 112 |
-| review_required_count | 5 |
+| image_count | 16 |
+| total_item_count | 113 |
+| review_required_count | 6 |
 
 포함 이미지:
 
@@ -51,6 +52,7 @@
 - `OIP (8).webp`
 - `OIP (9).webp`
 - `OIP (20).webp`
+- `OIP (4).webp`
 - `image.png`
 - `R (1).jpg`
 - `R.jpg`
@@ -72,13 +74,13 @@ Noop Qwen 기준 결과:
 
 | 지표 | 값 |
 |---|---:|
-| image_count | 15 |
+| image_count | 16 |
 | vendor_name_accuracy | 1.0 |
-| purchased_at_accuracy | 0.8667 |
-| payment_amount_accuracy | 1.0 |
-| item_name_f1_avg | 0.9634 |
+| purchased_at_accuracy | 0.9375 |
+| payment_amount_accuracy | 0.9375 |
+| item_name_f1_avg | 0.9121 |
 | quantity_match_rate_avg | 0.9637 |
-| amount_match_rate_avg | 0.9401 |
+| amount_match_rate_avg | 0.8814 |
 | review_required_accuracy | 1.0 |
 
 이미지별:
@@ -92,6 +94,7 @@ Noop Qwen 기준 결과:
 | `OIP (8).webp` | 0.8571 | low-res convenience receipt. parser는 clear item 3개를 회복했고 evaluator가 `uncertain_items`를 ignore하도록 정리되면서 실제 acceptance score와 정렬됨 |
 | `OIP (9).webp` | 1.0000 | grocery acceptance sample. `하인즈유기농케참90`, `갈바니리코타치츠4`, `블렌드슈레드치즈1k9` OCR typo가 exact alias로 정리됐고, `파프리카(팩)`은 name OCR collapse hard-case로 남음 |
 | `OIP (20).webp` | 1.0000 | grocery partial receipt. clear grocery item 4개는 모두 회복됐고, ambiguous product rows는 gold의 `uncertain_items`로 정리되어 acceptance score와 정렬됨 |
+| `OIP (4).webp` | 0.0000 | partial grocery crop. `아현미밥210g*3` 한 줄과 결제 요약 일부만 보이는 케이스로, parser가 이름 tail과 payment_amount를 아직 잘못 해석함 |
 | `image.png` | 1.0000 | leading marker 제거 + exact alias 회복으로 식재료/유제품 명칭 정렬 |
 | `R (1).jpg` | 0.9286 | `용기면 6입` 2줄 품목 복구 후 대형마트 라면/소스류 케이스 안정화 |
 | `R.jpg` | 1.0000 | visual review로 `와이멘씨라이스퍼프`, `부드러운쿠키블루베`를 gold 승격 후 정렬 완료 |
@@ -124,6 +127,10 @@ Noop Qwen 기준 결과:
   - clear item은 `생목심(구이용)`, `청양고추`, `사각햇반300g`, `깐양파` 4개만 잡고 나머지는 uncertain/excluded로 분리했다.
   - 이후 `6-digit PLU code` 제거, embedded barcode noise tail 정리, `사각햇번300g -> 사각햇반300g`, `깐양과 -> 깐양파`, `한은 생목심 -> 생목심(구이용)`, `청양고수 -> 청양고추` exact alias를 넣어 `item_f1 = 0.6667`까지 회복했다.
   - 이후 ambiguous product rows도 `uncertain_items`로 정리해 acceptance score를 clear item 기준과 맞췄고, 현재 `item_f1 = 1.0`이다.
+- 이번 기준에는 [OIP (4).webp](C:/Users/USER-PC/Desktop/jp/.worktrees/codex-hwpx-proposal-patch/output/제비/OIP%20(4).webp)도 partial grocery acceptance gold로 편입했다.
+  - `아현미밥210g*3`, `quantity=2`, `amount=9,960`은 시각적으로 명확해서 clear item으로 잡았다.
+  - parser는 아직 raw_name에 `4,980 X` tail을 끌고 오고 `payment_amount=2.0` 같은 오해석이 남아 있다.
+  - 이 샘플을 넣으면서 acceptance baseline은 내려갔지만, partial crop 영수증의 실제 약점이 더 정확히 드러났다.
 - 이번 보강의 핵심:
   - `img3.jpg`: 가짜 vendor 제거 후 `lower item strip fallback`으로 `맥주 바이젠 미니` 회복
   - `OIP (1).webp`: alphanumeric barcode prefix 제거와 `부탄가스` non-food exclusion 추가로 mixed convenience precision 회복
@@ -147,13 +154,13 @@ Noop Qwen 기준 결과:
   - `review_required_accuracy = 1.0`
   - `img3.jpg`, `OIP (10).webp`는 focused receipt의 vendor 미확정 허용 정책으로 정리됐다.
   - `R (1)/(2).jpg`는 filtered-out non-food row의 `1,000원`을 reconciliation에 다시 반영하면서 `total_mismatch`가 해소됐다.
-  - 현재 최약군은 `OIP (8).webp (0.8571)`이다.
-  - grocery 축에서는 clear miss보다 OCR collapse hard-case가 남아 있다.
+  - 현재 최약군은 `OIP (4).webp (0.0000)`이고, 다음이 `R.jpg (0.8889)`, `R (1)/(2).jpg (0.9286)`이다.
+  - grocery 축에서는 clear miss보다 partial crop과 OCR collapse hard-case가 남아 있다.
   - 이건 품질 후퇴가 아니라 grocery acceptance set을 넓힌 결과다.
 
 ## 다음 우선순위
 
 1. grocery/convenience gold를 16장 이상으로 확장
-2. `OIP (8)` 같은 low-res receipt를 우선 보강
+2. `OIP (4)` 같은 partial grocery crop 우선 보강
 3. gold 16장 기준 baseline 재측정
 4. 그 뒤에도 남는 item-name 붕괴 케이스에만 제한적 crop/Qwen rescue 검토
