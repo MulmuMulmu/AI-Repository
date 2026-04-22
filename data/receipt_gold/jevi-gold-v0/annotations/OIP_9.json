@@ -118,6 +118,7 @@
     },
     "review_required": true,
     "review_reasons": [
+      "ocr_collapse_item_name",
       "total_mismatch"
     ],
     "diagnostics": {}

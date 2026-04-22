@@ -259,6 +259,13 @@
 
 결론:
 
+## 2026-04-22 방향 점검 반영
+
+- 현재 남은 hard-case 중 `OIP (9).webp`는 parser 규칙 부족이 아니라 `파프리카(팩)` 이름줄 OCR 붕괴 케이스로 정리했다.
+- crop/upscale 재OCR로도 `()2` 수준만 남아서, 이 축은 억지 복구보다 명시적 review가 맞다고 판단했다.
+- 서비스 레이어에 `ocr_collapse_item_name` review reason과 `diagnostics.collapsed_item_name_count`를 추가했다.
+- 즉, 현재 방향은 `PaddleOCR + rule parser + 제한적 rescue`를 유지하되, 복구 불가능 hard-case는 정직하게 review로 올리는 쪽이다.
+
 - 합성데이터 기반 고도화가 실제로 수치 개선으로 이어졌다고 말할 수 있다.
 - 특히 `mixed_noise`는 대폭 개선되었고 더 이상 최약군이 아니다.
 - 현재 최약군은 `convenience_pos`이며, 다음 synthetic 보강은 이 레이아웃에 집중하는 것이 맞다.

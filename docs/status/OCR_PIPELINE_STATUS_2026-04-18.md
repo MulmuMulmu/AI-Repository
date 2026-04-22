@@ -106,6 +106,8 @@
 - `missing_purchased_at`
 - `unresolved_items`
 - `total_mismatch`
+- `orphan_item_detail`
+- `ocr_collapse_item_name`
 
 ### 6. Qwen 보정
 

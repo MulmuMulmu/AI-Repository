@@ -381,6 +381,42 @@ def test_service_finalize_parse_result_marks_orphan_item_detail_in_partial_recei
     assert parsed["review_required"] is True
 
 
+def test_service_finalize_parse_result_marks_collapsed_item_name_row_for_review() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": None,
+        "purchased_at": None,
+        "items": [
+            {"raw_name": "양념등심돈까스", "quantity": 1.0, "unit": "개", "amount": 16980.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {},
+        "ocr_texts": [
+            {"line_id": 0, "text": "상품명 단가 수량 금액"},
+            {"line_id": 1, "text": "양념등심돈까스 16,980 1 16,980"},
+            {"line_id": 2, "text": "()2"},
+            {"line_id": 3, "text": "2500000007828 6,480 1 6,480"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {
+            "quality_score": 1.0,
+            "section_map": {
+                "0": "header",
+                "1": "items",
+                "2": "items",
+                "3": "items",
+            },
+            "consumed_line_ids": [1],
+        },
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert parsed["diagnostics"]["collapsed_item_name_count"] == 1
+    assert "ocr_collapse_item_name" in parsed["review_reasons"]
+    assert parsed["review_required"] is True
+
+
 def test_service_finalize_parse_result_uses_unconsumed_item_amount_to_avoid_total_mismatch() -> None:
     service = ReceiptParseService(ocr_backend=object())
     parsed = {
