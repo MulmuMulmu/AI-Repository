@@ -97,6 +97,7 @@
 
 제한적 rescue 정책:
 
+- `collapsed_item_name_rows`는 `name_text`, `detail_text`뿐 아니라 provider에 넘길 최소 `context_lines`를 만들 수 있는 입력으로 유지한다.
 - `qwen_collapsed_rescue`로 추가된 item의 `source_line_ids`는 후속 검증에서도 consumed로 본다.
 - 따라서 rescue가 성공하면 같은 줄로 인한 `ocr_collapse_item_name`, `total_mismatch`가 해소될 수 있다.
 

@@ -970,8 +970,50 @@ class ReceiptParseService:
             "current_purchased_at": parsed.get("purchased_at"),
             "known_totals": dict(parsed.get("totals", {})),
             "review_items": review_items[:QWEN_ITEM_MAX_REVIEW_ITEMS],
-            "collapsed_item_name_rows": list(parsed.get("diagnostics", {}).get("collapsed_item_name_rows", [])),
+            "collapsed_item_name_rows": self._build_qwen_collapsed_item_rows(
+                parsed=parsed,
+                lines=lines,
+                line_index_map=line_index_map,
+            ),
         }
+
+    def _build_qwen_collapsed_item_rows(
+        self,
+        *,
+        parsed: dict,
+        lines: list[OcrLine],
+        line_index_map: dict[int, int],
+    ) -> list[dict[str, object]]:
+        collapsed_rows = parsed.get("diagnostics", {}).get("collapsed_item_name_rows", [])
+        if not isinstance(collapsed_rows, list):
+            return []
+
+        line_map = {line.line_id: line.text for line in lines if line.line_id is not None}
+        built_rows: list[dict[str, object]] = []
+        for row in collapsed_rows:
+            if not isinstance(row, dict):
+                continue
+            built = dict(row)
+            context_lines: list[str] = []
+            name_line_id = row.get("name_line_id")
+            detail_line_id = row.get("detail_line_id")
+            if isinstance(name_line_id, int):
+                previous_line = line_map.get(name_line_id - 1)
+                if isinstance(previous_line, str) and previous_line.strip():
+                    context_lines.append(previous_line.strip())
+            name_text = self._clean_string(row.get("name_text"))
+            detail_text = self._clean_string(row.get("detail_text"))
+            if name_text:
+                context_lines.append(name_text)
+            if detail_text:
+                context_lines.append(detail_text)
+            if isinstance(detail_line_id, int):
+                next_line = line_map.get(detail_line_id + 1)
+                if isinstance(next_line, str) and next_line.strip():
+                    context_lines.append(next_line.strip())
+            built["context_lines"] = context_lines
+            built_rows.append(built)
+        return built_rows
 
     def _build_qwen_item_context_lines(
         self,

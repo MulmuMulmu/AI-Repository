@@ -147,6 +147,11 @@ def test_receipt_service_builds_item_qwen_payload_for_low_confidence_and_missing
             "name_text": "()2",
             "detail_line_id": 4,
             "detail_text": "2500000007828 6,480 1 6,480",
+            "context_lines": [
+                "허쉬쿠키앤초코 1 증정품",
+                "()2",
+                "2500000007828 6,480 1 6,480",
+            ],
         }
     ]
 
@@ -247,6 +252,31 @@ def test_local_qwen_item_prompt_instructs_model_to_use_source_and_context_lines(
 
     assert "Use source_lines first" in prompt
     assert "context_lines" in prompt
+
+
+def test_local_qwen_item_prompt_mentions_collapsed_row_rescue() -> None:
+    provider = LocalTransformersQwenProvider(enabled=False)
+
+    prompt = provider._build_receipt_item_prompt(
+        {
+            "review_items": [],
+            "collapsed_item_name_rows": [
+                {
+                    "name_text": "()2",
+                    "detail_text": "2500000007828 6,480 1 6,480",
+                    "context_lines": [
+                        "양념등심돈까스 16,980 1 16,980",
+                        "()2",
+                        "2500000007828 6,480 1 6,480",
+                    ],
+                }
+            ],
+        }
+    )
+
+    assert "collapsed_item_name_rows" in prompt
+    assert "rescued_items" in prompt
+    assert "2500000007828 6,480 1 6,480" in prompt
 
 
 def test_receipt_service_limits_qwen_review_items_to_ambiguous_subset() -> None:
