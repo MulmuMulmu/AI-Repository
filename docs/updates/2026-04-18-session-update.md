@@ -1007,3 +1007,30 @@ barcode_detail 60장 subset 평가:
   - `quantity_match_rate_avg = 0.9367`
   - `amount_match_rate_avg = 0.9342`
   - `review_required_accuracy = 1.0`
+
+## 2026-04-22 image cleanup + dense fallback suppression
+
+추가한 내용:
+
+- `×`, `* ` marker가 item raw_name 앞에 붙는 경우만 좁게 제거
+- raw alias lookup을 candidate stripping 이전에 추가
+- `갈바니'리코타치느4` canonical alias를 `갈바니 리코타 치즈4`로 조정
+- dense receipt에서는 `placeholder_barcode` item-strip fallback을 막아 duplicate hallucination 제거
+
+검증:
+
+- 신규 parser/service 테스트 3개 추가
+- 전체 테스트: `163 passed`
+
+효과:
+
+- `image.png`
+  - `item_f1 = 1.0`
+- `2a4dd3...jpg`
+  - duplicate fallback 제거
+  - `item_f1 = 0.8333`
+- 최신 gold 8장 baseline:
+  - `item_name_f1_avg = 0.9397`
+  - `quantity_match_rate_avg = 0.9708`
+  - `amount_match_rate_avg = 0.9683`
+  - `review_required_accuracy = 1.0`

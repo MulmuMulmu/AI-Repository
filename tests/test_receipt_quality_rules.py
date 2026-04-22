@@ -1281,3 +1281,28 @@ def test_parser_diagnostics_exclude_filtered_non_food_rows_from_consumed_ids() -
 
     assert [item.raw_name for item in result.items] == ["농심 새우탕 컵"]
     assert result.diagnostics["consumed_line_ids"] == [1]
+
+
+def test_parser_normalizes_real_receipt_aliases_before_candidate_stripping() -> None:
+    parser = ReceiptParser()
+
+    assert parser._normalize_item_name("× 파프리카")[0] == "파프리카"
+    assert parser._normalize_item_name("* 완숙토마토 4kg/박스")[0] == "완숙토마토"
+    assert parser._normalize_item_name("* 국내산 양상추 2입")[0] == "양상추"
+    assert parser._normalize_item_name("갈바니'리코타치느4")[0] == "갈바니 리코타 치즈4"
+
+
+def test_parser_strips_leading_receipt_markers_from_item_raw_names() -> None:
+    parser = ReceiptParser()
+
+    result = parser.parse_lines(
+        [
+            OcrLine(text="상품명 단가 수량 금액", confidence=0.99, line_id=0, page_order=0),
+            OcrLine(text="× 파프리카(팩)", confidence=0.98, line_id=1, page_order=1),
+            OcrLine(text="2500000007828 6,480 1 6,480", confidence=0.99, line_id=2, page_order=2),
+            OcrLine(text="* 국내산 양상추 2입", confidence=0.98, line_id=3, page_order=3),
+            OcrLine(text="2500000006425 4,780 1 4,780", confidence=0.99, line_id=4, page_order=4),
+        ]
+    )
+
+    assert [item.raw_name for item in result.items] == ["파프리카", "국내산 양상추 2입"]

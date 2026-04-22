@@ -245,7 +245,7 @@ Qwen은 현재 메인 파서가 아니다.
 
 2026-04-18 기준 전체 테스트 결과:
 
-- `160 passed`
+- `163 passed`
 
 집중 검증 테스트:
 
@@ -739,4 +739,39 @@ variant별:
   - `item_name_f1_avg = 0.9015`
   - `quantity_match_rate_avg = 0.9367`
   - `amount_match_rate_avg = 0.9342`
+  - `review_required_accuracy = 1.0`
+
+## 2026-04-22 image raw-name cleanup + dense fallback suppression
+
+추가한 내용:
+
+- `ReceiptParser`
+  - leading marker cleanup 보강
+    - `× 파프리카(팩)` -> `파프리카`
+    - `* 국내산 양상추 2입` -> `국내산 양상추 2입`
+  - raw text / cleaned raw text에 대해 exact product alias lookup을 candidate stripping 이전에 수행
+  - `갈바니'리코타치느4 -> 갈바니 리코타 치즈4` alias 표준화
+- `ReceiptParseService`
+  - dense receipt(`items >= 8`)에서는 `placeholder_barcode` item-strip fallback 비활성
+  - low-quality sparse receipt용 fallback은 그대로 유지
+
+검증:
+
+- 신규 parser/service 회귀 테스트 3개 추가
+- 전체 테스트: `163 passed`
+
+효과:
+
+- `image.png`
+  - `item_f1 = 0.7273 -> 1.0`
+- `2a4dd3...jpg`
+  - duplicate fallback item 제거
+  - `item_f1 = 0.8000 -> 0.8333`
+- 최신 gold 8장 baseline:
+  - `vendor_name_accuracy = 1.0`
+  - `purchased_at_accuracy = 1.0`
+  - `payment_amount_accuracy = 1.0`
+  - `item_name_f1_avg = 0.9397`
+  - `quantity_match_rate_avg = 0.9708`
+  - `amount_match_rate_avg = 0.9683`
   - `review_required_accuracy = 1.0`

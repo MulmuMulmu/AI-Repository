@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ocr_qwen.services import ReceiptParseService
+from ocr_qwen.services import OcrExtraction
 
 
 def test_service_recalculate_review_state_keeps_unknown_item_without_forcing_review() -> None:
@@ -401,3 +402,44 @@ def test_service_finalize_parse_result_ignores_tax_and_loyalty_rows_from_unconsu
 
     assert parsed["diagnostics"]["unconsumed_item_amount_total"] == 1000.0
     assert "total_mismatch" not in parsed["review_reasons"]
+
+
+def test_service_does_not_request_placeholder_item_strip_fallback_for_dense_receipt() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "items": [{"raw_name": f"item-{index}"} for index in range(9)],
+        "ocr_texts": [
+            {"line_id": 0, "text": "상품명 단가 수량 금액"},
+            {"line_id": 1, "text": "011 볶음아몬드"},
+            {"line_id": 2, "text": "230298 5,210 1 5,210"},
+            {"line_id": 3, "text": "012 45도 과일잼 딸기"},
+            {"line_id": 4, "text": "200168 3,050 1 3,050"},
+            {"line_id": 5, "text": "013 프로틴 초코스틱 아몬드맛"},
+            {"line_id": 6, "text": "220029 2,750 1 2,750"},
+            {"line_id": 7, "text": "00CB2IOU0 3.870"},
+            {"line_id": 8, "text": "210155 3,870 1"},
+            {"line_id": 9, "text": "024 미클립스 피치향 34g"},
+            {"line_id": 10, "text": "210032 790 T 790"},
+        ],
+        "diagnostics": {
+            "section_map": {
+                "0": "header",
+                "1": "items",
+                "2": "items",
+                "3": "items",
+                "4": "items",
+                "5": "items",
+                "6": "items",
+                "7": "items",
+                "8": "items",
+                "9": "items",
+                "10": "items",
+            },
+            "consumed_line_ids": [1, 2, 3, 4, 5, 6],
+        },
+    }
+    extraction = OcrExtraction(lines=[], quality_score=0.5, low_quality_reasons=["low_quality"])
+
+    gap = service._detect_item_strip_gap(parsed, extraction=extraction, source_type="receipt_image_url")
+
+    assert gap is None

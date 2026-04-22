@@ -1465,6 +1465,7 @@ class ReceiptParser:
 
     def _cleanup_noisy_item_name(self, text: str) -> str:
         cleaned = text
+        cleaned = re.sub(r"^(?:\*\s+|[×•·※]+\s*)", "", cleaned)
         cleaned = re.sub(r"^\*?\d{8,}\s*", "", cleaned)
         cleaned = re.sub(r"^\d{1,3}\s*", "", cleaned)
         cleaned = re.sub(r"(행사|증정품)", " ", cleaned)
@@ -2140,7 +2141,19 @@ class ReceiptParser:
             return None
 
     def _normalize_item_name(self, text: str) -> tuple[str | None, str, str | None]:
-        candidates = self._candidate_item_names(text)
+        raw_candidates = [
+            str(text or "").strip(),
+            self._cleanup_noisy_item_name(str(text or "").strip()),
+        ]
+        normalized_candidates: list[str] = []
+        raw_aliases: list[str] = []
+        for candidate in raw_candidates:
+            aliased = self._lookup_exact_product_alias(candidate)
+            if aliased is not None:
+                normalized_candidates.append(aliased)
+                raw_aliases.append(aliased)
+
+        candidates = list(dict.fromkeys(normalized_candidates + self._candidate_item_names(text)))
         for candidate in candidates:
             aliased = self._lookup_exact_product_alias(candidate)
             if aliased is not None:
@@ -2159,6 +2172,9 @@ class ReceiptParser:
                 storage_type = dictionary_match.get("storage_type")
                 if normalized_name and category:
                     return normalized_name, category, storage_type
+
+        if raw_aliases:
+            return raw_aliases[0], "other", None
 
         return None, "other", None
 

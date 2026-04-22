@@ -475,6 +475,7 @@ class ReceiptParseService:
             return None
         if extraction.quality_score > 0.65 and not extraction.low_quality_reasons:
             return None
+        dense_receipt = len(parsed.get("items", [])) >= 8
         rows = self._iter_unconsumed_rows_after_item_header(parsed)
         for index in range(len(rows)):
             current_text = str(rows[index]["text"])
@@ -484,6 +485,8 @@ class ReceiptParseService:
                 continue
             next_text = str(rows[index + 1]["text"])
             if self._looks_like_item_strip_placeholder_row(current_text) and self._looks_like_item_strip_gap_row(next_text):
+                if dense_receipt:
+                    continue
                 return {"kind": "placeholder_barcode", "line_id": rows[index]["line_id"]}
         return None
 
