@@ -11,7 +11,7 @@
 | 경로 | 상태 | 변경 요약 | 영향 |
 |------|------|-----------|------|
 | `README.md` | 수정 | 실제 설치/실행 방식, 로컬 Qwen 설정, 고도화된 OCR 파이프라인 설명으로 재구성 | 레포 진입 문서가 현재 구조를 반영 |
-| `docs/API_SPEC.md` | 수정 | 공개 API를 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개 기준으로 재정리 | 백엔드 연동 기준 문서 갱신 |
+| `docs/api/API_SPEC.md` | 수정 | 공개 API를 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개 기준으로 재정리 | 백엔드 연동 기준 문서 갱신 |
 | `main.py` | 수정 | shared OCR backend, `ReceiptParseService` 연동, 공개 API를 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개로 정리 | 실제 서비스 진입점 변경 |
 | `qwen_receipt_assistant.py` | 수정 | 환경변수 기반 활성화, 로컬 Qwen 보조, 실패 시 rule fallback | Qwen 실패가 API 실패로 번지지 않음 |
 | `receipt_ocr.py` | 수정 | monolithic OCR 스크립트에서 호환 어댑터로 재구성 | CLI/내부 분석 도구가 새 엔진 사용 |
@@ -56,9 +56,9 @@
 
 | 경로 | 상태 | 역할 |
 |------|------|------|
-| `docs/OCR_IMPLEMENTATION.md` | 추가 | 현재 OCR 구조와 API 계약 설명 |
-| `docs/OCR_QUALITY_BASELINE.md` | 추가 | 샘플 기준 품질/속도 검증 기록 |
-| `docs/OCR_TODO.md` | 추가 | 다음 작업 우선순위 |
+| `docs/architecture/OCR_IMPLEMENTATION.md` | 추가 | 현재 OCR 구조와 API 계약 설명 |
+| `docs/datasets/OCR_QUALITY_BASELINE.md` | 추가 | 샘플 기준 품질/속도 검증 기록 |
+| `docs/operations/OCR_TODO.md` | 추가 | 다음 작업 우선순위 |
 | `docs/plans/2026-04-16-ocr-prototype-port-plan.md` | 추가 | 초기 이식 계획 |
 | `docs/plans/2026-04-16-ocr-quality-iteration-design.md` | 추가 | 품질 고도화 설계 문서 |
 | `docs/plans/2026-04-16-api-surface-doc-refresh-plan.md` | 추가 | 공개 API 축소 및 README 재정렬 계획 |
@@ -90,6 +90,6 @@
 ## 문서 읽는 순서 추천
 
 1. [v0.1 변경 개요](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/releases/v0.1/README.md)
-2. [OCR 구현 노트](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/OCR_IMPLEMENTATION.md)
+2. [OCR 구현 노트](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/architecture/OCR_IMPLEMENTATION.md)
 3. [검증 기록](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/releases/v0.1/VERIFICATION.md)
-4. [OCR TODO](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/OCR_TODO.md)
+4. [OCR TODO](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/operations/OCR_TODO.md)

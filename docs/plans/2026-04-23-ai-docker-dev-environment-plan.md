@@ -57,7 +57,7 @@
 
 **Files:**
 - Create: `.env.example`
-- Create: `docs/guides/DOCKER_DEV.md`
+- Create: `docs/operations/DOCKER_DEV.md`
 - Modify: `README.md`
 - Modify: `docs/INDEX.md`
 

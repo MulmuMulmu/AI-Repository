@@ -127,7 +127,7 @@
 
 ## 3. 우리 현재 상태에서의 정답 우선순위
 
-`docs/OCR_QUALITY_BASELINE.md` 기준으로 다음 세 가지가 가장 먼저다.
+`docs/datasets/OCR_QUALITY_BASELINE.md` 기준으로 다음 세 가지가 가장 먼저다.
 
 1. alias / 정규화
    - `투썸딸기피지`
@@ -199,7 +199,7 @@
 - `ocr_qwen/receipts.py`
 - `ocr_qwen/services.py`
 - `ocr_qwen/ingredient_dictionary.py`
-- `docs/OCR_QUALITY_BASELINE.md`
+- `docs/datasets/OCR_QUALITY_BASELINE.md`
 
 즉, 같은 파일 충돌 위험이 높다.
 

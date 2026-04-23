@@ -269,7 +269,7 @@ Qwen은 현재 메인 파서가 아니다.
   - `ai-api` (기본 CPU 개발 서버)
   - `ai-api-gpu` (`gpu` profile 기반 선택 서비스)
 - `.env.example`
-- `docs/guides/DOCKER_DEV.md`
+- `docs/operations/DOCKER_DEV.md`
 
 현재 원칙:
 

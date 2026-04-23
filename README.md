@@ -19,8 +19,8 @@
 문서 진입점:
 
 - [docs/INDEX.md](docs/INDEX.md)
-- [docs/guides/NORMAL_INPUT_CRITERIA.md](docs/guides/NORMAL_INPUT_CRITERIA.md)
-- [docs/guides/RECAPTURE_GUIDELINES.md](docs/guides/RECAPTURE_GUIDELINES.md)
+- [docs/operations/NORMAL_INPUT_CRITERIA.md](docs/operations/NORMAL_INPUT_CRITERIA.md)
+- [docs/operations/RECAPTURE_GUIDELINES.md](docs/operations/RECAPTURE_GUIDELINES.md)
 - [docs/specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md](docs/specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md)
 
 ## 1. 현재 시스템이 하는 일
@@ -163,7 +163,7 @@ docker compose --profile gpu up --build ai-api-gpu
 
 자세한 내용:
 
-- [docs/guides/DOCKER_DEV.md](docs/guides/DOCKER_DEV.md)
+- [docs/operations/DOCKER_DEV.md](docs/operations/DOCKER_DEV.md)
 
 현재 이 레포 기준으로 가장 직접적인 설치 방식은 아래입니다.
 
@@ -322,8 +322,9 @@ warm path 처리 시간:
 
 ## 10. 관련 문서
 
-- `docs/API_SPEC.md`
-- `docs/OCR_IMPLEMENTATION.md`
-- `docs/OCR_QUALITY_BASELINE.md`
-- `docs/OCR_TODO.md`
+- `docs/api/API_SPEC.md`
+- `docs/architecture/OCR_IMPLEMENTATION.md`
+- `docs/architecture/PROJECT_PROCESS_AND_RATIONALE.md`
+- `docs/datasets/OCR_QUALITY_BASELINE.md`
+- `docs/operations/OCR_TODO.md`
 - `docs/releases/v0.1/README.md`

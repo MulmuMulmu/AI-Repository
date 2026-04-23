@@ -4,7 +4,7 @@
 
 **Goal:** 공개 API를 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개로 축소하고, README/API 문서를 현재 실제 실행 방식과 고도화된 OCR 파이프라인 기준으로 재작성한다.
 
-**Architecture:** `main.py`의 공개 라우트 이름을 새 표면으로 바꾸고, 기존 `/api/...` 라우트는 제거한다. 테스트는 새 라우트와 비노출 조건을 먼저 고정하고, README와 `docs/API_SPEC.md`는 로컬 Qwen 실행과 실제 파이프라인 구조를 기준으로 다시 쓴다.
+**Architecture:** `main.py`의 공개 라우트 이름을 새 표면으로 바꾸고, 기존 `/api/...` 라우트는 제거한다. 테스트는 새 라우트와 비노출 조건을 먼저 고정하고, README와 `docs/api/API_SPEC.md`는 로컬 Qwen 실행과 실제 파이프라인 구조를 기준으로 다시 쓴다.
 
 **Tech Stack:** FastAPI, Pydantic, PaddleOCR, local Qwen runtime, pytest
 
@@ -87,5 +87,4 @@ Run: `python -m pytest -q`
 
 **Step 2: diff 확인**
 
-Run: `git -C C:\Users\USER-PC\Desktop\jp\.cache\AI-Repository-fresh diff -- README.md docs/API_SPEC.md docs/OCR_IMPLEMENTATION.md main.py tests`
-
+Run: `git -C C:\Users\USER-PC\Desktop\jp\.cache\AI-Repository-fresh diff -- README.md docs/api/API_SPEC.md docs/architecture/OCR_IMPLEMENTATION.md main.py tests`

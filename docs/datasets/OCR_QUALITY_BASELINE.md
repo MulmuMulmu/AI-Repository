@@ -10,7 +10,7 @@
 
 추가 평가셋:
 - `data/receipt_silver/jevi-silver-v0`
-- 설명 문서: `docs/RECEIPT_SILVERSET.md`
+- 설명 문서: `docs/datasets/RECEIPT_SILVERSET.md`
 
 ## 최근 검증 결과
 

@@ -77,7 +77,7 @@
 
 - 대상 파일:
   - `tests/test_receipt_quality_rules.py`
-  - `docs/OCR_QUALITY_BASELINE.md`
+  - `docs/datasets/OCR_QUALITY_BASELINE.md`
 - 작업:
   - 최소 100장 목표로 영수증 샘플을 업종별로 분류한다.
   - 대형마트, 편의점, 동네마트, 카페, 베이커리, 배달/포장, 키오스크, 비식품 혼합 영수증으로 나눈다.
@@ -86,8 +86,8 @@
 ### 3-2. 실패 샘플 누적 규칙 수립
 
 - 대상 파일:
-  - `docs/OCR_QUALITY_BASELINE.md`
-  - `docs/OCR_TODO.md`
+  - `docs/datasets/OCR_QUALITY_BASELINE.md`
+  - `docs/operations/OCR_TODO.md`
 - 작업:
   - 운영/테스트 중 실패 케이스를 즉시 편입하는 규칙을 만든다.
   - 샘플 추가 시 raw image, expected JSON, failure note를 같이 보관한다.
@@ -108,7 +108,7 @@
 ### 4-2. 정량 지표 문서화
 
 - 대상 파일:
-  - `docs/OCR_QUALITY_BASELINE.md`
+  - `docs/datasets/OCR_QUALITY_BASELINE.md`
 - 작업:
   - 날짜 정확도
   - item precision / recall
@@ -122,7 +122,7 @@
 
 - 대상 파일:
   - `main.py`
-  - `docs/OCR_IMPLEMENTATION.md`
+  - `docs/architecture/OCR_IMPLEMENTATION.md`
 - 작업:
   - `/ai/ocr/analyze`는 `normalized_name` 우선임을 유지
   - `receipt_ocr.py`는 raw 품목명 우선임을 문서와 코드 주석으로 고정

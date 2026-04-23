@@ -207,6 +207,6 @@ python scripts/build_synthetic_receipts.py --output-dir data/receipt_synthetic/r
 
 ## 연계 문서
 
-- [../guides/NORMAL_INPUT_CRITERIA.md](../guides/NORMAL_INPUT_CRITERIA.md)
-- [../guides/RECAPTURE_GUIDELINES.md](../guides/RECAPTURE_GUIDELINES.md)
-- [../status/OCR_PIPELINE_STATUS_2026-04-18.md](../status/OCR_PIPELINE_STATUS_2026-04-18.md)
+- [../operations/NORMAL_INPUT_CRITERIA.md](../operations/NORMAL_INPUT_CRITERIA.md)
+- [../operations/RECAPTURE_GUIDELINES.md](../operations/RECAPTURE_GUIDELINES.md)
+- [../history/status/OCR_PIPELINE_STATUS_2026-04-18.md](../history/status/OCR_PIPELINE_STATUS_2026-04-18.md)

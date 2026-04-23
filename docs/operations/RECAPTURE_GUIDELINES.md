@@ -103,4 +103,4 @@
 ## 연계 문서
 
 - [NORMAL_INPUT_CRITERIA.md](NORMAL_INPUT_CRITERIA.md)
-- [../status/OCR_PIPELINE_STATUS_2026-04-18.md](../status/OCR_PIPELINE_STATUS_2026-04-18.md)
+- [../history/status/OCR_PIPELINE_STATUS_2026-04-18.md](../history/status/OCR_PIPELINE_STATUS_2026-04-18.md)

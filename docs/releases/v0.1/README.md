@@ -120,9 +120,9 @@
 
 ### 문서
 
-- `docs/OCR_IMPLEMENTATION.md`
-- `docs/OCR_QUALITY_BASELINE.md`
-- `docs/OCR_TODO.md`
+- `docs/architecture/OCR_IMPLEMENTATION.md`
+- `docs/datasets/OCR_QUALITY_BASELINE.md`
+- `docs/operations/OCR_TODO.md`
 - `docs/plans/2026-04-16-ocr-prototype-port-plan.md`
 - `docs/plans/2026-04-16-ocr-quality-iteration-design.md`
 
@@ -133,6 +133,6 @@
 
 1. [파일 변경 맵](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/releases/v0.1/FILE_MAP.md)
 2. [검증 기록](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/releases/v0.1/VERIFICATION.md)
-3. [OCR 구현 노트](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/OCR_IMPLEMENTATION.md)
-4. [OCR 품질 기준](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/OCR_QUALITY_BASELINE.md)
-5. [OCR TODO](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/OCR_TODO.md)
+3. [OCR 구현 노트](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/architecture/OCR_IMPLEMENTATION.md)
+4. [OCR 품질 기준](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/datasets/OCR_QUALITY_BASELINE.md)
+5. [OCR TODO](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/operations/OCR_TODO.md)

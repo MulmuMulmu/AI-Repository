@@ -2,7 +2,7 @@
 
 ## Docker 개발환경 통일
 
-- AI 레포 기준 `Dockerfile`, `docker-compose.yml`, `.env.example`, `docs/guides/DOCKER_DEV.md`를 추가했다.
+- AI 레포 기준 `Dockerfile`, `docker-compose.yml`, `.env.example`, `docs/operations/DOCKER_DEV.md`를 추가했다.
 - 기본 개발 서버는 CPU 기준 `ai-api`
 - 선택적 GPU 프로필은 `ai-api-gpu`
 - 현재 GPU 프로필은 PaddleOCR 전체 가속이 아니라 local Qwen 실험 경로를 위한 옵션이다.
@@ -138,9 +138,9 @@
 
 오늘 이후 문서는 아래처럼 관리한다.
 
-- `docs/status/`
+- `docs/history/status/`
   - 날짜 기준 현재 상태
-- `docs/updates/`
+- `docs/history/updates/`
   - 세션 단위 합의/변경 내역
 - `docs/INDEX.md`
   - 문서 진입점
@@ -619,7 +619,7 @@ barcode_detail 60장 subset 평가:
   - `excluded_rows`
   - `totals`
 - 신규 baseline 문서 추가
-  - [RECEIPT_GOLDSET_BASELINE_2026-04-21.md](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/RECEIPT_GOLDSET_BASELINE_2026-04-21.md)
+  - [RECEIPT_GOLDSET_BASELINE_2026-04-21.md](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/docs/history/baselines/RECEIPT_GOLDSET_BASELINE_2026-04-21.md)
 
 검증:
 
