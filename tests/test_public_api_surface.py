@@ -7,7 +7,7 @@ import httpx
 import main
 
 
-def test_ingredient_prediction_endpoint_returns_match_result(monkeypatch) -> None:
+def test_ingredient_match_endpoint_returns_match_result(monkeypatch) -> None:
     def _stub_match(product_name: str) -> dict | None:
         if product_name == "국산콩 두부":
             return {
@@ -26,7 +26,7 @@ def test_ingredient_prediction_endpoint_returns_match_result(monkeypatch) -> Non
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             return await client.post(
-                "/ai/ingredient/prediction",
+                "/ai/ingredient/match",
                 json={"product_names": ["국산콩 두부", "알수없는상품"]},
             )
 
@@ -46,7 +46,7 @@ def test_ingredient_prediction_endpoint_returns_match_result(monkeypatch) -> Non
     assert data["unmatched"][0]["item_type"] == "UNKNOWN"
 
 
-def test_ingredient_prediction_endpoint_keeps_non_food_as_excluded(monkeypatch) -> None:
+def test_ingredient_match_endpoint_keeps_non_food_as_excluded(monkeypatch) -> None:
     monkeypatch.setattr(main, "_match_product_to_ingredient", lambda product_name: None)
     monkeypatch.setattr(main, "_find_suggestions", lambda product_name: [])
 
@@ -54,7 +54,7 @@ def test_ingredient_prediction_endpoint_keeps_non_food_as_excluded(monkeypatch) 
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             return await client.post(
-                "/ai/ingredient/prediction",
+                "/ai/ingredient/match",
                 json={"product_names": ["구글홈미니"]},
             )
 
@@ -110,7 +110,7 @@ def test_sharing_check_endpoint_returns_filter_result(monkeypatch) -> None:
     assert payload["allowed"][0]["item_name"] == "통조림 참치"
 
 
-def test_expiry_calculate_endpoint_returns_expiry_result(monkeypatch) -> None:
+def test_ingredient_prediction_endpoint_returns_expiry_result(monkeypatch) -> None:
     class _StubExpiryCalculator:
         def calculate(self, item_name, purchase_date, storage_method, category):
             assert item_name == "양파"
@@ -135,7 +135,7 @@ def test_expiry_calculate_endpoint_returns_expiry_result(monkeypatch) -> None:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             return await client.post(
-                "/ai/expiry/calculate",
+                "/ai/ingredient/prediction",
                 json={
                     "item_name": "양파",
                     "purchase_date": "2026-04-10",
@@ -264,7 +264,7 @@ def test_connected_routes_log_quality_metrics(monkeypatch) -> None:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             responses = []
-            responses.append(await client.post("/ai/ingredient/prediction", json={"product_names": ["알수없는상품"]}))
+            responses.append(await client.post("/ai/ingredient/match", json={"product_names": ["알수없는상품"]}))
             responses.append(await client.post("/ai/sharing/check", json={"item_names": ["통조림 참치"]}))
             responses.append(await client.get("/ai/quality/metrics"))
             return responses
@@ -273,7 +273,7 @@ def test_connected_routes_log_quality_metrics(monkeypatch) -> None:
 
     assert all(response.status_code == 200 for response in responses)
     assert [endpoint for endpoint, _ in logged] == [
-        "/ai/ingredient/prediction",
+        "/ai/ingredient/match",
         "/ai/sharing/check",
         "/ai/quality/metrics",
     ]

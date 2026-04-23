@@ -24,12 +24,12 @@ def test_match_product_to_ingredient_applies_alias_before_rule_mapping() -> None
     assert result["mapping_source"] == "receipt_rule_product_mapping"
 
 
-def test_ingredient_prediction_endpoint_uses_receipt_rule_mapping() -> None:
+def test_ingredient_match_endpoint_uses_receipt_rule_mapping() -> None:
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             return await client.post(
-                "/ai/ingredient/prediction",
+                "/ai/ingredient/match",
                 json={"product_names": ["호가든캔330ml", "어쉬밀크클릿 ["]},
             )
 

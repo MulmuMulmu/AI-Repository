@@ -2,17 +2,14 @@
 
 영수증 이미지를 분석해 식품 품목을 추출하고, 그 품목을 재료 단위로 예측하는 FastAPI 서버입니다.
 
-현재 주요 API surface는 아래와 같습니다.
+현재 제품 흐름에서 실제로 사용하는 공개 API는 아래와 같습니다.
 
 - `POST /ai/ocr/analyze`
-- `GET /ai/ocr/refinement/{trace_id}`
+- `POST /ai/ingredient/match`
 - `POST /ai/ingredient/prediction`
 - `POST /ai/recommend`
 - `GET /ai/recipes/{recipe_id}`
 - `GET /ai/ingredients/search`
-- `POST /ai/sharing/check`
-- `POST /ai/expiry/calculate`
-- `GET /ai/quality/metrics`
 
 이 저장소의 핵심은 단순 OCR이 아니라, 영수증 파싱 파이프라인을 실제 영수증 구조에 맞게 고도화한 점입니다.
 
@@ -38,9 +35,13 @@
 7. 필요 시 로컬 Qwen 보조
 8. 구조화된 JSON 응답 반환
 
-### `POST /ai/ingredient/prediction`
+### `POST /ai/ingredient/match`
 
 OCR에서 나온 상품명을 입력받아 재료 테이블 기준으로 가장 가까운 재료를 예측합니다.
+
+### `POST /ai/ingredient/prediction`
+
+식품 1건에 대해 구매일과 보관 방법을 받아 소비기한을 계산합니다.
 
 ## 2. 파이프라인 고도화 내용
 
@@ -164,6 +165,7 @@ docker compose --profile gpu up --build ai-api-gpu
 자세한 내용:
 
 - [docs/operations/DOCKER_DEV.md](docs/operations/DOCKER_DEV.md)
+- [docs/operations/GCP_DEPLOYMENT.md](docs/operations/GCP_DEPLOYMENT.md)
 
 현재 이 레포 기준으로 가장 직접적인 설치 방식은 아래입니다.
 
@@ -261,7 +263,7 @@ QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS=30
 - `totals`
 - `diagnostics`
 
-### `POST /ai/ingredient/prediction`
+### `POST /ai/ingredient/match`
 
 입력:
 
@@ -290,6 +292,27 @@ open-set 처리:
 
 `matched` 항목에는 `mapping_source`, `standard_product_name`, `mapping_status`, `item_type`가 포함됩니다.
 
+### `POST /ai/ingredient/prediction`
+
+입력:
+
+```json
+{
+  "item_name": "양파",
+  "purchase_date": "2026-04-10",
+  "storage_method": "냉장",
+  "category": "채소/과일"
+}
+```
+
+응답 핵심 필드:
+- `expiry_date`
+- `d_day`
+- `risk_level`
+- `confidence`
+- `method`
+- `reason`
+
 ## 8. 검증
 
 전체 테스트:
@@ -301,6 +324,7 @@ python -m pytest -q
 현재 테스트 범위:
 
 - `/ai/ocr/analyze` 계약
+- `/ai/ingredient/match` 계약
 - `/ai/ingredient/prediction` 계약
 - 기존 `/api/...` 비노출
 - `ReceiptOCR` 어댑터

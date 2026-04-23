@@ -13,6 +13,7 @@
    - [operations/NORMAL_INPUT_CRITERIA.md](operations/NORMAL_INPUT_CRITERIA.md)
    - [operations/RECAPTURE_GUIDELINES.md](operations/RECAPTURE_GUIDELINES.md)
    - [operations/DOCKER_DEV.md](operations/DOCKER_DEV.md)
+   - [operations/GCP_DEPLOYMENT.md](operations/GCP_DEPLOYMENT.md)
    - [operations/OCR_TODO.md](operations/OCR_TODO.md)
 4. 품질/데이터셋
    - [datasets/OCR_QUALITY_BASELINE.md](datasets/OCR_QUALITY_BASELINE.md)

@@ -842,7 +842,7 @@ async def get_ocr_refinement(trace_id: str):
     )
 
 
-@app.post("/ai/ingredient/prediction")
+@app.post("/ai/ingredient/match")
 async def match_ingredients(req: MatchRequest):
     """OCR 추출 상품명 → DB Ingredient 매칭."""
     started_at = time.perf_counter()
@@ -865,7 +865,7 @@ async def match_ingredients(req: MatchRequest):
             "unmatched_count": len(unmatched),
         },
     )
-    _log_endpoint_request("/ai/ingredient/prediction", started_at, status_code=200)
+    _log_endpoint_request("/ai/ingredient/match", started_at, status_code=200)
     return response
 
 
@@ -879,7 +879,7 @@ async def check_sharing_items(req: SharingCheckRequest):
     return response
 
 
-@app.post("/ai/expiry/calculate")
+@app.post("/ai/ingredient/prediction")
 async def calculate_expiry(req: ExpiryRequest):
     """식품 1건의 소비기한을 계산한다."""
     started_at = time.perf_counter()
@@ -890,7 +890,7 @@ async def calculate_expiry(req: ExpiryRequest):
         category=req.category,
     )
     response = ApiResponse(success=True, data=result)
-    _log_endpoint_request("/ai/expiry/calculate", started_at, status_code=200)
+    _log_endpoint_request("/ai/ingredient/prediction", started_at, status_code=200)
     return response
 
 

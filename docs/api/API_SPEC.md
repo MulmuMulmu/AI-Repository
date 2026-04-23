@@ -4,49 +4,52 @@
 > 서버: FastAPI  
 > Base URL: `http://{AI_SERVER_HOST}:8000`
 
-이 문서는 **현재 코드 기준으로 실제 노출되는 API surface**를 정리한다.
+이 문서는 **현재 제품 흐름에서 실제로 사용하는 공개 API만** 정리한다.
 
 기준 구현:
 
 - [main.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/main.py)
 
----
+문서 제외 대상:
 
-## 1. 역할
+- `/ai/ocr/refinement/{trace_id}`
+- `/ai/sharing/check`
+- `/ai/quality/metrics`
 
-현재 AI 서버는 아래 역할을 가진다.
-
-1. 영수증 OCR 분석
-2. 상품명 -> 재료 예측
-3. 나눔 가능 여부 분류
-4. 소비기한 계산
-5. 품질 지표 노출
-6. 보유 재료 기반 개인화 추천
-7. 레시피 상세 조회
-8. 재료 검색
-
-즉 이 서버는 단순 OCR 서버가 아니라,  
-**영수증 분석부터 재료 매핑, 추천 계산까지 담당하는 AI 보조 서버**다.
+위 라우트들은 코드에 존재할 수 있지만, 현재 사용자 흐름 기준 핵심 공개 계약에서는 제외한다.
 
 ---
 
-## 2. API 목록
+## 1. 현재 공개 API
 
 | Method | Endpoint | 설명 |
 |---|---|---|
 | `POST` | `/ai/ocr/analyze` | 영수증 OCR 분석 |
-| `GET` | `/ai/ocr/refinement/{trace_id}` | OCR refinement 상태 조회 |
-| `POST` | `/ai/ingredient/prediction` | 상품명 기반 재료 예측 |
-| `POST` | `/ai/sharing/check` | 나눔 금지/검수/허용 품목 분류 |
-| `POST` | `/ai/expiry/calculate` | 소비기한 계산 |
-| `GET` | `/ai/quality/metrics` | 품질 지표 조회 |
+| `POST` | `/ai/ingredient/match` | 상품명 기반 재료 예측 |
+| `POST` | `/ai/ingredient/prediction` | 식품 1건 소비기한 계산 |
 | `POST` | `/ai/recommend` | 보유 재료 기반 개인화 추천 |
 | `GET` | `/ai/recipes/{recipe_id}` | 레시피 상세 조회 |
 | `GET` | `/ai/ingredients/search` | 재료 검색 |
 
 ---
 
-## 3. 핵심 API
+## 2. 사용자 흐름 기준 역할
+
+현재 AI 서버는 아래 순서의 제품 흐름을 담당한다.
+
+1. 영수증 분석
+2. 상품명 -> 재료 매핑
+3. 식품 1건의 소비기한 계산
+4. 보유 재료 + 사용자 제약 기반 추천
+5. 추천된 레시피 상세 조회
+6. 수동 수정 화면용 재료 검색
+
+즉, 이 문서 기준 AI 서버는  
+**영수증 등록과 레시피 추천에 직접 연결되는 API만** 공개 대상으로 본다.
+
+---
+
+## 3. API 상세
 
 ### `POST /ai/ocr/analyze`
 
@@ -57,11 +60,10 @@
 1. 전처리
 2. PaddleOCR
 3. bbox 유지 row merge
-4. section split
-5. item assembly
-6. totals / 날짜 / 품목 검증
-7. `review_required`, `review_reasons`, `scope_classification` 계산
-8. 필요 시 제한적 Qwen rescue
+4. rule-based receipt parser
+5. 날짜 / 합계 / 품목 검증
+6. `review_required`, `review_reasons`, `scope_classification` 계산
+7. 필요 시 제한적 Qwen rescue
 
 주요 응답 필드:
 
@@ -79,20 +81,11 @@
 운영 의미:
 
 - `review_required=false`
-  - 자동 등록 후보로 사용 가능
+  - 자동 등록 후보
 - `review_required=true`
   - 프론트에서 수동 수정 화면으로 연결
 
-### `GET /ai/ocr/refinement/{trace_id}`
-
-OCR refinement 비동기 상태를 조회한다.
-
-의미:
-
-- refinement 추적
-- fallback/보정 경로 상태 확인
-
-### `POST /ai/ingredient/prediction`
+### `POST /ai/ingredient/match`
 
 OCR에서 나온 상품명을 재료 단위로 예측한다.
 
@@ -109,11 +102,25 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 - `UNMAPPED`
 - `EXCLUDED`
 
+### `POST /ai/ingredient/prediction`
+
+식품 1건의 소비기한을 계산한다.
+
+입력 핵심:
+
+- `item_name`
+- `purchase_date`
+- `storage_method`
+- `category`
+
+즉 현재 외부 계약 기준에서 `/ai/ingredient/prediction`은
+**상품명→재료 매핑이 아니라 유통기한/소비기한 계산 API**다.
+
 ### `POST /ai/recommend`
 
-보유 재료와 사용자 선호 조건을 기반으로 레시피를 추천한다.
+보유 재료와 사용자 제약을 기반으로 개인화 추천을 계산한다.
 
-입력:
+입력 핵심:
 
 - `ingredientIds`
 - `preferredIngredientIds`
@@ -126,7 +133,7 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 
 현재 구현 방식:
 
-- 학습 모델이 아니라 규칙 기반 ranking engine
+- 학습형 추천 모델이 아니라 규칙 기반 ranking engine
 - hard filter + soft boost 구조
 
 ### `GET /ai/recipes/{recipe_id}`
@@ -135,7 +142,7 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 
 ### `GET /ai/ingredients/search`
 
-재료 검색 UI에서 사용할 검색 API다.
+수동 수정 화면이나 재료 선택 UI에서 사용하는 검색 API다.
 
 ---
 
@@ -176,7 +183,7 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 
 ---
 
-## 5. 운영 정책 요약
+## 5. 제품 정책 요약
 
 ### 제품 범위
 
@@ -190,11 +197,11 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 - 애매한 결과는 `review_required=true`
 - 프론트는 이를 수동 수정 UX로 처리
 
-### Qwen 정책
+### 추천 정책
 
-- 메인 파서는 PaddleOCR + rule parser
-- Qwen은 보조 rescue
-- 현재 small local Qwen은 운영 메인 경로로 두지 않음
+- 보유 재료가 중심
+- 선호/비선호/알레르기/카테고리/키워드를 함께 반영
+- 현재는 학습형 모델이 아니라 규칙 기반 추천 엔진
 
 ---
 

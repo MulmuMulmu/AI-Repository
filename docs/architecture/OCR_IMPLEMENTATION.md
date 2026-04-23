@@ -10,7 +10,7 @@
 ## 구현 위치
 
 - `main.py`
-  - 공개 API는 `/ai/ocr/analyze`, `/ai/ingredient/prediction` 두 개만 유지
+  - 현재 공개 흐름 기준 핵심 API는 `/ai/ocr/analyze`, `/ai/ingredient/match`, `/ai/ingredient/prediction`, `/ai/recommend`, `/ai/recipes/{recipe_id}`, `/ai/ingredients/search`
   - prototype `ReceiptParseService`를 adapter 형태로 사용
   - 앱 startup 시 shared PaddleOCR backend warm-up
   - 응답에 `vendor_name`, `purchased_at`, `totals`, `diagnostics` 추가
@@ -104,7 +104,7 @@ QWEN_RECEIPT_MAX_TOKENS=256
   - `vendor_name`, `purchased_at`, `totals`, `diagnostics` 포함 여부 확인
 
 - `tests/test_public_api_surface.py`
-  - `/ai/ingredient/prediction` 응답 계약
+  - `/ai/ingredient/match`, `/ai/ingredient/prediction` 응답 계약
   - 기존 `/api/...` 라우트 비노출 확인
 
 - `tests/test_ocr_service_adapter.py`
