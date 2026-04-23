@@ -258,6 +258,27 @@ Qwen은 현재 메인 파서가 아니다.
 즉, 현재는 실사 검증 경로가 전혀 없는 상태는 아니고,  
 `gold 10장 + silver 35장 + 추가 gold 후보 shortlist` 구조까지는 확보된 상태다.
 
+### 10. Docker 개발환경
+
+현재 AI 레포는 Docker 기준 개발환경도 함께 제공한다.
+
+- `Dockerfile`
+  - `cpu-dev`
+  - `gpu-dev`
+- `docker-compose.yml`
+  - `ai-api` (기본 CPU 개발 서버)
+  - `ai-api-gpu` (`gpu` profile 기반 선택 서비스)
+- `.env.example`
+- `docs/guides/DOCKER_DEV.md`
+
+현재 원칙:
+
+- 기본 개발은 CPU 기준 FastAPI + PaddleOCR
+- GPU 프로필은 local Qwen 실험 경로를 위한 선택 기능
+- 현재 `requirements.txt`는 `paddlepaddle` CPU 패키지 기준이므로, GPU 프로필을 켠다고 PaddleOCR이 자동으로 GPU로 바뀌지는 않는다
+
+즉 현재 Docker GPU 프로필의 실질 목적은 `ocr_qwen/qwen.py`의 local transformers Qwen 경로를 GPU에 올리는 것이다.
+
 현재 추가 gold 후보로 볼 만한 샘플:
 
 - `R (2).jpg`

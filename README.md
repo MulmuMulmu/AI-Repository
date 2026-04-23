@@ -2,10 +2,17 @@
 
 영수증 이미지를 분석해 식품 품목을 추출하고, 그 품목을 재료 단위로 예측하는 FastAPI 서버입니다.
 
-현재 공개 API는 두 개만 사용합니다.
+현재 주요 API surface는 아래와 같습니다.
 
 - `POST /ai/ocr/analyze`
+- `GET /ai/ocr/refinement/{trace_id}`
 - `POST /ai/ingredient/prediction`
+- `POST /ai/recommend`
+- `GET /ai/recipes/{recipe_id}`
+- `GET /ai/ingredients/search`
+- `POST /ai/sharing/check`
+- `POST /ai/expiry/calculate`
+- `GET /ai/quality/metrics`
 
 이 저장소의 핵심은 단순 OCR이 아니라, 영수증 파싱 파이프라인을 실제 영수증 구조에 맞게 고도화한 점입니다.
 
@@ -140,6 +147,24 @@ OCR에서 나온 상품명을 입력받아 재료 테이블 기준으로 가장 
 
 ## 4. 설치
 
+### Docker 기준 빠른 시작
+
+CPU 기본 개발환경:
+
+```powershell
+docker compose up --build ai-api
+```
+
+GPU 프로필로 local Qwen 실험:
+
+```powershell
+docker compose --profile gpu up --build ai-api-gpu
+```
+
+자세한 내용:
+
+- [docs/guides/DOCKER_DEV.md](docs/guides/DOCKER_DEV.md)
+
 현재 이 레포 기준으로 가장 직접적인 설치 방식은 아래입니다.
 
 ### 필수 패키지 설치
@@ -190,10 +215,16 @@ python receipt_ocr.py <영수증_이미지_경로> --visualize
 ENABLE_LOCAL_QWEN=1
 LOCAL_QWEN_MODEL_ID=Qwen/Qwen2.5-1.5B-Instruct
 ALLOW_MODEL_DOWNLOAD=1
-ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1
-QWEN_MODEL=qwen2.5:latest
-QWEN_TIMEOUT_SECONDS=8
-QWEN_RECEIPT_MAX_TOKENS=256
+LOCAL_QWEN_DEVICE_MAP=auto
+LOCAL_QWEN_TORCH_DTYPE=float16
+LOCAL_QWEN_RECEIPT_EXTRACT_MAX_NEW_TOKENS=160
+LOCAL_QWEN_RECEIPT_ITEM_MAX_NEW_TOKENS=64
+LOCAL_QWEN_RECIPE_EXPLANATION_MAX_NEW_TOKENS=160
+
+QWEN_OPENAI_COMPATIBLE_BASE_URL=
+QWEN_OPENAI_COMPATIBLE_API_KEY=
+QWEN_OPENAI_COMPATIBLE_MODEL=
+QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS=30
 ```
 
 설명:
@@ -204,8 +235,12 @@ QWEN_RECEIPT_MAX_TOKENS=256
   - 허깅페이스 모델 ID 또는 로컬 모델 경로
 - `ALLOW_MODEL_DOWNLOAD=1`
   - 현재 구현의 local runtime gate
-- `ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1`
-  - `qwen_receipt_assistant.py` 경로 활성화
+- `LOCAL_QWEN_DEVICE_MAP`
+  - 로컬 transformers Qwen 로딩 시 `device_map` 옵션
+- `LOCAL_QWEN_TORCH_DTYPE`
+  - 로컬 transformers Qwen 로딩 시 `torch_dtype` 옵션
+- `QWEN_OPENAI_COMPATIBLE_*`
+  - OpenAI-compatible inference server를 provider로 붙일 때 사용
 
 ## 7. 공개 API
 

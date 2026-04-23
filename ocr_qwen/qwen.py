@@ -417,6 +417,7 @@ class LocalTransformersQwenProvider:
 
     def _generate_text(self, prompt: str, *, max_new_tokens: int) -> str:
         tokenizer, model = self._load_model()
+        target_device = self._resolve_input_device(model)
         if hasattr(tokenizer, "apply_chat_template"):
             model_inputs = tokenizer.apply_chat_template(
                 [
@@ -427,6 +428,7 @@ class LocalTransformersQwenProvider:
                 add_generation_prompt=True,
                 return_tensors="pt",
             )
+            model_inputs = self._move_model_inputs(model_inputs, target_device)
             if hasattr(model_inputs, "__getitem__") and "input_ids" in model_inputs:
                 prompt_input_ids = model_inputs["input_ids"]
                 outputs = model.generate(
@@ -448,6 +450,7 @@ class LocalTransformersQwenProvider:
             return tokenizer.decode(generated_ids, skip_special_tokens=True)
 
         inputs = tokenizer(prompt, return_tensors="pt")
+        inputs = self._move_model_inputs(inputs, target_device)
         prompt_length = inputs["input_ids"].shape[-1]
         outputs = model.generate(
             **inputs,
@@ -471,11 +474,73 @@ class LocalTransformersQwenProvider:
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
         self._tokenizer = AutoTokenizer.from_pretrained(self.model_id, trust_remote_code=True)
-        self._model = AutoModelForCausalLM.from_pretrained(
-            self.model_id,
-            trust_remote_code=True,
-        )
+        self._model = AutoModelForCausalLM.from_pretrained(self.model_id, **self._model_load_kwargs())
         return self._tokenizer, self._model
+
+    def _model_load_kwargs(self) -> dict[str, object]:
+        kwargs: dict[str, object] = {"trust_remote_code": True}
+
+        device_map = os.environ.get("LOCAL_QWEN_DEVICE_MAP", "").strip()
+        if device_map:
+            kwargs["device_map"] = device_map
+
+        torch_dtype_name = os.environ.get("LOCAL_QWEN_TORCH_DTYPE", "").strip()
+        if torch_dtype_name and importlib.util.find_spec("torch") is not None:
+            import torch
+
+            torch_dtype = getattr(torch, torch_dtype_name, None)
+            if torch_dtype is not None:
+                kwargs["torch_dtype"] = torch_dtype
+
+        return kwargs
+
+    def _resolve_input_device(self, model: object) -> str | None:
+        hf_device_map = getattr(model, "hf_device_map", None)
+        if isinstance(hf_device_map, dict):
+            preferred_devices = [
+                self._normalize_device_identifier(device)
+                for device in hf_device_map.values()
+            ]
+            for device in preferred_devices:
+                if device and device not in {"cpu", "disk"}:
+                    return device
+            for device in preferred_devices:
+                if device:
+                    return device
+
+        return self._normalize_device_identifier(getattr(model, "device", None))
+
+    def _normalize_device_identifier(self, device: object) -> str | None:
+        if device is None:
+            return None
+        if isinstance(device, str):
+            return device
+        if isinstance(device, int):
+            return f"cuda:{device}"
+
+        device_type = getattr(device, "type", None)
+        device_index = getattr(device, "index", None)
+        if isinstance(device_type, str):
+            if device_index is None:
+                return device_type
+            if isinstance(device_index, int):
+                return f"{device_type}:{device_index}"
+        return None
+
+    def _move_model_inputs(self, model_inputs: object, target_device: str | None) -> object:
+        if not target_device:
+            return model_inputs
+        if hasattr(model_inputs, "to"):
+            return model_inputs.to(target_device)
+        if isinstance(model_inputs, dict):
+            moved: dict[str, object] = {}
+            for key, value in model_inputs.items():
+                if hasattr(value, "to"):
+                    moved[key] = value.to(target_device)
+                else:
+                    moved[key] = value
+            return moved
+        return model_inputs
 
 
 def local_qwen_enabled() -> bool:

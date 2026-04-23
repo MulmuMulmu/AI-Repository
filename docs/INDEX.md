@@ -15,6 +15,7 @@
 5. 운영 가이드
    - [guides/NORMAL_INPUT_CRITERIA.md](guides/NORMAL_INPUT_CRITERIA.md)
    - [guides/RECAPTURE_GUIDELINES.md](guides/RECAPTURE_GUIDELINES.md)
+   - [guides/DOCKER_DEV.md](guides/DOCKER_DEV.md)
 6. 합성데이터 규격
    - [specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md](specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md)
 7. 품질 기준/데이터셋

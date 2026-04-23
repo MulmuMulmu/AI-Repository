@@ -1,5 +1,13 @@
 # Session Update - 2026-04-18
 
+## Docker 개발환경 통일
+
+- AI 레포 기준 `Dockerfile`, `docker-compose.yml`, `.env.example`, `docs/guides/DOCKER_DEV.md`를 추가했다.
+- 기본 개발 서버는 CPU 기준 `ai-api`
+- 선택적 GPU 프로필은 `ai-api-gpu`
+- 현재 GPU 프로필은 PaddleOCR 전체 가속이 아니라 local Qwen 실험 경로를 위한 옵션이다.
+- `ocr_qwen/qwen.py`는 `LOCAL_QWEN_DEVICE_MAP`, `LOCAL_QWEN_TORCH_DTYPE` 환경변수를 받아 실제 GPU 로딩에 필요한 최소 설정을 지원한다.
+
 ## 범위
 
 이 문서는 2026-04-18 대화 기준으로 정리된 현재 OCR 파이프라인 상태, 품질 판단, 합성데이터 활용 방향을 기록한다.
