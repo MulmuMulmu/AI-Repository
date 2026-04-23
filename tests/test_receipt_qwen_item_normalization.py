@@ -307,6 +307,8 @@ def test_local_qwen_item_prompt_mentions_collapsed_row_rescue() -> None:
     assert "collapsed_item_name_rows" in prompt
     assert "rescued_items" in prompt
     assert "2500000007828 6,480 1 6,480" in prompt
+    assert "Do not copy collapsed name_text like ()2 as raw_name" in prompt
+    assert "unit must be a plausible merchandise unit" in prompt
 
 
 def test_receipt_service_limits_qwen_review_items_to_ambiguous_subset() -> None:

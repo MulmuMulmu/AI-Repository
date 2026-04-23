@@ -137,6 +137,11 @@ Qwen은 현재 메인 파서가 아니다.
 - 단, item review가 없어도 `collapsed_item_name_rows`가 있으면 item rescue payload는 만들 수 있다.
 - Qwen 실패 시 전체 응답은 fallback 유지한다.
 
+현재 실험 판단:
+
+- local small Qwen (`Qwen2.5-1.5B`)는 `OIP (9)` 같은 collapsed grocery hard-case에서 rescue 성공률이 낮고 응답도 느리다.
+- 따라서 현재 운영 방향은 `small local Qwen을 메인 rescue로 쓰지 않고`, review + fallback 중심으로 유지하는 쪽이다.
+
 ### 7. 합성 영수증 데이터셋 생성기
 
 현재 저장소에는 템플릿 기반 합성 영수증 생성기가 추가되어 있다.
