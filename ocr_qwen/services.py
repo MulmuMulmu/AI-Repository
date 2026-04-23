@@ -60,6 +60,40 @@ QWEN_HEADER_MAX_RAW_TOKENS = 4
 QWEN_HEADER_MAX_TOP_STRIP_ROWS = 4
 QWEN_ITEM_MAX_REVIEW_ITEMS = 4
 DISCOUNT_KEYWORDS = ("할인", "에누리", "포인트", "S-POINT", "쿠폰", "행사")
+IN_SCOPE_VENDOR_HINTS = (
+    "마트",
+    "마켓",
+    "슈퍼",
+    "편의점",
+    "gs25",
+    "cu",
+    "세븐일레븐",
+    "7-eleven",
+    "이마트",
+    "롯데마트",
+    "홈플러스",
+    "re-mart",
+    "정육",
+    "베이커리",
+    "식자재",
+    "푸드",
+)
+OUT_OF_SCOPE_HINTS = (
+    "약국",
+    "연고",
+    "캡슐",
+    "전자제품",
+    "하이마트",
+    "himart",
+    "스팀덱",
+    "샤오미",
+    "구글홈미니",
+    "부탄가스",
+    "건전지",
+    "배터리",
+    "비보험",
+    "약제비",
+)
 
 
 @dataclass
@@ -1532,6 +1566,33 @@ class ReceiptParseService:
         )
         return any(token in hangul_only for token in metadata_tokens)
 
+    def _infer_scope_classification(self, parsed: dict) -> str:
+        vendor_name = self._clean_string(parsed.get("vendor_name")) or ""
+        rows = self._iter_ocr_text_rows(parsed)
+        item_names = []
+        for item in parsed.get("items", []):
+            if not isinstance(item, dict):
+                continue
+            name = self._clean_string(item.get("normalized_name")) or self._clean_string(item.get("raw_name"))
+            if name:
+                item_names.append(name)
+
+        corpus = [vendor_name, *rows, *item_names]
+        normalized_corpus = [re.sub(r"\s+", "", value).lower() for value in corpus if value]
+
+        in_scope_vendor_signal = any(any(token in value for token in IN_SCOPE_VENDOR_HINTS) for value in normalized_corpus)
+        out_of_scope_signal = any(any(token in value for token in OUT_OF_SCOPE_HINTS) for value in normalized_corpus)
+        in_scope_item_signal = any(
+            not any(token in value for token in OUT_OF_SCOPE_HINTS)
+            for value in (re.sub(r"\s+", "", name).lower() for name in item_names)
+        )
+
+        if out_of_scope_signal and not in_scope_vendor_signal and not in_scope_item_signal:
+            return "out_of_scope"
+        if out_of_scope_signal:
+            return "mixed_scope"
+        return "food_scope"
+
     def _allows_missing_vendor_without_review(self, parsed: dict, *, partial_receipt: bool) -> bool:
         if partial_receipt:
             return True
@@ -1782,6 +1843,8 @@ class ReceiptParseService:
 
     def _finalize_parse_result(self, parsed: dict, low_quality_reasons: list[str]) -> None:
         diagnostics = parsed.setdefault("diagnostics", {})
+        scope_classification = self._infer_scope_classification(parsed)
+        diagnostics["scope_classification"] = scope_classification
         partial_receipt = self._looks_like_partial_receipt(parsed)
         diagnostics["partial_receipt"] = partial_receipt
         review_reasons = [
@@ -1801,6 +1864,8 @@ class ReceiptParseService:
             review_reasons.append("unresolved_items")
         if low_quality_reasons:
             review_reasons.extend(reason for reason in low_quality_reasons if reason not in review_reasons)
+        if scope_classification == "out_of_scope" and "out_of_scope_receipt" not in review_reasons:
+            review_reasons.append("out_of_scope_receipt")
 
         known_total_candidates: list[float] = []
         subtotal = parsed["totals"].get("subtotal")

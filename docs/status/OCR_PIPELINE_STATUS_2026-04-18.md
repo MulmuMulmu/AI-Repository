@@ -94,6 +94,7 @@
 - `diagnostics.collapsed_item_name_count`
 - `diagnostics.collapsed_item_name_rows`
 - `diagnostics.qwen_item_rescue_count`
+- `diagnostics.scope_classification`
 
 제한적 rescue 정책:
 
@@ -117,6 +118,13 @@
 - `total_mismatch`
 - `orphan_item_detail`
 - `ocr_collapse_item_name`
+- `out_of_scope_receipt`
+
+제품 범위 정책:
+
+- `food_scope`: 마트/편의점/식재료 중심 영수증
+- `mixed_scope`: 식품과 범위 밖 품목이 섞인 영수증
+- `out_of_scope`: 약국/전자제품 등 식재료 등록 흐름과 직접 맞지 않는 영수증
 
 ### 6. Qwen 보정
 

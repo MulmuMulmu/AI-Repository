@@ -31,8 +31,10 @@
       "total": 589000.0,
       "payment_amount": 589000.0
     },
-    "review_required": false,
-    "review_reasons": [],
+    "review_required": true,
+    "review_reasons": [
+      "out_of_scope_receipt"
+    ],
     "diagnostics": {}
   }
 }

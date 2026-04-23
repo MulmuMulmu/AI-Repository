@@ -273,6 +273,12 @@
 - 실제 local Qwen 1.5B 실험에서는 `OIP (9)`에 대해 `raw_name=()2`, `unit=1` 같은 bogus rescue를 생성하는 경우를 확인했다.
 - 그래서 rescue 경로에는 최소 validator를 넣어, `collapsed token` 그대로이거나 숫자 unit만 가진 `rescued_item`은 append하지 않도록 막았다.
 - 추가 prompt hardening 이후에도 local Qwen 1.5B는 `OIP (9)`에서 rescue 성공 없이 `empty_response`로 끝났고, 처리시간도 약 266초 수준이라 운영 경로로는 부적합하다고 판단했다.
+- 제품 범위를 코드에도 반영해서 `diagnostics.scope_classification`을 추가했다.
+  - `food_scope`
+  - `mixed_scope`
+  - `out_of_scope`
+- `out_of_scope`인 약국/전자제품 영수증은 `out_of_scope_receipt` review reason으로 바로 분리한다.
+- gold 기준도 이 정책에 맞게 `OIP (10).webp`를 `out_of_scope_receipt` review 대상으로 갱신했다.
 
 - 합성데이터 기반 고도화가 실제로 수치 개선으로 이어졌다고 말할 수 있다.
 - 특히 `mixed_noise`는 대폭 개선되었고 더 이상 최약군이 아니다.

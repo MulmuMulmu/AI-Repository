@@ -41,7 +41,7 @@
 |---|---:|
 | image_count | 17 |
 | total_item_count | 113 |
-| review_required_count | 7 |
+| review_required_count | 9 |
 
 포함 이미지:
 
@@ -103,7 +103,7 @@ Noop Qwen 기준 결과:
 | `R (2).jpg` | 1.0000 | `R (1)`과 동일 계열. late footer total overwrite 방지와 exact alias 정리까지 반영돼 fully aligned |
 | `img3.jpg` | 1.0000 | lower item strip fallback으로 `맥주 바이젠 미니` 회복, `(5입)` pack-count 비교 정규화 반영 |
 | `SE-173d6bc5-09f3-4a6e-a2e3-f98c90480034.jpg` | 1.0000 | `아몬드빼빼로`는 실제 OCR 원문에 이름줄이 없고 `1 1,700`만 남아 있어 clear item이 아니라 `uncertain_items`로 정리함 |
-| `OIP (10).webp` | 1.0000 | 단일 고가 상품 영수증, 바코드 suffix/결제금액 회복 |
+| `OIP (10).webp` | 1.0000 | 전자제품 영수증. 현재 제품 범위 정책상 `out_of_scope_receipt`로 review에 올리는 것이 정답 |
 | `img2.jpg` | 1.0000 | `subtotal + tax` fallback과 tax OCR 보강 후 편의점 2품목 케이스 정렬 |
 
 ## 해석

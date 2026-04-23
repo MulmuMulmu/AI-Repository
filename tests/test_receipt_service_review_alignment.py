@@ -495,7 +495,39 @@ def test_service_finalize_parse_result_allows_missing_vendor_for_item_strip_reco
     assert parsed["review_required"] is False
 
 
-def test_service_finalize_parse_result_allows_missing_vendor_for_single_item_payment_receipt() -> None:
+def test_service_finalize_parse_result_allows_missing_vendor_for_single_item_food_receipt() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": None,
+        "purchased_at": "2023-06-08",
+        "items": [
+            {"normalized_name": "참치마요 삼각김밥", "quantity": 1.0, "unit": "개", "amount": 1800.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {
+            "payment_amount": 1800.0,
+        },
+        "ocr_texts": [
+            {"line_id": 0, "text": "편의점 구매영수증"},
+            {"line_id": 1, "text": "거래일자 2023-06-08"},
+            {"line_id": 2, "text": "품목"},
+            {"line_id": 3, "text": "참치마요 삼각김밥 1,800"},
+            {"line_id": 4, "text": "카드결제 1,800"},
+            {"line_id": 5, "text": "승인번호 123456"},
+            {"line_id": 6, "text": "고객용"},
+            {"line_id": 7, "text": "감사합니다"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {"quality_score": 1.0},
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert "missing_vendor_name" not in parsed["review_reasons"]
+    assert parsed["review_required"] is False
+
+
+def test_service_finalize_parse_result_marks_out_of_scope_for_electronics_receipt() -> None:
     service = ReceiptParseService(ocr_backend=object())
     parsed = {
         "vendor_name": None,
@@ -513,8 +545,6 @@ def test_service_finalize_parse_result_allows_missing_vendor_for_single_item_pay
             {"line_id": 3, "text": "스팀덱 64GB 589,000"},
             {"line_id": 4, "text": "카드결제 589,000"},
             {"line_id": 5, "text": "승인번호 123456"},
-            {"line_id": 6, "text": "고객용"},
-            {"line_id": 7, "text": "감사합니다"},
         ],
         "review_reasons": [],
         "diagnostics": {"quality_score": 1.0},
@@ -523,8 +553,38 @@ def test_service_finalize_parse_result_allows_missing_vendor_for_single_item_pay
 
     service._finalize_parse_result(parsed, low_quality_reasons=[])
 
-    assert "missing_vendor_name" not in parsed["review_reasons"]
-    assert parsed["review_required"] is False
+    assert parsed["diagnostics"]["scope_classification"] == "out_of_scope"
+    assert "out_of_scope_receipt" in parsed["review_reasons"]
+    assert parsed["review_required"] is True
+
+
+def test_service_finalize_parse_result_keeps_mixed_food_receipt_in_scope() -> None:
+    service = ReceiptParseService(ocr_backend=object())
+    parsed = {
+        "vendor_name": "GS25",
+        "purchased_at": "2023-08-11",
+        "items": [
+            {"normalized_name": "칠성사이다 제로 500ml", "quantity": 1.0, "unit": "개", "amount": 1600.0, "needs_review": False, "review_reason": []},
+            {"normalized_name": "참치마요 삼각", "quantity": 1.0, "unit": "개", "amount": 1500.0, "needs_review": False, "review_reason": []},
+        ],
+        "totals": {
+            "payment_amount": 3100.0,
+        },
+        "ocr_texts": [
+            {"line_id": 0, "text": "GS25"},
+            {"line_id": 1, "text": "칠성사이다 제로 500ml 1,600"},
+            {"line_id": 2, "text": "참치마요 삼각 1,500"},
+            {"line_id": 3, "text": "부탄가스 2,000"},
+        ],
+        "review_reasons": [],
+        "diagnostics": {"quality_score": 1.0},
+        "confidence": 1.0,
+    }
+
+    service._finalize_parse_result(parsed, low_quality_reasons=[])
+
+    assert parsed["diagnostics"]["scope_classification"] == "mixed_scope"
+    assert "out_of_scope_receipt" not in parsed["review_reasons"]
 
 
 def test_service_finalize_parse_result_ignores_tax_and_loyalty_rows_from_unconsumed_amount_total() -> None:
