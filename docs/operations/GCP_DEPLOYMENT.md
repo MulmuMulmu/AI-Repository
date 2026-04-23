@@ -6,7 +6,8 @@
 
 현재 권장 배포 구조:
 
-- **CPU 기본 AI API**: Cloud Run
+- **OCR/Qwen API**: Cloud Run
+- **추천 API**: Cloud Run
 - **GPU Qwen 추론 서버**: Compute Engine GPU VM
 
 이 구조를 권장하는 이유:
@@ -30,9 +31,10 @@ GCP 배포 순서는 아래다.
 
 1. 소스코드를 Docker image로 빌드
 2. 이미지를 Artifact Registry에 push
-3. CPU API는 Cloud Run에 배포
-4. GPU 추론은 별도 GPU VM에서 컨테이너로 실행
-5. CPU API는 `.env` 기준으로 GPU 추론 서버를 OpenAI-compatible provider로 호출
+3. OCR/Qwen API는 Cloud Run에 배포
+4. 추천 API는 별도 Cloud Run에 배포
+5. GPU 추론은 별도 GPU VM에서 컨테이너로 실행
+6. OCR/Qwen API는 `.env` 기준으로 GPU 추론 서버를 OpenAI-compatible provider로 호출
 
 즉, **컨테이너를 먼저 만드는 게 아니라 이미지가 먼저**다.
 
@@ -41,6 +43,7 @@ GCP 배포 순서는 아래다.
 ## 2. 현재 저장소에서 제공하는 배포 파일
 
 - [cloudbuild.cpu.yaml](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/cloudbuild.cpu.yaml)
+- [cloudbuild.recommend.yaml](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/cloudbuild.recommend.yaml)
 - [cloudbuild.gpu.yaml](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/cloudbuild.gpu.yaml)
 - [create-artifact-registry.ps1](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/scripts/gcp/create-artifact-registry.ps1)
 - [build-image.ps1](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/scripts/gcp/build-image.ps1)
@@ -54,7 +57,7 @@ GCP 배포 순서는 아래다.
 
 ---
 
-## 3. CPU API 배포
+## 3. OCR/Qwen API 배포
 
 ### 3-1. Artifact Registry 생성
 
@@ -73,7 +76,7 @@ pwsh ./scripts/gcp/build-image.ps1 `
   -Profile "cpu" `
   -Region "asia-northeast3" `
   -Repository "mulmumu-ai" `
-  -ImageName "ai-api" `
+  -ImageName "ocr-api" `
   -Tag "v0.2"
 ```
 
@@ -83,9 +86,9 @@ pwsh ./scripts/gcp/build-image.ps1 `
 pwsh ./scripts/gcp/deploy-cloud-run.ps1 `
   -ProjectId "<PROJECT_ID>" `
   -Region "asia-northeast3" `
-  -ServiceName "mulmumu-ai-api" `
+  -ServiceName "mulmumu-ocr-api" `
   -Repository "mulmumu-ai" `
-  -ImageName "ai-api" `
+  -ImageName "ocr-api" `
   -Tag "v0.2" `
   -AllowUnauthenticated
 ```
@@ -95,11 +98,27 @@ pwsh ./scripts/gcp/deploy-cloud-run.ps1 `
 - `ENABLE_LOCAL_QWEN=0`
 - `ALLOW_MODEL_DOWNLOAD=0`
 
-즉 Cloud Run은 **CPU 기본 API 서버**로만 사용한다.
+즉 Cloud Run은 **OCR/Qwen API 서버**로 사용한다.
 
 ---
 
-## 4. GPU Qwen 서버 배포
+## 4. 추천 API 배포
+
+```powershell
+pwsh ./scripts/gcp/build-image.ps1 `
+  -ProjectId "<PROJECT_ID>" `
+  -Profile "recommend" `
+  -Region "asia-northeast3" `
+  -Repository "mulmumu-ai" `
+  -ImageName "recommend-api" `
+  -Tag "v0.2"
+```
+
+추천 API는 별도 Cloud Run 서비스로 배포한다.
+
+---
+
+## 5. GPU Qwen 서버 배포
 
 ### 4-1. GPU용 이미지 빌드/푸시
 
@@ -109,7 +128,7 @@ pwsh ./scripts/gcp/build-image.ps1 `
   -Profile "gpu" `
   -Region "asia-northeast3" `
   -Repository "mulmumu-ai" `
-  -ImageName "ai-api-gpu" `
+  -ImageName "ocr-api-gpu" `
   -Tag "v0.2"
 ```
 
@@ -143,9 +162,9 @@ pwsh ./scripts/gcp/create-gpu-vm.ps1 `
 
 ---
 
-## 5. CPU API와 GPU Qwen 연결
+## 6. OCR/Qwen API와 GPU Qwen 연결
 
-Cloud Run의 AI API는 Qwen provider를 직접 내장하지 않고,  
+Cloud Run의 OCR/Qwen API는 Qwen provider를 직접 내장하지 않고,  
 환경변수로 외부 inference endpoint를 바라보게 하는 것이 현재 구조와 맞다.
 
 예시:
@@ -162,17 +181,18 @@ QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS=30
 
 이 구조의 장점:
 
-- Cloud Run은 가볍고 안정적인 CPU API만 담당
+- OCR/Qwen Cloud Run은 가볍고 안정적인 기본 API만 담당
 - GPU 서버는 실험/교체가 쉬움
 - Qwen provider를 바꿔도 API 서버 이미지를 다시 설계할 필요가 적음
 
 ---
 
-## 6. 현재 추천 운영 방식
+## 7. 현재 추천 운영 방식
 
-현재 프로젝트 기준으로 가장 현실적인 운영은 아래다.
+현재 프로젝트 기준 추천은 별도 컨테이너로 분리한다.
 
-- OCR/재료예측/추천 메인 흐름은 CPU API 유지
+- OCR/재료예측은 OCR/Qwen 서비스 유지
+- 추천은 별도 추천 서비스에서 처리
 - Qwen은 hard-case rescue 전용
 - small local Qwen은 운영 메인 경로로 쓰지 않음
 - 더 큰 provider가 준비되면 GPU VM에 붙여 실험
@@ -182,7 +202,7 @@ QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS=30
 
 ---
 
-## 7. 현재 환경 제약
+## 8. 현재 환경 제약
 
 이 저장소에 스크립트와 설정은 추가했지만, 아래 조건이 충족돼야 실제 배포를 실행할 수 있다.
 
@@ -199,12 +219,14 @@ QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS=30
 
 ---
 
-## 8. 권장 순서
+## 9. 권장 순서
 
 1. Artifact Registry 생성
-2. CPU 이미지 원격 빌드
-3. Cloud Run CPU API 배포
-4. GPU VM 생성
-5. GPU VM에 Qwen 컨테이너 기동
-6. Cloud Run에 `QWEN_OPENAI_COMPATIBLE_*` 연결
-7. hard-case 샘플로 rescue 성능 검증
+2. OCR 이미지 원격 빌드
+3. 추천 이미지 원격 빌드
+4. Cloud Run OCR API 배포
+5. Cloud Run 추천 API 배포
+6. GPU VM 생성
+7. GPU VM에 Qwen 컨테이너 기동
+8. Cloud Run OCR API에 `QWEN_OPENAI_COMPATIBLE_*` 연결
+9. hard-case 샘플로 rescue 성능 검증

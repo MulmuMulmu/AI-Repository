@@ -2,24 +2,23 @@
 
 ## 목적
 
-AI 레포의 로컬 개발환경을 Docker로 통일한다. 기본 경로는 CPU 기반 FastAPI 개발 서버이고, 선택적으로 GPU 프로필을 켜서 local Qwen 실험 경로를 사용할 수 있다.
+AI 레포의 로컬 개발환경을 Docker로 통일한다. 현재 구조는 OCR/Qwen 서비스와 추천 서비스를 분리한 2컨테이너 구성을 기준으로 한다.
 
 ## 구성
 
-- 기본 서비스: `ai-api`
+- `ocr-api`
   - `python:3.11-slim`
-  - PaddleOCR + FastAPI 개발 서버
+  - PaddleOCR + Qwen 보조 로직이 포함된 FastAPI 서버
   - 포트 `8000`
-- 선택 서비스: `ai-api-gpu`
-  - `gpu` profile
-  - CUDA runtime + local Qwen 의존성 포함
-  - 포트 `8001`
+- `recommend-api`
+  - 벡터 기반 추천 전용 FastAPI 서버
+  - 포트 `8002`
 
 중요:
 
-- 현재 GPU 프로필은 **local transformers Qwen 실험용**이다.
-- 현재 `requirements.txt`는 `paddlepaddle` CPU 패키지 기준이라서, Docker GPU 프로필을 켠다고 PaddleOCR이 자동으로 GPU로 바뀌지는 않는다.
-- 즉 현재 GPU 프로필의 실질적 목적은 `ocr_qwen/qwen.py`의 local Qwen 경로를 GPU에 올리는 것이다.
+- 로컬 Docker 기준 runtime 컨테이너는 **두 개만** 유지한다.
+- GPU/Qwen 실험은 로컬 compose 서비스로 띄우지 않고, GCP에서 별도 이미지/VM으로 다룬다.
+- `Dockerfile`의 `gpu-dev` target과 `cloudbuild.gpu.yaml`은 GCP 배포 자산으로만 유지한다.
 
 ## 사전 준비
 
@@ -27,18 +26,17 @@ AI 레포의 로컬 개발환경을 Docker로 통일한다. 기본 경로는 CPU
 
 - Docker Desktop
 
-### GPU 프로필
+### GPU 실험
 
-- Docker Desktop + WSL2
-- NVIDIA 드라이버
-- NVIDIA Container Toolkit
+- 로컬 compose 기준으로는 쓰지 않는다.
+- GPU/Qwen 실험은 GCP GPU 서버를 기준으로 한다.
 
 ## 빠른 시작
 
-### 1. CPU 기본 개발 서버
+### 1. OCR/Qwen 기본 개발 서버
 
 ```powershell
-docker compose up --build ai-api
+docker compose up --build ocr-api
 ```
 
 접속:
@@ -47,22 +45,16 @@ docker compose up --build ai-api
 - OpenAPI: `http://localhost:8000/openapi.json`
 - Docs: `http://localhost:8000/docs`
 
-### 2. GPU 프로필로 local Qwen 실험
+### 2. 추천 서버
 
 ```powershell
-docker compose --profile gpu up --build ai-api-gpu
+docker compose up --build recommend-api
 ```
 
 접속:
 
-- API: `http://localhost:8001`
-
-기본 환경값:
-
-- `ENABLE_LOCAL_QWEN=1`
-- `ALLOW_MODEL_DOWNLOAD=1`
-- `LOCAL_QWEN_DEVICE_MAP=auto`
-- `LOCAL_QWEN_TORCH_DTYPE=float16`
+- API: `http://localhost:8002`
+- OpenAPI: `http://localhost:8002/openapi.json`
 
 ## 환경변수
 
@@ -87,18 +79,13 @@ docker compose --profile gpu up --build ai-api-gpu
 
 ## 권장 운영 방식
 
-- 일상 개발: `ai-api`
-- Qwen rescue 검증: `ai-api-gpu`
+- OCR 개발: `ocr-api`
+- 추천 개발: `recommend-api`
+- GPU/Qwen rescue 검증: GCP GPU 서버
 - 더 큰 모델 또는 외부 inference server를 붙일 때는 `QWEN_OPENAI_COMPATIBLE_*` 환경변수로 OpenAI-compatible provider를 연결한다.
 
 ## 종료
 
 ```powershell
 docker compose down
-```
-
-GPU 프로필까지 같이 내릴 때:
-
-```powershell
-docker compose --profile gpu down
 ```

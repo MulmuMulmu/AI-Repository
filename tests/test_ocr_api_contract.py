@@ -124,14 +124,15 @@ def test_ocr_analyze_endpoint_preserves_legacy_contract(monkeypatch) -> None:
     assert data["food_items"] == [
         {
             "product_name": "우유",
-            "amount_krw": 3500,
-            "notes": "",
+            "category": "유제품",
         }
     ]
     assert data["food_count"] == 1
     assert data["vendor_name"] == "이마트"
     assert data["purchased_at"] == "2026-03-11"
     assert data["totals"]["payment_amount"] == 3500.0
+    assert data["review_required"] is False
+    assert data["review_reasons"] == []
 
 
 def test_ocr_analyze_endpoint_can_enqueue_async_refinement(monkeypatch) -> None:
@@ -189,3 +190,9 @@ def test_ocr_refinement_status_endpoint_returns_base_and_refined_results(monkeyp
     assert payload["status"] == "completed"
     assert payload["rule_based_result"]["food_items"][0]["product_name"] == "우유"
     assert payload["refined_result"]["food_items"][0]["product_name"] == "서울우유"
+
+
+def test_public_food_category_normalization_maps_known_products() -> None:
+    assert main._normalize_public_food_category("other", "양념닭주물럭2.2kg") == "정육/계란"
+    assert main._normalize_public_food_category("other", "청정원 서해안 까나리") == "소스/조미료/오일"
+    assert main._normalize_public_food_category("vegetable", "파프리카") == "채소/과일"

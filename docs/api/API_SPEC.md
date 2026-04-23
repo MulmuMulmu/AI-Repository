@@ -1,10 +1,10 @@
-# AI API Specification
+# OCR/Qwen API Specification
 
-> 프로젝트: 영수증 기반 식재료 인식 및 개인화 레시피 추천  
+> 프로젝트: 영수증 기반 식재료 인식 및 소비기한 계산  
 > 서버: FastAPI  
-> Base URL: `http://{AI_SERVER_HOST}:8000`
+> Base URL: `http://{OCR_SERVER_HOST}:8000`
 
-이 문서는 **현재 제품 흐름에서 실제로 사용하는 공개 API만** 정리한다.
+이 문서는 **OCR/Qwen 컨테이너에서 실제로 사용하는 공개 API만** 정리한다.
 
 기준 구현:
 
@@ -25,27 +25,21 @@
 | Method | Endpoint | 설명 |
 |---|---|---|
 | `POST` | `/ai/ocr/analyze` | 영수증 OCR 분석 |
-| `POST` | `/ai/ingredient/match` | 상품명 기반 재료 예측 |
+| `POST` | `/ai/ingredient/match` | 상품명 기반 재료 매핑 |
 | `POST` | `/ai/ingredient/prediction` | 식품 1건 소비기한 계산 |
-| `POST` | `/ai/recommend` | 보유 재료 기반 개인화 추천 |
-| `GET` | `/ai/recipes/{recipe_id}` | 레시피 상세 조회 |
-| `GET` | `/ai/ingredients/search` | 재료 검색 |
 
 ---
 
 ## 2. 사용자 흐름 기준 역할
 
-현재 AI 서버는 아래 순서의 제품 흐름을 담당한다.
+현재 OCR/Qwen 컨테이너는 아래 흐름을 담당한다.
 
 1. 영수증 분석
 2. 상품명 -> 재료 매핑
-3. 식품 1건의 소비기한 계산
-4. 보유 재료 + 사용자 제약 기반 추천
-5. 추천된 레시피 상세 조회
-6. 수동 수정 화면용 재료 검색
+3. 식품 1건 소비기한 계산
+4. 백엔드로 전달할 등록 후보 생성
 
-즉, 이 문서 기준 AI 서버는  
-**영수증 등록과 레시피 추천에 직접 연결되는 API만** 공개 대상으로 본다.
+즉 이 컨테이너는 **영수증 등록 전처리와 해석**에 집중한다.
 
 ---
 
@@ -67,16 +61,44 @@
 
 주요 응답 필드:
 
-- `ocr_texts`
-- `food_items`
-- `food_count`
-- `model`
-- `vendor_name`
 - `purchased_at`
-- `totals`
+- `food_items`
 - `review_required`
 - `review_reasons`
 - `diagnostics`
+
+`food_items` 항목 형식:
+
+- `product_name`
+- `category`
+
+허용 카테고리:
+
+1. `정육/계란`
+2. `해산물`
+3. `채소/과일`
+4. `유제품`
+5. `쌀/면/빵`
+6. `소스/조미료/오일`
+7. `가공식품`
+8. `기타`
+
+응답 예시:
+
+```json
+{
+  "success": true,
+  "data": {
+    "purchased_at": "2026-03-11",
+    "food_items": [
+      {"product_name": "우유", "category": "유제품"},
+      {"product_name": "삼겹살", "category": "정육/계란"},
+      {"product_name": "양파", "category": "채소/과일"}
+    ]
+  },
+  "error": null
+}
+```
 
 운영 의미:
 
@@ -112,37 +134,6 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 - `purchase_date`
 - `storage_method`
 - `category`
-
-즉 현재 외부 계약 기준에서 `/ai/ingredient/prediction`은
-**상품명→재료 매핑이 아니라 유통기한/소비기한 계산 API**다.
-
-### `POST /ai/recommend`
-
-보유 재료와 사용자 제약을 기반으로 개인화 추천을 계산한다.
-
-입력 핵심:
-
-- `ingredientIds`
-- `preferredIngredientIds`
-- `dislikedIngredientIds`
-- `allergyIngredientIds`
-- `preferredCategories`
-- `excludedCategories`
-- `preferredKeywords`
-- `excludedKeywords`
-
-현재 구현 방식:
-
-- 학습형 추천 모델이 아니라 규칙 기반 ranking engine
-- hard filter + soft boost 구조
-
-### `GET /ai/recipes/{recipe_id}`
-
-레시피 상세, 재료 목록, 조리 단계를 조회한다.
-
-### `GET /ai/ingredients/search`
-
-수동 수정 화면이나 재료 선택 UI에서 사용하는 검색 API다.
 
 ---
 
@@ -183,32 +174,10 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 
 ---
 
-## 5. 제품 정책 요약
+## 5. 연계 문서
 
-### 제품 범위
-
-- 우선 지원: 마트, 편의점, 식자재 중심 영수증
-- 보조 지원: 식품 + 비식품 혼합 영수증
-- 범위 밖: 약국, 전자제품, 일반 생활잡화 중심 영수증
-
-### review 정책
-
-- 안정적 결과는 자동 등록
-- 애매한 결과는 `review_required=true`
-- 프론트는 이를 수동 수정 UX로 처리
-
-### 추천 정책
-
-- 보유 재료가 중심
-- 선호/비선호/알레르기/카테고리/키워드를 함께 반영
-- 현재는 학습형 모델이 아니라 규칙 기반 추천 엔진
-
----
-
-## 6. 연계 문서
-
+- [RECOMMEND_API_SPEC.md](RECOMMEND_API_SPEC.md)
 - [../architecture/PROJECT_PROCESS_AND_RATIONALE.md](../architecture/PROJECT_PROCESS_AND_RATIONALE.md)
 - [../architecture/OCR_IMPLEMENTATION.md](../architecture/OCR_IMPLEMENTATION.md)
 - [../operations/NORMAL_INPUT_CRITERIA.md](../operations/NORMAL_INPUT_CRITERIA.md)
 - [../operations/RECAPTURE_GUIDELINES.md](../operations/RECAPTURE_GUIDELINES.md)
-- [../history/status/OCR_PIPELINE_STATUS_2026-04-18.md](../history/status/OCR_PIPELINE_STATUS_2026-04-18.md)

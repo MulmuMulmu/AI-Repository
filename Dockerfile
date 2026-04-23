@@ -27,7 +27,12 @@ COPY . /app
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "app_ocr:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+
+FROM cpu-dev AS recommend-dev
+
+CMD ["uvicorn", "app_recommend:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 
 FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04 AS gpu-dev
@@ -70,4 +75,4 @@ COPY . /app
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "app_ocr:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

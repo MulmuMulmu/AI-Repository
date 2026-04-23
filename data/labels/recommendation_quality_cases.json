@@ -1,0 +1,193 @@
+[
+  {
+    "caseId": "japchae_partial_core",
+    "ingredientIds": [
+      "9589179e-612e-46bf-b5d7-78e4efce3011",
+      "32b4c658-35c0-4a41-9b15-d632d39d0276",
+      "fcb73e85-1b87-49d1-9637-11394d76baba"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "233c9632-a481-44f1-967d-b78ce0e3a173",
+    "expectedRecipeName": "가는파잡채",
+    "maxRank": 1
+  },
+  {
+    "caseId": "galbitang_core",
+    "ingredientIds": [
+      "fa4a5dfb-a936-4338-a4c8-3874fd0b6523",
+      "3850855c-9eef-4731-899e-6003b354f3ea",
+      "bd1391b9-b75d-4f24-931a-2d5648415147"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "5c89ebb0-b77a-494c-9b2b-b0da8e8b3db6",
+    "expectedRecipeName": "갈비탕",
+    "maxRank": 1
+  },
+  {
+    "caseId": "egg_jjim_partial",
+    "ingredientIds": [
+      "da717d70-99d2-475c-800f-b02e9d147e95",
+      "0c5c4579-de6c-4544-9dec-cb4468f6aa62",
+      "c94842db-3ee9-4882-ad14-9df701144da3"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "eb3a1a3a-67d9-4c48-8041-9b8b0d8916e3",
+    "expectedRecipeName": "계란찜",
+    "maxRank": 1
+  },
+  {
+    "caseId": "kimchi_jjigae_partial",
+    "ingredientIds": [
+      "31f05719-b446-4e3f-82f8-0f208cad53f1",
+      "0bda2056-d54b-4fff-8864-290de5563f88",
+      "15be43ea-ffda-413d-bdcc-240942afc275"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "2d8fc2bd-c6f8-43c2-a89a-b4f5c81e6f4f",
+    "expectedRecipeName": "김치찌개",
+    "maxRank": 1
+  },
+  {
+    "caseId": "tteok_skewer_partial",
+    "ingredientIds": [
+      "a56626fb-8d2d-4d8e-9ca6-0e02074899f5",
+      "0379a4ae-4b60-430a-94be-87780fae3fd4",
+      "de316893-9970-4870-9376-a47c1723c1e7"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "5b272c8f-58d5-4281-b640-9b3494e15c94",
+    "expectedRecipeName": "가래떡꼬치",
+    "maxRank": 1
+  },
+  {
+    "caseId": "egg_roll_partial",
+    "ingredientIds": [
+      "da717d70-99d2-475c-800f-b02e9d147e95",
+      "bd1391b9-b75d-4f24-931a-2d5648415147",
+      "15be43ea-ffda-413d-bdcc-240942afc275"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "44571d53-945e-4f19-8eb7-5e4fd0726b71",
+    "expectedRecipeName": "계란말이",
+    "maxRank": 1
+  },
+  {
+    "caseId": "eggplant_beef_stirfry_partial",
+    "ingredientIds": [
+      "c1105d3d-42dc-4cd6-b06d-fed8347d61d1",
+      "fa4a5dfb-a936-4338-a4c8-3874fd0b6523",
+      "1abeeb47-a9dd-45e5-b2e8-70c145b1b9b9"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "855b70b9-ce26-4eea-8574-5a9db32dae79",
+    "expectedRecipeName": "가지쇠고기볶음",
+    "maxRank": 1
+  },
+  {
+    "caseId": "cutlassfish_braise_partial",
+    "ingredientIds": [
+      "131e9b3c-eced-4bed-8c90-4ab26cc1faa0",
+      "561c73ac-9452-4f05-8bc7-426425e8e429",
+      "c8c69d74-1c46-4241-8460-7fdfaa6f94af"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "c57c23a1-4b95-46be-a2fc-d22e0ef092b7",
+    "expectedRecipeName": "갈치무조림",
+    "maxRank": 1
+  },
+  {
+    "caseId": "pork_bone_stew_partial",
+    "ingredientIds": [
+      "32b4c658-35c0-4a41-9b15-d632d39d0276",
+      "c8c69d74-1c46-4241-8460-7fdfaa6f94af",
+      "0bda2056-d54b-4fff-8864-290de5563f88"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "aee12d01-1c66-471a-8734-22f60590f0d7",
+    "expectedRecipeName": "감자탕",
+    "maxRank": 1
+  },
+  {
+    "caseId": "kimchi_tofu_wrap_partial",
+    "ingredientIds": [
+      "0acaf5b2-7b94-4a24-b36a-0b2abe29f41f",
+      "4a197d94-c58b-477e-bf1d-378bd05e4186",
+      "32b4c658-35c0-4a41-9b15-d632d39d0276"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "a87a2e53-98e3-48b2-a21d-3e652f531b17",
+    "expectedRecipeName": "김치두부쌈",
+    "maxRank": 1
+  },
+  {
+    "caseId": "egg_jjim_preferred_category",
+    "ingredientIds": [
+      "da717d70-99d2-475c-800f-b02e9d147e95",
+      "0c5c4579-de6c-4544-9dec-cb4468f6aa62",
+      "c94842db-3ee9-4882-ad14-9df701144da3"
+    ],
+    "preferredCategories": [
+      "찜류"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "expectedRecipeId": "eb3a1a3a-67d9-4c48-8041-9b8b0d8916e3",
+    "expectedRecipeName": "계란찜",
+    "maxRank": 1
+  },
+  {
+    "caseId": "galbitang_allergy_beef_excluded",
+    "ingredientIds": [
+      "fa4a5dfb-a936-4338-a4c8-3874fd0b6523",
+      "3850855c-9eef-4731-899e-6003b354f3ea",
+      "bd1391b9-b75d-4f24-931a-2d5648415147"
+    ],
+    "allergyIngredientIds": [
+      "fa4a5dfb-a936-4338-a4c8-3874fd0b6523"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "forbiddenRecipeId": "5c89ebb0-b77a-494c-9b2b-b0da8e8b3db6",
+    "requireEmpty": true
+  },
+  {
+    "caseId": "kimchi_tofu_disliked_pork_excluded",
+    "ingredientIds": [
+      "0acaf5b2-7b94-4a24-b36a-0b2abe29f41f",
+      "4a197d94-c58b-477e-bf1d-378bd05e4186",
+      "32b4c658-35c0-4a41-9b15-d632d39d0276"
+    ],
+    "dislikedIngredientIds": [
+      "32b4c658-35c0-4a41-9b15-d632d39d0276"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "forbiddenRecipeId": "a87a2e53-98e3-48b2-a21d-3e652f531b17",
+    "requireEmpty": true
+  },
+  {
+    "caseId": "japchae_excluded_category",
+    "ingredientIds": [
+      "9589179e-612e-46bf-b5d7-78e4efce3011",
+      "32b4c658-35c0-4a41-9b15-d632d39d0276",
+      "fcb73e85-1b87-49d1-9637-11394d76baba"
+    ],
+    "excludedCategories": [
+      "볶음류"
+    ],
+    "minCoverageRatio": 0.5,
+    "topK": 5,
+    "forbiddenRecipeId": "233c9632-a481-44f1-967d-b78ce0e3a173",
+    "requireEmpty": true
+  }
+]

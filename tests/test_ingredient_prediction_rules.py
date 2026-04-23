@@ -67,6 +67,10 @@ def test_match_product_to_ingredient_uses_new_brand_product_mappings() -> None:
     assert main._match_product_to_ingredient("블렌드 슈레드 치즈1kg")["ingredientName"] == "치즈"
 
 
+def test_match_product_to_ingredient_does_not_match_single_char_substring_false_positive() -> None:
+    assert main._match_product_to_ingredient("초코파이") is None
+
+
 def test_receipt_rules_mark_discount_and_packaging_noise_as_non_items() -> None:
     rules = ReceiptRules.load_default()
 

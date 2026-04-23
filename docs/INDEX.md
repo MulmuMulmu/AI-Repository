@@ -9,6 +9,7 @@
    - [architecture/OCR_IMPLEMENTATION.md](architecture/OCR_IMPLEMENTATION.md)
 2. 현재 API 계약
    - [api/API_SPEC.md](api/API_SPEC.md)
+   - [api/RECOMMEND_API_SPEC.md](api/RECOMMEND_API_SPEC.md)
 3. 운영 기준
    - [operations/NORMAL_INPUT_CRITERIA.md](operations/NORMAL_INPUT_CRITERIA.md)
    - [operations/RECAPTURE_GUIDELINES.md](operations/RECAPTURE_GUIDELINES.md)

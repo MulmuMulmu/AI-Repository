@@ -10,9 +10,10 @@
 기준 저장소:
 
 - [main.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/main.py)
+- [app_recommend.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/app_recommend.py)
 - [ocr_qwen/services.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/ocr_qwen/services.py)
 - [ocr_qwen/receipts.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/ocr_qwen/receipts.py)
-- [recipe_recommender.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/recipe_recommender.py)
+- [vector_engine.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/recommendation/vector_engine.py)
 
 ---
 
@@ -93,8 +94,10 @@
 ```mermaid
 flowchart TD
     A["Frontend\n영수증 업로드 / 수정 UI / 추천 UI"] --> B["Backend\n사용자/재고/최종 비즈니스 로직"]
-    B --> C["AI Server\nOCR / 재료예측 / 추천 계산"]
+    B --> C["OCR/Qwen Service\nOCR / 재료예측 / 소비기한 계산"]
+    B --> D["Recommend Service\n벡터 기반 추천 계산"]
     C --> B
+    D --> B
     B --> A
 ```
 
@@ -151,7 +154,7 @@ OCR 결과의 상품명은 그대로 추천에 쓰지 않는다.
 
 ### 4-3. 추천
 
-추천은 현재 다음 순서로 동작한다.
+추천은 현재 별도 추천 컨테이너에서 동작한다.
 
 1. 보유 재료 입력
 2. 추천 가능한 재료 집합 필터링
@@ -160,20 +163,22 @@ OCR 결과의 상품명은 그대로 추천에 쓰지 않는다.
    - 비선호 재료
    - 제외 카테고리
    - 제외 키워드
-4. 기본 점수 계산
-   - 가중 일치율
-   - 핵심 재료 커버리지
-   - 부족 재료 수
-   - 대체 재료 가능성
-5. 선호 조건 boost
+4. 기본 필터
+   - `coverageRatio >= 0.5`
+   - 즉 레시피 재료를 모두 가지고 있거나 절반 이상 가지고 있어야 후보
+5. 기본 점수 계산
+   - cosine similarity
+   - 재료 벡터 유사도 기반 정렬
+6. 선호 조건 boost
    - 선호 재료
    - 선호 카테고리
    - 선호 키워드
-6. 최종 정렬
+7. 최종 정렬
 
 관련 구현:
 
-- [recipe_recommender.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/recipe_recommender.py)
+- [app_recommend.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/app_recommend.py)
+- [vector_engine.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/recommendation/vector_engine.py)
 
 ---
 
@@ -226,20 +231,20 @@ Qwen은 현재 메인 파서가 아니다.
 즉 Qwen은 “없으면 안 되는 핵심”이 아니라  
 **있으면 일부 하드케이스를 도와주는 선택 기능**으로 남겨둔 상태다.
 
-### 5-4. 왜 추천은 학습 모델이 아닌가
+### 5-4. 왜 추천은 벡터 기반인가
 
 현재 추천은 따로 학습한 ML 모델이 아니라  
-**규칙 기반 ranking engine**이다.
+**벡터 유사도 기반 추천 엔진**이다.
 
 이유:
 
 - 사용자 행동 로그가 아직 없다.
 - 클릭/저장/조리/평점 데이터가 없다.
 - 지도학습 추천 모델을 학습할 정답 데이터가 부족하다.
-- 현재는 설명 가능성과 통제 가능성이 더 중요하다.
+- 대신 “재료를 절반 이상 가지고 있으면 추천”이라는 요구는 벡터/거리 기반으로 직접 반영하기 쉽다.
 
-즉 지금 단계에서 중요한 것은 “추천 모델을 쓴다”가 아니라  
-**보유 재료와 사용자 제약을 안정적으로 반영한다**는 점이다.
+즉 지금 단계에서 중요한 것은 “학습 모델을 쓰는가”가 아니라  
+**보유 재료 비율과 사용자 제약을 안정적으로 반영하는가**다.
 
 ### 5-5. 왜 review 흐름을 남겼는가
 

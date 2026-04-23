@@ -1,9 +1,9 @@
 services:
-  ai-api:
+  ocr-api:
     build:
       context: .
       target: cpu-dev
-    container_name: mulmumu-ai-api
+    container_name: mulmumu-ocr-api
     environment:
       PYTHONPATH: /app
       WATCHFILES_FORCE_POLLING: "true"
@@ -31,39 +31,18 @@ services:
       retries: 5
       start_period: 40s
 
-  ai-api-gpu:
-    profiles: ["gpu"]
+  recommend-api:
     build:
       context: .
-      target: gpu-dev
-    container_name: mulmumu-ai-api-gpu
+      target: recommend-dev
+    container_name: mulmumu-recommend-api
     environment:
       PYTHONPATH: /app
       WATCHFILES_FORCE_POLLING: "true"
-      ENABLE_LOCAL_QWEN: ${ENABLE_LOCAL_QWEN:-1}
-      ALLOW_MODEL_DOWNLOAD: ${ALLOW_MODEL_DOWNLOAD:-1}
-      LOCAL_QWEN_MODEL_ID: ${LOCAL_QWEN_MODEL_ID:-Qwen/Qwen2.5-1.5B-Instruct}
-      LOCAL_QWEN_DEVICE_MAP: ${LOCAL_QWEN_DEVICE_MAP:-auto}
-      LOCAL_QWEN_TORCH_DTYPE: ${LOCAL_QWEN_TORCH_DTYPE:-float16}
-      LOCAL_QWEN_RECEIPT_EXTRACT_MAX_NEW_TOKENS: ${LOCAL_QWEN_RECEIPT_EXTRACT_MAX_NEW_TOKENS:-160}
-      LOCAL_QWEN_RECEIPT_ITEM_MAX_NEW_TOKENS: ${LOCAL_QWEN_RECEIPT_ITEM_MAX_NEW_TOKENS:-64}
-      LOCAL_QWEN_RECIPE_EXPLANATION_MAX_NEW_TOKENS: ${LOCAL_QWEN_RECIPE_EXPLANATION_MAX_NEW_TOKENS:-160}
-      QWEN_OPENAI_COMPATIBLE_BASE_URL: ${QWEN_OPENAI_COMPATIBLE_BASE_URL:-}
-      QWEN_OPENAI_COMPATIBLE_API_KEY: ${QWEN_OPENAI_COMPATIBLE_API_KEY:-}
-      QWEN_OPENAI_COMPATIBLE_MODEL: ${QWEN_OPENAI_COMPATIBLE_MODEL:-}
-      QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS: ${QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS:-30}
     ports:
-      - "8001:8000"
+      - "8002:8000"
     volumes:
       - .:/app
-      - ai-hf-cache:/root/.cache/huggingface
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/openapi.json', timeout=5).read()\""]
       interval: 30s

@@ -2,19 +2,25 @@
 
 ## 목적
 
-- 기준 레포의 데이터/API 구조는 유지한다.
-- 현재 공개 OCR API는 `/ai/ocr/analyze` 하나로 둔다.
+- OCR/Qwen 서비스와 추천 서비스를 분리한다.
+- OCR/Qwen 서비스의 공개 API는 OCR/재료매핑/소비기한 계산까지만 둔다.
 - 내부 OCR 엔진은 prototype의 `ocr_qwen` 패키지를 그대로 이식해 사용한다.
 - Qwen은 기본 비활성 상태의 보조 기능으로 둔다.
 
 ## 구현 위치
 
 - `main.py`
-  - 현재 공개 흐름 기준 핵심 API는 `/ai/ocr/analyze`, `/ai/ingredient/match`, `/ai/ingredient/prediction`, `/ai/recommend`, `/ai/recipes/{recipe_id}`, `/ai/ingredients/search`
+  - OCR/Qwen 서비스 엔트리포인트
+  - 공개 API는 `/ai/ocr/analyze`, `/ai/ingredient/match`, `/ai/ingredient/prediction`
   - prototype `ReceiptParseService`를 adapter 형태로 사용
   - 앱 startup 시 shared PaddleOCR backend warm-up
   - 응답에 `vendor_name`, `purchased_at`, `totals`, `diagnostics` 추가
   - OCR 응답에서는 `food_items[].product_name`을 `normalized_name` 우선으로 노출
+
+- `app_recommend.py`
+  - 추천 서비스 엔트리포인트
+  - 공개 API는 `POST /recommend`
+  - 벡터 기반 추천 엔진 호출
 
 - `ocr_qwen/`
   - prototype OCR 런타임 패키지
@@ -35,7 +41,7 @@
   - `ENABLE_SYNC_QWEN_RECEIPT_ASSISTANT=1`일 때만 동기 Qwen 보조 실행
   - Qwen 실패 시 예외를 던지지 않고 fallback 유지
 
-## 현재 응답 계약
+## 현재 OCR/Qwen 응답 계약
 
 `POST /ai/ocr/analyze`
 
@@ -104,7 +110,16 @@ QWEN_RECEIPT_MAX_TOKENS=256
   - `vendor_name`, `purchased_at`, `totals`, `diagnostics` 포함 여부 확인
 
 - `tests/test_public_api_surface.py`
-  - `/ai/ingredient/match`, `/ai/ingredient/prediction` 응답 계약
+  - OCR 앱에서 `/ai/ingredient/match`, `/ai/ingredient/prediction` 응답 계약
+  - OCR 앱에서 추천/레시피/검색 라우트가 더 이상 노출되지 않는지 확인
+
+- `tests/test_recommend_app_surface.py`
+  - 추천 앱에서 `/recommend` 단독 노출 확인
+
+- `tests/test_vector_recommend_engine.py`
+  - 절반 이상 보유 시 추천
+  - 절반 미만 제외
+  - 알레르기/비선호 필터 확인
   - 기존 `/api/...` 라우트 비노출 확인
 
 - `tests/test_ocr_service_adapter.py`

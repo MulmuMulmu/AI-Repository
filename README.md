@@ -2,14 +2,17 @@
 
 영수증 이미지를 분석해 식품 품목을 추출하고, 그 품목을 재료 단위로 예측하는 FastAPI 서버입니다.
 
-현재 제품 흐름에서 실제로 사용하는 공개 API는 아래와 같습니다.
+현재 저장소는 두 서비스로 나뉩니다.
+
+### OCR/Qwen 서비스
 
 - `POST /ai/ocr/analyze`
 - `POST /ai/ingredient/match`
 - `POST /ai/ingredient/prediction`
-- `POST /ai/recommend`
-- `GET /ai/recipes/{recipe_id}`
-- `GET /ai/ingredients/search`
+
+### 추천 서비스
+
+- `POST /recommend`
 
 이 저장소의 핵심은 단순 OCR이 아니라, 영수증 파싱 파이프라인을 실제 영수증 구조에 맞게 고도화한 점입니다.
 
@@ -150,17 +153,25 @@ OCR에서 나온 상품명을 입력받아 재료 테이블 기준으로 가장 
 
 ### Docker 기준 빠른 시작
 
-CPU 기본 개발환경:
+OCR/Qwen 기본 개발환경:
 
 ```powershell
-docker compose up --build ai-api
+docker compose up --build ocr-api
 ```
 
-GPU 프로필로 local Qwen 실험:
+추천 서비스:
 
 ```powershell
-docker compose --profile gpu up --build ai-api-gpu
+docker compose up --build recommend-api
 ```
+
+두 서비스를 같이 띄울 때:
+
+```powershell
+docker compose up --build ocr-api recommend-api
+```
+
+GPU/Qwen 실험은 로컬 compose 서비스가 아니라 GCP GPU 서버 기준으로 운영한다.
 
 자세한 내용:
 
@@ -189,10 +200,16 @@ pip install torch transformers accelerate safetensors sentencepiece
 
 ## 5. 실행
 
-### FastAPI 서버 실행
+### OCR/Qwen FastAPI 서버 실행
 
 ```powershell
-uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+uvicorn app_ocr:app --host 0.0.0.0 --port 8000 --reload
+```
+
+### 추천 FastAPI 서버 실행
+
+```powershell
+uvicorn app_recommend:app --host 0.0.0.0 --port 8002 --reload
 ```
 
 ### 단일 이미지 OCR 분석
@@ -347,6 +364,7 @@ warm path 처리 시간:
 ## 10. 관련 문서
 
 - `docs/api/API_SPEC.md`
+- `docs/api/RECOMMEND_API_SPEC.md`
 - `docs/architecture/OCR_IMPLEMENTATION.md`
 - `docs/architecture/PROJECT_PROCESS_AND_RATIONALE.md`
 - `docs/datasets/OCR_QUALITY_BASELINE.md`

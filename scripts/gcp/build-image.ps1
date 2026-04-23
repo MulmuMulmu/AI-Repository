@@ -4,7 +4,7 @@ $ErrorActionPreference = "Stop"
 param(
     [Parameter(Mandatory = $true)]
     [string]$ProjectId,
-    [ValidateSet("cpu", "gpu")]
+    [ValidateSet("cpu", "gpu", "recommend")]
     [string]$Profile = "cpu",
     [string]$Region = "asia-northeast3",
     [string]$Repository = "mulmumu-ai",
@@ -12,8 +12,23 @@ param(
     [string]$Tag = "latest"
 )
 
-$configFile = if ($Profile -eq "gpu") { "cloudbuild.gpu.yaml" } else { "cloudbuild.cpu.yaml" }
-$resolvedImageName = if ($Profile -eq "gpu" -and $ImageName -eq "ai-api") { "ai-api-gpu" } else { $ImageName }
+$configFile = switch ($Profile) {
+    "gpu" { "cloudbuild.gpu.yaml" }
+    "recommend" { "cloudbuild.recommend.yaml" }
+    default { "cloudbuild.cpu.yaml" }
+}
+
+$resolvedImageName = switch ($Profile) {
+    "gpu" {
+        if ($ImageName -eq "ai-api") { "ocr-api-gpu" } else { $ImageName }
+    }
+    "recommend" {
+        if ($ImageName -eq "ai-api") { "recommend-api" } else { $ImageName }
+    }
+    default {
+        if ($ImageName -eq "ai-api") { "ocr-api" } else { $ImageName }
+    }
+}
 
 $submitArgs = @(
     "builds", "submit", ".",

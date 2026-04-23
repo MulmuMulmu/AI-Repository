@@ -181,24 +181,7 @@ def test_quality_metrics_endpoint_returns_monitor_snapshot(monkeypatch) -> None:
     assert payload["total_requests"] == 3
 
 
-def test_recommend_endpoint_is_exposed(monkeypatch) -> None:
-    monkeypatch.setattr(main, "INGREDIENTS", {"ingredient-1": {"ingredientId": "ingredient-1", "ingredientName": "양파"}})
-    monkeypatch.setattr(
-        main,
-        "recommend_recipes",
-        lambda ingredient_ids, top_k, category, min_match_rate, **kwargs: [
-            {
-                "recipeId": "recipe-1",
-                "name": "양파볶음",
-                "category": "반찬",
-                "matchedIngredients": [{"ingredientId": "ingredient-1", "ingredientName": "양파"}],
-                "missingIngredients": [],
-                "matchRate": 1.0,
-                "totalIngredientCount": 1,
-            }
-        ],
-    )
-
+def test_recommend_endpoint_is_not_exposed_from_ocr_app() -> None:
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
@@ -206,33 +189,10 @@ def test_recommend_endpoint_is_exposed(monkeypatch) -> None:
 
     response = asyncio.run(_request())
 
-    assert response.status_code == 200
-    payload = response.json()["data"]
-    assert payload["recommendations"][0]["recipeId"] == "recipe-1"
+    assert response.status_code == 404
 
 
-def test_recipe_detail_endpoint_is_exposed(monkeypatch) -> None:
-    monkeypatch.setattr(
-        main,
-        "RECIPES",
-        {"recipe-1": {"recipeId": "recipe-1", "name": "양파볶음", "category": "반찬", "imageUrl": ""}},
-    )
-    monkeypatch.setattr(
-        main,
-        "RECIPE_INGR",
-        {"recipe-1": [{"recipeIngredientId": "ri-1", "ingredientId": "ingredient-1", "amount": 1, "unit": "개"}]},
-    )
-    monkeypatch.setattr(
-        main,
-        "RECIPE_STEPS",
-        {"recipe-1": [{"recipeStepId": "step-1", "stepOrder": 1, "description": "볶는다"}]},
-    )
-    monkeypatch.setattr(
-        main,
-        "INGREDIENTS",
-        {"ingredient-1": {"ingredientId": "ingredient-1", "ingredientName": "양파", "category": "채소/과일"}},
-    )
-
+def test_recipe_detail_endpoint_is_not_exposed_from_ocr_app() -> None:
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
@@ -240,10 +200,18 @@ def test_recipe_detail_endpoint_is_exposed(monkeypatch) -> None:
 
     response = asyncio.run(_request())
 
-    assert response.status_code == 200
-    payload = response.json()["data"]
-    assert payload["recipeId"] == "recipe-1"
-    assert payload["ingredients"][0]["ingredientName"] == "양파"
+    assert response.status_code == 404
+
+
+def test_ingredient_search_endpoint_is_not_exposed_from_ocr_app() -> None:
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.get("/ai/ingredients/search?q=양파")
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 404
 
 
 def test_connected_routes_log_quality_metrics(monkeypatch) -> None:
