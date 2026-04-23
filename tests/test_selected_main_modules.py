@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from expiry_calculator import ExpiryCalculator
+from ingredient_prediction_service import IngredientPredictionService
 from quality_monitor import QualityMonitor
 from recipe_recommender import RecipeRecommender
 from sharing_filter import SharingFilter
@@ -27,8 +27,8 @@ def test_quality_monitor_records_metrics() -> None:
     assert metrics["endpoints"]["/ai/v1/ocr/normalize"]["count"] == 2
 
 
-def test_expiry_calculator_uses_rule_based_fallback_without_openai() -> None:
-    calculator = ExpiryCalculator()
+def test_ingredient_prediction_service_uses_rule_based_fallback_without_openai() -> None:
+    calculator = IngredientPredictionService()
     calculator._openai_client = None
     calculator._api_key = ""
 

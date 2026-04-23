@@ -35,6 +35,16 @@ FROM cpu-dev AS recommend-dev
 CMD ["uvicorn", "app_recommend:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 
+FROM cpu-dev AS cpu-run
+
+CMD ["uvicorn", "app_ocr:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
+FROM cpu-dev AS recommend-run
+
+CMD ["uvicorn", "app_recommend:app", "--host", "0.0.0.0", "--port", "8000"]
+
+
 FROM nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04 AS gpu-dev
 
 ENV DEBIAN_FRONTEND=noninteractive \

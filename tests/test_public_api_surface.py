@@ -111,7 +111,7 @@ def test_sharing_check_endpoint_returns_filter_result(monkeypatch) -> None:
 
 
 def test_ingredient_prediction_endpoint_returns_expiry_result(monkeypatch) -> None:
-    class _StubExpiryCalculator:
+    class _StubIngredientPredictionService:
         def calculate(self, item_name, purchase_date, storage_method, category):
             assert item_name == "양파"
             assert purchase_date == "2026-04-10"
@@ -129,7 +129,7 @@ def test_ingredient_prediction_endpoint_returns_expiry_result(monkeypatch) -> No
                 "reason": "양파 냉장 기준 30일",
             }
 
-    monkeypatch.setattr(main, "_get_expiry_calculator", lambda: _StubExpiryCalculator())
+    monkeypatch.setattr(main, "_get_ingredient_prediction_service", lambda: _StubIngredientPredictionService())
 
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)

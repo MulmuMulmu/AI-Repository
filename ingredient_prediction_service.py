@@ -111,8 +111,8 @@ DEFAULT_SHELF_LIFE: Dict[str, Dict[str, int]] = {
 }
 
 
-class ExpiryCalculator:
-    """소비기한 계산 엔진 — GPT-4o-mini + 규칙 기반 fallback."""
+class IngredientPredictionService:
+    """소비기한 예측 엔진 — GPT-4o-mini + 규칙 기반 fallback."""
 
     def __init__(self):
         self._openai_client = None

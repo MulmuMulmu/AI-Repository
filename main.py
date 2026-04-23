@@ -65,7 +65,7 @@ _RECEIPT_SERVICE_QWEN = None
 _RECEIPT_REFINEMENT_STORE = None
 _RECEIPT_RULES = None
 _SHARING_FILTER = None
-_EXPIRY_CALCULATOR = None
+_INGREDIENT_PREDICTION_SERVICE = None
 _QUALITY_MONITOR = None
 
 # ═══════════════════════════════════════════════════════════════
@@ -185,13 +185,13 @@ def _get_sharing_filter():
     return _SHARING_FILTER
 
 
-def _get_expiry_calculator():
-    global _EXPIRY_CALCULATOR
-    if _EXPIRY_CALCULATOR is None:
-        from expiry_calculator import ExpiryCalculator
+def _get_ingredient_prediction_service():
+    global _INGREDIENT_PREDICTION_SERVICE
+    if _INGREDIENT_PREDICTION_SERVICE is None:
+        from ingredient_prediction_service import IngredientPredictionService
 
-        _EXPIRY_CALCULATOR = ExpiryCalculator()
-    return _EXPIRY_CALCULATOR
+        _INGREDIENT_PREDICTION_SERVICE = IngredientPredictionService()
+    return _INGREDIENT_PREDICTION_SERVICE
 
 
 def _get_quality_monitor():
@@ -822,7 +822,7 @@ async def check_sharing_items(req: SharingCheckRequest):
 async def calculate_expiry(req: ExpiryRequest):
     """식품 1건의 소비기한을 계산한다."""
     started_at = time.perf_counter()
-    result = _get_expiry_calculator().calculate(
+    result = _get_ingredient_prediction_service().calculate(
         item_name=req.item_name,
         purchase_date=req.purchase_date,
         storage_method=req.storage_method,
