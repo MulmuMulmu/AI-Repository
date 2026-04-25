@@ -135,6 +135,25 @@ def test_ocr_analyze_endpoint_preserves_legacy_contract(monkeypatch) -> None:
     assert data["review_reasons"] == []
 
 
+def test_ocr_analyze_invalid_image_returns_notion_error_contract() -> None:
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.post(
+                "/ai/ocr/analyze",
+                files={"image": ("receipt.txt", b"not an image", "text/plain")},
+            )
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 400
+    assert response.json() == {
+        "success": False,
+        "code": "INVALID_IMAGE",
+        "result": "jpg, png 파일만 지원합니다.",
+    }
+
+
 def test_ocr_analyze_endpoint_can_enqueue_async_refinement(monkeypatch) -> None:
     scheduled: list[tuple[str, bytes, str]] = []
     store = main._get_receipt_refinement_store()

@@ -26,7 +26,7 @@
 |---|---|---|
 | `POST` | `/ai/ocr/analyze` | 영수증 OCR 분석 |
 | `POST` | `/ai/ingredient/match` | 상품명 기반 재료 매핑 |
-| `POST` | `/ai/ingredient/prediction` | 식품 1건 소비기한 계산 |
+| `GET`/`POST` | `/ai/ingredient/prediction` | 식재료 소비기한 배치 계산 |
 
 ---
 
@@ -124,41 +124,67 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 - `UNMAPPED`
 - `EXCLUDED`
 
-### `POST /ai/ingredient/prediction`
+### `GET`/`POST /ai/ingredient/prediction`
 
-식품 1건의 소비기한을 계산한다.
+식재료 목록의 소비기한을 계산한다.
+
+노션 API 명세서의 AI 계약을 기준으로 `purchaseDate`와 `ingredients`를 받는다.
 
 입력 핵심:
 
-- `item_name`
-- `purchase_date`
-- `storage_method`
-- `category`
+- `purchaseDate`
+- `ingredients`
+
+요청 예시:
+
+```json
+{
+  "purchaseDate": "2026-04-09",
+  "ingredients": ["우유", "당근", "상추"]
+}
+```
+
+응답 예시:
+
+```json
+{
+  "success": true,
+  "result": {
+    "purchaseDate": "2026-04-09",
+    "ingredients": [
+      {"ingredientName": "우유", "expirationDate": "2026-06-16"},
+      {"ingredientName": "당근", "expirationDate": "2026-06-16"},
+      {"ingredientName": "상추", "expirationDate": "2026-06-16"}
+    ]
+  }
+}
+```
+
+하위 호환:
+
+- 기존 단건 `POST` 입력인 `item_name`, `purchase_date`, `storage_method`, `category`도 임시 지원한다.
+- 단건 호환 응답은 기존처럼 `success/data/error` envelope를 유지한다.
 
 ---
 
 ## 4. 응답 정책
 
-기본 응답 형식:
+노션 명세 기준 성공 응답 형식:
 
 ```json
 {
   "success": true,
-  "data": {},
-  "error": null
+  "result": {}
 }
 ```
 
-에러 응답 형식:
+OCR/유통기한 오류 응답 형식:
 
 ```json
 {
   "success": false,
-  "data": null,
-  "error": {
-    "code": "ERROR_CODE",
-    "message": "사람이 읽을 수 있는 메시지"
-  }
+  "code": "ERROR_CODE",
+  "result": "사람이 읽을 수 있는 메시지"
 }
 ```
 

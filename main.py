@@ -18,8 +18,9 @@ from difflib import SequenceMatcher
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import FastAPI, File, HTTPException, Query, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 try:
@@ -68,6 +69,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.exception_handler(HTTPException)
+async def notion_error_contract_handler(request: Request, exc: HTTPException) -> JSONResponse:
+    detail = exc.detail
+    if isinstance(detail, dict):
+        code = str(detail.get("code") or "ERROR")
+        result = str(detail.get("message") or detail.get("result") or exc.status_code)
+    else:
+        code = "ERROR"
+        result = str(detail)
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"success": False, "code": code, "result": result},
+    )
+
 _RECEIPT_BACKEND = None
 _RECEIPT_PARSER = None
 _RECEIPT_SERVICE_NOOP = None
@@ -95,6 +111,18 @@ class ExpiryRequest(BaseModel):
     purchase_date: str
     storage_method: str = "냉장"
     category: Optional[str] = None
+
+
+def _extract_batch_ingredient_name(raw_ingredient: Any) -> str:
+    if isinstance(raw_ingredient, str):
+        return raw_ingredient
+    if isinstance(raw_ingredient, dict):
+        return str(raw_ingredient.get("ingredientName") or raw_ingredient.get("item_name") or "").strip()
+    return ""
+
+
+def _is_notion_prediction_payload(payload: dict[str, Any]) -> bool:
+    return "purchaseDate" in payload and isinstance(payload.get("ingredients"), list)
 
 class ApiResponse(BaseModel):
     success: bool
@@ -828,10 +856,64 @@ async def check_sharing_items(req: SharingCheckRequest):
     return response
 
 
-@app.post("/ai/ingredient/prediction")
-async def calculate_expiry(req: ExpiryRequest):
-    """식품 1건의 소비기한을 계산한다."""
+@app.api_route("/ai/ingredient/prediction", methods=["GET", "POST"])
+async def calculate_expiry(request: Request):
+    """소비기한을 계산한다.
+
+    노션 명세의 배치 계약을 우선 지원하고, 기존 단건 POST 계약은 하위 호환으로 유지한다.
+    """
     started_at = time.perf_counter()
+    try:
+        payload = await request.json()
+    except Exception:
+        payload = {}
+
+    if not isinstance(payload, dict):
+        raise HTTPException(
+            status_code=400,
+            detail={"code": "INVALID_REQUEST", "message": "JSON 객체 요청만 지원합니다."},
+        )
+
+    if _is_notion_prediction_payload(payload):
+        purchase_date = str(payload.get("purchaseDate") or "").strip()
+        if not purchase_date:
+            raise HTTPException(
+                status_code=400,
+                detail={"code": "INVALID_REQUEST", "message": "purchaseDate는 필수입니다."},
+            )
+
+        predicted_ingredients = []
+        for raw_ingredient in payload.get("ingredients", []):
+            ingredient_name = _extract_batch_ingredient_name(raw_ingredient)
+            if not ingredient_name:
+                continue
+
+            category = raw_ingredient.get("category") if isinstance(raw_ingredient, dict) else None
+            storage_method = raw_ingredient.get("storageMethod") if isinstance(raw_ingredient, dict) else None
+            result = _get_ingredient_prediction_service().calculate(
+                item_name=ingredient_name,
+                purchase_date=purchase_date,
+                storage_method=str(storage_method or "냉장"),
+                category=category,
+            )
+            predicted_ingredients.append(
+                {
+                    "ingredientName": ingredient_name,
+                    "expirationDate": result.get("expiry_date"),
+                }
+            )
+
+        response = {
+            "success": True,
+            "result": {
+                "purchaseDate": purchase_date,
+                "ingredients": predicted_ingredients,
+            },
+        }
+        _log_endpoint_request("/ai/ingredient/prediction", started_at, status_code=200)
+        return response
+
+    req = ExpiryRequest(**payload)
     result = _get_ingredient_prediction_service().calculate(
         item_name=req.item_name,
         purchase_date=req.purchase_date,

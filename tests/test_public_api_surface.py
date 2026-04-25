@@ -152,6 +152,60 @@ def test_ingredient_prediction_endpoint_returns_expiry_result(monkeypatch) -> No
     assert payload["method"] == "rule-based"
 
 
+def test_ingredient_prediction_endpoint_supports_notion_batch_contract(monkeypatch) -> None:
+    calls: list[tuple[str, str, str, str | None]] = []
+
+    class _StubIngredientPredictionService:
+        def calculate(self, item_name, purchase_date, storage_method, category):
+            calls.append((item_name, purchase_date, storage_method, category))
+            return {
+                "item_name": item_name,
+                "purchase_date": purchase_date,
+                "storage_method": storage_method,
+                "expiry_date": "2026-06-16",
+                "d_day": 10,
+                "risk_level": "safe",
+                "confidence": 0.7,
+                "method": "rule-based",
+                "reason": "테스트",
+            }
+
+    monkeypatch.setattr(main, "_get_ingredient_prediction_service", lambda: _StubIngredientPredictionService())
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.request(
+                "GET",
+                "/ai/ingredient/prediction",
+                json={
+                    "purchaseDate": "2026-04-09",
+                    "ingredients": ["우유", "당근", "상추"],
+                },
+            )
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    payload = response.json()
+    assert payload == {
+        "success": True,
+        "result": {
+            "purchaseDate": "2026-04-09",
+            "ingredients": [
+                {"ingredientName": "우유", "expirationDate": "2026-06-16"},
+                {"ingredientName": "당근", "expirationDate": "2026-06-16"},
+                {"ingredientName": "상추", "expirationDate": "2026-06-16"},
+            ],
+        },
+    }
+    assert calls == [
+        ("우유", "2026-04-09", "냉장", None),
+        ("당근", "2026-04-09", "냉장", None),
+        ("상추", "2026-04-09", "냉장", None),
+    ]
+
+
 def test_quality_metrics_endpoint_returns_monitor_snapshot(monkeypatch) -> None:
     class _StubQualityMonitor:
         def get_metrics(self, window="1h"):
