@@ -124,6 +124,16 @@ def _extract_batch_ingredient_name(raw_ingredient: Any) -> str:
 def _is_notion_prediction_payload(payload: dict[str, Any]) -> bool:
     return "purchaseDate" in payload and isinstance(payload.get("ingredients"), list)
 
+
+def _prediction_payload_from_query(request: Request) -> dict[str, Any]:
+    purchase_date = request.query_params.get("purchaseDate", "").strip()
+    ingredients = [ingredient.strip() for ingredient in request.query_params.getlist("ingredients") if ingredient.strip()]
+    if len(ingredients) == 1 and "," in ingredients[0]:
+        ingredients = [ingredient.strip() for ingredient in ingredients[0].split(",") if ingredient.strip()]
+    if not purchase_date and not ingredients:
+        return {}
+    return {"purchaseDate": purchase_date, "ingredients": ingredients}
+
 class ApiResponse(BaseModel):
     success: bool
     data: Any = None
@@ -867,6 +877,9 @@ async def calculate_expiry(request: Request):
         payload = await request.json()
     except Exception:
         payload = {}
+
+    if not payload and request.method == "GET":
+        payload = _prediction_payload_from_query(request)
 
     if not isinstance(payload, dict):
         raise HTTPException(

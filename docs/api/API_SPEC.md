@@ -144,6 +144,18 @@ OCR에서 나온 상품명을 재료 단위로 예측한다.
 }
 ```
 
+GET query 예시:
+
+```text
+/ai/ingredient/prediction?purchaseDate=2026-04-09&ingredients=우유&ingredients=당근&ingredients=상추
+```
+
+운영 제약:
+
+- 노션 원문은 `GET` + JSON RequestBody 형태지만, Cloud Run/Google 프런트에서는 GET body가 malformed request로 차단될 수 있다.
+- 외부 연동은 `POST` JSON body를 우선 사용한다.
+- `GET`이 필요한 클라이언트는 query string 형식을 사용한다.
+
 응답 예시:
 
 ```json

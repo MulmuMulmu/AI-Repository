@@ -206,6 +206,50 @@ def test_ingredient_prediction_endpoint_supports_notion_batch_contract(monkeypat
     ]
 
 
+def test_ingredient_prediction_endpoint_supports_get_query_contract(monkeypatch) -> None:
+    class _StubIngredientPredictionService:
+        def calculate(self, item_name, purchase_date, storage_method, category):
+            return {
+                "item_name": item_name,
+                "purchase_date": purchase_date,
+                "storage_method": storage_method,
+                "expiry_date": "2026-06-16",
+                "d_day": 10,
+                "risk_level": "safe",
+                "confidence": 0.7,
+                "method": "rule-based",
+                "reason": "테스트",
+            }
+
+    monkeypatch.setattr(main, "_get_ingredient_prediction_service", lambda: _StubIngredientPredictionService())
+
+    async def _request() -> httpx.Response:
+        transport = httpx.ASGITransport(app=main.app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            return await client.get(
+                "/ai/ingredient/prediction",
+                params=[
+                    ("purchaseDate", "2026-04-09"),
+                    ("ingredients", "우유"),
+                    ("ingredients", "당근"),
+                ],
+            )
+
+    response = asyncio.run(_request())
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "success": True,
+        "result": {
+            "purchaseDate": "2026-04-09",
+            "ingredients": [
+                {"ingredientName": "우유", "expirationDate": "2026-06-16"},
+                {"ingredientName": "당근", "expirationDate": "2026-06-16"},
+            ],
+        },
+    }
+
+
 def test_quality_metrics_endpoint_returns_monitor_snapshot(monkeypatch) -> None:
     class _StubQualityMonitor:
         def get_metrics(self, window="1h"):
