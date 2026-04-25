@@ -22,6 +22,16 @@ from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
+try:
+    from dotenv import load_dotenv
+except ImportError:  # pragma: no cover - optional local convenience only
+    load_dotenv = None
+
+if load_dotenv is not None:
+    PROJECT_DIR = Path(__file__).resolve().parent
+    load_dotenv(PROJECT_DIR / ".env.local")
+    load_dotenv(PROJECT_DIR / ".env")
+
 # ═══════════════════════════════════════════════════════════════
 #  데이터 로드
 # ═══════════════════════════════════════════════════════════════
