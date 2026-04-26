@@ -5,7 +5,9 @@
 ## 권장 읽기 순서
 
 1. 구조와 제품 방향
+   - [architecture/AI_PIPELINE_QA_GUIDE.md](architecture/AI_PIPELINE_QA_GUIDE.md)
    - [architecture/PROJECT_PROCESS_AND_RATIONALE.md](architecture/PROJECT_PROCESS_AND_RATIONALE.md)
+   - [architecture/BACKEND_AI_ADAPTER_HANDOFF.md](architecture/BACKEND_AI_ADAPTER_HANDOFF.md)
    - [architecture/OCR_IMPLEMENTATION.md](architecture/OCR_IMPLEMENTATION.md)
 2. 현재 API 계약
    - [api/API_SPEC.md](api/API_SPEC.md)
@@ -36,6 +38,7 @@
 - 시스템 구조
 - 프로세스 흐름
 - 기술 선택 이유
+- 질문 답변용 AI 파이프라인 요약
 
 ### `operations/`
 

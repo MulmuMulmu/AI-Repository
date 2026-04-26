@@ -17,7 +17,6 @@
 현재 [main.py](C:/Users/USER-PC/Desktop/jp/.cache/AI-Repository-fresh/main.py)는 아래 기능을 한 앱에서 모두 처리한다.
 
 - 영수증 OCR
-- 상품명 → 재료 매핑
 - 소비기한 계산
 - 레시피 추천
 - 레시피 상세 조회
@@ -39,7 +38,6 @@
 ### 유지
 
 - `/ai/ocr/analyze`
-- `/ai/ingredient/match`
 - `/ai/ingredient/prediction`
 
 ### 제거
@@ -51,9 +49,11 @@
 ### 새 구조
 
 - OCR/Qwen 컨테이너
-  - OCR, 재료 매핑, 소비기한 계산 담당
+  - OCR, 소비기한 계산 담당
 - 추천 컨테이너
   - 추천 전용 API만 담당
+
+상품명 정규화와 `ingredientId` 매핑은 백엔드 재료 DB 기준으로 처리한다. `POST /ai/ingredient/match`는 공개 AI API 계약에서 제외한다.
 
 ---
 
@@ -133,7 +133,6 @@ AI-Repository-fresh/
 공개 API:
 
 - `POST /ai/ocr/analyze`
-- `POST /ai/ingredient/match`
 - `POST /ai/ingredient/prediction`
 
 선택 유지:
@@ -240,7 +239,6 @@ AI-Repository-fresh/
 ### OCR/Qwen 컨테이너
 
 - `POST /ai/ocr/analyze`
-- `POST /ai/ingredient/match`
 - `POST /ai/ingredient/prediction`
 
 ### 추천 컨테이너

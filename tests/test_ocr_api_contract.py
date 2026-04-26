@@ -125,6 +125,7 @@ def test_ocr_analyze_endpoint_preserves_legacy_contract(monkeypatch) -> None:
         {
             "product_name": "우유",
             "category": "유제품",
+            "quantity": 1,
         }
     ]
     assert data["food_count"] == 1

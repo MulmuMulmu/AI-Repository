@@ -25,7 +25,6 @@
 | Method | Endpoint | 설명 |
 |---|---|---|
 | `POST` | `/ai/ocr/analyze` | 영수증 OCR 분석 |
-| `POST` | `/ai/ingredient/match` | 상품명 기반 재료 매핑 |
 | `GET`/`POST` | `/ai/ingredient/prediction` | 식재료 소비기한 배치 계산 |
 
 ---
@@ -35,11 +34,12 @@
 현재 OCR/Qwen 컨테이너는 아래 흐름을 담당한다.
 
 1. 영수증 분석
-2. 상품명 -> 재료 매핑
-3. 식품 1건 소비기한 계산
-4. 백엔드로 전달할 등록 후보 생성
+2. 식품 1건 소비기한 계산
+3. 백엔드로 전달할 등록 후보 생성
 
 즉 이 컨테이너는 **영수증 등록 전처리와 해석**에 집중한다.
+
+상품명 정규화와 `ingredientId` 매핑은 백엔드 책임이다. OCR/Qwen 컨테이너는 `food_items[].product_name`, `category`, `quantity`를 반환하고, 백엔드는 자체 재료 DB 기준으로 최종 식재료 후보를 확정한다.
 
 ---
 
@@ -71,6 +71,7 @@
 
 - `product_name`
 - `category`
+- `quantity`
 
 허용 카테고리:
 
@@ -91,9 +92,9 @@
   "data": {
     "purchased_at": "2026-03-11",
     "food_items": [
-      {"product_name": "우유", "category": "유제품"},
-      {"product_name": "삼겹살", "category": "정육/계란"},
-      {"product_name": "양파", "category": "채소/과일"}
+      {"product_name": "우유", "category": "유제품", "quantity": 1},
+      {"product_name": "삼겹살", "category": "정육/계란", "quantity": 1},
+      {"product_name": "양파", "category": "채소/과일", "quantity": 2}
     ]
   },
   "error": null
@@ -106,23 +107,6 @@
   - 자동 등록 후보
 - `review_required=true`
   - 프론트에서 수동 수정 화면으로 연결
-
-### `POST /ai/ingredient/match`
-
-OCR에서 나온 상품명을 재료 단위로 예측한다.
-
-매핑 순서:
-
-1. alias 정규화
-2. 규칙 사전 매핑
-3. DB exact match
-4. DB fuzzy match
-
-응답 분류:
-
-- `MAPPED`
-- `UNMAPPED`
-- `EXCLUDED`
 
 ### `GET`/`POST /ai/ingredient/prediction`
 

@@ -24,7 +24,7 @@ def test_match_product_to_ingredient_applies_alias_before_rule_mapping() -> None
     assert result["mapping_source"] == "receipt_rule_product_mapping"
 
 
-def test_ingredient_match_endpoint_uses_receipt_rule_mapping() -> None:
+def test_ingredient_match_endpoint_is_not_public_contract() -> None:
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
@@ -35,11 +35,7 @@ def test_ingredient_match_endpoint_uses_receipt_rule_mapping() -> None:
 
     response = asyncio.run(_request())
 
-    assert response.status_code == 200
-    payload = response.json()["data"]
-    assert payload["matched_count"] == 2
-    assert payload["unmatched_count"] == 0
-    assert [item["ingredientName"] for item in payload["matched"]] == ["맥주", "초콜릿"]
+    assert response.status_code == 404
 
 
 def test_match_product_to_ingredient_uses_new_brand_product_mappings() -> None:

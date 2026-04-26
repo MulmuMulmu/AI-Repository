@@ -98,10 +98,6 @@ _QUALITY_MONITOR = None
 #  Pydantic 스키마
 # ═══════════════════════════════════════════════════════════════
 
-class MatchRequest(BaseModel):
-    product_names: List[str] = Field(..., min_length=1)
-
-
 class SharingCheckRequest(BaseModel):
     item_names: List[str] = Field(..., min_length=1)
 
@@ -501,10 +497,18 @@ def _normalize_food_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         normalized_name=str(item.get("normalized_name") or "").strip(),
     )
 
-    return {
+    normalized_item = {
         "product_name": product_name,
         "category": category,
     }
+
+    quantity = item.get("quantity")
+    if quantity is not None:
+        if isinstance(quantity, float) and quantity.is_integer():
+            quantity = int(quantity)
+        normalized_item["quantity"] = quantity
+
+    return normalized_item
 
 
 def _normalize_food_items(items: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
@@ -619,6 +623,7 @@ def _legacy_food_items_from_parsed(parsed: Dict[str, Any]) -> list[Dict[str, Any
                 "product_name": product_name,
                 "normalized_name": item.get("normalized_name"),
                 "category": item.get("category"),
+                "quantity": item.get("quantity"),
             }
         )
     return _normalize_food_items(legacy_items)
@@ -827,33 +832,6 @@ async def get_ocr_refinement(trace_id: str):
             "refined_result": _legacy_ocr_response_data_from_parsed(refined_parsed) if isinstance(refined_parsed, dict) else None,
         },
     )
-
-
-@app.post("/ai/ingredient/match")
-async def match_ingredients(req: MatchRequest):
-    """OCR 추출 상품명 → DB Ingredient 매칭."""
-    started_at = time.perf_counter()
-    matched = []
-    unmatched = []
-
-    for name in req.product_names:
-        result = _match_product_to_ingredient(name)
-        if result:
-            matched.append(_normalize_prediction_match(name, result))
-        else:
-            unmatched.append(_build_unmatched_prediction(name))
-
-    response = ApiResponse(
-        success=True,
-        data={
-            "matched": matched,
-            "unmatched": unmatched,
-            "matched_count": len(matched),
-            "unmatched_count": len(unmatched),
-        },
-    )
-    _log_endpoint_request("/ai/ingredient/match", started_at, status_code=200)
-    return response
 
 
 @app.post("/ai/sharing/check")

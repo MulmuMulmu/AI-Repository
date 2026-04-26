@@ -7,21 +7,7 @@ import httpx
 import main
 
 
-def test_ingredient_match_endpoint_returns_match_result(monkeypatch) -> None:
-    def _stub_match(product_name: str) -> dict | None:
-        if product_name == "국산콩 두부":
-            return {
-                "product_name": product_name,
-                "ingredientId": "ingredient-1",
-                "ingredientName": "두부",
-                "category": "가공식품",
-                "similarity": 0.92,
-            }
-        return None
-
-    monkeypatch.setattr(main, "_match_product_to_ingredient", _stub_match)
-    monkeypatch.setattr(main, "_find_suggestions", lambda product_name: ["두부", "순두부"])
-
+def test_ingredient_match_endpoint_is_not_exposed() -> None:
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
@@ -32,40 +18,7 @@ def test_ingredient_match_endpoint_returns_match_result(monkeypatch) -> None:
 
     response = asyncio.run(_request())
 
-    assert response.status_code == 200
-    payload = response.json()
-    assert payload["success"] is True
-    data = payload["data"]
-    assert data["matched_count"] == 1
-    assert data["unmatched_count"] == 1
-    assert data["matched"][0]["ingredientName"] == "두부"
-    assert data["matched"][0]["mapping_status"] == "MAPPED"
-    assert data["matched"][0]["item_type"] == "INGREDIENT"
-    assert data["unmatched"][0]["suggestions"] == ["두부", "순두부"]
-    assert data["unmatched"][0]["mapping_status"] == "UNMAPPED"
-    assert data["unmatched"][0]["item_type"] == "UNKNOWN"
-
-
-def test_ingredient_match_endpoint_keeps_non_food_as_excluded(monkeypatch) -> None:
-    monkeypatch.setattr(main, "_match_product_to_ingredient", lambda product_name: None)
-    monkeypatch.setattr(main, "_find_suggestions", lambda product_name: [])
-
-    async def _request() -> httpx.Response:
-        transport = httpx.ASGITransport(app=main.app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
-            return await client.post(
-                "/ai/ingredient/match",
-                json={"product_names": ["구글홈미니"]},
-            )
-
-    response = asyncio.run(_request())
-
-    assert response.status_code == 200
-    payload = response.json()["data"]
-    assert payload["matched_count"] == 0
-    assert payload["unmatched_count"] == 1
-    assert payload["unmatched"][0]["mapping_status"] == "EXCLUDED"
-    assert payload["unmatched"][0]["item_type"] == "NON_FOOD"
+    assert response.status_code == 404
 
 
 def test_legacy_api_routes_are_not_exposed() -> None:
@@ -323,14 +276,11 @@ def test_connected_routes_log_quality_metrics(monkeypatch) -> None:
             return {"window": window, "total_requests": 0, "error_count": 0, "error_rate": 0.0, "avg_response_ms": 0.0, "p95_response_ms": 0.0, "endpoints": {}}
 
     monkeypatch.setattr(main, "_get_quality_monitor", lambda: _StubQualityMonitor())
-    monkeypatch.setattr(main, "_match_product_to_ingredient", lambda product_name: None)
-    monkeypatch.setattr(main, "_find_suggestions", lambda product_name: [])
 
     async def _request() -> list[httpx.Response]:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
             responses = []
-            responses.append(await client.post("/ai/ingredient/match", json={"product_names": ["알수없는상품"]}))
             responses.append(await client.post("/ai/sharing/check", json={"item_names": ["통조림 참치"]}))
             responses.append(await client.get("/ai/quality/metrics"))
             return responses
@@ -339,7 +289,6 @@ def test_connected_routes_log_quality_metrics(monkeypatch) -> None:
 
     assert all(response.status_code == 200 for response in responses)
     assert [endpoint for endpoint, _ in logged] == [
-        "/ai/ingredient/match",
         "/ai/sharing/check",
         "/ai/quality/metrics",
     ]
