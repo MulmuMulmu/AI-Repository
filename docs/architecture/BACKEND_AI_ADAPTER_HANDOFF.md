@@ -142,7 +142,7 @@ Content-Type: application/json
 AI 내부 API:
 
 ```text
-POST {RECOMMEND_AI_BASE_URL}/recommend
+POST {RECOMMEND_AI_BASE_URL}/ai/ingredient/recommondation
 Content-Type: application/json
 ```
 
@@ -150,32 +150,36 @@ Content-Type: application/json
 
 ```json
 {
-  "ingredientIds": ["1", "2", "3"],
-  "topK": 10,
-  "minCoverageRatio": 0.5,
-  "preferredIngredientIds": [],
-  "dislikedIngredientIds": [],
-  "allergyIngredientIds": [],
-  "preferredCategories": [],
-  "excludedCategories": [],
-  "preferredKeywords": [],
-  "excludedKeywords": []
+  "userIngredient": {
+    "ingredients": ["김치"],
+    "preferIngredients": ["고등어", "소고기"],
+    "dispreferIngredients": ["샐러드", "오이"],
+    "IngredientRatio": 0.5
+  },
+  "candidates": [
+    {
+      "recipe_id": "exampleUUID1",
+      "title": "돼지고기 김치찌개",
+      "ingredients": ["김치", "돼지고기", "두부", "대파", "고춧가루"]
+    }
+  ]
 }
 ```
 
 운영 기준:
 
-- `minCoverageRatio=1.0`: 보유 재료만으로 가능한 레시피
-- `minCoverageRatio=0.5`: 레시피 재료를 절반 이상 보유한 추천
-- 알레르기/비선호 재료는 hard filter로 전달
-- 선호 재료/카테고리/키워드는 soft boost 조건으로 전달
+- `IngredientRatio=1.0`: 보유 재료만으로 가능한 레시피
+- `IngredientRatio=0.5`: 레시피 재료를 절반 이상 보유한 추천
+- 비선호 재료는 hard filter 조건으로 전달
+- 선호 재료는 soft boost 조건으로 전달
+- 백엔드는 추천 대상 후보 레시피를 `candidates`로 전달
 
 백엔드 adapter 변환:
 
-- 백엔드 사용자 재고의 ingredient id를 `ingredientIds`로 변환
-- 사용자 알레르기/선호/비선호 설정을 추천 요청 필드로 변환
-- AI 응답의 `recipeId`, `matchedIngredients`, `missingIngredients`, `coverageRatio`를 백엔드 DTO로 변환
-- 레시피 상세 메타데이터가 백엔드 DB 기준이면 `recipeId`로 백엔드 DB를 조회해 최종 응답을 보강
+- 백엔드 사용자 재고를 `userIngredient.ingredients` 재료명 목록으로 변환
+- 사용자 선호/비선호 설정을 `preferIngredients`, `dispreferIngredients`로 변환
+- 백엔드 레시피 DB에서 추천 후보를 조회해 `candidates`로 전달
+- AI 응답의 `recipeId`, `title`, `score`, `match_details`를 백엔드 DTO로 변환
 
 ## 장애 처리 기준
 

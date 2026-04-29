@@ -143,7 +143,7 @@ AI-Repository-fresh/
 
 공개 API:
 
-- `POST /recommend`
+- `POST /ai/ingredient/recommondation`
 
 설명:
 
@@ -243,7 +243,7 @@ AI-Repository-fresh/
 
 ### 추천 컨테이너
 
-- `POST /recommend`
+- `POST /ai/ingredient/recommondation`
 
 예상 입력:
 
@@ -287,7 +287,7 @@ AI-Repository-fresh/
 ## 테스트 전략
 
 1. OCR 앱에서 추천/레시피/검색 라우트 제거 테스트
-2. 추천 앱에서 `/recommend` 단독 노출 테스트
+2. 추천 앱에서 `/ai/ingredient/recommondation` 계약 테스트
 3. 벡터 추천 엔진 단위 테스트
    - 100% 보유
    - 50% 이상 보유

@@ -19,8 +19,8 @@
 
 - `app_recommend.py`
   - 추천 서비스 엔트리포인트
-  - 공개 API는 `POST /recommend`
-  - 벡터 기반 추천 엔진 호출
+  - 공개 API는 `POST /ai/ingredient/recommondation`
+  - 백엔드 후보 레시피 기반 벡터 추천 호출
 
 - `ocr_qwen/`
   - prototype OCR 런타임 패키지
@@ -114,7 +114,7 @@ QWEN_RECEIPT_MAX_TOKENS=256
   - OCR 앱에서 추천/레시피/검색 라우트가 더 이상 노출되지 않는지 확인
 
 - `tests/test_recommend_app_surface.py`
-  - 추천 앱에서 `/recommend` 단독 노출 확인
+  - 추천 앱에서 `/ai/ingredient/recommondation` 계약 확인
 
 - `tests/test_vector_recommend_engine.py`
   - 절반 이상 보유 시 추천

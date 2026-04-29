@@ -4,7 +4,7 @@
 
 **Goal:** OCR/Qwen 기능과 추천 기능을 두 컨테이너로 분리하고, 추천 엔진을 절반 이상 재료 보유 기준의 벡터 유사도 방식으로 교체한다.
 
-**Architecture:** 단일 레포 안에서 OCR 앱과 추천 앱을 분리한다. OCR 앱은 기존 `main.py` 기반 라우트에서 추천/레시피/검색을 제거하고, 추천 앱은 `POST /recommend`만 제공한다. 추천 엔진은 재료 이진/가중 벡터 + cosine similarity + coverage ratio threshold 0.5를 사용한다.
+**Architecture:** 단일 레포 안에서 OCR 앱과 추천 앱을 분리한다. OCR 앱은 기존 `main.py` 기반 라우트에서 추천/레시피/검색을 제거하고, 추천 앱은 백엔드 계약에 맞춰 `POST /ai/ingredient/recommondation`을 제공한다. 추천 엔진은 후보 레시피 재료와 사용자 보유 재료의 벡터 유사도 + coverage ratio threshold 0.5를 사용한다.
 
 **Tech Stack:** FastAPI, Python, Docker, pytest
 
@@ -24,7 +24,7 @@
 
 **Step 2: 추천 앱 공개 라우트 failing test 작성**
 
-- `POST /recommend` 200
+- `POST /ai/ingredient/recommondation` 200
 
 **Step 3: 테스트 실행**
 
@@ -51,7 +51,7 @@ Expected:
 
 **Step 2: 추천 앱 엔트리포인트 작성**
 
-- `POST /recommend`만 노출
+- `POST /ai/ingredient/recommondation` 제공
 
 **Step 3: OCR 앱에서 추천/레시피/검색 라우트 제거**
 

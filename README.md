@@ -11,7 +11,7 @@
 
 ### 추천 서비스
 
-- `POST /recommend`
+- `POST /ai/ingredient/recommondation`
 
 이 저장소의 핵심은 단순 OCR이 아니라, 영수증 파싱 파이프라인을 실제 영수증 구조에 맞게 고도화한 점입니다.
 

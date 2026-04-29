@@ -1,55 +1,30 @@
 from __future__ import annotations
 
-import json
-from collections import defaultdict
-from pathlib import Path
-from typing import Any, Dict, List
+import math
+from typing import Any, List
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from recommendation.vector_engine import VectorRecommendEngine
+
+class BackendUserIngredient(BaseModel):
+    ingredients: List[str] = Field(default_factory=list)
+    preferIngredients: List[str] = Field(default_factory=list)
+    dispreferIngredients: List[str] = Field(default_factory=list)
+    IngredientRatio: float = Field(default=0.5, ge=0.0, le=1.0)
 
 
-DATA_DIR = Path(__file__).resolve().parent / "data" / "db"
+class BackendCandidateRecipe(BaseModel):
+    recipe_id: str
+    title: str
+    ingredients: List[str] = Field(default_factory=list)
 
 
-def _load_json(name: str) -> list:
-    with open(DATA_DIR / name, encoding="utf-8") as f:
-        return json.load(f)
-
-
-_recipes_raw: list = _load_json("recipes.json")
-_ingredients_raw: list = _load_json("ingredients.json")
-_recipe_ingredients_raw: list = _load_json("recipe_ingredients.json")
-
-RECIPES: Dict[str, dict] = {r["recipeId"]: r for r in _recipes_raw}
-INGREDIENTS: Dict[str, dict] = {i["ingredientId"]: i for i in _ingredients_raw}
-RECIPE_INGREDIENTS: Dict[str, List[dict]] = defaultdict(list)
-for ri in _recipe_ingredients_raw:
-    RECIPE_INGREDIENTS[ri["recipeId"]].append(ri)
-
-_VECTOR_RECOMMEND_ENGINE = None
-
-
-class RecommendRequest(BaseModel):
-    ingredientIds: List[str] = Field(..., min_length=1)
-    topK: int = Field(default=10, ge=1, le=100)
-    minCoverageRatio: float = Field(default=0.5, ge=0.0, le=1.0)
-    preferredIngredientIds: List[str] = Field(default_factory=list)
-    dislikedIngredientIds: List[str] = Field(default_factory=list)
-    allergyIngredientIds: List[str] = Field(default_factory=list)
-    preferredCategories: List[str] = Field(default_factory=list)
-    excludedCategories: List[str] = Field(default_factory=list)
-    preferredKeywords: List[str] = Field(default_factory=list)
-    excludedKeywords: List[str] = Field(default_factory=list)
-
-
-class ApiResponse(BaseModel):
-    success: bool
-    data: Any = None
-    error: dict[str, str] | None = None
+class BackendRecommendationRequest(BaseModel):
+    userIngredient: BackendUserIngredient
+    candidates: List[BackendCandidateRecipe] = Field(default_factory=list)
 
 
 app = FastAPI(
@@ -67,42 +42,115 @@ app.add_middleware(
 )
 
 
-def _get_vector_recommend_engine() -> VectorRecommendEngine:
-    global _VECTOR_RECOMMEND_ENGINE
-    if _VECTOR_RECOMMEND_ENGINE is None:
-        _VECTOR_RECOMMEND_ENGINE = VectorRecommendEngine(
-            recipes=RECIPES,
-            ingredients=INGREDIENTS,
-            recipe_ingredients=RECIPE_INGREDIENTS,
+def _normalize_name(value: str) -> str:
+    return " ".join(str(value or "").strip().casefold().split())
+
+
+def _dedupe_names(values: list[str]) -> list[str]:
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for value in values:
+        cleaned = str(value or "").strip()
+        key = _normalize_name(cleaned)
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        deduped.append(cleaned)
+    return deduped
+
+
+def _contains_any_preference(texts: list[str], preferences: set[str]) -> bool:
+    normalized_texts = [_normalize_name(text) for text in texts]
+    return any(
+        preference and any(preference in text for text in normalized_texts)
+        for preference in preferences
+    )
+
+
+def _recommend_backend_candidates(payload: dict) -> dict:
+    request = BackendRecommendationRequest(**payload)
+    owned = set(_normalize_name(name) for name in request.userIngredient.ingredients if _normalize_name(name))
+    preferred = set(
+        _normalize_name(name)
+        for name in request.userIngredient.preferIngredients
+        if _normalize_name(name)
+    )
+    disliked = set(
+        _normalize_name(name)
+        for name in request.userIngredient.dispreferIngredients
+        if _normalize_name(name)
+    )
+    min_ratio = request.userIngredient.IngredientRatio
+
+    recommendations: list[dict[str, Any]] = []
+    for candidate in request.candidates:
+        recipe_ingredients = _dedupe_names(candidate.ingredients)
+        if not recipe_ingredients:
+            continue
+
+        recipe_keys = [_normalize_name(name) for name in recipe_ingredients]
+        recipe_key_set = set(recipe_keys)
+        if _contains_any_preference([candidate.title, *recipe_ingredients], disliked):
+            continue
+
+        matched = [
+            ingredient
+            for ingredient, key in zip(recipe_ingredients, recipe_keys)
+            if key in owned
+        ]
+        missing = [
+            ingredient
+            for ingredient, key in zip(recipe_ingredients, recipe_keys)
+            if key not in owned
+        ]
+        coverage_ratio = len(matched) / len(recipe_ingredients)
+        if coverage_ratio < min_ratio:
+            continue
+
+        cosine_score = len(set(recipe_keys) & owned) / math.sqrt(
+            max(len(owned), 1) * max(len(recipe_key_set), 1)
         )
-    return _VECTOR_RECOMMEND_ENGINE
+        preference_bonus = 0.0
+        if preferred:
+            preference_hits = len(recipe_key_set & preferred)
+            preference_bonus = 0.08 * (preference_hits / len(preferred))
+        score = min(1.0, (0.75 * coverage_ratio) + (0.17 * cosine_score) + preference_bonus)
+
+        recommendations.append(
+            {
+                "recipeId": candidate.recipe_id,
+                "title": candidate.title,
+                "score": round(score, 4),
+                "match_details": {
+                    "matched": matched,
+                    "missing": missing,
+                },
+            }
+        )
+
+    recommendations.sort(
+        key=lambda item: (
+            item["score"],
+            len(item["match_details"]["matched"]),
+            item["recipeId"],
+        ),
+        reverse=True,
+    )
+    return {"recommendations": recommendations}
 
 
-@app.post("/recommend")
-async def recommend(req: RecommendRequest):
-    valid_ids = [ingredient_id for ingredient_id in req.ingredientIds if ingredient_id in INGREDIENTS]
-    if not valid_ids:
-        raise HTTPException(
-            status_code=400,
-            detail={
-                "code": "INVALID_REQUEST",
-                "message": "유효한 ingredientId가 없습니다.",
+@app.post("/ai/ingredient/recommondation")
+async def recommend_backend_candidates(req: BackendRecommendationRequest):
+    try:
+        result = _recommend_backend_candidates(req.model_dump())
+    except Exception:
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "code": "AI500",
+                "result": "레시피를 추천할 수 없습니다.",
             },
         )
 
-    result = _get_vector_recommend_engine().recommend(
-        {
-            "ingredientIds": valid_ids,
-            "topK": req.topK,
-            "minCoverageRatio": req.minCoverageRatio,
-            "preferredIngredientIds": req.preferredIngredientIds,
-            "dislikedIngredientIds": req.dislikedIngredientIds,
-            "allergyIngredientIds": req.allergyIngredientIds,
-            "preferredCategories": req.preferredCategories,
-            "excludedCategories": req.excludedCategories,
-            "preferredKeywords": req.preferredKeywords,
-            "excludedKeywords": req.excludedKeywords,
-        }
-    )
-
-    return ApiResponse(success=True, data=result)
+    return {"success": True, "data": result}
