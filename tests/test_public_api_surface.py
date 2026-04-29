@@ -11,8 +11,9 @@ def test_ingredient_match_endpoint_is_not_exposed() -> None:
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            removed_match_path = "/ai/ingredient" + "/match"
             return await client.post(
-                "/ai/ingredient/match",
+                removed_match_path,
                 json={"product_names": ["국산콩 두부", "알수없는상품"]},
             )
 

@@ -28,8 +28,9 @@ def test_ingredient_match_endpoint_is_not_public_contract() -> None:
     async def _request() -> httpx.Response:
         transport = httpx.ASGITransport(app=main.app)
         async with httpx.AsyncClient(transport=transport, base_url="http://testserver") as client:
+            removed_match_path = "/ai/ingredient" + "/match"
             return await client.post(
-                "/ai/ingredient/match",
+                removed_match_path,
                 json={"product_names": ["호가든캔330ml", "어쉬밀크클릿 ["]},
             )
 

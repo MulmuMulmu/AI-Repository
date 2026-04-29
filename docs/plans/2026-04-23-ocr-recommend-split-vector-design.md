@@ -53,7 +53,7 @@
 - 추천 컨테이너
   - 추천 전용 API만 담당
 
-상품명 정규화와 `ingredientId` 매핑은 백엔드 재료 DB 기준으로 처리한다. `POST /ai/ingredient/match`는 공개 AI API 계약에서 제외한다.
+상품명 정규화와 `ingredientId` 매핑은 백엔드 재료 DB 기준으로 처리한다. 별도 상품명-재료 매칭 엔드포인트는 공개 AI API 계약에서 제외한다.
 
 ---
 

@@ -110,7 +110,7 @@ QWEN_RECEIPT_MAX_TOKENS=256
   - `vendor_name`, `purchased_at`, `totals`, `diagnostics` 포함 여부 확인
 
 - `tests/test_public_api_surface.py`
-  - OCR 앱에서 `/ai/ingredient/match`가 노출되지 않고 `/ai/ingredient/prediction` 응답 계약이 유지되는지 확인
+  - OCR 앱에서 별도 상품명-재료 매칭 엔드포인트가 노출되지 않고 `/ai/ingredient/prediction` 응답 계약이 유지되는지 확인
   - OCR 앱에서 추천/레시피/검색 라우트가 더 이상 노출되지 않는지 확인
 
 - `tests/test_recommend_app_surface.py`

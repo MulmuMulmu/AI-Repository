@@ -1,13 +1,12 @@
 # AI-Repository
 
-영수증 이미지를 분석해 식품 품목을 추출하고, 그 품목을 재료 단위로 예측하는 FastAPI 서버입니다.
+영수증 이미지를 분석해 식품 품목, 구매일자, 카테고리, 수량을 추출하고, 식재료 소비기한과 레시피 추천을 보조하는 FastAPI 서버입니다.
 
 현재 저장소는 두 서비스로 나뉩니다.
 
 ### OCR/Qwen 서비스
 
 - `POST /ai/ocr/analyze`
-- `POST /ai/ingredient/match`
 - `POST /ai/ingredient/prediction`
 
 ### 추천 서비스
@@ -37,10 +36,6 @@
 6. 날짜, 합계, 품목 구조 검증
 7. 필요 시 로컬 Qwen 보조
 8. 구조화된 JSON 응답 반환
-
-### `POST /ai/ingredient/match`
-
-OCR에서 나온 상품명을 입력받아 재료 테이블 기준으로 가장 가까운 재료를 예측합니다.
 
 ### `POST /ai/ingredient/prediction`
 
@@ -280,34 +275,11 @@ QWEN_OPENAI_COMPATIBLE_TIMEOUT_SECONDS=30
 - `totals`
 - `diagnostics`
 
-### `POST /ai/ingredient/match`
+### 상품명 정규화와 재료 매핑
 
-입력:
-
-```json
-{
-  "product_names": ["국산콩 두부", "깻잎", "삼겹살"]
-}
-```
-
-응답 핵심 필드:
-- `matched`
-- `unmatched`
-- `matched_count`
-- `unmatched_count`
-
-매칭 순서:
-- 상품 alias 정규화
-- `data/receipt_rules/product_to_ingredient.json` 규칙 사전 확인
-- DB exact match
-- DB fuzzy match
-
-open-set 처리:
-- 사전에 없는 식품은 버리지 않고 `mapping_status=UNMAPPED`로 반환
-- 비식품/제외 대상은 `mapping_status=EXCLUDED`로 반환
-- 모든 항목에 `standard_product_name`, `item_type`를 포함
-
-`matched` 항목에는 `mapping_source`, `standard_product_name`, `mapping_status`, `item_type`가 포함됩니다.
+OCR/Qwen 서비스는 상품명, 카테고리, 수량을 반환하는 데 집중합니다.
+상품명을 백엔드 재료 DB의 `ingredientId`로 확정하는 정규화/매핑은 백엔드 내부 흐름에서 처리합니다.
+따라서 별도 공개 매칭 API는 제공하지 않습니다.
 
 ### `POST /ai/ingredient/prediction`
 
@@ -341,7 +313,7 @@ python -m pytest -q
 현재 테스트 범위:
 
 - `/ai/ocr/analyze` 계약
-- `/ai/ingredient/match` 계약
+- 매칭 API 비노출 계약
 - `/ai/ingredient/prediction` 계약
 - 기존 `/api/...` 비노출
 - `ReceiptOCR` 어댑터
