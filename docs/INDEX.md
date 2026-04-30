@@ -17,12 +17,17 @@
    - [operations/RECAPTURE_GUIDELINES.md](operations/RECAPTURE_GUIDELINES.md)
    - [operations/DOCKER_DEV.md](operations/DOCKER_DEV.md)
    - [operations/GCP_DEPLOYMENT.md](operations/GCP_DEPLOYMENT.md)
+   - [operations/APPS_IN_TOSS_RELEASE_POLICY_CHECK.md](operations/APPS_IN_TOSS_RELEASE_POLICY_CHECK.md)
    - [operations/OCR_TODO.md](operations/OCR_TODO.md)
-4. 품질/데이터셋
+4. 통합테스트
+   - [integration/LOCAL_INTEGRATION_TEST_PLAN.md](integration/LOCAL_INTEGRATION_TEST_PLAN.md)
+   - [integration/LOCAL_INTEGRATION_TEST_REPORT_2026-04-30.md](integration/LOCAL_INTEGRATION_TEST_REPORT_2026-04-30.md)
+   - [integration/SYSTEM_FLOW_TEST_REPORT_2026-04-30.md](integration/SYSTEM_FLOW_TEST_REPORT_2026-04-30.md)
+5. 품질/데이터셋
    - [datasets/OCR_QUALITY_BASELINE.md](datasets/OCR_QUALITY_BASELINE.md)
    - [datasets/RECEIPT_SILVERSET.md](datasets/RECEIPT_SILVERSET.md)
    - [specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md](specs/SYNTHETIC_RECEIPT_DATASET_SPEC.md)
-5. 날짜별 기록
+6. 날짜별 기록
    - [history/status/OCR_PIPELINE_STATUS_2026-04-18.md](history/status/OCR_PIPELINE_STATUS_2026-04-18.md)
    - [history/updates/2026-04-18-session-update.md](history/updates/2026-04-18-session-update.md)
    - [history/baselines/RECEIPT_GOLDSET_BASELINE_2026-04-21.md](history/baselines/RECEIPT_GOLDSET_BASELINE_2026-04-21.md)
@@ -46,6 +51,12 @@
 - 입력/재촬영 정책
 - Docker 개발환경
 - 남은 작업
+
+### `integration/`
+
+- 백엔드, 프론트, AI 로컬 통합테스트 절차
+- Docker 포트 표
+- smoke 시나리오와 통과 기준
 
 ### `datasets/`
 

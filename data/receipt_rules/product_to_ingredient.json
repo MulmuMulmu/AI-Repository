@@ -4,6 +4,31 @@
   "description": "Standard product name to ingredient name mappings.",
   "mappings": [
     {
+      "product": "서울우유",
+      "ingredient": "우유",
+      "reason": "milk_brand_to_ingredient"
+    },
+    {
+      "product": "서울우유 1L",
+      "ingredient": "우유",
+      "reason": "milk_brand_to_ingredient"
+    },
+    {
+      "product": "매일우유",
+      "ingredient": "우유",
+      "reason": "milk_brand_to_ingredient"
+    },
+    {
+      "product": "저지방우유",
+      "ingredient": "우유",
+      "reason": "milk_variant_to_ingredient"
+    },
+    {
+      "product": "흰우유",
+      "ingredient": "우유",
+      "reason": "milk_variant_to_ingredient"
+    },
+    {
       "product": "허쉬밀크초콜릿",
       "ingredient": "초콜릿",
       "reason": "snack_to_ingredient"

@@ -62,6 +62,7 @@ docker compose up --build recommend-api
 
 자주 쓰는 값:
 
+- `PREWARM_PADDLEOCR_ON_STARTUP`
 - `ENABLE_LOCAL_QWEN`
 - `ALLOW_MODEL_DOWNLOAD`
 - `LOCAL_QWEN_MODEL_ID`
@@ -70,6 +71,8 @@ docker compose up --build recommend-api
 - `QWEN_OPENAI_COMPATIBLE_BASE_URL`
 - `QWEN_OPENAI_COMPATIBLE_API_KEY`
 - `QWEN_OPENAI_COMPATIBLE_MODEL`
+
+로컬/CPU Docker 기본값은 `PREWARM_PADDLEOCR_ON_STARTUP=0`이다. PaddleOCR는 첫 OCR 요청 시 lazy-load한다. 컨테이너 시작 시 PaddleOCR를 바로 초기화하면 일부 Docker/CPU 환경에서 PaddlePaddle native crash가 발생할 수 있으므로 기본 개발 실행에서는 prewarm을 끈다.
 
 ## 볼륨 정책
 

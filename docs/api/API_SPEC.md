@@ -39,7 +39,7 @@
 
 즉 이 컨테이너는 **영수증 등록 전처리와 해석**에 집중한다.
 
-상품명 정규화와 `ingredientId` 매핑은 백엔드 책임이다. OCR/Qwen 컨테이너는 `food_items[].product_name`, `category`, `quantity`를 반환하고, 백엔드는 자체 재료 DB 기준으로 최종 식재료 후보를 확정한다.
+OCR/Qwen 컨테이너는 영수증 상품명을 표준 식재료 후보로 정규화해 `food_items`에 함께 내려준다. 백엔드는 자체 `Ingredient` DB 기준으로 최종 저장을 검증하고, 프론트는 `MAPPED`가 아닌 항목을 그대로 저장하지 않고 사용자 선택/수정 화면으로 보낸다.
 
 ---
 
@@ -69,9 +69,16 @@
 
 `food_items` 항목 형식:
 
-- `product_name`
-- `category`
-- `quantity`
+- `product_name`: 앱 저장/표시용 이름. 매핑 성공 시 표준 식재료명, 실패 시 원문 상품명
+- `raw_product_name`: 영수증 원문 상품명. 표준명과 다를 때 추적용으로 포함
+- `ingredientId`: AI 기준 표준 재료 ID. 매핑 실패 시 `null` 또는 생략 가능
+- `ingredientName`: 표준 식재료명. 매핑 실패 시 `null` 또는 생략 가능
+- `normalized_name`: 표준 식재료명. 하위 호환용 보조 필드
+- `mapping_status`: `MAPPED`이면 자동 선택 후보, 없거나 `null`이면 사용자 확인 필요
+- `mapping_source`: `receipt_rule_product_mapping`, `normalized_exact_match` 등 내부 매핑 출처
+- `mapping_confidence`: 0~1 범위의 매핑 신뢰도
+- `category`: 8개 공개 카테고리 중 하나
+- `quantity`: 구매 수량. 파싱 실패 시 생략 가능
 
 허용 카테고리:
 
@@ -92,9 +99,20 @@
   "data": {
     "purchased_at": "2026-03-11",
     "food_items": [
-      {"product_name": "우유", "category": "유제품", "quantity": 1},
-      {"product_name": "삼겹살", "category": "정육/계란", "quantity": 1},
-      {"product_name": "양파", "category": "채소/과일", "quantity": 2}
+      {
+        "product_name": "우유",
+        "raw_product_name": "서울우유 1L",
+        "ingredientName": "우유",
+        "mapping_status": "MAPPED",
+        "category": "유제품",
+        "quantity": 1
+      },
+      {
+        "product_name": "호가든캔330ml",
+        "mapping_status": null,
+        "category": "가공식품",
+        "quantity": 2
+      }
     ]
   },
   "error": null
@@ -107,6 +125,8 @@
   - 자동 등록 후보
 - `review_required=true`
   - 프론트에서 수동 수정 화면으로 연결
+- `food_items[].mapping_status != MAPPED`
+  - 표준 식재료로 자동 저장하지 않고 사용자가 제외하거나 백엔드 식재료 검색 결과에서 선택해야 함
 
 ### `GET`/`POST /ai/ingredient/prediction`
 

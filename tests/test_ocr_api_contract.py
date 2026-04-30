@@ -121,13 +121,13 @@ def test_ocr_analyze_endpoint_preserves_legacy_contract(monkeypatch) -> None:
     assert payload["success"] is True
     data = payload["data"]
     assert set(("ocr_texts", "food_items", "food_count", "model")) <= set(data.keys())
-    assert data["food_items"] == [
-        {
-            "product_name": "우유",
-            "category": "유제품",
-            "quantity": 1,
-        }
-    ]
+    food_item = data["food_items"][0]
+    assert food_item["product_name"] == "우유"
+    assert food_item["category"] == "유제품"
+    assert food_item["quantity"] == 1
+    assert food_item["raw_product_name"] == "서울우유 1L"
+    assert food_item["ingredientName"] == "우유"
+    assert food_item["mapping_status"] == "MAPPED"
     assert data["food_count"] == 1
     assert data["vendor_name"] == "이마트"
     assert data["purchased_at"] == "2026-03-11"
@@ -209,10 +209,40 @@ def test_ocr_refinement_status_endpoint_returns_base_and_refined_results(monkeyp
     assert payload["trace_id"] == "receipt-test-trace"
     assert payload["status"] == "completed"
     assert payload["rule_based_result"]["food_items"][0]["product_name"] == "우유"
-    assert payload["refined_result"]["food_items"][0]["product_name"] == "서울우유"
+    assert payload["refined_result"]["food_items"][0]["product_name"] == "우유"
+    assert payload["refined_result"]["food_items"][0]["raw_product_name"] == "서울우유 1L"
+    assert payload["refined_result"]["food_items"][0]["ingredientName"] == "우유"
 
 
 def test_public_food_category_normalization_maps_known_products() -> None:
     assert main._normalize_public_food_category("other", "양념닭주물럭2.2kg") == "정육/계란"
     assert main._normalize_public_food_category("other", "청정원 서해안 까나리") == "소스/조미료/오일"
     assert main._normalize_public_food_category("vegetable", "파프리카") == "채소/과일"
+
+
+def test_ocr_food_item_does_not_auto_accept_alcohol_as_ingredient() -> None:
+    item = main._normalize_food_item(
+        {
+            "product_name": "호가든캔330ml",
+            "category": "other",
+            "quantity": 2,
+        }
+    )
+
+    assert item["product_name"] == "호가든캔330ml"
+    assert item["category"] == "가공식품"
+    assert "ingredientId" not in item
+
+
+def test_ocr_food_item_quantity_does_not_use_package_weight_as_purchase_count() -> None:
+    item = main._normalize_food_item(
+        {
+            "product_name": "우동",
+            "raw_product_name": "가쓰오우동+김우동 4인분957g",
+            "category": "other",
+            "quantity": 957,
+        }
+    )
+
+    assert item["product_name"] == "우동"
+    assert item["quantity"] == 1

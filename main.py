@@ -7,6 +7,7 @@ AI FastAPI 서버 — 영수증 OCR 분석 + 재료 예측
 from __future__ import annotations
 
 import json
+import os
 import re
 import tempfile
 import threading
@@ -399,6 +400,19 @@ SNACK_KEYWORDS = (
     "로투스",
 )
 
+PACKAGE_SIZE_PATTERN = re.compile(
+    r"\d+(?:[.,]\d+)?\s*(?:g|kg|ml|l|구|입|매|봉|팩|개입|그램|킬로|미리|리터)",
+    re.IGNORECASE,
+)
+
+ALCOHOL_KEYWORDS = (
+    "맥주",
+    "소주",
+    "와인",
+    "호가든",
+    "하이볼",
+)
+
 PROCESSED_FOOD_KEYWORDS = (
     "라면",
     "컵",
@@ -441,6 +455,8 @@ def _infer_item_type(
     normalized_values = [_normalize_name(value) for value in candidate_values if value]
     if _contains_classification_keyword(normalized_values, SNACK_KEYWORDS):
         return "SNACK"
+    if _contains_classification_keyword(normalized_values, ALCOHOL_KEYWORDS):
+        return "ALCOHOL"
     if _contains_classification_keyword(normalized_values, PROCESSED_FOOD_KEYWORDS):
         return "PROCESSED_FOOD"
 
@@ -491,24 +507,97 @@ def _normalize_food_item(item: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     if not product_name:
         return None
 
+    raw_product_name = str(item.get("raw_product_name") or item.get("raw_name") or product_name).strip()
+    parsed_normalized_name = str(item.get("normalized_name") or "").strip()
+    ingredient_match = _select_canonical_ingredient_match(
+        product_name=product_name,
+        normalized_name=parsed_normalized_name,
+        raw_product_name=raw_product_name,
+    )
+
     category = _normalize_public_food_category(
         item.get("category"),
         product_name,
-        normalized_name=str(item.get("normalized_name") or "").strip(),
+        normalized_name=parsed_normalized_name,
     )
+    if ingredient_match is not None:
+        category = PUBLIC_FOOD_CATEGORY_MAP.get(str(ingredient_match.get("category") or "").strip(), category)
 
     normalized_item = {
-        "product_name": product_name,
+        "product_name": ingredient_match["ingredientName"] if ingredient_match is not None else product_name,
         "category": category,
     }
+    if raw_product_name and raw_product_name != normalized_item["product_name"]:
+        normalized_item["raw_product_name"] = raw_product_name
+    if ingredient_match is not None:
+        normalized_item.update(
+            {
+                "ingredientId": ingredient_match["ingredientId"],
+                "ingredientName": ingredient_match["ingredientName"],
+                "normalized_name": ingredient_match["ingredientName"],
+                "mapping_status": "MAPPED",
+                "mapping_source": ingredient_match["mapping_source"],
+                "mapping_confidence": ingredient_match["similarity"],
+            }
+        )
 
-    quantity = item.get("quantity")
+    quantity = _normalize_public_quantity(item)
     if quantity is not None:
-        if isinstance(quantity, float) and quantity.is_integer():
-            quantity = int(quantity)
         normalized_item["quantity"] = quantity
 
     return normalized_item
+
+
+def _normalize_public_quantity(item: Dict[str, Any]) -> int | float | str | None:
+    quantity = item.get("quantity")
+    if quantity is None:
+        return None
+
+    try:
+        numeric_quantity = float(str(quantity).replace(",", "").strip())
+    except (TypeError, ValueError):
+        return quantity
+
+    if numeric_quantity <= 0:
+        return None
+
+    item_text = " ".join(
+        str(item.get(key) or "")
+        for key in ("product_name", "raw_product_name", "normalized_name")
+    )
+
+    # Public quantity means purchase count. Large OCR numbers are usually
+    # package size such as 957g, 500ml, or 30구, not item count.
+    if numeric_quantity > 20 or (numeric_quantity > 10 and PACKAGE_SIZE_PATTERN.search(item_text)):
+        return 1
+
+    if numeric_quantity.is_integer():
+        return int(numeric_quantity)
+    return numeric_quantity
+
+
+def _select_canonical_ingredient_match(
+    *,
+    product_name: str,
+    normalized_name: str,
+    raw_product_name: str,
+) -> dict[str, Any] | None:
+    """앱 저장명은 상품명이 아니라 Ingredient 마스터의 표준 재료명으로 고정한다."""
+    seen: set[str] = set()
+    for candidate in (normalized_name, product_name, raw_product_name):
+        candidate = (candidate or "").strip()
+        if not candidate or candidate in seen:
+            continue
+        seen.add(candidate)
+        match = _match_product_to_ingredient(candidate)
+        if match is None:
+            continue
+        normalized_match = _normalize_prediction_match(candidate, match)
+        if normalized_match.get("item_type") in {"SNACK", "ALCOHOL"}:
+            continue
+        if normalized_match.get("mapping_status") == "MAPPED":
+            return match
+    return None
 
 
 def _normalize_food_items(items: list[Dict[str, Any]]) -> list[Dict[str, Any]]:
@@ -552,7 +641,7 @@ PUBLIC_FOOD_CATEGORY_KEYWORDS = (
     ("해산물", ("새우", "오징어", "굴", "연어", "참치", "고등어", "멸치", "어묵", "맛살", "크래미")),
     ("채소/과일", ("양파", "대파", "마늘", "감자", "고구마", "당근", "오이", "김치", "깻잎", "부추", "브로콜리", "파프리카", "고추", "가지", "무", "상추", "청경채", "숙주", "콩나물", "애호박", "양배추", "시금치", "미나리", "봄동", "배추", "새싹", "토마토", "바나나", "사과", "레몬", "딸기", "아보카도")),
     ("쌀/면/빵", ("쌀", "밥", "밀가루", "빵가루", "소면", "당면", "떡", "식빵", "모닝빵", "또띠아", "우동면", "파스타면", "면", "빵")),
-    ("가공식품", ("두부", "순두부", "라면", "햇반", "만두", "누룽지", "음료", "소주", "주스", "캔", "요리용", "삼각", "김밥")),
+    ("가공식품", ("두부", "순두부", "라면", "햇반", "만두", "누룽지", "음료", "소주", "맥주", "호가든", "주스", "캔", "요리용", "삼각", "김밥")),
 )
 
 
@@ -621,6 +710,7 @@ def _legacy_food_items_from_parsed(parsed: Dict[str, Any]) -> list[Dict[str, Any
         legacy_items.append(
             {
                 "product_name": product_name,
+                "raw_product_name": item.get("raw_name"),
                 "normalized_name": item.get("normalized_name"),
                 "category": item.get("category"),
                 "quantity": item.get("quantity"),
@@ -739,6 +829,8 @@ def _schedule_receipt_refinement(*, trace_id: str, image_bytes: bytes, suffix: s
 
 @app.on_event("startup")
 def _warm_up_receipt_services() -> None:
+    if os.environ.get("PREWARM_PADDLEOCR_ON_STARTUP", "1") != "1":
+        return
     try:
         _get_receipt_backend().warm_up()
     except Exception as exc:
